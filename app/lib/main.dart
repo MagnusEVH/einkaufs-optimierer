@@ -8,6 +8,7 @@ import 'features/price_reports/price_report_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/shopping_list/shopping_list_screen.dart';
 import 'features/stores_map/stores_screen.dart';
+import 'features/wallet/wallet_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +60,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
   final List<Widget> _screens = const [
     ShoppingListScreen(),
     StoresScreen(),
+    WalletScreen(),
     PriceReportScreen(),
     SettingsScreen(),
   ];
@@ -85,13 +87,18 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
             label: 'Filialen',
           ),
           NavigationDestination(
+            icon: Icon(Icons.wallet_outlined),
+            selectedIcon: Icon(Icons.wallet, color: Colors.teal),
+            label: 'Wallet & Deals',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.camera_alt_outlined),
             selectedIcon: Icon(Icons.camera_alt, color: Colors.teal),
             label: 'Preis melden',
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings, color: Colors.teal),
+            icon: Icon(Icons.tune_outlined),
+            selectedIcon: Icon(Icons.tune, color: Colors.teal),
             label: 'Präferenzen',
           ),
         ],

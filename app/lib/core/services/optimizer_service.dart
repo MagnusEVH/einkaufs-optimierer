@@ -12,6 +12,7 @@ import '../models/user_preferences.dart';
 import 'catalog_service.dart';
 import 'location_service.dart';
 import 'supabase_service.dart';
+import 'wallet_service.dart';
 
 class OptimizerService {
   /// Optimizes shopping list either via Supabase Edge Function or local engine
@@ -85,6 +86,21 @@ class OptimizerService {
     return r * c;
   }
 
+  static int _getPriceWithOffers(Product? prod, Store store, String rawText) {
+    int basePrice = prod?.getPriceForChain(store.chain.name) ?? 199;
+    final nameLower = (prod?.name ?? rawText).toLowerCase();
+
+    for (final offer in WalletService.weeklyOffers) {
+      if (offer.chain == store.chain && offer.isActive) {
+        if (nameLower.contains(offer.productName.toLowerCase()) ||
+            offer.productName.toLowerCase().contains(nameLower)) {
+          return offer.discountPriceCents;
+        }
+      }
+    }
+    return basePrice;
+  }
+
   static OptimizationResult _runLocalOptimization({
     required UserLocation userLocation,
     required List<ShoppingListItem> items,
@@ -152,8 +168,9 @@ class OptimizerService {
           final rawText = it['raw_text'] as String;
           final qty = it['quantity'] as double;
 
-          final p1 = prod?.getPriceForChain(s1.chain.name) ?? 199;
-          final p2 = prod?.getPriceForChain(s2.chain.name) ?? 199;
+          // Check if promotional offer overrides regular price
+          final p1 = _getPriceWithOffers(prod, s1, rawText);
+          final p2 = _getPriceWithOffers(prod, s2, rawText);
 
           // Detect Category for preference weighting (e.g. Obst -> Netto, Gemüse -> Lidl)
           String catKey = 'allgemein';
