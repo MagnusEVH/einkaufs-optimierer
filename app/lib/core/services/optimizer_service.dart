@@ -1,0 +1,328 @@
+// app/lib/core/services/optimizer_service.dart
+
+import 'dart:convert';
+import 'dart:math';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import '../models/list_item.dart';
+import '../models/optimization_result.dart';
+import '../models/product.dart';
+import '../models/store.dart';
+import '../models/user_preferences.dart';
+import 'catalog_service.dart';
+import 'location_service.dart';
+import 'supabase_service.dart';
+
+class OptimizerService {
+  /// Optimizes shopping list either via Supabase Edge Function or local engine
+  static Future<OptimizationResult> optimizeShoppingList({
+    required UserLocation userLocation,
+    required List<ShoppingListItem> items,
+    required UserPreferences preferences,
+    List<Store>? availableStores,
+  }) async {
+    if (items.isEmpty) {
+      throw Exception('Einkaufsliste ist leer.');
+    }
+
+    // Try Remote Edge Function if Supabase is active
+    if (!SupabaseService.isDemoMode && SupabaseService.client != null) {
+      try {
+        final session = SupabaseService.client!.auth.currentSession;
+        final edgeFunctionUrl =
+            '${SupabaseService.client!.rest.url.replaceAll('/rest/v1', '')}/functions/v1/optimize-route';
+
+        final payload = {
+          'user_location': {
+            'latitude': userLocation.latitude,
+            'longitude': userLocation.longitude,
+          },
+          'items': items.map((it) => {
+            'raw_text': it.rawText,
+            'matched_product_id': it.matchedProduct?.id,
+            'quantity': it.quantity,
+          }).toList(),
+          'preferences': preferences.toJson(),
+        };
+
+        final response = await http.post(
+          Uri.parse(edgeFunctionUrl),
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SupabaseService.client!.supabaseKey,
+            if (session != null) 'Authorization': 'Bearer ${session.accessToken}',
+          },
+          body: json.encode(payload),
+        );
+
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          return OptimizationResult.fromJson(data);
+        }
+      } catch (e) {
+        debugPrint('Remote optimizer failed: $e. Falling back to local optimization engine.');
+      }
+    }
+
+    // Local Optimization Engine (Runs directly on device / offline)
+    return _runLocalOptimization(
+      userLocation: userLocation,
+      items: items,
+      preferences: preferences,
+      stores: availableStores ?? _defaultSampleStores,
+    );
+  }
+
+  // --- LOCAL OPTIMIZATION ENGINE ---
+
+  static double _haversineMeters(double lat1, double lon1, double lat2, double lon2) {
+    const r = 6371000.0;
+    final dLat = (lat2 - lat1) * (pi / 180.0);
+    final dLon = (lon2 - lon1) * (pi / 180.0);
+    final a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(lat1 * (pi / 180.0)) * cos(lat2 * (pi / 180.0)) * sin(dLon / 2) * sin(dLon / 2);
+    final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    return r * c;
+  }
+
+  static OptimizationResult _runLocalOptimization({
+    required UserLocation userLocation,
+    required List<ShoppingListItem> items,
+    required UserPreferences preferences,
+    required List<Store> stores,
+  }) {
+    // 1. Resolve catalog items
+    final resolvedList = items.map((it) {
+      final matched = it.matchedProduct ?? CatalogService.matchRawText(it.rawText);
+      return {
+        'raw_text': it.rawText,
+        'matched': matched,
+        'quantity': it.quantity,
+      };
+    }).toList();
+
+    // 2. Evaluate Single Store solutions
+    int bestSingleBasket = 999999999;
+    Store bestSingleStore = stores.first;
+    double bestSingleDist = 99999999.0;
+
+    for (final store in stores) {
+      int sum = 0;
+      for (final it in resolvedList) {
+        final prod = it['matched'] as Product?;
+        final qty = it['quantity'] as double;
+        final price = prod?.getPriceForChain(store.chain.name) ?? 199;
+        sum += (price * qty).round();
+      }
+
+      final dist = _haversineMeters(
+        userLocation.latitude,
+        userLocation.longitude,
+        store.latitude,
+        store.longitude,
+      ) * 2;
+
+      if (sum < bestSingleBasket) {
+        bestSingleBasket = sum;
+        bestSingleStore = store;
+        bestSingleDist = dist;
+      }
+    }
+
+    // 3. Multi-Store 2-Stop Combinations
+    int bestMultiBasket = bestSingleBasket;
+    List<Store> bestMultiStores = [bestSingleStore];
+    Map<String, List<AllocatedItem>> bestAssignment = {};
+    int bestNetSavings = 0;
+    int bestGrossSavings = 0;
+    int bestTravelPenalty = 0;
+    double bestMultiDist = bestSingleDist;
+
+    for (int i = 0; i < stores.length; i++) {
+      for (int j = i + 1; j < stores.length; j++) {
+        final s1 = stores[i];
+        final s2 = stores[j];
+
+        int comboSum = 0;
+        final s1Items = <AllocatedItem>[];
+        final s2Items = <AllocatedItem>[];
+
+        for (final it in resolvedList) {
+          final prod = it['matched'] as Product?;
+          final rawText = it['raw_text'] as String;
+          final qty = it['quantity'] as double;
+
+          final p1 = prod?.getPriceForChain(s1.chain.name) ?? 199;
+          final p2 = prod?.getPriceForChain(s2.chain.name) ?? 199;
+
+          if (p1 <= p2) {
+            final total = (p1 * qty).round();
+            s1Items.add(AllocatedItem(
+              itemName: prod?.name ?? rawText,
+              rawText: rawText,
+              brand: prod?.brand,
+              quantity: qty,
+              unitPriceCents: p1,
+              totalPriceCents: total,
+            ));
+            comboSum += total;
+          } else {
+            final total = (p2 * qty).round();
+            s2Items.add(AllocatedItem(
+              itemName: prod?.name ?? rawText,
+              rawText: rawText,
+              brand: prod?.brand,
+              quantity: qty,
+              unitPriceCents: p2,
+              totalPriceCents: total,
+            ));
+            comboSum += total;
+          }
+        }
+
+        if (s1Items.isEmpty || s2Items.isEmpty) continue;
+
+        // Route distance with cluster discount (< 500m)
+        final intraDist = _haversineMeters(s1.latitude, s1.longitude, s2.latitude, s2.longitude);
+        double routeDist = _haversineMeters(userLocation.latitude, userLocation.longitude, s1.latitude, s1.longitude);
+        if (intraDist <= 500) {
+          routeDist += intraDist * 0.2; // 80% discount for clustered stops
+        } else {
+          routeDist += intraDist;
+        }
+        routeDist += _haversineMeters(s2.latitude, s2.longitude, userLocation.latitude, userLocation.longitude);
+
+        final extraDist = max(0.0, routeDist - bestSingleDist);
+        final travelPenalty = ((extraDist / 1000.0) * preferences.costPerKmCents).round();
+        final grossSavings = bestSingleBasket - comboSum;
+        final netSavings = grossSavings - travelPenalty;
+
+        if (netSavings > bestNetSavings) {
+          bestNetSavings = netSavings;
+          bestGrossSavings = grossSavings;
+          bestTravelPenalty = travelPenalty;
+          bestMultiBasket = comboSum;
+          bestMultiStores = [s1, s2];
+          bestMultiDist = routeDist;
+          bestAssignment = {
+            s1.id: s1Items,
+            s2.id: s2Items,
+          };
+        }
+      }
+    }
+
+    final isMulti = bestNetSavings > 50 && preferences.maxStops >= 2;
+
+    final stops = <RouteStop>[];
+    if (isMulti) {
+      for (int i = 0; i < bestMultiStores.length; i++) {
+        final store = bestMultiStores[i];
+        final storeItems = bestAssignment[store.id] ?? [];
+        final subtotal = storeItems.fold<int>(0, (acc, it) => acc + it.totalPriceCents);
+
+        stops.add(RouteStop(
+          stopIndex: i + 1,
+          storeId: store.id,
+          chain: store.chain,
+          storeName: store.name,
+          address: store.address,
+          latitude: store.latitude,
+          longitude: store.longitude,
+          clusterId: store.clusterNum,
+          itemsCount: storeItems.length,
+          stopSubtotalCents: subtotal,
+          items: storeItems,
+        ));
+      }
+    } else {
+      // Single store
+      final singleItems = resolvedList.map((it) {
+        final prod = it['matched'] as Product?;
+        final rawText = it['raw_text'] as String;
+        final qty = it['quantity'] as double;
+        final price = prod?.getPriceForChain(bestSingleStore.chain.name) ?? 199;
+        final total = (price * qty).round();
+        return AllocatedItem(
+          itemName: prod?.name ?? rawText,
+          rawText: rawText,
+          brand: prod?.brand,
+          quantity: qty,
+          unitPriceCents: price,
+          totalPriceCents: total,
+        );
+      }).toList();
+
+      stops.add(RouteStop(
+        stopIndex: 1,
+        storeId: bestSingleStore.id,
+        chain: bestSingleStore.chain,
+        storeName: bestSingleStore.name,
+        address: bestSingleStore.address,
+        latitude: bestSingleStore.latitude,
+        longitude: bestSingleStore.longitude,
+        clusterId: bestSingleStore.clusterNum,
+        itemsCount: singleItems.length,
+        stopSubtotalCents: bestSingleBasket,
+        items: singleItems,
+      ));
+    }
+
+    return OptimizationResult(
+      recommendationMode: isMulti ? 'MULTI_STORE' : 'SINGLE_STORE',
+      summary: OptimizationSummary(
+        totalBasketPriceCents: isMulti ? bestMultiBasket : bestSingleBasket,
+        grossSavingsCents: isMulti ? bestGrossSavings : 0,
+        travelPenaltyCents: isMulti ? bestTravelPenalty : 0,
+        netSavingsCents: isMulti ? bestNetSavings : 0,
+        totalRouteDistanceMeters: (isMulti ? bestMultiDist : bestSingleDist).round(),
+        totalStops: stops.length,
+      ),
+      stops: stops,
+      baselineSingleStore: {
+        'name': bestSingleStore.name,
+        'chain': bestSingleStore.chain.name,
+        'total_basket_price_cents': bestSingleBasket,
+      },
+    );
+  }
+
+  static final List<Store> _defaultSampleStores = [
+    Store(
+      id: '33333333-0000-0000-0000-000000000001',
+      chain: SupermarketChain.lidl,
+      name: 'Lidl Filiale Köln Kalk',
+      address: 'Rolshover Str. 11, 51105 Köln',
+      latitude: 50.9335,
+      longitude: 6.9942,
+      clusterNum: 1,
+    ),
+    Store(
+      id: '33333333-0000-0000-0000-000000000002',
+      chain: SupermarketChain.rewe,
+      name: 'REWE Center Kalk',
+      address: 'Kalker Hauptstraße 55, 51103 Köln',
+      latitude: 50.9348,
+      longitude: 6.9965, // 217m away from Lidl Kalk -> Cluster 1!
+      clusterNum: 1,
+    ),
+    Store(
+      id: '33333333-0000-0000-0000-000000000003',
+      chain: SupermarketChain.aldi_sued,
+      name: 'ALDI SÜD Köln Deutz',
+      address: 'Siegburger Str. 149, 50679 Köln',
+      latitude: 50.9270,
+      longitude: 6.9805,
+      clusterNum: 2,
+    ),
+    Store(
+      id: '33333333-0000-0000-0000-000000000004',
+      chain: SupermarketChain.lidl,
+      name: 'Lidl Filiale Köln Deutz',
+      address: 'Deutzer Freiheit 70, 50679 Köln',
+      latitude: 50.9290,
+      longitude: 6.9775, // 306m away from Aldi Deutz -> Cluster 2!
+      clusterNum: 2,
+    ),
+  ];
+}
