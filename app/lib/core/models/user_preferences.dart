@@ -1,8 +1,9 @@
 // app/lib/core/models/user_preferences.dart
 
 class UserPreferences {
-  final bool preferPrivateLabel;
-  final bool preferBio;
+  final String brandPreference; // 'prefer_private_label' | 'reject_private_label' | 'neutral'
+  final String bioPreference; // 'prefer_bio' | 'neutral' | 'reject_bio'
+  final Map<String, String> categoryStorePreferences; // e.g. {'obst': 'netto', 'gemuese': 'lidl'}
   final List<String> preferredChains;
   final String transportMode; // 'car', 'bike', 'walk'
   final double costPerKmCents; // e.g. 30.0 (0.30 EUR/km)
@@ -11,9 +12,13 @@ class UserPreferences {
   final int searchRadiusMeters;
 
   const UserPreferences({
-    this.preferPrivateLabel = true,
-    this.preferBio = false,
-    this.preferredChains = const ['lidl', 'aldi_nord', 'aldi_sued', 'rewe'],
+    this.brandPreference = 'prefer_private_label',
+    this.bioPreference = 'neutral',
+    this.categoryStorePreferences = const {
+      'obst': 'netto',
+      'gemuese': 'lidl',
+    },
+    this.preferredChains = const ['lidl', 'aldi_nord', 'aldi_sued', 'netto', 'rewe'],
     this.transportMode = 'car',
     this.costPerKmCents = 30.0,
     this.minuteValueCents = 15.0,
@@ -22,8 +27,9 @@ class UserPreferences {
   });
 
   UserPreferences copyWith({
-    bool? preferPrivateLabel,
-    bool? preferBio,
+    String? brandPreference,
+    String? bioPreference,
+    Map<String, String>? categoryStorePreferences,
     List<String>? preferredChains,
     String? transportMode,
     double? costPerKmCents,
@@ -32,8 +38,9 @@ class UserPreferences {
     int? searchRadiusMeters,
   }) {
     return UserPreferences(
-      preferPrivateLabel: preferPrivateLabel ?? this.preferPrivateLabel,
-      preferBio: preferBio ?? this.preferBio,
+      brandPreference: brandPreference ?? this.brandPreference,
+      bioPreference: bioPreference ?? this.bioPreference,
+      categoryStorePreferences: categoryStorePreferences ?? this.categoryStorePreferences,
       preferredChains: preferredChains ?? this.preferredChains,
       transportMode: transportMode ?? this.transportMode,
       costPerKmCents: costPerKmCents ?? this.costPerKmCents,
@@ -45,8 +52,9 @@ class UserPreferences {
 
   Map<String, dynamic> toJson() {
     return {
-      'prefer_private_label': preferPrivateLabel,
-      'prefer_bio': preferBio,
+      'brand_preference': brandPreference,
+      'bio_preference': bioPreference,
+      'category_store_preferences': categoryStorePreferences,
       'preferred_chains': preferredChains,
       'transport_mode': transportMode,
       'cost_per_km_cents': costPerKmCents,
@@ -57,13 +65,20 @@ class UserPreferences {
   }
 
   factory UserPreferences.fromJson(Map<String, dynamic> json) {
+    final rawCatPrefs = json['category_store_preferences'] as Map<String, dynamic>? ?? {};
+    final catPrefs = <String, String>{};
+    rawCatPrefs.forEach((k, v) => catPrefs[k] = v.toString());
+
     return UserPreferences(
-      preferPrivateLabel: json['prefer_private_label'] ?? true,
-      preferBio: json['prefer_bio'] ?? false,
+      brandPreference: json['brand_preference'] ?? 'prefer_private_label',
+      bioPreference: json['bio_preference'] ?? 'neutral',
+      categoryStorePreferences: catPrefs.isNotEmpty
+          ? catPrefs
+          : const {'obst': 'netto', 'gemuese': 'lidl'},
       preferredChains: (json['preferred_chains'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
-          const ['lidl', 'aldi_nord', 'aldi_sued', 'rewe'],
+          const ['lidl', 'aldi_nord', 'aldi_sued', 'netto', 'rewe'],
       transportMode: json['transport_mode'] ?? 'car',
       costPerKmCents: (json['cost_per_km_cents'] as num?)?.toDouble() ?? 30.0,
       minuteValueCents: (json['minute_value_cents'] as num?)?.toDouble() ?? 15.0,

@@ -37,11 +37,20 @@
   },
   {
     "id": "33333333-0000-0000-0000-000000000005",
+    "chain": "netto",
+    "name": "Netto Marken-Discount Köln Kalk",
+    "address": "Kalker Post 12, 51103 Köln",
+    "latitude": 50.9352,
+    "longitude": 6.9930,
+    "google_place_id": "ChIJ_netto_kalk_005"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000006",
     "chain": "rewe",
     "name": "REWE City Köln Mülheim",
     "address": "Frankfurter Str. 35, 51065 Köln",
     "latitude": 50.9650,
     "longitude": 7.0090,
-    "google_place_id": "ChIJ_rewe_muelheim_005"
+    "google_place_id": "ChIJ_rewe_muelheim_006"
   }
 ]

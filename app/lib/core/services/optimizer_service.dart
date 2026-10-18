@@ -155,7 +155,39 @@ class OptimizerService {
           final p1 = prod?.getPriceForChain(s1.chain.name) ?? 199;
           final p2 = prod?.getPriceForChain(s2.chain.name) ?? 199;
 
-          if (p1 <= p2) {
+          // Detect Category for preference weighting (e.g. Obst -> Netto, Gemüse -> Lidl)
+          String catKey = 'allgemein';
+          final nameLower = (prod?.name ?? rawText).toLowerCase();
+          if (nameLower.contains('apfel') ||
+              nameLower.contains('banane') ||
+              nameLower.contains('beere') ||
+              nameLower.contains('zitrone') ||
+              nameLower.contains('erdbeer') ||
+              nameLower.contains('obst')) {
+            catKey = 'obst';
+          } else if (nameLower.contains('gurke') ||
+              nameLower.contains('tomate') ||
+              nameLower.contains('brokkoli') ||
+              nameLower.contains('salat') ||
+              nameLower.contains('möhre') ||
+              nameLower.contains('karotte') ||
+              nameLower.contains('zwiebel') ||
+              nameLower.contains('kartoffel') ||
+              nameLower.contains('gemüse') ||
+              nameLower.contains('gemuese')) {
+            catKey = 'gemuese';
+          }
+
+          int effectiveP1 = p1;
+          int effectiveP2 = p2;
+
+          final prefChain = preferences.categoryStorePreferences[catKey];
+          if (prefChain != null) {
+            if (s1.chain.name.contains(prefChain.toLowerCase())) effectiveP1 -= 50;
+            if (s2.chain.name.contains(prefChain.toLowerCase())) effectiveP2 -= 50;
+          }
+
+          if (effectiveP1 <= effectiveP2) {
             final total = (p1 * qty).round();
             s1Items.add(AllocatedItem(
               itemName: prod?.name ?? rawText,
@@ -304,6 +336,15 @@ class OptimizerService {
       address: 'Kalker Hauptstraße 55, 51103 Köln',
       latitude: 50.9348,
       longitude: 6.9965, // 217m away from Lidl Kalk -> Cluster 1!
+      clusterNum: 1,
+    ),
+    Store(
+      id: '33333333-0000-0000-0000-000000000005',
+      chain: SupermarketChain.netto,
+      name: 'Netto Marken-Discount Köln Kalk',
+      address: 'Kalker Post 12, 51103 Köln',
+      latitude: 50.9352,
+      longitude: 6.9930, // 230m from Lidl -> Cluster 1!
       clusterNum: 1,
     ),
     Store(

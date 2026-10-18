@@ -374,24 +374,57 @@ rawProductTemplates.forEach((item, idx) => {
     source: 'manual_seed',
     trust_status: 'official'
   });
+
+  // Netto pricing: competitive discounter, especially strong in Obst (fresh fruit specials)
+  let pNetto = item.pNetto;
+  if (!pNetto) {
+    if (item.cat === 0 && item.aliases.some(a => ['banane', 'apfel', 'heidelbeeren', 'erdbeeren', 'zitrone', 'avocado'].some(k => a.includes(k)))) {
+      pNetto = Math.round(item.pAldi * 0.90); // 10% fruit special discount at Netto
+    } else {
+      pNetto = item.pAldi;
+    }
+  }
+
+  finalPrices.push({
+    product_id: prodId,
+    chain: 'netto',
+    price_cents: pNetto,
+    source: 'manual_seed',
+    trust_status: 'official'
+  });
 });
+
+// Category slugs mapping
+const categorySlugMap = {
+  0: 'obst_gemuese',
+  1: 'molkerei_eier',
+  2: 'brot_backwaren',
+  3: 'fleisch_fisch',
+  4: 'vorrat_teigwaren',
+  5: 'suesses_snacks',
+  6: 'getraenke_kaffee',
+  7: 'drogerie_haushalt'
+};
 
 // Write JSON export
 const jsonExport = {
-  version: '1.0',
+  version: '2.0',
   exported_at: new Date().toISOString(),
   categories: categories,
   products_count: finalProducts.length,
-  products: finalProducts.map(p => {
+  products: finalProducts.map((p, idx) => {
+    const rawTemplate = rawProductTemplates[idx];
     const aliases = finalAliases.filter(a => a.product_id === p.id).map(a => a.alias);
     const prices = finalPrices.filter(pr => pr.product_id === p.id);
     return {
       ...p,
+      category_slug: categorySlugMap[rawTemplate.cat] || 'allgemein',
       aliases,
       prices: {
         lidl: prices.find(x => x.chain === 'lidl')?.price_cents,
         aldi_nord: prices.find(x => x.chain === 'aldi_nord')?.price_cents,
         aldi_sued: prices.find(x => x.chain === 'aldi_sued')?.price_cents,
+        netto: prices.find(x => x.chain === 'netto')?.price_cents,
         rewe: prices.find(x => x.chain === 'rewe')?.price_cents,
       }
     };

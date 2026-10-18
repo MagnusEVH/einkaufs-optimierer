@@ -1285,6 +1285,8 @@ VALUES ('22222222-0000-0000-0000-000000000001', 'aldi_nord', 149, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000001', 'rewe', 159, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000001', 'netto', 134, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000002', 'lidl', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000002', 'aldi_sued', 179, 'manual_seed', 'official', 1.00);
@@ -1292,6 +1294,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000002', 'aldi_nord', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000002', 'rewe', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000002', 'netto', 161, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000003', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1301,6 +1305,8 @@ VALUES ('22222222-0000-0000-0000-000000000003', 'aldi_nord', 199, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000003', 'rewe', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000003', 'netto', 179, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000004', 'lidl', 269, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000004', 'aldi_sued', 249, 'manual_seed', 'official', 1.00);
@@ -1308,6 +1314,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000004', 'aldi_nord', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000004', 'rewe', 299, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000004', 'netto', 224, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000005', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1317,6 +1325,8 @@ VALUES ('22222222-0000-0000-0000-000000000005', 'aldi_nord', 79, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000005', 'rewe', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000005', 'netto', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000006', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000006', 'aldi_sued', 109, 'manual_seed', 'official', 1.00);
@@ -1324,6 +1334,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000006', 'aldi_nord', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000006', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000006', 'netto', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000007', 'lidl', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1333,6 +1345,8 @@ VALUES ('22222222-0000-0000-0000-000000000007', 'aldi_nord', 219, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000007', 'rewe', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000007', 'netto', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000008', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000008', 'aldi_sued', 99, 'manual_seed', 'official', 1.00);
@@ -1340,6 +1354,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000008', 'aldi_nord', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000008', 'rewe', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000008', 'netto', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000009', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1349,6 +1365,8 @@ VALUES ('22222222-0000-0000-0000-000000000009', 'aldi_nord', 139, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000009', 'rewe', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000009', 'netto', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000a', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000a', 'aldi_sued', 249, 'manual_seed', 'official', 1.00);
@@ -1356,6 +1374,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000000a', 'aldi_nord', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000a', 'rewe', 279, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000000a', 'netto', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000b', 'lidl', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1365,6 +1385,8 @@ VALUES ('22222222-0000-0000-0000-00000000000b', 'aldi_nord', 219, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000b', 'rewe', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000000b', 'netto', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000c', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000c', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -1372,6 +1394,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000000c', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000c', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000000c', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000d', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1381,6 +1405,8 @@ VALUES ('22222222-0000-0000-0000-00000000000d', 'aldi_nord', 99, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000d', 'rewe', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000000d', 'netto', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000e', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000e', 'aldi_sued', 89, 'manual_seed', 'official', 1.00);
@@ -1388,6 +1414,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000000e', 'aldi_nord', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000e', 'rewe', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000000e', 'netto', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000f', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1397,6 +1425,8 @@ VALUES ('22222222-0000-0000-0000-00000000000f', 'aldi_nord', 139, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000000f', 'rewe', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000000f', 'netto', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000010', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000010', 'aldi_sued', 169, 'manual_seed', 'official', 1.00);
@@ -1404,6 +1434,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000010', 'aldi_nord', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000010', 'rewe', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000010', 'netto', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000011', 'lidl', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1413,6 +1445,8 @@ VALUES ('22222222-0000-0000-0000-000000000011', 'aldi_nord', 169, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000011', 'rewe', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000011', 'netto', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000012', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000012', 'aldi_sued', 99, 'manual_seed', 'official', 1.00);
@@ -1420,6 +1454,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000012', 'aldi_nord', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000012', 'rewe', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000012', 'netto', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000013', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1429,6 +1465,8 @@ VALUES ('22222222-0000-0000-0000-000000000013', 'aldi_nord', 79, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000013', 'rewe', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000013', 'netto', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000014', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000014', 'aldi_sued', 89, 'manual_seed', 'official', 1.00);
@@ -1436,6 +1474,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000014', 'aldi_nord', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000014', 'rewe', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000014', 'netto', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000015', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1445,6 +1485,8 @@ VALUES ('22222222-0000-0000-0000-000000000015', 'aldi_nord', 119, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000015', 'rewe', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000015', 'netto', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000016', 'lidl', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000016', 'aldi_sued', 179, 'manual_seed', 'official', 1.00);
@@ -1452,6 +1494,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000016', 'aldi_nord', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000016', 'rewe', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000016', 'netto', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000017', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1461,6 +1505,8 @@ VALUES ('22222222-0000-0000-0000-000000000017', 'aldi_nord', 189, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000017', 'rewe', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000017', 'netto', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000018', 'lidl', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000018', 'aldi_sued', 129, 'manual_seed', 'official', 1.00);
@@ -1468,6 +1514,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000018', 'aldi_nord', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000018', 'rewe', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000018', 'netto', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000019', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1477,6 +1525,8 @@ VALUES ('22222222-0000-0000-0000-000000000019', 'aldi_nord', 189, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000019', 'rewe', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000019', 'netto', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001a', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001a', 'aldi_sued', 159, 'manual_seed', 'official', 1.00);
@@ -1484,6 +1534,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000001a', 'aldi_nord', 159, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001a', 'rewe', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000001a', 'netto', 159, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001b', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1493,6 +1545,8 @@ VALUES ('22222222-0000-0000-0000-00000000001b', 'aldi_nord', 149, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001b', 'rewe', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000001b', 'netto', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001c', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001c', 'aldi_sued', 109, 'manual_seed', 'official', 1.00);
@@ -1500,6 +1554,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000001c', 'aldi_nord', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001c', 'rewe', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000001c', 'netto', 98, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001d', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1509,6 +1565,8 @@ VALUES ('22222222-0000-0000-0000-00000000001d', 'aldi_nord', 229, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001d', 'rewe', 299, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000001d', 'netto', 206, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001e', 'lidl', 299, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001e', 'aldi_sued', 289, 'manual_seed', 'official', 1.00);
@@ -1516,6 +1574,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000001e', 'aldi_nord', 289, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001e', 'rewe', 349, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000001e', 'netto', 260, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001f', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1525,6 +1585,8 @@ VALUES ('22222222-0000-0000-0000-00000000001f', 'aldi_nord', 249, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000001f', 'rewe', 279, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000001f', 'netto', 224, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000020', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000020', 'aldi_sued', 109, 'manual_seed', 'official', 1.00);
@@ -1532,6 +1594,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000020', 'aldi_nord', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000020', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000020', 'netto', 98, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000021', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1541,6 +1605,8 @@ VALUES ('22222222-0000-0000-0000-000000000021', 'aldi_nord', 139, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000021', 'rewe', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000021', 'netto', 125, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000022', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000022', 'aldi_sued', 79, 'manual_seed', 'official', 1.00);
@@ -1548,6 +1614,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000022', 'aldi_nord', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000022', 'rewe', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000022', 'netto', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000023', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1557,6 +1625,8 @@ VALUES ('22222222-0000-0000-0000-000000000023', 'aldi_nord', 89, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000023', 'rewe', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000023', 'netto', 89, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000024', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000024', 'aldi_sued', 129, 'manual_seed', 'official', 1.00);
@@ -1564,6 +1634,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000024', 'aldi_nord', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000024', 'rewe', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000024', 'netto', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000025', 'lidl', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1573,6 +1645,8 @@ VALUES ('22222222-0000-0000-0000-000000000025', 'aldi_nord', 139, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000025', 'rewe', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000025', 'netto', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000026', 'lidl', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000026', 'aldi_sued', 139, 'manual_seed', 'official', 1.00);
@@ -1580,6 +1654,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000026', 'aldi_nord', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000026', 'rewe', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000026', 'netto', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000027', 'lidl', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1589,6 +1665,8 @@ VALUES ('22222222-0000-0000-0000-000000000027', 'aldi_nord', 95, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000027', 'rewe', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000027', 'netto', 95, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000028', 'lidl', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000028', 'aldi_sued', 95, 'manual_seed', 'official', 1.00);
@@ -1596,6 +1674,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000028', 'aldi_nord', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000028', 'rewe', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000028', 'netto', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000029', 'lidl', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1605,6 +1685,8 @@ VALUES ('22222222-0000-0000-0000-000000000029', 'aldi_nord', 95, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000029', 'rewe', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000029', 'netto', 95, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002a', 'lidl', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002a', 'aldi_sued', 95, 'manual_seed', 'official', 1.00);
@@ -1612,6 +1694,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000002a', 'aldi_nord', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002a', 'rewe', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000002a', 'netto', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002b', 'lidl', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1621,6 +1705,8 @@ VALUES ('22222222-0000-0000-0000-00000000002b', 'aldi_nord', 129, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002b', 'rewe', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000002b', 'netto', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002c', 'lidl', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002c', 'aldi_sued', 179, 'manual_seed', 'official', 1.00);
@@ -1628,6 +1714,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000002c', 'aldi_nord', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002c', 'rewe', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000002c', 'netto', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002d', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1637,6 +1725,8 @@ VALUES ('22222222-0000-0000-0000-00000000002d', 'aldi_nord', 159, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002d', 'rewe', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000002d', 'netto', 159, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002e', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002e', 'aldi_sued', 239, 'manual_seed', 'official', 1.00);
@@ -1644,6 +1734,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000002e', 'aldi_nord', 239, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002e', 'rewe', 259, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000002e', 'netto', 239, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002f', 'lidl', 239, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1653,6 +1745,8 @@ VALUES ('22222222-0000-0000-0000-00000000002f', 'aldi_nord', 259, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000002f', 'rewe', 279, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000002f', 'netto', 259, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000030', 'lidl', 135, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000030', 'aldi_sued', 135, 'manual_seed', 'official', 1.00);
@@ -1660,6 +1754,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000030', 'aldi_nord', 135, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000030', 'rewe', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000030', 'netto', 135, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000031', 'lidl', 145, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1669,6 +1765,8 @@ VALUES ('22222222-0000-0000-0000-000000000031', 'aldi_nord', 145, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000031', 'rewe', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000031', 'netto', 145, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000032', 'lidl', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000032', 'aldi_sued', 179, 'manual_seed', 'official', 1.00);
@@ -1676,6 +1774,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000032', 'aldi_nord', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000032', 'rewe', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000032', 'netto', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000033', 'lidl', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1685,6 +1785,8 @@ VALUES ('22222222-0000-0000-0000-000000000033', 'aldi_nord', 85, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000033', 'rewe', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000033', 'netto', 85, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000034', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000034', 'aldi_sued', 169, 'manual_seed', 'official', 1.00);
@@ -1692,6 +1794,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000034', 'aldi_nord', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000034', 'rewe', 179, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000034', 'netto', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000035', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1701,6 +1805,8 @@ VALUES ('22222222-0000-0000-0000-000000000035', 'aldi_nord', 89, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000035', 'rewe', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000035', 'netto', 89, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000036', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000036', 'aldi_sued', 89, 'manual_seed', 'official', 1.00);
@@ -1708,6 +1814,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000036', 'aldi_nord', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000036', 'rewe', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000036', 'netto', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000037', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1717,6 +1825,8 @@ VALUES ('22222222-0000-0000-0000-000000000037', 'aldi_nord', 79, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000037', 'rewe', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000037', 'netto', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000038', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000038', 'aldi_sued', 99, 'manual_seed', 'official', 1.00);
@@ -1724,6 +1834,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000038', 'aldi_nord', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000038', 'rewe', 109, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000038', 'netto', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000039', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1733,6 +1845,8 @@ VALUES ('22222222-0000-0000-0000-000000000039', 'aldi_nord', 99, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000039', 'rewe', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000039', 'netto', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003a', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003a', 'aldi_sued', 249, 'manual_seed', 'official', 1.00);
@@ -1740,6 +1854,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000003a', 'aldi_nord', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003a', 'rewe', 269, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000003a', 'netto', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003b', 'lidl', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1749,6 +1865,8 @@ VALUES ('22222222-0000-0000-0000-00000000003b', 'aldi_nord', 229, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003b', 'rewe', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000003b', 'netto', 229, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003c', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003c', 'aldi_sued', 249, 'manual_seed', 'official', 1.00);
@@ -1756,6 +1874,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000003c', 'aldi_nord', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003c', 'rewe', 269, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000003c', 'netto', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003d', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1765,6 +1885,8 @@ VALUES ('22222222-0000-0000-0000-00000000003d', 'aldi_nord', 169, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003d', 'rewe', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000003d', 'netto', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003e', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003e', 'aldi_sued', 169, 'manual_seed', 'official', 1.00);
@@ -1772,6 +1894,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000003e', 'aldi_nord', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003e', 'rewe', 179, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000003e', 'netto', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003f', 'lidl', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1781,6 +1905,8 @@ VALUES ('22222222-0000-0000-0000-00000000003f', 'aldi_nord', 85, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000003f', 'rewe', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000003f', 'netto', 85, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000040', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000040', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -1788,6 +1914,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000040', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000040', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000040', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000041', 'lidl', 159, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1797,6 +1925,8 @@ VALUES ('22222222-0000-0000-0000-000000000041', 'aldi_nord', 169, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000041', 'rewe', 159, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000041', 'netto', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000042', 'lidl', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000042', 'aldi_sued', 179, 'manual_seed', 'official', 1.00);
@@ -1804,6 +1934,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000042', 'aldi_nord', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000042', 'rewe', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000042', 'netto', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000043', 'lidl', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1813,6 +1945,8 @@ VALUES ('22222222-0000-0000-0000-000000000043', 'aldi_nord', 229, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000043', 'rewe', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000043', 'netto', 229, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000044', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000044', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -1820,6 +1954,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000044', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000044', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000044', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000045', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1829,6 +1965,8 @@ VALUES ('22222222-0000-0000-0000-000000000045', 'aldi_nord', 169, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000045', 'rewe', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000045', 'netto', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000046', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000046', 'aldi_sued', 199, 'manual_seed', 'official', 1.00);
@@ -1836,6 +1974,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000046', 'aldi_nord', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000046', 'rewe', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000046', 'netto', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000047', 'lidl', 349, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1845,6 +1985,8 @@ VALUES ('22222222-0000-0000-0000-000000000047', 'aldi_nord', 349, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000047', 'rewe', 379, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000047', 'netto', 349, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000048', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000048', 'aldi_sued', 199, 'manual_seed', 'official', 1.00);
@@ -1852,6 +1994,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000048', 'aldi_nord', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000048', 'rewe', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000048', 'netto', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000049', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1861,6 +2005,8 @@ VALUES ('22222222-0000-0000-0000-000000000049', 'aldi_nord', 249, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000049', 'rewe', 269, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000049', 'netto', 249, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004a', 'lidl', 329, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004a', 'aldi_sued', 329, 'manual_seed', 'official', 1.00);
@@ -1868,6 +2014,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000004a', 'aldi_nord', 329, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004a', 'rewe', 349, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000004a', 'netto', 329, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004b', 'lidl', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1877,6 +2025,8 @@ VALUES ('22222222-0000-0000-0000-00000000004b', 'aldi_nord', 219, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004b', 'rewe', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000004b', 'netto', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004c', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004c', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -1884,6 +2034,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000004c', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004c', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000004c', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004d', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1893,6 +2045,8 @@ VALUES ('22222222-0000-0000-0000-00000000004d', 'aldi_nord', 119, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004d', 'rewe', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000004d', 'netto', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004e', 'lidl', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004e', 'aldi_sued', 79, 'manual_seed', 'official', 1.00);
@@ -1900,6 +2054,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000004e', 'aldi_nord', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004e', 'rewe', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000004e', 'netto', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004f', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1909,6 +2065,8 @@ VALUES ('22222222-0000-0000-0000-00000000004f', 'aldi_nord', 79, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000004f', 'rewe', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000004f', 'netto', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000050', 'lidl', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000050', 'aldi_sued', 229, 'manual_seed', 'official', 1.00);
@@ -1916,6 +2074,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000050', 'aldi_nord', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000050', 'rewe', 229, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000050', 'netto', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000051', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1925,6 +2085,8 @@ VALUES ('22222222-0000-0000-0000-000000000051', 'aldi_nord', 89, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000051', 'rewe', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000051', 'netto', 89, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000052', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000052', 'aldi_sued', 89, 'manual_seed', 'official', 1.00);
@@ -1932,6 +2094,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000052', 'aldi_nord', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000052', 'rewe', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000052', 'netto', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000053', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1941,6 +2105,8 @@ VALUES ('22222222-0000-0000-0000-000000000053', 'aldi_nord', 169, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000053', 'rewe', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000053', 'netto', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000054', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000054', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -1948,6 +2114,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000054', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000054', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000054', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000055', 'lidl', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1957,6 +2125,8 @@ VALUES ('22222222-0000-0000-0000-000000000055', 'aldi_nord', 129, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000055', 'rewe', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000055', 'netto', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000056', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000056', 'aldi_sued', 169, 'manual_seed', 'official', 1.00);
@@ -1964,6 +2134,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000056', 'aldi_nord', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000056', 'rewe', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000056', 'netto', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000057', 'lidl', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1973,6 +2145,8 @@ VALUES ('22222222-0000-0000-0000-000000000057', 'aldi_nord', 139, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000057', 'rewe', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000057', 'netto', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000058', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000058', 'aldi_sued', 89, 'manual_seed', 'official', 1.00);
@@ -1980,6 +2154,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000058', 'aldi_nord', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000058', 'rewe', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000058', 'netto', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000059', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -1989,6 +2165,8 @@ VALUES ('22222222-0000-0000-0000-000000000059', 'aldi_nord', 99, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000059', 'rewe', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000059', 'netto', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005a', 'lidl', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005a', 'aldi_sued', 69, 'manual_seed', 'official', 1.00);
@@ -1996,6 +2174,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000005a', 'aldi_nord', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005a', 'rewe', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000005a', 'netto', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005b', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2005,6 +2185,8 @@ VALUES ('22222222-0000-0000-0000-00000000005b', 'aldi_nord', 99, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005b', 'rewe', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000005b', 'netto', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005c', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005c', 'aldi_sued', 99, 'manual_seed', 'official', 1.00);
@@ -2012,6 +2194,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000005c', 'aldi_nord', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005c', 'rewe', 109, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000005c', 'netto', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005d', 'lidl', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2021,6 +2205,8 @@ VALUES ('22222222-0000-0000-0000-00000000005d', 'aldi_nord', 189, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005d', 'rewe', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000005d', 'netto', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005e', 'lidl', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005e', 'aldi_sued', 129, 'manual_seed', 'official', 1.00);
@@ -2028,6 +2214,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000005e', 'aldi_nord', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005e', 'rewe', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000005e', 'netto', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005f', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2037,6 +2225,8 @@ VALUES ('22222222-0000-0000-0000-00000000005f', 'aldi_nord', 199, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000005f', 'rewe', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000005f', 'netto', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000060', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000060', 'aldi_sued', 79, 'manual_seed', 'official', 1.00);
@@ -2044,6 +2234,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000060', 'aldi_nord', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000060', 'rewe', 85, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000060', 'netto', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000061', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2053,6 +2245,8 @@ VALUES ('22222222-0000-0000-0000-000000000061', 'aldi_nord', 79, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000061', 'rewe', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000061', 'netto', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000062', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000062', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -2060,6 +2254,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000062', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000062', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000062', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000063', 'lidl', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2069,6 +2265,8 @@ VALUES ('22222222-0000-0000-0000-000000000063', 'aldi_nord', 199, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000063', 'rewe', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000063', 'netto', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000064', 'lidl', 65, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000064', 'aldi_sued', 65, 'manual_seed', 'official', 1.00);
@@ -2076,6 +2274,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000064', 'aldi_nord', 65, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000064', 'rewe', 69, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000064', 'netto', 65, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000065', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2085,6 +2285,8 @@ VALUES ('22222222-0000-0000-0000-000000000065', 'aldi_nord', 169, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000065', 'rewe', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000065', 'netto', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000066', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000066', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -2092,6 +2294,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000066', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000066', 'rewe', 125, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000066', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000067', 'lidl', 49, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2101,6 +2305,8 @@ VALUES ('22222222-0000-0000-0000-000000000067', 'aldi_nord', 49, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000067', 'rewe', 55, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000067', 'netto', 49, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000068', 'lidl', 45, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000068', 'aldi_sued', 45, 'manual_seed', 'official', 1.00);
@@ -2108,6 +2314,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000068', 'aldi_nord', 45, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000068', 'rewe', 49, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000068', 'netto', 45, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000069', 'lidl', 19, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2117,6 +2325,8 @@ VALUES ('22222222-0000-0000-0000-000000000069', 'aldi_nord', 19, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000069', 'rewe', 25, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000069', 'netto', 19, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006a', 'lidl', 399, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006a', 'aldi_sued', 399, 'manual_seed', 'official', 1.00);
@@ -2124,6 +2334,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000006a', 'aldi_nord', 399, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006a', 'rewe', 429, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000006a', 'netto', 399, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006b', 'lidl', 449, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2133,6 +2345,8 @@ VALUES ('22222222-0000-0000-0000-00000000006b', 'aldi_nord', 449, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006b', 'rewe', 479, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000006b', 'netto', 449, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006c', 'lidl', 549, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006c', 'aldi_sued', 549, 'manual_seed', 'official', 1.00);
@@ -2140,6 +2354,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000006c', 'aldi_nord', 549, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006c', 'rewe', 599, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000006c', 'netto', 549, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006d', 'lidl', 599, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2149,6 +2365,8 @@ VALUES ('22222222-0000-0000-0000-00000000006d', 'aldi_nord', 599, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006d', 'rewe', 649, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000006d', 'netto', 599, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006e', 'lidl', 429, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006e', 'aldi_sued', 429, 'manual_seed', 'official', 1.00);
@@ -2156,6 +2374,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000006e', 'aldi_nord', 429, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006e', 'rewe', 469, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000006e', 'netto', 429, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006f', 'lidl', 699, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2165,6 +2385,8 @@ VALUES ('22222222-0000-0000-0000-00000000006f', 'aldi_nord', 699, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000006f', 'rewe', 749, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000006f', 'netto', 699, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000070', 'lidl', 499, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000070', 'aldi_sued', 499, 'manual_seed', 'official', 1.00);
@@ -2172,6 +2394,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000070', 'aldi_nord', 499, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000070', 'rewe', 549, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000070', 'netto', 499, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000071', 'lidl', 299, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2181,6 +2405,8 @@ VALUES ('22222222-0000-0000-0000-000000000071', 'aldi_nord', 299, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000071', 'rewe', 329, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000071', 'netto', 299, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000072', 'lidl', 299, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000072', 'aldi_sued', 299, 'manual_seed', 'official', 1.00);
@@ -2188,6 +2414,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000072', 'aldi_nord', 299, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000072', 'rewe', 329, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000072', 'netto', 299, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000073', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2197,6 +2425,8 @@ VALUES ('22222222-0000-0000-0000-000000000073', 'aldi_nord', 169, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000073', 'rewe', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000073', 'netto', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000074', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000074', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -2204,6 +2434,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000074', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000074', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000074', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000075', 'lidl', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2213,6 +2445,8 @@ VALUES ('22222222-0000-0000-0000-000000000075', 'aldi_nord', 179, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000075', 'rewe', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000075', 'netto', 179, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000076', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000076', 'aldi_sued', 169, 'manual_seed', 'official', 1.00);
@@ -2220,6 +2454,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000076', 'aldi_nord', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000076', 'rewe', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000076', 'netto', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000077', 'lidl', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2229,6 +2465,8 @@ VALUES ('22222222-0000-0000-0000-000000000077', 'aldi_nord', 129, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000077', 'rewe', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000077', 'netto', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000078', 'lidl', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000078', 'aldi_sued', 189, 'manual_seed', 'official', 1.00);
@@ -2236,6 +2474,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000078', 'aldi_nord', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000078', 'rewe', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000078', 'netto', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000079', 'lidl', 599, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2245,6 +2485,8 @@ VALUES ('22222222-0000-0000-0000-000000000079', 'aldi_nord', 599, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000079', 'rewe', 649, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000079', 'netto', 599, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007a', 'lidl', 399, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007a', 'aldi_sued', 399, 'manual_seed', 'official', 1.00);
@@ -2252,6 +2494,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000007a', 'aldi_nord', 399, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007a', 'rewe', 429, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000007a', 'netto', 399, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007b', 'lidl', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2261,6 +2505,8 @@ VALUES ('22222222-0000-0000-0000-00000000007b', 'aldi_nord', 139, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007b', 'rewe', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000007b', 'netto', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007c', 'lidl', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007c', 'aldi_sued', 139, 'manual_seed', 'official', 1.00);
@@ -2268,6 +2514,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000007c', 'aldi_nord', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007c', 'rewe', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000007c', 'netto', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007d', 'lidl', 389, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2277,6 +2525,8 @@ VALUES ('22222222-0000-0000-0000-00000000007d', 'aldi_nord', 399, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007d', 'rewe', 389, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000007d', 'netto', 399, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007e', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007e', 'aldi_sued', 249, 'manual_seed', 'official', 1.00);
@@ -2284,6 +2534,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000007e', 'aldi_nord', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007e', 'rewe', 269, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000007e', 'netto', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007f', 'lidl', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2293,6 +2545,8 @@ VALUES ('22222222-0000-0000-0000-00000000007f', 'aldi_nord', 179, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000007f', 'rewe', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000007f', 'netto', 179, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000080', 'lidl', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000080', 'aldi_sued', 189, 'manual_seed', 'official', 1.00);
@@ -2300,6 +2554,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000080', 'aldi_nord', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000080', 'rewe', 209, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000080', 'netto', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000081', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2309,6 +2565,8 @@ VALUES ('22222222-0000-0000-0000-000000000081', 'aldi_nord', 149, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000081', 'rewe', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000081', 'netto', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000082', 'lidl', 269, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000082', 'aldi_sued', 279, 'manual_seed', 'official', 1.00);
@@ -2316,6 +2574,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000082', 'aldi_nord', 279, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000082', 'rewe', 269, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000082', 'netto', 279, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000083', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2325,6 +2585,8 @@ VALUES ('22222222-0000-0000-0000-000000000083', 'aldi_nord', 199, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000083', 'rewe', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000083', 'netto', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000084', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000084', 'aldi_sued', 199, 'manual_seed', 'official', 1.00);
@@ -2332,6 +2594,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000084', 'aldi_nord', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000084', 'rewe', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000084', 'netto', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000085', 'lidl', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2341,6 +2605,8 @@ VALUES ('22222222-0000-0000-0000-000000000085', 'aldi_nord', 179, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000085', 'rewe', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000085', 'netto', 179, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000086', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000086', 'aldi_sued', 169, 'manual_seed', 'official', 1.00);
@@ -2348,6 +2614,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000086', 'aldi_nord', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000086', 'rewe', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000086', 'netto', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000087', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2357,6 +2625,8 @@ VALUES ('22222222-0000-0000-0000-000000000087', 'aldi_nord', 119, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000087', 'rewe', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000087', 'netto', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000088', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000088', 'aldi_sued', 79, 'manual_seed', 'official', 1.00);
@@ -2364,6 +2634,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000088', 'aldi_nord', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000088', 'rewe', 85, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000088', 'netto', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000089', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2373,6 +2645,8 @@ VALUES ('22222222-0000-0000-0000-000000000089', 'aldi_nord', 79, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000089', 'rewe', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000089', 'netto', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008a', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008a', 'aldi_sued', 79, 'manual_seed', 'official', 1.00);
@@ -2380,6 +2654,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000008a', 'aldi_nord', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008a', 'rewe', 85, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000008a', 'netto', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008b', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2389,6 +2665,8 @@ VALUES ('22222222-0000-0000-0000-00000000008b', 'aldi_nord', 119, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008b', 'rewe', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000008b', 'netto', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008c', 'lidl', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008c', 'aldi_sued', 189, 'manual_seed', 'official', 1.00);
@@ -2396,6 +2674,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000008c', 'aldi_nord', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008c', 'rewe', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000008c', 'netto', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008d', 'lidl', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2405,6 +2685,8 @@ VALUES ('22222222-0000-0000-0000-00000000008d', 'aldi_nord', 189, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008d', 'rewe', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000008d', 'netto', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008e', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008e', 'aldi_sued', 189, 'manual_seed', 'official', 1.00);
@@ -2412,6 +2694,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000008e', 'aldi_nord', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008e', 'rewe', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000008e', 'netto', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008f', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2421,6 +2705,8 @@ VALUES ('22222222-0000-0000-0000-00000000008f', 'aldi_nord', 189, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000008f', 'rewe', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000008f', 'netto', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000090', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000090', 'aldi_sued', 139, 'manual_seed', 'official', 1.00);
@@ -2428,6 +2714,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000090', 'aldi_nord', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000090', 'rewe', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000090', 'netto', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000091', 'lidl', 65, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2437,6 +2725,8 @@ VALUES ('22222222-0000-0000-0000-000000000091', 'aldi_nord', 65, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000091', 'rewe', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000091', 'netto', 65, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000092', 'lidl', 65, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000092', 'aldi_sued', 65, 'manual_seed', 'official', 1.00);
@@ -2444,6 +2734,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000092', 'aldi_nord', 65, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000092', 'rewe', 69, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000092', 'netto', 65, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000093', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2453,6 +2745,8 @@ VALUES ('22222222-0000-0000-0000-000000000093', 'aldi_nord', 149, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000093', 'rewe', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000093', 'netto', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000094', 'lidl', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000094', 'aldi_sued', 85, 'manual_seed', 'official', 1.00);
@@ -2460,6 +2754,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000094', 'aldi_nord', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000094', 'rewe', 89, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000094', 'netto', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000095', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2469,6 +2765,8 @@ VALUES ('22222222-0000-0000-0000-000000000095', 'aldi_nord', 119, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000095', 'rewe', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000095', 'netto', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000096', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000096', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -2476,6 +2774,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000096', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000096', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000096', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000097', 'lidl', 329, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2485,6 +2785,8 @@ VALUES ('22222222-0000-0000-0000-000000000097', 'aldi_nord', 329, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000097', 'rewe', 279, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000097', 'netto', 329, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000098', 'lidl', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000098', 'aldi_sued', 69, 'manual_seed', 'official', 1.00);
@@ -2492,6 +2794,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000098', 'aldi_nord', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000098', 'rewe', 75, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000098', 'netto', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000099', 'lidl', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2501,6 +2805,8 @@ VALUES ('22222222-0000-0000-0000-000000000099', 'aldi_nord', 69, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000099', 'rewe', 75, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000099', 'netto', 69, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009a', 'lidl', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009a', 'aldi_sued', 85, 'manual_seed', 'official', 1.00);
@@ -2508,6 +2814,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000009a', 'aldi_nord', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009a', 'rewe', 89, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000009a', 'netto', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009b', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2517,6 +2825,8 @@ VALUES ('22222222-0000-0000-0000-00000000009b', 'aldi_nord', 89, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009b', 'rewe', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000009b', 'netto', 89, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009c', 'lidl', 799, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009c', 'aldi_sued', 799, 'manual_seed', 'official', 1.00);
@@ -2524,6 +2834,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000009c', 'aldi_nord', 799, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009c', 'rewe', 849, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000009c', 'netto', 799, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009d', 'lidl', 649, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2533,6 +2845,8 @@ VALUES ('22222222-0000-0000-0000-00000000009d', 'aldi_nord', 649, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009d', 'rewe', 699, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000009d', 'netto', 649, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009e', 'lidl', 159, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009e', 'aldi_sued', 149, 'manual_seed', 'official', 1.00);
@@ -2540,6 +2854,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000009e', 'aldi_nord', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009e', 'rewe', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000009e', 'netto', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009f', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2549,6 +2865,8 @@ VALUES ('22222222-0000-0000-0000-00000000009f', 'aldi_nord', 159, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000009f', 'rewe', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000009f', 'netto', 159, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a0', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a0', 'aldi_sued', 149, 'manual_seed', 'official', 1.00);
@@ -2556,6 +2874,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000a0', 'aldi_nord', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a0', 'rewe', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000a0', 'netto', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a1', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2565,6 +2885,8 @@ VALUES ('22222222-0000-0000-0000-0000000000a1', 'aldi_nord', 119, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a1', 'rewe', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000a1', 'netto', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a2', 'lidl', 29, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a2', 'aldi_sued', 29, 'manual_seed', 'official', 1.00);
@@ -2572,6 +2894,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000a2', 'aldi_nord', 29, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a2', 'rewe', 35, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000a2', 'netto', 29, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a3', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2581,6 +2905,8 @@ VALUES ('22222222-0000-0000-0000-0000000000a3', 'aldi_nord', 99, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a3', 'rewe', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000a3', 'netto', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a4', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a4', 'aldi_sued', 79, 'manual_seed', 'official', 1.00);
@@ -2588,6 +2914,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000a4', 'aldi_nord', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a4', 'rewe', 89, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000a4', 'netto', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a5', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2597,6 +2925,8 @@ VALUES ('22222222-0000-0000-0000-0000000000a5', 'aldi_nord', 99, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a5', 'rewe', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000a5', 'netto', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a6', 'lidl', 55, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a6', 'aldi_sued', 55, 'manual_seed', 'official', 1.00);
@@ -2604,6 +2934,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000a6', 'aldi_nord', 55, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a6', 'rewe', 59, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000a6', 'netto', 55, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a7', 'lidl', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2613,6 +2945,8 @@ VALUES ('22222222-0000-0000-0000-0000000000a7', 'aldi_nord', 69, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a7', 'rewe', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000a7', 'netto', 69, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a8', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a8', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -2620,6 +2954,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000a8', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a8', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000a8', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a9', 'lidl', 299, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2629,6 +2965,8 @@ VALUES ('22222222-0000-0000-0000-0000000000a9', 'aldi_nord', 299, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000a9', 'rewe', 269, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000a9', 'netto', 299, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000aa', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000aa', 'aldi_sued', 149, 'manual_seed', 'official', 1.00);
@@ -2636,6 +2974,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000aa', 'aldi_nord', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000aa', 'rewe', 159, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000aa', 'netto', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ab', 'lidl', 269, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2645,6 +2985,8 @@ VALUES ('22222222-0000-0000-0000-0000000000ab', 'aldi_nord', 279, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ab', 'rewe', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ab', 'netto', 279, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ac', 'lidl', 279, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ac', 'aldi_sued', 279, 'manual_seed', 'official', 1.00);
@@ -2652,6 +2994,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000ac', 'aldi_nord', 279, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ac', 'rewe', 299, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ac', 'netto', 279, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ad', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2661,6 +3005,8 @@ VALUES ('22222222-0000-0000-0000-0000000000ad', 'aldi_nord', 149, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ad', 'rewe', 159, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ad', 'netto', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ae', 'lidl', 299, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ae', 'aldi_sued', 299, 'manual_seed', 'official', 1.00);
@@ -2668,6 +3014,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000ae', 'aldi_nord', 299, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ae', 'rewe', 279, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ae', 'netto', 299, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000af', 'lidl', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2677,6 +3025,8 @@ VALUES ('22222222-0000-0000-0000-0000000000af', 'aldi_nord', 169, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000af', 'rewe', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000af', 'netto', 169, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b0', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b0', 'aldi_sued', 199, 'manual_seed', 'official', 1.00);
@@ -2684,6 +3034,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000b0', 'aldi_nord', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b0', 'rewe', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000b0', 'netto', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b1', 'lidl', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2693,6 +3045,8 @@ VALUES ('22222222-0000-0000-0000-0000000000b1', 'aldi_nord', 139, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b1', 'rewe', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000b1', 'netto', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b2', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b2', 'aldi_sued', 249, 'manual_seed', 'official', 1.00);
@@ -2700,6 +3054,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000b2', 'aldi_nord', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b2', 'rewe', 269, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000b2', 'netto', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b3', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2709,6 +3065,8 @@ VALUES ('22222222-0000-0000-0000-0000000000b3', 'aldi_nord', 249, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b3', 'rewe', 269, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000b3', 'netto', 249, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b4', 'lidl', 329, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b4', 'aldi_sued', 329, 'manual_seed', 'official', 1.00);
@@ -2716,6 +3074,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000b4', 'aldi_nord', 329, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b4', 'rewe', 249, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000b4', 'netto', 329, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b5', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2725,6 +3085,8 @@ VALUES ('22222222-0000-0000-0000-0000000000b5', 'aldi_nord', 79, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b5', 'rewe', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000b5', 'netto', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b6', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b6', 'aldi_sued', 99, 'manual_seed', 'official', 1.00);
@@ -2732,6 +3094,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000b6', 'aldi_nord', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b6', 'rewe', 109, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000b6', 'netto', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b7', 'lidl', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2741,6 +3105,8 @@ VALUES ('22222222-0000-0000-0000-0000000000b7', 'aldi_nord', 139, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b7', 'rewe', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000b7', 'netto', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b8', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b8', 'aldi_sued', 149, 'manual_seed', 'official', 1.00);
@@ -2748,6 +3114,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000b8', 'aldi_nord', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b8', 'rewe', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000b8', 'netto', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b9', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2757,6 +3125,8 @@ VALUES ('22222222-0000-0000-0000-0000000000b9', 'aldi_nord', 99, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000b9', 'rewe', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000b9', 'netto', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ba', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ba', 'aldi_sued', 99, 'manual_seed', 'official', 1.00);
@@ -2764,6 +3134,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000ba', 'aldi_nord', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ba', 'rewe', 109, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ba', 'netto', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000bb', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2773,6 +3145,8 @@ VALUES ('22222222-0000-0000-0000-0000000000bb', 'aldi_nord', 99, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000bb', 'rewe', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000bb', 'netto', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000bc', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000bc', 'aldi_sued', 99, 'manual_seed', 'official', 1.00);
@@ -2780,6 +3154,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000bc', 'aldi_nord', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000bc', 'rewe', 109, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000bc', 'netto', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000bd', 'lidl', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2789,6 +3165,8 @@ VALUES ('22222222-0000-0000-0000-0000000000bd', 'aldi_nord', 199, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000bd', 'rewe', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000bd', 'netto', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000be', 'lidl', 279, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000be', 'aldi_sued', 279, 'manual_seed', 'official', 1.00);
@@ -2796,6 +3174,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000be', 'aldi_nord', 279, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000be', 'rewe', 299, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000be', 'netto', 279, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000bf', 'lidl', 65, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2805,6 +3185,8 @@ VALUES ('22222222-0000-0000-0000-0000000000bf', 'aldi_nord', 65, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000bf', 'rewe', 69, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000bf', 'netto', 65, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c0', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c0', 'aldi_sued', 89, 'manual_seed', 'official', 1.00);
@@ -2812,6 +3194,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000c0', 'aldi_nord', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c0', 'rewe', 95, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000c0', 'netto', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c1', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2821,6 +3205,8 @@ VALUES ('22222222-0000-0000-0000-0000000000c1', 'aldi_nord', 99, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c1', 'rewe', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000c1', 'netto', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c2', 'lidl', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c2', 'aldi_sued', 179, 'manual_seed', 'official', 1.00);
@@ -2828,6 +3214,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000c2', 'aldi_nord', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c2', 'rewe', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000c2', 'netto', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c3', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2837,6 +3225,8 @@ VALUES ('22222222-0000-0000-0000-0000000000c3', 'aldi_nord', 199, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c3', 'rewe', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000c3', 'netto', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c4', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c4', 'aldi_sued', 199, 'manual_seed', 'official', 1.00);
@@ -2844,6 +3234,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000c4', 'aldi_nord', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c4', 'rewe', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000c4', 'netto', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c5', 'lidl', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2853,6 +3245,8 @@ VALUES ('22222222-0000-0000-0000-0000000000c5', 'aldi_nord', 129, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c5', 'rewe', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000c5', 'netto', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c6', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c6', 'aldi_sued', 149, 'manual_seed', 'official', 1.00);
@@ -2860,6 +3254,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000c6', 'aldi_nord', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c6', 'rewe', 159, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000c6', 'netto', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c7', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2869,6 +3265,8 @@ VALUES ('22222222-0000-0000-0000-0000000000c7', 'aldi_nord', 149, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c7', 'rewe', 159, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000c7', 'netto', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c8', 'lidl', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c8', 'aldi_sued', 189, 'manual_seed', 'official', 1.00);
@@ -2876,6 +3274,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000c8', 'aldi_nord', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c8', 'rewe', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000c8', 'netto', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c9', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2885,6 +3285,8 @@ VALUES ('22222222-0000-0000-0000-0000000000c9', 'aldi_nord', 199, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000c9', 'rewe', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000c9', 'netto', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ca', 'lidl', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ca', 'aldi_sued', 229, 'manual_seed', 'official', 1.00);
@@ -2892,6 +3294,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000ca', 'aldi_nord', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ca', 'rewe', 249, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ca', 'netto', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000cb', 'lidl', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2901,6 +3305,8 @@ VALUES ('22222222-0000-0000-0000-0000000000cb', 'aldi_nord', 219, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000cb', 'rewe', 239, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000cb', 'netto', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000cc', 'lidl', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000cc', 'aldi_sued', 229, 'manual_seed', 'official', 1.00);
@@ -2908,6 +3314,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000cc', 'aldi_nord', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000cc', 'rewe', 249, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000cc', 'netto', 229, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000cd', 'lidl', 269, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2917,6 +3325,8 @@ VALUES ('22222222-0000-0000-0000-0000000000cd', 'aldi_nord', 269, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000cd', 'rewe', 289, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000cd', 'netto', 269, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ce', 'lidl', 29, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ce', 'aldi_sued', 29, 'manual_seed', 'official', 1.00);
@@ -2924,6 +3334,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000ce', 'aldi_nord', 29, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ce', 'rewe', 29, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ce', 'netto', 29, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000cf', 'lidl', 29, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2933,6 +3345,8 @@ VALUES ('22222222-0000-0000-0000-0000000000cf', 'aldi_nord', 29, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000cf', 'rewe', 29, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000cf', 'netto', 29, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d0', 'lidl', 29, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d0', 'aldi_sued', 29, 'manual_seed', 'official', 1.00);
@@ -2940,6 +3354,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000d0', 'aldi_nord', 29, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d0', 'rewe', 29, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000d0', 'netto', 29, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d1', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2949,6 +3365,8 @@ VALUES ('22222222-0000-0000-0000-0000000000d1', 'aldi_nord', 79, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d1', 'rewe', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000d1', 'netto', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d2', 'lidl', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d2', 'aldi_sued', 109, 'manual_seed', 'official', 1.00);
@@ -2956,6 +3374,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000d2', 'aldi_nord', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d2', 'rewe', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000d2', 'netto', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d3', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2965,6 +3385,8 @@ VALUES ('22222222-0000-0000-0000-0000000000d3', 'aldi_nord', 119, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d3', 'rewe', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000d3', 'netto', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d4', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d4', 'aldi_sued', 79, 'manual_seed', 'official', 1.00);
@@ -2972,6 +3394,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000d4', 'aldi_nord', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d4', 'rewe', 89, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000d4', 'netto', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d5', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2981,6 +3405,8 @@ VALUES ('22222222-0000-0000-0000-0000000000d5', 'aldi_nord', 199, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d5', 'rewe', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000d5', 'netto', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d6', 'lidl', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d6', 'aldi_sued', 219, 'manual_seed', 'official', 1.00);
@@ -2988,6 +3414,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000d6', 'aldi_nord', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d6', 'rewe', 229, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000d6', 'netto', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d7', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -2997,6 +3425,8 @@ VALUES ('22222222-0000-0000-0000-0000000000d7', 'aldi_nord', 149, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d7', 'rewe', 169, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000d7', 'netto', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d8', 'lidl', 49, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d8', 'aldi_sued', 49, 'manual_seed', 'official', 1.00);
@@ -3004,6 +3434,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000d8', 'aldi_nord', 49, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d8', 'rewe', 55, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000d8', 'netto', 49, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d9', 'lidl', 49, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3013,6 +3445,8 @@ VALUES ('22222222-0000-0000-0000-0000000000d9', 'aldi_nord', 49, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000d9', 'rewe', 55, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000d9', 'netto', 49, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000da', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000da', 'aldi_sued', 149, 'manual_seed', 'official', 1.00);
@@ -3020,6 +3454,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000da', 'aldi_nord', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000da', 'rewe', 159, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000da', 'netto', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000db', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3029,6 +3465,8 @@ VALUES ('22222222-0000-0000-0000-0000000000db', 'aldi_nord', 149, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000db', 'rewe', 159, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000db', 'netto', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000dc', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000dc', 'aldi_sued', 149, 'manual_seed', 'official', 1.00);
@@ -3036,6 +3474,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000dc', 'aldi_nord', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000dc', 'rewe', 159, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000dc', 'netto', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000dd', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3045,6 +3485,8 @@ VALUES ('22222222-0000-0000-0000-0000000000dd', 'aldi_nord', 149, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000dd', 'rewe', 159, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000dd', 'netto', 149, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000de', 'lidl', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000de', 'aldi_sued', 85, 'manual_seed', 'official', 1.00);
@@ -3052,6 +3494,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000de', 'aldi_nord', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000de', 'rewe', 95, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000de', 'netto', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000df', 'lidl', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3061,6 +3505,8 @@ VALUES ('22222222-0000-0000-0000-0000000000df', 'aldi_nord', 85, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000df', 'rewe', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000df', 'netto', 85, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e0', 'lidl', 45, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e0', 'aldi_sued', 45, 'manual_seed', 'official', 1.00);
@@ -3068,6 +3514,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000e0', 'aldi_nord', 45, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e0', 'rewe', 49, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000e0', 'netto', 45, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e1', 'lidl', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3077,6 +3525,8 @@ VALUES ('22222222-0000-0000-0000-0000000000e1', 'aldi_nord', 129, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e1', 'rewe', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000e1', 'netto', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e2', 'lidl', 999, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e2', 'aldi_sued', 999, 'manual_seed', 'official', 1.00);
@@ -3084,6 +3534,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000e2', 'aldi_nord', 999, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e2', 'rewe', 1049, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000e2', 'netto', 999, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e3', 'lidl', 1199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3093,6 +3545,8 @@ VALUES ('22222222-0000-0000-0000-0000000000e3', 'aldi_nord', 1199, 'manual_seed'
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e3', 'rewe', 1299, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000e3', 'netto', 1199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e4', 'lidl', 1499, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e4', 'aldi_sued', 1499, 'manual_seed', 'official', 1.00);
@@ -3100,6 +3554,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000e4', 'aldi_nord', 1499, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e4', 'rewe', 1599, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000e4', 'netto', 1499, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e5', 'lidl', 499, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3109,6 +3565,8 @@ VALUES ('22222222-0000-0000-0000-0000000000e5', 'aldi_nord', 499, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e5', 'rewe', 529, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000e5', 'netto', 499, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e6', 'lidl', 649, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e6', 'aldi_sued', 649, 'manual_seed', 'official', 1.00);
@@ -3116,6 +3574,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000e6', 'aldi_nord', 649, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e6', 'rewe', 699, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000e6', 'netto', 649, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e7', 'lidl', 649, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3125,6 +3585,8 @@ VALUES ('22222222-0000-0000-0000-0000000000e7', 'aldi_nord', 649, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e7', 'rewe', 699, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000e7', 'netto', 649, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e8', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e8', 'aldi_sued', 199, 'manual_seed', 'official', 1.00);
@@ -3132,6 +3594,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000e8', 'aldi_nord', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e8', 'rewe', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000e8', 'netto', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e9', 'lidl', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3141,6 +3605,8 @@ VALUES ('22222222-0000-0000-0000-0000000000e9', 'aldi_nord', 129, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000e9', 'rewe', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000e9', 'netto', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ea', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ea', 'aldi_sued', 79, 'manual_seed', 'official', 1.00);
@@ -3148,6 +3614,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000ea', 'aldi_nord', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ea', 'rewe', 89, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ea', 'netto', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000eb', 'lidl', 79, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3157,6 +3625,8 @@ VALUES ('22222222-0000-0000-0000-0000000000eb', 'aldi_nord', 79, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000eb', 'rewe', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000eb', 'netto', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ec', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ec', 'aldi_sued', 99, 'manual_seed', 'official', 1.00);
@@ -3164,6 +3634,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000ec', 'aldi_nord', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ec', 'rewe', 109, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ec', 'netto', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ed', 'lidl', 179, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3173,6 +3645,8 @@ VALUES ('22222222-0000-0000-0000-0000000000ed', 'aldi_nord', 189, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ed', 'rewe', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ed', 'netto', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ee', 'lidl', 49, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ee', 'aldi_sued', 49, 'manual_seed', 'official', 1.00);
@@ -3180,6 +3654,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000ee', 'aldi_nord', 49, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ee', 'rewe', 55, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ee', 'netto', 49, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ef', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3189,6 +3665,8 @@ VALUES ('22222222-0000-0000-0000-0000000000ef', 'aldi_nord', 89, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ef', 'rewe', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ef', 'netto', 89, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f0', 'lidl', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f0', 'aldi_sued', 89, 'manual_seed', 'official', 1.00);
@@ -3196,6 +3674,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000f0', 'aldi_nord', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f0', 'rewe', 95, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000f0', 'netto', 89, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f1', 'lidl', 345, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3205,6 +3685,8 @@ VALUES ('22222222-0000-0000-0000-0000000000f1', 'aldi_nord', 345, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f1', 'rewe', 365, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000f1', 'netto', 345, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f2', 'lidl', 375, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f2', 'aldi_sued', 375, 'manual_seed', 'official', 1.00);
@@ -3212,6 +3694,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000f2', 'aldi_nord', 375, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f2', 'rewe', 395, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000f2', 'netto', 375, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f3', 'lidl', 225, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3221,6 +3705,8 @@ VALUES ('22222222-0000-0000-0000-0000000000f3', 'aldi_nord', 225, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f3', 'rewe', 245, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000f3', 'netto', 225, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f4', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f4', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -3228,6 +3714,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000f4', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f4', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000f4', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f5', 'lidl', 245, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3237,6 +3725,8 @@ VALUES ('22222222-0000-0000-0000-0000000000f5', 'aldi_nord', 245, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f5', 'rewe', 265, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000f5', 'netto', 245, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f6', 'lidl', 369, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f6', 'aldi_sued', 379, 'manual_seed', 'official', 1.00);
@@ -3244,6 +3734,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000f6', 'aldi_nord', 379, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f6', 'rewe', 379, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000f6', 'netto', 379, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f7', 'lidl', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3253,6 +3745,8 @@ VALUES ('22222222-0000-0000-0000-0000000000f7', 'aldi_nord', 95, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f7', 'rewe', 105, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000f7', 'netto', 95, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f8', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f8', 'aldi_sued', 209, 'manual_seed', 'official', 1.00);
@@ -3260,6 +3754,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000f8', 'aldi_nord', 209, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f8', 'rewe', 219, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000f8', 'netto', 209, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f9', 'lidl', 345, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3269,6 +3765,8 @@ VALUES ('22222222-0000-0000-0000-0000000000f9', 'aldi_nord', 345, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000f9', 'rewe', 375, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000f9', 'netto', 345, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fa', 'lidl', 799, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fa', 'aldi_sued', 829, 'manual_seed', 'official', 1.00);
@@ -3276,6 +3774,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000fa', 'aldi_nord', 829, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fa', 'rewe', 849, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000fa', 'netto', 829, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fb', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3285,6 +3785,8 @@ VALUES ('22222222-0000-0000-0000-0000000000fb', 'aldi_nord', 99, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fb', 'rewe', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000fb', 'netto', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fc', 'lidl', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fc', 'aldi_sued', 129, 'manual_seed', 'official', 1.00);
@@ -3292,6 +3794,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000fc', 'aldi_nord', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fc', 'rewe', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000fc', 'netto', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fd', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3301,6 +3805,8 @@ VALUES ('22222222-0000-0000-0000-0000000000fd', 'aldi_nord', 99, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fd', 'rewe', 109, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000fd', 'netto', 99, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fe', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fe', 'aldi_sued', 249, 'manual_seed', 'official', 1.00);
@@ -3308,6 +3814,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-0000000000fe', 'aldi_nord', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000fe', 'rewe', 269, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000fe', 'netto', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ff', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3317,6 +3825,8 @@ VALUES ('22222222-0000-0000-0000-0000000000ff', 'aldi_nord', 119, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-0000000000ff', 'rewe', 129, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-0000000000ff', 'netto', 119, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000100', 'lidl', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000100', 'aldi_sued', 99, 'manual_seed', 'official', 1.00);
@@ -3324,6 +3834,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000100', 'aldi_nord', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000100', 'rewe', 109, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000100', 'netto', 99, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000101', 'lidl', 345, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3333,6 +3845,8 @@ VALUES ('22222222-0000-0000-0000-000000000101', 'aldi_nord', 345, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000101', 'rewe', 365, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000101', 'netto', 345, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000102', 'lidl', 345, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000102', 'aldi_sued', 345, 'manual_seed', 'official', 1.00);
@@ -3340,6 +3854,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000102', 'aldi_nord', 345, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000102', 'rewe', 365, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000102', 'netto', 345, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000103', 'lidl', 1999, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3349,6 +3865,8 @@ VALUES ('22222222-0000-0000-0000-000000000103', 'aldi_nord', 1999, 'manual_seed'
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000103', 'rewe', 2199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000103', 'netto', 1999, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000104', 'lidl', 75, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000104', 'aldi_sued', 75, 'manual_seed', 'official', 1.00);
@@ -3356,6 +3874,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000104', 'aldi_nord', 75, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000104', 'rewe', 79, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000104', 'netto', 75, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000105', 'lidl', 249, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3365,6 +3885,8 @@ VALUES ('22222222-0000-0000-0000-000000000105', 'aldi_nord', 249, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000105', 'rewe', 269, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000105', 'netto', 249, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000106', 'lidl', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000106', 'aldi_sued', 85, 'manual_seed', 'official', 1.00);
@@ -3372,6 +3894,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000106', 'aldi_nord', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000106', 'rewe', 95, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000106', 'netto', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000107', 'lidl', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3381,6 +3905,8 @@ VALUES ('22222222-0000-0000-0000-000000000107', 'aldi_nord', 85, 'manual_seed', 
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000107', 'rewe', 95, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000107', 'netto', 85, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000108', 'lidl', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000108', 'aldi_sued', 85, 'manual_seed', 'official', 1.00);
@@ -3388,6 +3914,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-000000000108', 'aldi_nord', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000108', 'rewe', 95, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000108', 'netto', 85, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000109', 'lidl', 189, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3397,6 +3925,8 @@ VALUES ('22222222-0000-0000-0000-000000000109', 'aldi_nord', 189, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-000000000109', 'rewe', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-000000000109', 'netto', 189, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010a', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010a', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -3404,6 +3934,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000010a', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010a', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000010a', 'netto', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010b', 'lidl', 139, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3413,6 +3945,8 @@ VALUES ('22222222-0000-0000-0000-00000000010b', 'aldi_nord', 139, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010b', 'rewe', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000010b', 'netto', 139, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010c', 'lidl', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010c', 'aldi_sued', 149, 'manual_seed', 'official', 1.00);
@@ -3420,6 +3954,8 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000010c', 'aldi_nord', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010c', 'rewe', 159, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000010c', 'netto', 149, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010d', 'lidl', 199, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
@@ -3429,6 +3965,8 @@ VALUES ('22222222-0000-0000-0000-00000000010d', 'aldi_nord', 199, 'manual_seed',
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010d', 'rewe', 219, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000010d', 'netto', 199, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010e', 'lidl', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010e', 'aldi_sued', 119, 'manual_seed', 'official', 1.00);
@@ -3436,3 +3974,5 @@ INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status,
 VALUES ('22222222-0000-0000-0000-00000000010e', 'aldi_nord', 119, 'manual_seed', 'official', 1.00);
 INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
 VALUES ('22222222-0000-0000-0000-00000000010e', 'rewe', 129, 'manual_seed', 'official', 1.00);
+INSERT INTO public.prices (product_id, chain, price_cents, source, trust_status, confidence_score)
+VALUES ('22222222-0000-0000-0000-00000000010e', 'netto', 119, 'manual_seed', 'official', 1.00);

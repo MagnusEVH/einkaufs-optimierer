@@ -4,6 +4,7 @@ enum SupermarketChain {
   lidl,
   aldi_nord,
   aldi_sued,
+  netto,
   rewe;
 
   String get displayName {
@@ -14,6 +15,8 @@ enum SupermarketChain {
         return 'ALDI Nord';
       case SupermarketChain.aldi_sued:
         return 'ALDI SÜD';
+      case SupermarketChain.netto:
+        return 'Netto';
       case SupermarketChain.rewe:
         return 'REWE';
     }
@@ -29,6 +32,8 @@ enum SupermarketChain {
       case 'aldi_sued':
       case 'aldi_süd':
         return SupermarketChain.aldi_sued;
+      case 'netto':
+        return SupermarketChain.netto;
       case 'rewe':
         return SupermarketChain.rewe;
       default:

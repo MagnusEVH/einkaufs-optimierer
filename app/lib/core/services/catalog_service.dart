@@ -47,43 +47,78 @@ class CatalogService {
     return matches;
   }
 
-  /// Resolves raw text to the most suitable Product using exact and longest alias priority
-  static Product? matchRawText(String rawText) {
+  /// Resolves raw text to the most suitable Product using exact, longest alias priority,
+  /// and user preferences (Brand vs Private Label, Bio).
+  static Product? matchRawText(
+    String rawText, {
+    String brandPreference = 'prefer_private_label',
+    String bioPreference = 'neutral',
+  }) {
     if (_cachedProducts.isEmpty) return null;
     final query = rawText.toLowerCase().trim();
 
+    final candidates = <Product>[];
+
     // 1. Exact alias
     for (final p in _cachedProducts) {
-      if (p.aliases.any((a) => a.toLowerCase() == query)) return p;
+      if (p.aliases.any((a) => a.toLowerCase() == query)) {
+        candidates.add(p);
+      }
     }
 
     // 2. Exact product name
-    for (final p in _cachedProducts) {
-      if (p.name.toLowerCase() == query) return p;
-    }
-
-    // 3. Longest alias match
-    Product? bestMatch;
-    int maxAliasLen = 0;
-    for (final p in _cachedProducts) {
-      for (final a in p.aliases) {
-        final lowerA = a.toLowerCase();
-        if (query.contains(lowerA) && lowerA.length > maxAliasLen) {
-          maxAliasLen = lowerA.length;
-          bestMatch = p;
+    if (candidates.isEmpty) {
+      for (final p in _cachedProducts) {
+        if (p.name.toLowerCase() == query) {
+          candidates.add(p);
         }
       }
     }
-    if (bestMatch != null) return bestMatch;
+
+    // 3. Longest alias match
+    if (candidates.isEmpty) {
+      int maxAliasLen = 0;
+      Product? bestCandidate;
+      for (final p in _cachedProducts) {
+        for (final a in p.aliases) {
+          final lowerA = a.toLowerCase();
+          if (query.contains(lowerA) && lowerA.length > maxAliasLen) {
+            maxAliasLen = lowerA.length;
+            bestCandidate = p;
+          }
+        }
+      }
+      if (bestCandidate != null) candidates.add(bestCandidate);
+    }
 
     // 4. Substring in product name
-    for (final p in _cachedProducts) {
-      if (p.name.toLowerCase().contains(query) || query.contains(p.name.toLowerCase())) {
-        return p;
+    if (candidates.isEmpty) {
+      for (final p in _cachedProducts) {
+        if (p.name.toLowerCase().contains(query) || query.contains(p.name.toLowerCase())) {
+          candidates.add(p);
+        }
       }
     }
 
-    return null;
+    if (candidates.isEmpty) return null;
+
+    // Apply Brand Preference:
+    if (brandPreference == 'reject_private_label') {
+      final brandOnly = candidates.firstWhere((p) => !p.isPrivateLabel, orElse: () => candidates.first);
+      return brandOnly;
+    }
+    if (brandPreference == 'prefer_private_label') {
+      final plOnly = candidates.firstWhere((p) => p.isPrivateLabel, orElse: () => candidates.first);
+      return plOnly;
+    }
+
+    // Apply Bio Preference:
+    if (bioPreference == 'prefer_bio') {
+      final bioOnly = candidates.firstWhere((p) => p.isBio, orElse: () => candidates.first);
+      return bioOnly;
+    }
+
+    return candidates.first;
   }
 
   static List<Product> _buildFallbackStaples() {
