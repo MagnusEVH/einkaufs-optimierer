@@ -12,11 +12,13 @@ dependencies:
   flutter_riverpod: ^2.5.1
   supabase_flutter: ^2.5.6
   geolocator: ^12.0.0
-  google_maps_flutter: ^2.6.1
+  # google_maps_flutter wird erst eingebunden wenn Android-/iOS-Build erfolgt.
+  # Für Web-Demo wird die Kartenansicht durch eine ListView ersetzt.
   flutter_secure_storage: ^9.2.2
   intl: ^0.19.0
   uuid: ^4.4.0
   http: ^1.2.1
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -26,5 +28,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - ../test_data/products_seed_250.json
-    - ../test_data/sample_stores_germany.json
+    - assets/products_seed_250.json
+    - assets/sample_stores_germany.json
+    - assets/sample_offers_and_wallet.json

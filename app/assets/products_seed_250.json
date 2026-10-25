@@ -1,0 +1,6167 @@
+{
+  "version": "2.0",
+  "exported_at": "2026-10-18T17:14:09.785Z",
+  "categories": [
+    {
+      "id": "11111111-0000-0000-0000-000000000001",
+      "name": "Obst & Gemüse",
+      "icon": "apple"
+    },
+    {
+      "id": "11111111-0000-0000-0000-000000000002",
+      "name": "Molkerei & Eier",
+      "icon": "egg"
+    },
+    {
+      "id": "11111111-0000-0000-0000-000000000003",
+      "name": "Brot & Backwaren",
+      "icon": "bread"
+    },
+    {
+      "id": "11111111-0000-0000-0000-000000000004",
+      "name": "Fleisch, Fisch & Veggie",
+      "icon": "food_bank"
+    },
+    {
+      "id": "11111111-0000-0000-0000-000000000005",
+      "name": "Vorrat & Teigwaren",
+      "icon": "rice_bowl"
+    },
+    {
+      "id": "11111111-0000-0000-0000-000000000006",
+      "name": "Süßes & Snacks",
+      "icon": "cookie"
+    },
+    {
+      "id": "11111111-0000-0000-0000-000000000007",
+      "name": "Getränke & Kaffee",
+      "icon": "local_cafe"
+    },
+    {
+      "id": "11111111-0000-0000-0000-000000000008",
+      "name": "Drogerie & Haushalt",
+      "icon": "clean_hands"
+    }
+  ],
+  "products_count": 270,
+  "products": [
+    {
+      "id": "22222222-0000-0000-0000-000000000001",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100000",
+      "name": "Bananen",
+      "brand": "Fairtrade",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "banane",
+        "bananen"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 134,
+        "rewe": 159
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000002",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100001",
+      "name": "Bio Bananen",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "bio banane",
+        "bananen bio"
+      ],
+      "prices": {
+        "lidl": 189,
+        "aldi_nord": 179,
+        "aldi_sued": 179,
+        "netto": 161,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000003",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100002",
+      "name": "Äpfel Gala",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "apfel",
+        "äpfel",
+        "gala"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 179,
+        "rewe": 229
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000004",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100003",
+      "name": "Bio Äpfel Topaz",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "bio äpfel",
+        "bio apfel"
+      ],
+      "prices": {
+        "lidl": 269,
+        "aldi_nord": 249,
+        "aldi_sued": 249,
+        "netto": 224,
+        "rewe": 299
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000005",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100004",
+      "name": "Gurke",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "salatgurke",
+        "gurke"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000006",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100005",
+      "name": "Bio Gurke",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "piece",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "bio gurke"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 109,
+        "aldi_sued": 109,
+        "netto": 109,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000007",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100006",
+      "name": "Rispentomaten",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "tomate",
+        "tomaten",
+        "rispentomate"
+      ],
+      "prices": {
+        "lidl": 219,
+        "aldi_nord": 219,
+        "aldi_sued": 219,
+        "netto": 219,
+        "rewe": 249
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000008",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100007",
+      "name": "Cherrytomaten 250g",
+      "brand": "",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "cherrytomaten",
+        "kirschtomaten"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 119
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000009",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100008",
+      "name": "Bio Cherrytomaten 250g",
+      "brand": "",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "bio tomaten",
+        "bio cherrytomaten"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 139,
+        "rewe": 169
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000000a",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100009",
+      "name": "Speisekartoffeln festkochend 2,5kg",
+      "brand": "",
+      "quantity_amount": 2.5,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "kartoffeln",
+        "erdäpfel"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 249,
+        "aldi_sued": 249,
+        "netto": 249,
+        "rewe": 279
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000000b",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100010",
+      "name": "Bio Kartoffeln 1,5kg",
+      "brand": "",
+      "quantity_amount": 1.5,
+      "quantity_unit": "kg",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "bio kartoffeln"
+      ],
+      "prices": {
+        "lidl": 229,
+        "aldi_nord": 219,
+        "aldi_sued": 219,
+        "netto": 219,
+        "rewe": 249
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000000c",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100011",
+      "name": "Zwiebeln gelb 1kg",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "zwiebel",
+        "zwiebeln"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000000d",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100012",
+      "name": "Rote Zwiebeln 500g",
+      "brand": "",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "rote zwiebeln"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 119
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000000e",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100013",
+      "name": "Möhren / Karotten 1kg",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "möhren",
+        "karotten",
+        "rübli"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 119
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000000f",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100014",
+      "name": "Bio Möhren 1kg",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "bio möhren",
+        "bio karotten"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 139,
+        "rewe": 169
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000010",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100015",
+      "name": "Paprika Dreierpack 500g",
+      "brand": "",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "paprika",
+        "paprika rot gelb grün"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000011",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100016",
+      "name": "Spitzpaprika rot 500g",
+      "brand": "",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "spitzpaprika"
+      ],
+      "prices": {
+        "lidl": 179,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000012",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100017",
+      "name": "Eisbergsalat",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "salat",
+        "eisbergsalat"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 119
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000013",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100018",
+      "name": "Kopfsalat",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "kopfsalat"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000014",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100019",
+      "name": "Rucola 125g",
+      "brand": "",
+      "quantity_amount": 125,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "rucola",
+        "rauhe rauke"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000015",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100020",
+      "name": "Babyspinat 125g",
+      "brand": "",
+      "quantity_amount": 125,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "spinat",
+        "babyspinat"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 139
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000016",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100021",
+      "name": "Zucchini 1kg",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "zucchini"
+      ],
+      "prices": {
+        "lidl": 189,
+        "aldi_nord": 179,
+        "aldi_sued": 179,
+        "netto": 179,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000017",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100022",
+      "name": "Auberginen 1kg",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "aubergine"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 229
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000018",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100023",
+      "name": "Brokkoli 500g",
+      "brand": "",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "brokkoli",
+        "broccoli"
+      ],
+      "prices": {
+        "lidl": 129,
+        "aldi_nord": 129,
+        "aldi_sued": 129,
+        "netto": 129,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000019",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100024",
+      "name": "Blumenkohl",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "blumenkohl"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 249
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000001a",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100025",
+      "name": "Champignons braun 400g",
+      "brand": "",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "pilze",
+        "champignons",
+        "braune champignons"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 159,
+        "aldi_sued": 159,
+        "netto": 159,
+        "rewe": 189
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000001b",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100026",
+      "name": "Champignons weiß 400g",
+      "brand": "",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "weiße champignons"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 169
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000001c",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100027",
+      "name": "Avocado Hass genussreif",
+      "brand": "",
+      "quantity_amount": 1,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "avocado"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 109,
+        "aldi_sued": 109,
+        "netto": 98,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000001d",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100028",
+      "name": "Bio Avocado 2er Pack",
+      "brand": "",
+      "quantity_amount": 2,
+      "quantity_unit": "piece",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "bio avocado"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 229,
+        "aldi_sued": 229,
+        "netto": 206,
+        "rewe": 299
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000001e",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100029",
+      "name": "Heidelbeeren 300g",
+      "brand": "",
+      "quantity_amount": 300,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "blaubeeren",
+        "heidelbeeren"
+      ],
+      "prices": {
+        "lidl": 299,
+        "aldi_nord": 289,
+        "aldi_sued": 289,
+        "netto": 260,
+        "rewe": 349
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000001f",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100030",
+      "name": "Erdbeeren 500g",
+      "brand": "",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "erdbeeren"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 249,
+        "aldi_sued": 249,
+        "netto": 224,
+        "rewe": 279
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000020",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100031",
+      "name": "Zitronen Netz 500g",
+      "brand": "",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "zitrone",
+        "zitronen"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 109,
+        "aldi_sued": 109,
+        "netto": 98,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000021",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100032",
+      "name": "Bio Zitronen 500g",
+      "brand": "",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "bio zitrone",
+        "bio zitronen"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 125,
+        "rewe": 169
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000022",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100033",
+      "name": "Knoblauch 200g",
+      "brand": "",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "knoblauch"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000023",
+      "category_id": "11111111-0000-0000-0000-000000000001",
+      "gtin_barcode": "400000100034",
+      "name": "Ingwer 250g",
+      "brand": "",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "obst_gemuese",
+      "aliases": [
+        "ingwer"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000024",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100035",
+      "name": "Skyr Natur 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "skyr",
+        "skyr natur"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 129,
+        "aldi_sued": 129,
+        "netto": 129,
+        "rewe": 139
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000025",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100036",
+      "name": "Skyr Vanille 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "skyr vanille"
+      ],
+      "prices": {
+        "lidl": 129,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 139,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000026",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100037",
+      "name": "Ísey Skyr Erdbeere 170g",
+      "brand": "Ísey",
+      "quantity_amount": 170,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "isey skyr"
+      ],
+      "prices": {
+        "lidl": 129,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 139,
+        "rewe": 119
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000027",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100038",
+      "name": "Frische Vollmilch 3,5% 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "vollmilch",
+        "milch 3.5",
+        "milch"
+      ],
+      "prices": {
+        "lidl": 95,
+        "aldi_nord": 95,
+        "aldi_sued": 95,
+        "netto": 95,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000028",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100039",
+      "name": "H-Vollmilch 3,5% 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "h milch 3.5",
+        "h-milch"
+      ],
+      "prices": {
+        "lidl": 95,
+        "aldi_nord": 95,
+        "aldi_sued": 95,
+        "netto": 95,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000029",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100040",
+      "name": "Frische fettarme Milch 1,5% 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "milch 1.5",
+        "fettarme milch"
+      ],
+      "prices": {
+        "lidl": 95,
+        "aldi_nord": 95,
+        "aldi_sued": 95,
+        "netto": 95,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000002a",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100041",
+      "name": "H-Milch fettarm 1,5% 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "h milch 1.5"
+      ],
+      "prices": {
+        "lidl": 95,
+        "aldi_nord": 95,
+        "aldi_sued": 95,
+        "netto": 95,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000002b",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100042",
+      "name": "Bio Frische Milch 3,8% 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "bio milch",
+        "bio vollmilch"
+      ],
+      "prices": {
+        "lidl": 139,
+        "aldi_nord": 129,
+        "aldi_sued": 129,
+        "netto": 129,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000002c",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100043",
+      "name": "Bärenmarke Frische Alpenmilch 3,8% 1L",
+      "brand": "Bärenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "bärenmarke milch"
+      ],
+      "prices": {
+        "lidl": 179,
+        "aldi_nord": 179,
+        "aldi_sued": 179,
+        "netto": 179,
+        "rewe": 169
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000002d",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100044",
+      "name": "Deutsche Markenbutter 250g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "butter",
+        "markenbutter"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 159,
+        "aldi_sued": 159,
+        "netto": 159,
+        "rewe": 179
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000002e",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100045",
+      "name": "Bio Süßrahmbutter 250g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "bio butter"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 239,
+        "aldi_sued": 239,
+        "netto": 239,
+        "rewe": 259
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000002f",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100046",
+      "name": "Kerrygold Irische Butter 250g",
+      "brand": "Kerrygold",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "kerrygold",
+        "irische butter"
+      ],
+      "prices": {
+        "lidl": 239,
+        "aldi_nord": 259,
+        "aldi_sued": 259,
+        "netto": 259,
+        "rewe": 279
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000030",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100047",
+      "name": "Magerquark 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "magerquark",
+        "quark"
+      ],
+      "prices": {
+        "lidl": 135,
+        "aldi_nord": 135,
+        "aldi_sued": 135,
+        "netto": 135,
+        "rewe": 139
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000031",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100048",
+      "name": "Speisequark 20% 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "speisequark",
+        "quark 20%"
+      ],
+      "prices": {
+        "lidl": 145,
+        "aldi_nord": 145,
+        "aldi_sued": 145,
+        "netto": 145,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000032",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100049",
+      "name": "Bio Magerquark 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "bio magerquark",
+        "bio quark"
+      ],
+      "prices": {
+        "lidl": 179,
+        "aldi_nord": 179,
+        "aldi_sued": 179,
+        "netto": 179,
+        "rewe": 189
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000033",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100050",
+      "name": "Naturjoghurt 3,5% 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "joghurt natur",
+        "naturjoghurt"
+      ],
+      "prices": {
+        "lidl": 85,
+        "aldi_nord": 85,
+        "aldi_sued": 85,
+        "netto": 85,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000034",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100051",
+      "name": "Griechischer Joghurt 10% 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "griechischer joghurt",
+        "joghurt 10%"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 179
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000035",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100052",
+      "name": "Ehrmann Grand Dessert Schoko 190g",
+      "brand": "Ehrmann",
+      "quantity_amount": 190,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "grand dessert",
+        "schokopudding"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000036",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100053",
+      "name": "Schmand 24% 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "schmand"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000037",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100054",
+      "name": "Saure Sahne 10% 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "saure sahne"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000038",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100055",
+      "name": "Schlagsahne 30% 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "sahne",
+        "schlagsahne"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000039",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100056",
+      "name": "Crème Fraîche 150g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 150,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "creme fraiche"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000003a",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100057",
+      "name": "Gouda jung in Scheiben 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "gouda",
+        "käse scheiben"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 249,
+        "aldi_sued": 249,
+        "netto": 249,
+        "rewe": 269
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000003b",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100058",
+      "name": "Gouda mittelalt 300g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 300,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "gouda mittelalt"
+      ],
+      "prices": {
+        "lidl": 229,
+        "aldi_nord": 229,
+        "aldi_sued": 229,
+        "netto": 229,
+        "rewe": 249
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000003c",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100059",
+      "name": "Butterkäse Scheiben 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "butterkäse"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 249,
+        "aldi_sued": 249,
+        "netto": 249,
+        "rewe": 269
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000003d",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100060",
+      "name": "Emmentaler gerieben 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "reibekäse",
+        "emmentaler"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 189
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000003e",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100061",
+      "name": "Gouda gerieben 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "gouda gerieben",
+        "streukäse"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 179
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000003f",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100062",
+      "name": "Mozzarella Kugel 125g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 125,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "mozzarella"
+      ],
+      "prices": {
+        "lidl": 85,
+        "aldi_nord": 85,
+        "aldi_sued": 85,
+        "netto": 85,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000040",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100063",
+      "name": "Bio Mozzarella 125g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 125,
+      "quantity_unit": "g",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "bio mozzarella"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000041",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100064",
+      "name": "Galbani Mozzarella 125g",
+      "brand": "Galbani",
+      "quantity_amount": 125,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "galbani mozzarella"
+      ],
+      "prices": {
+        "lidl": 159,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 159
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000042",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100065",
+      "name": "Hirtenkäse / Weichkäse 250g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "hirtenkäse",
+        "weichkäse"
+      ],
+      "prices": {
+        "lidl": 179,
+        "aldi_nord": 179,
+        "aldi_sued": 179,
+        "netto": 179,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000043",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100066",
+      "name": "Original Griechischer Feta 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "feta",
+        "schafskäse"
+      ],
+      "prices": {
+        "lidl": 229,
+        "aldi_nord": 229,
+        "aldi_sued": 229,
+        "netto": 229,
+        "rewe": 249
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000044",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100067",
+      "name": "Frischkäse Doppelrahm 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "frischkäse"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000045",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100068",
+      "name": "Philadelphia Original 175g",
+      "brand": "Philadelphia",
+      "quantity_amount": 175,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "philadelphia"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 169
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000046",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100069",
+      "name": "Camembert 250g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "camembert"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000047",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100070",
+      "name": "Parmigiano Reggiano 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "parmesan",
+        "parmigiano"
+      ],
+      "prices": {
+        "lidl": 349,
+        "aldi_nord": 349,
+        "aldi_sued": 349,
+        "netto": 349,
+        "rewe": 379
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000048",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100071",
+      "name": "Frische Eier Bodenhaltung Gr. M/L 10er",
+      "brand": "Eigenmarke",
+      "quantity_amount": 10,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "eier",
+        "10 eier",
+        "hühnereier"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000049",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100072",
+      "name": "Freilandeier Gr. M/L 10er",
+      "brand": "Eigenmarke",
+      "quantity_amount": 10,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "freilandeier"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 249,
+        "aldi_sued": 249,
+        "netto": 249,
+        "rewe": 269
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000004a",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100073",
+      "name": "Bio Eier 10er",
+      "brand": "Eigenmarke",
+      "quantity_amount": 10,
+      "quantity_unit": "piece",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "bio eier"
+      ],
+      "prices": {
+        "lidl": 329,
+        "aldi_nord": 329,
+        "aldi_sued": 329,
+        "netto": 329,
+        "rewe": 349
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000004b",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100074",
+      "name": "Oatly Hafermilch Barista 1L",
+      "brand": "Oatly",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "oatly",
+        "hafermilch barista"
+      ],
+      "prices": {
+        "lidl": 219,
+        "aldi_nord": 219,
+        "aldi_sued": 219,
+        "netto": 219,
+        "rewe": 229
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000004c",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100075",
+      "name": "Bio Haferdrink Natur 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "hafermilch",
+        "haferdrink"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000004d",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100076",
+      "name": "Bio Sojadrink Natur 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "sojamilch",
+        "sojadrink"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000004e",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100077",
+      "name": "Müller Milchreis Zimt 200g",
+      "brand": "Müller",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "milchreis",
+        "müller milchreis"
+      ],
+      "prices": {
+        "lidl": 69,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 79
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000004f",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100078",
+      "name": "Zott Sahnejoghurt Erdbeer 150g",
+      "brand": "Zott",
+      "quantity_amount": 150,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "zott joghurt",
+        "sahnejoghurt"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 79
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000050",
+      "category_id": "11111111-0000-0000-0000-000000000002",
+      "gtin_barcode": "400000100079",
+      "name": "Activia Natur 4x115g",
+      "brand": "Danone",
+      "quantity_amount": 460,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "molkerei_eier",
+      "aliases": [
+        "activia"
+      ],
+      "prices": {
+        "lidl": 219,
+        "aldi_nord": 229,
+        "aldi_sued": 229,
+        "netto": 229,
+        "rewe": 229
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000051",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100080",
+      "name": "Butter Toastbrot 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "toast",
+        "toastbrot",
+        "buttertoast"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000052",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100081",
+      "name": "Vollkorn Toastbrot 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "vollkorntoast"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000053",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100082",
+      "name": "Golden Toast Butter 500g",
+      "brand": "Golden Toast",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "golden toast"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 179
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000054",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100083",
+      "name": "Weizenmischbrot geschnitten 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "brot",
+        "mischbrot",
+        "weizenbrot"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000055",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100084",
+      "name": "Vollkornbrot geschnitten 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "vollkornbrot"
+      ],
+      "prices": {
+        "lidl": 129,
+        "aldi_nord": 129,
+        "aldi_sued": 129,
+        "netto": 129,
+        "rewe": 139
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000056",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100085",
+      "name": "Paderborner Landbrot 1kg",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "landbrot",
+        "graubrot"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 189
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000057",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100086",
+      "name": "Sonnenblumenkernbrot 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "sonnenblumenbrot"
+      ],
+      "prices": {
+        "lidl": 139,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 139,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000058",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100087",
+      "name": "Baguette zum Aufbacken 2x150g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 300,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "baguette",
+        "aufbackbaguette"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000059",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100088",
+      "name": "Kräuterbutter Baguette 175g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 175,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "kräuterbaguette",
+        "knoblauchbaguette"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000005a",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100089",
+      "name": "Weizenbrötchen zum Fertigbacken 6er",
+      "brand": "Eigenmarke",
+      "quantity_amount": 300,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "brötchen",
+        "aufbackbrötchen",
+        "semmeln"
+      ],
+      "prices": {
+        "lidl": 69,
+        "aldi_nord": 69,
+        "aldi_sued": 69,
+        "netto": 69,
+        "rewe": 79
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000005b",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100090",
+      "name": "Mehrkornbrötchen 4er",
+      "brand": "Eigenmarke",
+      "quantity_amount": 260,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "körnerbrötchen",
+        "mehrkornbrötchen"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000005c",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100091",
+      "name": "Knäckebrot Roggen 250g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "knäckebrot"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000005d",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100092",
+      "name": "Wasa Knäckebrot Sesam 200g",
+      "brand": "Wasa",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "wasa"
+      ],
+      "prices": {
+        "lidl": 179,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 189
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000005e",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100093",
+      "name": "Tortilla Wraps Weizen 6er 370g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 370,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "wraps",
+        "tortillas"
+      ],
+      "prices": {
+        "lidl": 129,
+        "aldi_nord": 129,
+        "aldi_sued": 129,
+        "netto": 129,
+        "rewe": 139
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000005f",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100094",
+      "name": "Pizzaboden mit Tomatensauce 600g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 600,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "pizzateig",
+        "frischer pizzateig"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000060",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100095",
+      "name": "Haferflocken zart 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "haferflocken",
+        "haferflocken zart"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 85
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000061",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100096",
+      "name": "Haferflocken kernig 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "haferflocken kernig"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 85
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000062",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100097",
+      "name": "Bio Haferflocken 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "bio haferflocken"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000063",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100098",
+      "name": "Kölln Flocken Blütenzart 500g",
+      "brand": "Kölln",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "kölln flocken"
+      ],
+      "prices": {
+        "lidl": 189,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000064",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100099",
+      "name": "Weizenmehl Type 405 1kg",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "mehl",
+        "weizenmehl",
+        "mehl 405"
+      ],
+      "prices": {
+        "lidl": 65,
+        "aldi_nord": 65,
+        "aldi_sued": 65,
+        "netto": 65,
+        "rewe": 69
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000065",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100100",
+      "name": "Bio Dinkelmehl Type 630 1kg",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "dinkelmehl",
+        "bio mehl"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 189
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000066",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100101",
+      "name": "Weißer Haushaltszucker 1kg",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "zucker",
+        "kristallzucker"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 125
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000067",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100102",
+      "name": "Puderzucker 250g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "puderzucker"
+      ],
+      "prices": {
+        "lidl": 49,
+        "aldi_nord": 49,
+        "aldi_sued": 49,
+        "netto": 49,
+        "rewe": 55
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000068",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100103",
+      "name": "Backpulver 10er Pack",
+      "brand": "Eigenmarke",
+      "quantity_amount": 150,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "backpulver"
+      ],
+      "prices": {
+        "lidl": 45,
+        "aldi_nord": 45,
+        "aldi_sued": 45,
+        "netto": 45,
+        "rewe": 49
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000069",
+      "category_id": "11111111-0000-0000-0000-000000000003",
+      "gtin_barcode": "400000100104",
+      "name": "Frische Backhefe 42g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 42,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "brot_backwaren",
+      "aliases": [
+        "hefe",
+        "frische hefe"
+      ],
+      "prices": {
+        "lidl": 19,
+        "aldi_nord": 19,
+        "aldi_sued": 19,
+        "netto": 19,
+        "rewe": 25
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000006a",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100105",
+      "name": "Hackfleisch gemischt (Rind & Schwein) 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "hackfleisch",
+        "hack",
+        "gemischtes hack"
+      ],
+      "prices": {
+        "lidl": 399,
+        "aldi_nord": 399,
+        "aldi_sued": 399,
+        "netto": 399,
+        "rewe": 429
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000006b",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100106",
+      "name": "Rinderhackfleisch 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "rinderhack"
+      ],
+      "prices": {
+        "lidl": 449,
+        "aldi_nord": 449,
+        "aldi_sued": 449,
+        "netto": 449,
+        "rewe": 479
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000006c",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100107",
+      "name": "Bio Rinderhackfleisch 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "bio hackfleisch",
+        "bio rinderhack"
+      ],
+      "prices": {
+        "lidl": 549,
+        "aldi_nord": 549,
+        "aldi_sued": 549,
+        "netto": 549,
+        "rewe": 599
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000006d",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100108",
+      "name": "Hähnchenbrustfilet 600g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 600,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "hähnchenbrust",
+        "hähnchen",
+        "hühnchen"
+      ],
+      "prices": {
+        "lidl": 599,
+        "aldi_nord": 599,
+        "aldi_sued": 599,
+        "netto": 599,
+        "rewe": 649
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000006e",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100109",
+      "name": "Hähnchen-Innenfilet 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "hähnchenfilet"
+      ],
+      "prices": {
+        "lidl": 429,
+        "aldi_nord": 429,
+        "aldi_sued": 429,
+        "netto": 429,
+        "rewe": 469
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000006f",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100110",
+      "name": "Bio Hähnchenbrust 300g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 300,
+      "quantity_unit": "g",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "bio hähnchen"
+      ],
+      "prices": {
+        "lidl": 699,
+        "aldi_nord": 699,
+        "aldi_sued": 699,
+        "netto": 699,
+        "rewe": 749
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000070",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100111",
+      "name": "Putenschnitzel 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "putenschnitzel",
+        "pute"
+      ],
+      "prices": {
+        "lidl": 499,
+        "aldi_nord": 499,
+        "aldi_sued": 499,
+        "netto": 499,
+        "rewe": 549
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000071",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100112",
+      "name": "Rostbratwurst 5er 450g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 450,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "bratwurst"
+      ],
+      "prices": {
+        "lidl": 299,
+        "aldi_nord": 299,
+        "aldi_sued": 299,
+        "netto": 299,
+        "rewe": 329
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000072",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100113",
+      "name": "Wiener Würstchen 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "wiener",
+        "würstchen"
+      ],
+      "prices": {
+        "lidl": 299,
+        "aldi_nord": 299,
+        "aldi_sued": 299,
+        "netto": 299,
+        "rewe": 329
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000073",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100114",
+      "name": "Kochschinken geschnitten 150g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 150,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "kochschinken",
+        "schinken"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 189
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000074",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100115",
+      "name": "Geflügel-Mortadella 150g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 150,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "mortadella",
+        "geflügelwurst"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000075",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100116",
+      "name": "Salami 1A 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "salami"
+      ],
+      "prices": {
+        "lidl": 179,
+        "aldi_nord": 179,
+        "aldi_sued": 179,
+        "netto": 179,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000076",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100117",
+      "name": "Lachsschinken 100g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 100,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "lachsschinken"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 189
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000077",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100118",
+      "name": "Bacon / Frühstücksspeck 100g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 100,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "bacon",
+        "speck"
+      ],
+      "prices": {
+        "lidl": 129,
+        "aldi_nord": 129,
+        "aldi_sued": 129,
+        "netto": 129,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000078",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100119",
+      "name": "Schinkenwürfel 2x125g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "schinkenwürfel"
+      ],
+      "prices": {
+        "lidl": 189,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000079",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100120",
+      "name": "Lachsfilet frisch mit Haut 300g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 300,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "lachs",
+        "lachsfilet"
+      ],
+      "prices": {
+        "lidl": 599,
+        "aldi_nord": 599,
+        "aldi_sued": 599,
+        "netto": 599,
+        "rewe": 649
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000007a",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100121",
+      "name": "Räucherlachs 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "räucherlachs"
+      ],
+      "prices": {
+        "lidl": 399,
+        "aldi_nord": 399,
+        "aldi_sued": 399,
+        "netto": 399,
+        "rewe": 429
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000007b",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100122",
+      "name": "Thunfisch in eigenem Saft 185g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 185,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "thunfisch",
+        "dose thunfisch"
+      ],
+      "prices": {
+        "lidl": 139,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 139,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000007c",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100123",
+      "name": "Thunfisch in Sonnenblumenöl 185g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 185,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "thunfisch öl"
+      ],
+      "prices": {
+        "lidl": 139,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 139,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000007d",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100124",
+      "name": "Iglo Fischstäbchen 15er 450g",
+      "brand": "Iglo",
+      "quantity_amount": 450,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "fischstäbchen",
+        "iglo fischstäbchen"
+      ],
+      "prices": {
+        "lidl": 389,
+        "aldi_nord": 399,
+        "aldi_sued": 399,
+        "netto": 399,
+        "rewe": 389
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000007e",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100125",
+      "name": "Fischstäbchen 15er 450g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 450,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "fischstäbchen günstig"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 249,
+        "aldi_sued": 249,
+        "netto": 249,
+        "rewe": 269
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000007f",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100126",
+      "name": "Tofu Natur Bio 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "tofu",
+        "bio tofu"
+      ],
+      "prices": {
+        "lidl": 179,
+        "aldi_nord": 179,
+        "aldi_sued": 179,
+        "netto": 179,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000080",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100127",
+      "name": "Räuchertofu Bio 350g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 350,
+      "quantity_unit": "g",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "räuchertofu"
+      ],
+      "prices": {
+        "lidl": 189,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 209
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000081",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100128",
+      "name": "Vegane Mühlen Salami 80g",
+      "brand": "Rügenwalder Mühle",
+      "quantity_amount": 80,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "vegane salami",
+        "mühlen salami"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000082",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100129",
+      "name": "Vegane Mühlen Bratwurst 180g",
+      "brand": "Rügenwalder Mühle",
+      "quantity_amount": 180,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "vegane bratwurst"
+      ],
+      "prices": {
+        "lidl": 269,
+        "aldi_nord": 279,
+        "aldi_sued": 279,
+        "netto": 279,
+        "rewe": 269
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000083",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100130",
+      "name": "Veganes Hack 250g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "veganes hack",
+        "veggie hack"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000084",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100131",
+      "name": "Vegane Burger Patties 227g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 227,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "veggie burger",
+        "veganer burger"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000085",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100132",
+      "name": "Vegane Nuggets 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "vegane nuggets"
+      ],
+      "prices": {
+        "lidl": 179,
+        "aldi_nord": 179,
+        "aldi_sued": 179,
+        "netto": 179,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000086",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100133",
+      "name": "Falafel Bällchen 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "falafel"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 189
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000087",
+      "category_id": "11111111-0000-0000-0000-000000000004",
+      "gtin_barcode": "400000100134",
+      "name": "Hummus Natur 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "fleisch_fisch",
+      "aliases": [
+        "hummus"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000088",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100135",
+      "name": "Spaghetti No. 5 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "spaghetti",
+        "nudeln"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 85
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000089",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100136",
+      "name": "Penne Rigate 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "penne",
+        "röhrennudeln"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 85
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000008a",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100137",
+      "name": "Fusilli 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "fusilli",
+        "spirelli"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 85
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000008b",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100138",
+      "name": "Bio Vollkorn Spaghetti 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "vollkornnudeln",
+        "bio spaghetti"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000008c",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100139",
+      "name": "Barilla Spaghetti No. 5 500g",
+      "brand": "Barilla",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "barilla spaghetti",
+        "barilla"
+      ],
+      "prices": {
+        "lidl": 189,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000008d",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100140",
+      "name": "Barilla Penne Rigate 500g",
+      "brand": "Barilla",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "barilla penne"
+      ],
+      "prices": {
+        "lidl": 189,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000008e",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100141",
+      "name": "Basmati Reis 1kg",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "reis",
+        "basmati",
+        "basmatireis"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000008f",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100142",
+      "name": "Jasmin Duftreis 1kg",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "jasminreis"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000090",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100143",
+      "name": "Parboiled Spitzenlangkornreis 1kg",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "langkornreis",
+        "parboiled reis"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 139,
+        "rewe": 169
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000091",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100144",
+      "name": "Passierte Tomaten 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "passierte tomaten",
+        "passata"
+      ],
+      "prices": {
+        "lidl": 65,
+        "aldi_nord": 65,
+        "aldi_sued": 65,
+        "netto": 65,
+        "rewe": 69
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000092",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100145",
+      "name": "Gehackte Tomaten Dose 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "gehackte tomaten",
+        "dosentomaten",
+        "stückige tomaten"
+      ],
+      "prices": {
+        "lidl": 65,
+        "aldi_nord": 65,
+        "aldi_sued": 65,
+        "netto": 65,
+        "rewe": 69
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000093",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100146",
+      "name": "Mutti Polpa stückige Tomaten 400g",
+      "brand": "Mutti",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "mutti tomaten",
+        "mutti polpa"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 139
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000094",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100147",
+      "name": "Tomatenmark dreifach konzentriert 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "tomatenmark"
+      ],
+      "prices": {
+        "lidl": 85,
+        "aldi_nord": 85,
+        "aldi_sued": 85,
+        "netto": 85,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000095",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100148",
+      "name": "Pesto Genovese grün 190g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 190,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "pesto",
+        "grünes pesto",
+        "pesto genovese"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000096",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100149",
+      "name": "Pesto Rosso rot 190g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 190,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "rotes pesto",
+        "pesto rosso"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000097",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100150",
+      "name": "Barilla Pesto Alla Genovese 190g",
+      "brand": "Barilla",
+      "quantity_amount": 190,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "barilla pesto"
+      ],
+      "prices": {
+        "lidl": 329,
+        "aldi_nord": 329,
+        "aldi_sued": 329,
+        "netto": 329,
+        "rewe": 279
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000098",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100151",
+      "name": "Kidneybohnen Dose 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "kidneybohnen",
+        "bohnen"
+      ],
+      "prices": {
+        "lidl": 69,
+        "aldi_nord": 69,
+        "aldi_sued": 69,
+        "netto": 69,
+        "rewe": 75
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000099",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100152",
+      "name": "Kichererbsen Dose 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "kichererbsen"
+      ],
+      "prices": {
+        "lidl": 69,
+        "aldi_nord": 69,
+        "aldi_sued": 69,
+        "netto": 69,
+        "rewe": 75
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000009a",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100153",
+      "name": "Mais süß Dose 330g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 330,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "mais",
+        "dosenmais"
+      ],
+      "prices": {
+        "lidl": 85,
+        "aldi_nord": 85,
+        "aldi_sued": 85,
+        "netto": 85,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000009b",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100154",
+      "name": "Grüne Erbsen mit Möhren 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "erbsen möhren"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 99
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000009c",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100155",
+      "name": "Natives Olivenöl Extra 750ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 750,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "olivenöl",
+        "natives olivenöl"
+      ],
+      "prices": {
+        "lidl": 799,
+        "aldi_nord": 799,
+        "aldi_sued": 799,
+        "netto": 799,
+        "rewe": 849
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000009d",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100156",
+      "name": "Bio Olivenöl Extra 500ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "ml",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "bio olivenöl"
+      ],
+      "prices": {
+        "lidl": 649,
+        "aldi_nord": 649,
+        "aldi_sued": 649,
+        "netto": 649,
+        "rewe": 699
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000009e",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100157",
+      "name": "Rapsöl raffiniert 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "rapsöl",
+        "speiseöl"
+      ],
+      "prices": {
+        "lidl": 159,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 169
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000009f",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100158",
+      "name": "Sonnenblumenöl 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "sonnenblumenöl"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 159,
+        "aldi_sued": 159,
+        "netto": 159,
+        "rewe": 179
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000a0",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100159",
+      "name": "Balsamico Essig di Modena 500ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "essig",
+        "balsamico"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 169
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000a1",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100160",
+      "name": "Apfelessig 750ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 750,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "apfelessig"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000a2",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100161",
+      "name": "Jodsalz mit Fluorid 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "salz",
+        "speisesalz",
+        "jodsalz"
+      ],
+      "prices": {
+        "lidl": 29,
+        "aldi_nord": 29,
+        "aldi_sued": 29,
+        "netto": 29,
+        "rewe": 35
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000a3",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100162",
+      "name": "Schwarzer Pfeffer gemahlen 50g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 50,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "pfeffer",
+        "schwarzer pfeffer"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000a4",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100163",
+      "name": "Paprikapulver edelsüß 50g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 50,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "paprikapulver"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000a5",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100164",
+      "name": "Gemüsebrühe Glas 140g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 140,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "brühe",
+        "gemüsebrühe"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000a6",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100165",
+      "name": "Mittelscharfer Senf 200ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "senf"
+      ],
+      "prices": {
+        "lidl": 55,
+        "aldi_nord": 55,
+        "aldi_sued": 55,
+        "netto": 55,
+        "rewe": 59
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000a7",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100166",
+      "name": "Bautz’ner Senf mittelscharf 200ml",
+      "brand": "Bautzner",
+      "quantity_amount": 200,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "bautzner senf"
+      ],
+      "prices": {
+        "lidl": 69,
+        "aldi_nord": 69,
+        "aldi_sued": 69,
+        "netto": 69,
+        "rewe": 69
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000a8",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100167",
+      "name": "Tomaten Ketchup 500ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "ketchup"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000a9",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100168",
+      "name": "Heinz Tomato Ketchup 500ml",
+      "brand": "Heinz",
+      "quantity_amount": 500,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "heinz ketchup"
+      ],
+      "prices": {
+        "lidl": 299,
+        "aldi_nord": 299,
+        "aldi_sued": 299,
+        "netto": 299,
+        "rewe": 269
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000aa",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100169",
+      "name": "Delikatess Mayonnaise 500ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "mayo",
+        "mayonnaise"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 159
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ab",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100170",
+      "name": "Miracel Whip Original 500ml",
+      "brand": "Miracel Whip",
+      "quantity_amount": 500,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "miracel whip"
+      ],
+      "prices": {
+        "lidl": 269,
+        "aldi_nord": 279,
+        "aldi_sued": 279,
+        "netto": 279,
+        "rewe": 249
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ac",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100171",
+      "name": "Blütenhonig flüssig 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "honig",
+        "blütenhonig"
+      ],
+      "prices": {
+        "lidl": 279,
+        "aldi_nord": 279,
+        "aldi_sued": 279,
+        "netto": 279,
+        "rewe": 299
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ad",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100172",
+      "name": "Erdbeerkonfitüre Extra 450g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 450,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "marmelade",
+        "erdbeermarmelade",
+        "konfitüre"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 159
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ae",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100173",
+      "name": "Nutella Nuss-Nougat-Creme 450g",
+      "brand": "Ferrero",
+      "quantity_amount": 450,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "nutella",
+        "nuss nougat creme"
+      ],
+      "prices": {
+        "lidl": 299,
+        "aldi_nord": 299,
+        "aldi_sued": 299,
+        "netto": 299,
+        "rewe": 279
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000af",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100174",
+      "name": "Nuss-Nougat-Creme 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "schokocreme"
+      ],
+      "prices": {
+        "lidl": 169,
+        "aldi_nord": 169,
+        "aldi_sued": 169,
+        "netto": 169,
+        "rewe": 179
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000b0",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100175",
+      "name": "Erdnussbutter Creamy 350g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 350,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "erdnussbutter",
+        "peanut butter"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000b1",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100176",
+      "name": "Cornflakes 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "cornflakes"
+      ],
+      "prices": {
+        "lidl": 139,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 139,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000b2",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100177",
+      "name": "Früchtemüsli 1kg",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "müsli",
+        "früchtemüsli"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 249,
+        "aldi_sued": 249,
+        "netto": 249,
+        "rewe": 269
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000b3",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100178",
+      "name": "Schokomüsli 750g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 750,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "schokomüsli"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 249,
+        "aldi_sued": 249,
+        "netto": 249,
+        "rewe": 269
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000b4",
+      "category_id": "11111111-0000-0000-0000-000000000005",
+      "gtin_barcode": "400000100179",
+      "name": "Dr. Oetker Ristorante Pizza Salame 320g",
+      "brand": "Dr. Oetker",
+      "quantity_amount": 320,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "vorrat_teigwaren",
+      "aliases": [
+        "tiefkühlpizza",
+        "ristorante",
+        "pizza salami"
+      ],
+      "prices": {
+        "lidl": 329,
+        "aldi_nord": 329,
+        "aldi_sued": 329,
+        "netto": 329,
+        "rewe": 249
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000b5",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100180",
+      "name": "Vollmilchschokolade 100g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 100,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "schokolade",
+        "vollmilch schokolade"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 85
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000b6",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100181",
+      "name": "Zartbitterschokolade 70% 100g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 100,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "zartbitterschokolade",
+        "dunkle schokolade"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000b7",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100182",
+      "name": "Milka Alpenmilch Schokolade 100g",
+      "brand": "Milka",
+      "quantity_amount": 100,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "milka",
+        "milka alpenmilch"
+      ],
+      "prices": {
+        "lidl": 139,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 139,
+        "rewe": 119
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000b8",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100183",
+      "name": "Ritter Sport Alpenmilch 100g",
+      "brand": "Ritter Sport",
+      "quantity_amount": 100,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "ritter sport"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 119
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000b9",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100184",
+      "name": "Haribo Goldbären 175g",
+      "brand": "Haribo",
+      "quantity_amount": 175,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "gummibärchen",
+        "haribo",
+        "goldbären"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ba",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100185",
+      "name": "Fruchtgummi Bären 300g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 300,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "fruchtgummi"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000bb",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100186",
+      "name": "Kartoffelchips Paprika 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "chips",
+        "paprika chips"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000bc",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100187",
+      "name": "Kartoffelchips Gesalzen 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "salzchips"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000bd",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100188",
+      "name": "Funny-Frisch Chipsfrisch ungarisch 150g",
+      "brand": "Funny-Frisch",
+      "quantity_amount": 150,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "funny frisch",
+        "chipsfrisch"
+      ],
+      "prices": {
+        "lidl": 189,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000be",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100189",
+      "name": "Pringles Original 185g",
+      "brand": "Pringles",
+      "quantity_amount": 185,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "pringles"
+      ],
+      "prices": {
+        "lidl": 279,
+        "aldi_nord": 279,
+        "aldi_sued": 279,
+        "netto": 279,
+        "rewe": 299
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000bf",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100190",
+      "name": "Salzstangen 250g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 250,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "salzstangen"
+      ],
+      "prices": {
+        "lidl": 65,
+        "aldi_nord": 65,
+        "aldi_sued": 65,
+        "netto": 65,
+        "rewe": 69
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000c0",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100191",
+      "name": "Erdnussflips 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "flips",
+        "erdnussflips"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 95
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000c1",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100192",
+      "name": "Erdnüsse geröstet & gesalzen 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "erdnüsse"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000c2",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100193",
+      "name": "Studentenfutter 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "studentenfutter",
+        "nüsse rosinen"
+      ],
+      "prices": {
+        "lidl": 179,
+        "aldi_nord": 179,
+        "aldi_sued": 179,
+        "netto": 179,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000c3",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100194",
+      "name": "Mandeln naturbelassen 200g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "mandeln"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000c4",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100195",
+      "name": "Cashewkerne geröstet & gesalzen 150g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 150,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "cashews",
+        "cashewkerne"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000c5",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100196",
+      "name": "Butterkeks 400g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "kekse",
+        "butterkeks"
+      ],
+      "prices": {
+        "lidl": 129,
+        "aldi_nord": 129,
+        "aldi_sued": 129,
+        "netto": 129,
+        "rewe": 139
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000c6",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100197",
+      "name": "Leibniz Butterkeks 200g",
+      "brand": "Leibniz",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "leibniz"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 159
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000c7",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100198",
+      "name": "Doppelkeks mit Kakaocreme 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "doppelkeks",
+        "prinzenrolle eigenmarke"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 159
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000c8",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100199",
+      "name": "Prinzen Rolle Schoko 400g",
+      "brand": "DeBeukelaer",
+      "quantity_amount": 400,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "prinzen rolle"
+      ],
+      "prices": {
+        "lidl": 189,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000c9",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100200",
+      "name": "Knoppers 8er 200g",
+      "brand": "Storck",
+      "quantity_amount": 200,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "knoppers"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ca",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100201",
+      "name": "Hanuta 10er 220g",
+      "brand": "Ferrero",
+      "quantity_amount": 220,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "hanuta"
+      ],
+      "prices": {
+        "lidl": 229,
+        "aldi_nord": 229,
+        "aldi_sued": 229,
+        "netto": 229,
+        "rewe": 249
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000cb",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100202",
+      "name": "Duplo 10er 182g",
+      "brand": "Ferrero",
+      "quantity_amount": 182,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "duplo"
+      ],
+      "prices": {
+        "lidl": 219,
+        "aldi_nord": 219,
+        "aldi_sued": 219,
+        "netto": 219,
+        "rewe": 239
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000cc",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100203",
+      "name": "Kinder Riegel 10er 210g",
+      "brand": "Ferrero",
+      "quantity_amount": 210,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "kinder riegel",
+        "schokoriegel"
+      ],
+      "prices": {
+        "lidl": 229,
+        "aldi_nord": 229,
+        "aldi_sued": 229,
+        "netto": 229,
+        "rewe": 249
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000cd",
+      "category_id": "11111111-0000-0000-0000-000000000006",
+      "gtin_barcode": "400000100204",
+      "name": "M&Ms Peanut 220g",
+      "brand": "Mars",
+      "quantity_amount": 220,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "suesses_snacks",
+      "aliases": [
+        "m&ms",
+        "schokolinsen"
+      ],
+      "prices": {
+        "lidl": 269,
+        "aldi_nord": 269,
+        "aldi_sued": 269,
+        "netto": 269,
+        "rewe": 289
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ce",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100205",
+      "name": "Mineralwasser Medium 1,5L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "wasser medium",
+        "sprudelwasser",
+        "mineralwasser"
+      ],
+      "prices": {
+        "lidl": 29,
+        "aldi_nord": 29,
+        "aldi_sued": 29,
+        "netto": 29,
+        "rewe": 29
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000cf",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100206",
+      "name": "Mineralwasser Still 1,5L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "stilles wasser",
+        "wasser still"
+      ],
+      "prices": {
+        "lidl": 29,
+        "aldi_nord": 29,
+        "aldi_sued": 29,
+        "netto": 29,
+        "rewe": 29
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000d0",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100207",
+      "name": "Mineralwasser Classic mit Sprudel 1,5L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "sprudel classic"
+      ],
+      "prices": {
+        "lidl": 29,
+        "aldi_nord": 29,
+        "aldi_sued": 29,
+        "netto": 29,
+        "rewe": 29
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000d1",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100208",
+      "name": "Gerolsteiner Medium 1L",
+      "brand": "Gerolsteiner",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "gerolsteiner"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 85
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000d2",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100209",
+      "name": "Volvic Natürliches Mineralwasser 1,5L",
+      "brand": "Volvic",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "volvic"
+      ],
+      "prices": {
+        "lidl": 109,
+        "aldi_nord": 109,
+        "aldi_sued": 109,
+        "netto": 109,
+        "rewe": 119
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000d3",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100210",
+      "name": "Apfelsaft naturtrüb 100% 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "apfelsaft naturtrüb",
+        "apfelsaft"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000d4",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100211",
+      "name": "Apfelschorle 1,5L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "apfelschorle"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000d5",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100212",
+      "name": "Orangensaft 100% Direktsaft 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "orangensaft",
+        "o saft",
+        "direktsaft"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000d6",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100213",
+      "name": "Hohes C Orange 1L",
+      "brand": "Hohes C",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "hohes c"
+      ],
+      "prices": {
+        "lidl": 219,
+        "aldi_nord": 219,
+        "aldi_sued": 219,
+        "netto": 219,
+        "rewe": 229
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000d7",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100214",
+      "name": "Multivitaminsaft 1,5L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "multivitaminsaft",
+        "multisaft"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 169
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000d8",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100215",
+      "name": "Cola 1,5L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "cola",
+        "cola eigenmarke"
+      ],
+      "prices": {
+        "lidl": 49,
+        "aldi_nord": 49,
+        "aldi_sued": 49,
+        "netto": 49,
+        "rewe": 55
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000d9",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100216",
+      "name": "Cola Zero 1,5L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "cola zero eigenmarke"
+      ],
+      "prices": {
+        "lidl": 49,
+        "aldi_nord": 49,
+        "aldi_sued": 49,
+        "netto": 49,
+        "rewe": 55
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000da",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100217",
+      "name": "Coca-Cola Original 1,5L",
+      "brand": "Coca-Cola",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "coca cola",
+        "coke"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 159
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000db",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100218",
+      "name": "Coca-Cola Zero Sugar 1,5L",
+      "brand": "Coca-Cola",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "coca cola zero",
+        "coke zero"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 159
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000dc",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100219",
+      "name": "Fanta Orange 1,5L",
+      "brand": "Fanta",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "fanta"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 159
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000dd",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100220",
+      "name": "Sprite 1,5L",
+      "brand": "Sprite",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "sprite"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 159
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000de",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100221",
+      "name": "Eistee Pfirsich 1,5L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "eistee",
+        "eistee pfirsich"
+      ],
+      "prices": {
+        "lidl": 85,
+        "aldi_nord": 85,
+        "aldi_sued": 85,
+        "netto": 85,
+        "rewe": 95
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000df",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100222",
+      "name": "Eistee Zitrone 1,5L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "eistee zitrone"
+      ],
+      "prices": {
+        "lidl": 85,
+        "aldi_nord": 85,
+        "aldi_sued": 85,
+        "netto": 85,
+        "rewe": 95
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000e0",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100223",
+      "name": "Energy Drink Original 250ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 250,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "energy drink"
+      ],
+      "prices": {
+        "lidl": 45,
+        "aldi_nord": 45,
+        "aldi_sued": 45,
+        "netto": 45,
+        "rewe": 49
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000e1",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100224",
+      "name": "Red Bull Energy Drink 250ml",
+      "brand": "Red Bull",
+      "quantity_amount": 250,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "red bull"
+      ],
+      "prices": {
+        "lidl": 129,
+        "aldi_nord": 129,
+        "aldi_sued": 129,
+        "netto": 129,
+        "rewe": 139
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000e2",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100225",
+      "name": "Kaffee Ganze Bohnen Crema 1kg",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "kaffeebohnen",
+        "kaffee bohnen",
+        "caffe crema"
+      ],
+      "prices": {
+        "lidl": 999,
+        "aldi_nord": 999,
+        "aldi_sued": 999,
+        "netto": 999,
+        "rewe": 1049
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000e3",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100226",
+      "name": "Bio Espresso Ganze Bohnen 1kg",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": true,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "espresso bohnen",
+        "bio kaffee"
+      ],
+      "prices": {
+        "lidl": 1199,
+        "aldi_nord": 1199,
+        "aldi_sued": 1199,
+        "netto": 1199,
+        "rewe": 1299
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000e4",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100227",
+      "name": "Lavazza Caffè Crema Bohnen 1kg",
+      "brand": "Lavazza",
+      "quantity_amount": 1,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "lavazza",
+        "lavazza bohnen"
+      ],
+      "prices": {
+        "lidl": 1499,
+        "aldi_nord": 1499,
+        "aldi_sued": 1499,
+        "netto": 1499,
+        "rewe": 1599
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000e5",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100228",
+      "name": "Filterkaffee gemahlen Röstfein 500g",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "filterkaffee",
+        "kaffee pulver"
+      ],
+      "prices": {
+        "lidl": 499,
+        "aldi_nord": 499,
+        "aldi_sued": 499,
+        "netto": 499,
+        "rewe": 529
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000e6",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100229",
+      "name": "Jacobs Krönung gemahlen 500g",
+      "brand": "Jacobs",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "jacobs krönung",
+        "jacobs kaffee"
+      ],
+      "prices": {
+        "lidl": 649,
+        "aldi_nord": 649,
+        "aldi_sued": 649,
+        "netto": 649,
+        "rewe": 699
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000e7",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100230",
+      "name": "Tchibo Feine Milde gemahlen 500g",
+      "brand": "Tchibo",
+      "quantity_amount": 500,
+      "quantity_unit": "g",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "tchibo",
+        "feine milde"
+      ],
+      "prices": {
+        "lidl": 649,
+        "aldi_nord": 649,
+        "aldi_sued": 649,
+        "netto": 649,
+        "rewe": 699
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000e8",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100231",
+      "name": "Kaffeepads Crema 20er",
+      "brand": "Eigenmarke",
+      "quantity_amount": 20,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "kaffeepads",
+        "pads"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000e9",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100232",
+      "name": "Schwarzer Tee Ceylon-Assam 50 Beutel",
+      "brand": "Eigenmarke",
+      "quantity_amount": 50,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "schwarzer tee",
+        "tee"
+      ],
+      "prices": {
+        "lidl": 129,
+        "aldi_nord": 129,
+        "aldi_sued": 129,
+        "netto": 129,
+        "rewe": 139
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ea",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100233",
+      "name": "Kamillentee 25 Beutel",
+      "brand": "Eigenmarke",
+      "quantity_amount": 25,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "kamillentee"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000eb",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100234",
+      "name": "Pfefferminztee 25 Beutel",
+      "brand": "Eigenmarke",
+      "quantity_amount": 25,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "pfefferminztee",
+        "minztee"
+      ],
+      "prices": {
+        "lidl": 79,
+        "aldi_nord": 79,
+        "aldi_sued": 79,
+        "netto": 79,
+        "rewe": 89
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ec",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100235",
+      "name": "Früchtetee Waldbeere 25 Beutel",
+      "brand": "Eigenmarke",
+      "quantity_amount": 25,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "früchtetee"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ed",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100236",
+      "name": "Teekanne Kamille 20 Beutel",
+      "brand": "Teekanne",
+      "quantity_amount": 20,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "teekanne"
+      ],
+      "prices": {
+        "lidl": 179,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 189
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ee",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100237",
+      "name": "Pilsener Bier 0,5L Dose",
+      "brand": "Eigenmarke",
+      "quantity_amount": 0.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "bier dose",
+        "pils dose"
+      ],
+      "prices": {
+        "lidl": 49,
+        "aldi_nord": 49,
+        "aldi_sued": 49,
+        "netto": 49,
+        "rewe": 55
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ef",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100238",
+      "name": "Krombacher Pils 0,5L Flasche",
+      "brand": "Krombacher",
+      "quantity_amount": 0.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "krombacher",
+        "pils"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 95
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000f0",
+      "category_id": "11111111-0000-0000-0000-000000000007",
+      "gtin_barcode": "400000100239",
+      "name": "Bitburger Premium Pils 0,5L Flasche",
+      "brand": "Bitburger",
+      "quantity_amount": 0.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "getraenke_kaffee",
+      "aliases": [
+        "bitburger",
+        "bier"
+      ],
+      "prices": {
+        "lidl": 89,
+        "aldi_nord": 89,
+        "aldi_sued": 89,
+        "netto": 89,
+        "rewe": 95
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000f1",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100240",
+      "name": "Toilettenpapier 3-lagig 8x200 Blatt",
+      "brand": "Eigenmarke",
+      "quantity_amount": 8,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "klopapier",
+        "toilettenpapier"
+      ],
+      "prices": {
+        "lidl": 345,
+        "aldi_nord": 345,
+        "aldi_sued": 345,
+        "netto": 345,
+        "rewe": 365
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000f2",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100241",
+      "name": "Toilettenpapier 4-lagig 8x150 Blatt",
+      "brand": "Eigenmarke",
+      "quantity_amount": 8,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "klopapier 4 lagig"
+      ],
+      "prices": {
+        "lidl": 375,
+        "aldi_nord": 375,
+        "aldi_sued": 375,
+        "netto": 375,
+        "rewe": 395
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000f3",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100242",
+      "name": "Küchenrolle 3-lagig 4x51 Blatt",
+      "brand": "Eigenmarke",
+      "quantity_amount": 4,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "küchenrolle",
+        "küchenpapier",
+        "zewa"
+      ],
+      "prices": {
+        "lidl": 225,
+        "aldi_nord": 225,
+        "aldi_sued": 225,
+        "netto": 225,
+        "rewe": 245
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000f4",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100243",
+      "name": "Papiertaschentücher Box 100er",
+      "brand": "Eigenmarke",
+      "quantity_amount": 100,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "taschentücher box",
+        "kosmetiktücher"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000f5",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100244",
+      "name": "Papiertaschentücher 30x10 Stück",
+      "brand": "Eigenmarke",
+      "quantity_amount": 30,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "taschentücher",
+        "tempo eigenmarke"
+      ],
+      "prices": {
+        "lidl": 245,
+        "aldi_nord": 245,
+        "aldi_sued": 245,
+        "netto": 245,
+        "rewe": 265
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000f6",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100245",
+      "name": "Tempo Taschentücher 30x10er",
+      "brand": "Tempo",
+      "quantity_amount": 30,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "tempo"
+      ],
+      "prices": {
+        "lidl": 369,
+        "aldi_nord": 379,
+        "aldi_sued": 379,
+        "netto": 379,
+        "rewe": 379
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000f7",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100246",
+      "name": "Geschirrspülmittel Ultra 500ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 500,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "spüli",
+        "spülmittel"
+      ],
+      "prices": {
+        "lidl": 95,
+        "aldi_nord": 95,
+        "aldi_sued": 95,
+        "netto": 95,
+        "rewe": 105
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000f8",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100247",
+      "name": "Pril Original Spülmittel 675ml",
+      "brand": "Pril",
+      "quantity_amount": 675,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "pril"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 209,
+        "aldi_sued": 209,
+        "netto": 209,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000f9",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100248",
+      "name": "Spülmaschinentabs All-in-1 40 Stück",
+      "brand": "Eigenmarke",
+      "quantity_amount": 40,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "spülmaschinentabs",
+        "tabs spülmaschine"
+      ],
+      "prices": {
+        "lidl": 345,
+        "aldi_nord": 345,
+        "aldi_sued": 345,
+        "netto": 345,
+        "rewe": 375
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000fa",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100249",
+      "name": "Somat Gold Spülmaschinentabs 40 Stück",
+      "brand": "Somat",
+      "quantity_amount": 40,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "somat tabs"
+      ],
+      "prices": {
+        "lidl": 799,
+        "aldi_nord": 829,
+        "aldi_sued": 829,
+        "netto": 829,
+        "rewe": 849
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000fb",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100250",
+      "name": "Spezialsalz Spülmaschine 2kg",
+      "brand": "Eigenmarke",
+      "quantity_amount": 2,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "spülmaschinensalz"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000fc",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100251",
+      "name": "Klarspüler Spülmaschine 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "klarspüler"
+      ],
+      "prices": {
+        "lidl": 129,
+        "aldi_nord": 129,
+        "aldi_sued": 129,
+        "netto": 129,
+        "rewe": 139
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000fd",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100252",
+      "name": "Allzweckreiniger Frischeduft 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "allzweckreiniger",
+        "putzmittel"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000fe",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100253",
+      "name": "Meister Proper Allzweckreiniger 1L",
+      "brand": "Meister Proper",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "meister proper"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 249,
+        "aldi_sued": 249,
+        "netto": 249,
+        "rewe": 269
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-0000000000ff",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100254",
+      "name": "Badreiniger Spray 750ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 750,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "badreiniger"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000100",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100255",
+      "name": "WC-Reinigungsgel 750ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 750,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "wc reiniger",
+        "kloreiniger"
+      ],
+      "prices": {
+        "lidl": 99,
+        "aldi_nord": 99,
+        "aldi_sued": 99,
+        "netto": 99,
+        "rewe": 109
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000101",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100256",
+      "name": "Colorwaschmittel flüssig 20 WL",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1.5,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "waschmittel",
+        "colorwaschmittel"
+      ],
+      "prices": {
+        "lidl": 345,
+        "aldi_nord": 345,
+        "aldi_sued": 345,
+        "netto": 345,
+        "rewe": 365
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000102",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100257",
+      "name": "Vollwaschmittel Pulver 20 WL",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1.35,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "vollwaschmittel",
+        "waschpulver"
+      ],
+      "prices": {
+        "lidl": 345,
+        "aldi_nord": 345,
+        "aldi_sued": 345,
+        "netto": 345,
+        "rewe": 365
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000103",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100258",
+      "name": "Ariel Vollwaschmittel Pulver 80 WL",
+      "brand": "Ariel",
+      "quantity_amount": 5.2,
+      "quantity_unit": "kg",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "ariel waschmittel"
+      ],
+      "prices": {
+        "lidl": 1999,
+        "aldi_nord": 1999,
+        "aldi_sued": 1999,
+        "netto": 1999,
+        "rewe": 2199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000104",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100259",
+      "name": "Zahnpasta Kräuter 125ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 125,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "zahnpasta",
+        "zahncreme"
+      ],
+      "prices": {
+        "lidl": 75,
+        "aldi_nord": 75,
+        "aldi_sued": 75,
+        "netto": 75,
+        "rewe": 79
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000105",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100260",
+      "name": "Colgate Total Original 75ml",
+      "brand": "Colgate",
+      "quantity_amount": 75,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "colgate"
+      ],
+      "prices": {
+        "lidl": 249,
+        "aldi_nord": 249,
+        "aldi_sued": 249,
+        "netto": 249,
+        "rewe": 269
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000106",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100261",
+      "name": "Zahnbürsten Mittel 2er",
+      "brand": "Eigenmarke",
+      "quantity_amount": 2,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "zahnbürste",
+        "zahnbürsten"
+      ],
+      "prices": {
+        "lidl": 85,
+        "aldi_nord": 85,
+        "aldi_sued": 85,
+        "netto": 85,
+        "rewe": 95
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000107",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100262",
+      "name": "Duschgel Men Fresh 300ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 300,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "duschgel men",
+        "duschgel"
+      ],
+      "prices": {
+        "lidl": 85,
+        "aldi_nord": 85,
+        "aldi_sued": 85,
+        "netto": 85,
+        "rewe": 95
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000108",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100263",
+      "name": "Duschgel Mandelmilch 300ml",
+      "brand": "Eigenmarke",
+      "quantity_amount": 300,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "duschgel pflege"
+      ],
+      "prices": {
+        "lidl": 85,
+        "aldi_nord": 85,
+        "aldi_sued": 85,
+        "netto": 85,
+        "rewe": 95
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-000000000109",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100264",
+      "name": "Nivea Pflegedusche Creme Soft 250ml",
+      "brand": "Nivea",
+      "quantity_amount": 250,
+      "quantity_unit": "ml",
+      "is_bio": false,
+      "is_private_label": false,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "nivea duschgel",
+        "nivea"
+      ],
+      "prices": {
+        "lidl": 189,
+        "aldi_nord": 189,
+        "aldi_sued": 189,
+        "netto": 189,
+        "rewe": 199
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000010a",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100265",
+      "name": "Flüssigseife Nachfüllbeutel 1L",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "l",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "seife",
+        "flüssigseife",
+        "handseife"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000010b",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100266",
+      "name": "Müllbeutel mit Zugband 35L 30er",
+      "brand": "Eigenmarke",
+      "quantity_amount": 30,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "müllbeutel",
+        "mülltüten",
+        "müllbeutel 35l"
+      ],
+      "prices": {
+        "lidl": 139,
+        "aldi_nord": 139,
+        "aldi_sued": 139,
+        "netto": 139,
+        "rewe": 149
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000010c",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100267",
+      "name": "Müllbeutel mit Zugband 60L 20er",
+      "brand": "Eigenmarke",
+      "quantity_amount": 20,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "müllbeutel 60l"
+      ],
+      "prices": {
+        "lidl": 149,
+        "aldi_nord": 149,
+        "aldi_sued": 149,
+        "netto": 149,
+        "rewe": 159
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000010d",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100268",
+      "name": "Alufolie 30m",
+      "brand": "Eigenmarke",
+      "quantity_amount": 1,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "alufolie"
+      ],
+      "prices": {
+        "lidl": 199,
+        "aldi_nord": 199,
+        "aldi_sued": 199,
+        "netto": 199,
+        "rewe": 219
+      }
+    },
+    {
+      "id": "22222222-0000-0000-0000-00000000010e",
+      "category_id": "11111111-0000-0000-0000-000000000008",
+      "gtin_barcode": "400000100269",
+      "name": "Backpapier Zuschnitte 30 Bögen",
+      "brand": "Eigenmarke",
+      "quantity_amount": 30,
+      "quantity_unit": "piece",
+      "is_bio": false,
+      "is_private_label": true,
+      "category_slug": "drogerie_haushalt",
+      "aliases": [
+        "backpapier"
+      ],
+      "prices": {
+        "lidl": 119,
+        "aldi_nord": 119,
+        "aldi_sued": 119,
+        "netto": 119,
+        "rewe": 129
+      }
+    }
+  ]
+}

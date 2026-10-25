@@ -15,7 +15,7 @@ class CatalogService {
     if (_isLoaded && _cachedProducts.isNotEmpty) return _cachedProducts;
 
     try {
-      final jsonString = await rootBundle.loadString('../test_data/products_seed_250.json');
+      final jsonString = await rootBundle.loadString('assets/products_seed_250.json');
       final Map<String, dynamic> data = json.decode(jsonString);
       final rawList = data['products'] as List<dynamic>? ?? [];
 

@@ -1,0 +1,122 @@
+{
+  "weekly_offers": [
+    {
+      "id": "44444444-0000-0000-0000-000000000001",
+      "chain": "rewe",
+      "product_name": "Barilla Spaghetti No. 5 500g",
+      "title": "Barilla Spaghetti No. 5 Wochenknüller",
+      "discount_price_cents": 149,
+      "regular_price_cents": 199,
+      "discount_percent": 25,
+      "is_active": true
+    },
+    {
+      "id": "44444444-0000-0000-0000-000000000002",
+      "chain": "rewe",
+      "product_name": "Dr. Oetker Ristorante Pizza Salame 320g",
+      "title": "Dr. Oetker Ristorante Pizza Wochenangebot",
+      "discount_price_cents": 249,
+      "regular_price_cents": 349,
+      "discount_percent": 28,
+      "is_active": true
+    },
+    {
+      "id": "44444444-0000-0000-0000-000000000003",
+      "chain": "lidl",
+      "product_name": "Somat Gold Spülmaschinentabs 40 Stück",
+      "title": "Somat Gold Tabs Knallerpreis",
+      "discount_price_cents": 749,
+      "regular_price_cents": 849,
+      "discount_percent": 12,
+      "is_active": true
+    },
+    {
+      "id": "44444444-0000-0000-0000-000000000004",
+      "chain": "lidl",
+      "product_name": "Kerrygold Irische Butter 250g",
+      "title": "Kerrygold Irische Butter im Angebot",
+      "discount_price_cents": 219,
+      "regular_price_cents": 279,
+      "discount_percent": 21,
+      "is_active": true
+    },
+    {
+      "id": "44444444-0000-0000-0000-000000000005",
+      "chain": "netto",
+      "product_name": "Bio Bananen",
+      "title": "Bio Bananen Frische-Aktion",
+      "discount_price_cents": 159,
+      "regular_price_cents": 199,
+      "discount_percent": 20,
+      "is_active": true
+    },
+    {
+      "id": "44444444-0000-0000-0000-000000000006",
+      "chain": "aldi_sued",
+      "product_name": "Kaffee Ganze Bohnen Crema 1kg",
+      "title": "Kaffee Crema Ganze Bohnen 1kg Aktionspreis",
+      "discount_price_cents": 899,
+      "regular_price_cents": 999,
+      "discount_percent": 10,
+      "is_active": true
+    }
+  ],
+  "sample_loyalty_accounts": [
+    {
+      "chain": "rewe",
+      "program_name": "PAYBACK",
+      "points_balance": 1420,
+      "points_value_cents": 1420
+    },
+    {
+      "chain": "lidl",
+      "program_name": "Lidl Plus",
+      "points_balance": 450,
+      "points_value_cents": 450
+    },
+    {
+      "chain": "netto",
+      "program_name": "DeutschlandCard",
+      "points_balance": 830,
+      "points_value_cents": 830
+    },
+    {
+      "chain": "aldi_sued",
+      "program_name": "ALDI Aktionen",
+      "points_balance": 0,
+      "points_value_cents": 0
+    }
+  ],
+  "sample_user_coupons": [
+    {
+      "id": "coup-001",
+      "chain": "rewe",
+      "title": "10% Rabatt auf Bio & Obst",
+      "discount_type": "percent",
+      "discount_value": 10.0,
+      "category_slug": "obst",
+      "min_spend_cents": 0,
+      "is_active": true
+    },
+    {
+      "id": "coup-002",
+      "chain": "lidl",
+      "title": "1,00 € Rabatt ab 15 € Einkauf",
+      "discount_type": "fixed_amount",
+      "discount_value": 100.0,
+      "category_slug": null,
+      "min_spend_cents": 1500,
+      "is_active": true
+    },
+    {
+      "id": "coup-003",
+      "chain": "netto",
+      "title": "5x DeutschlandCard Punkte",
+      "discount_type": "points_multiplier",
+      "discount_value": 5.0,
+      "category_slug": null,
+      "min_spend_cents": 0,
+      "is_active": true
+    }
+  ]
+}

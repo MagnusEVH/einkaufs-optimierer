@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import '../models/list_item.dart';
 import '../models/optimization_result.dart';
 import '../models/product.dart';
@@ -29,10 +28,6 @@ class OptimizerService {
     // Try Remote Edge Function if Supabase is active
     if (!SupabaseService.isDemoMode && SupabaseService.client != null) {
       try {
-        final session = SupabaseService.client!.auth.currentSession;
-        final edgeFunctionUrl =
-            '${SupabaseService.client!.rest.url.replaceAll('/rest/v1', '')}/functions/v1/optimize-route';
-
         final payload = {
           'user_location': {
             'latitude': userLocation.latitude,
@@ -46,19 +41,14 @@ class OptimizerService {
           'preferences': preferences.toJson(),
         };
 
-        final response = await http.post(
-          Uri.parse(edgeFunctionUrl),
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SupabaseService.client!.supabaseKey,
-            if (session != null) 'Authorization': 'Bearer ${session.accessToken}',
-          },
-          body: json.encode(payload),
+        final response = await SupabaseService.client!.functions.invoke(
+          'optimize-route',
+          body: payload,
         );
 
-        if (response.statusCode == 200) {
-          final data = json.decode(response.body);
-          return OptimizationResult.fromJson(data);
+        if (response.status == 200 && response.data != null) {
+          final data = response.data is String ? json.decode(response.data as String) : response.data;
+          return OptimizationResult.fromJson(data as Map<String, dynamic>);
         }
       } catch (e) {
         debugPrint('Remote optimizer failed: $e. Falling back to local optimization engine.');

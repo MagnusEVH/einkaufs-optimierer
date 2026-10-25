@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/models/optimization_result.dart';
 import '../../core/models/store.dart';
+import '../../core/models/user_preferences.dart';
 import '../../core/services/location_service.dart';
 import '../../core/services/optimizer_service.dart';
 import '../shopping_list/shopping_list_controller.dart';
@@ -65,6 +66,8 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
         return Colors.indigo.shade800;
       case SupermarketChain.rewe:
         return Colors.red.shade700;
+      case SupermarketChain.netto:
+        return Colors.amber.shade800;
     }
   }
 

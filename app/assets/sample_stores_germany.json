@@ -1,0 +1,56 @@
+[
+  {
+    "id": "33333333-0000-0000-0000-000000000001",
+    "chain": "lidl",
+    "name": "Lidl Filiale Köln Kalk",
+    "address": "Rolshover Str. 11, 51105 Köln",
+    "latitude": 50.9335,
+    "longitude": 6.9942,
+    "google_place_id": "ChIJ_lidl_kalk_001"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000002",
+    "chain": "rewe",
+    "name": "REWE Center Kalk",
+    "address": "Kalker Hauptstraße 55, 51103 Köln",
+    "latitude": 50.9348,
+    "longitude": 6.9965,
+    "google_place_id": "ChIJ_rewe_kalk_002"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000003",
+    "chain": "aldi_sued",
+    "name": "ALDI SÜD Köln Deutz",
+    "address": "Siegburger Str. 149, 50679 Köln",
+    "latitude": 50.9270,
+    "longitude": 6.9805,
+    "google_place_id": "ChIJ_aldi_deutz_003"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000004",
+    "chain": "lidl",
+    "name": "Lidl Filiale Köln Deutz",
+    "address": "Deutzer Freiheit 70, 50679 Köln",
+    "latitude": 50.9290,
+    "longitude": 6.9775,
+    "google_place_id": "ChIJ_lidl_deutz_004"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000005",
+    "chain": "netto",
+    "name": "Netto Marken-Discount Köln Kalk",
+    "address": "Kalker Post 12, 51103 Köln",
+    "latitude": 50.9352,
+    "longitude": 6.9930,
+    "google_place_id": "ChIJ_netto_kalk_005"
+  },
+  {
+    "id": "33333333-0000-0000-0000-000000000006",
+    "chain": "rewe",
+    "name": "REWE City Köln Mülheim",
+    "address": "Frankfurter Str. 35, 51065 Köln",
+    "latitude": 50.9650,
+    "longitude": 7.0090,
+    "google_place_id": "ChIJ_rewe_muelheim_006"
+  }
+]
