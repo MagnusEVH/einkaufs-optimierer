@@ -42,6 +42,10 @@ class _WalletScreenState extends State<WalletScreen> {
         return Colors.orange.shade800;
       case SupermarketChain.rewe:
         return Colors.red.shade700;
+      case SupermarketChain.dm:
+        return Colors.purple.shade700;
+      case SupermarketChain.rossmann:
+        return Colors.red.shade900;
     }
   }
 

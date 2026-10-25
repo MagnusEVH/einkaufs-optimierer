@@ -183,6 +183,16 @@ class OptimizerService {
               nameLower.contains('gemüse') ||
               nameLower.contains('gemuese')) {
             catKey = 'gemuese';
+          } else if (nameLower.contains('toilettenpapier') ||
+              nameLower.contains('klopapier') ||
+              nameLower.contains('duschgel') ||
+              nameLower.contains('shampoo') ||
+              nameLower.contains('zahnpasta') ||
+              nameLower.contains('seife') ||
+              nameLower.contains('windel') ||
+              nameLower.contains('waschmittel') ||
+              nameLower.contains('drogerie')) {
+            catKey = 'drogerie';
           }
 
           int effectiveP1 = p1;
@@ -327,6 +337,69 @@ class OptimizerService {
   }
 
   static final List<Store> _defaultSampleStores = [
+    Store(
+      id: '44444444-0000-0000-0000-000000000001',
+      chain: SupermarketChain.aldi_sued,
+      name: 'ALDI SÜD Bingen-Büdesheim',
+      address: 'Saarlandstraße 165, 55411 Bingen am Rhein',
+      latitude: 49.9545,
+      longitude: 7.9172,
+      clusterNum: 10,
+    ),
+    Store(
+      id: '44444444-0000-0000-0000-000000000002',
+      chain: SupermarketChain.lidl,
+      name: 'Lidl Filiale Bingen-Büdesheim',
+      address: 'Saarlandstraße 171, 55411 Bingen am Rhein',
+      latitude: 49.9542,
+      longitude: 7.9160, // 88m from Aldi -> Cluster 10!
+      clusterNum: 10,
+    ),
+    Store(
+      id: '44444444-0000-0000-0000-000000000003',
+      chain: SupermarketChain.rewe,
+      name: 'REWE Markt Bingen',
+      address: 'Mainzer Straße 44, 55411 Bingen am Rhein',
+      latitude: 49.9658,
+      longitude: 7.9045,
+      clusterNum: 11,
+    ),
+    Store(
+      id: '44444444-0000-0000-0000-000000000004',
+      chain: SupermarketChain.dm,
+      name: 'dm-drogerie markt Bingen',
+      address: 'Vorstadt 10-12, 55411 Bingen am Rhein',
+      latitude: 49.9662,
+      longitude: 7.8965,
+      clusterNum: 12,
+    ),
+    Store(
+      id: '44444444-0000-0000-0000-000000000005',
+      chain: SupermarketChain.rossmann,
+      name: 'Rossmann Drogeriemarkt Bingen',
+      address: 'Basilikastraße 3, 55411 Bingen am Rhein',
+      latitude: 49.9670,
+      longitude: 7.8940, // 200m from dm -> Cluster 12!
+      clusterNum: 12,
+    ),
+    Store(
+      id: '44444444-0000-0000-0000-000000000006',
+      chain: SupermarketChain.netto,
+      name: 'Netto Marken-Discount Oberwesel',
+      address: 'Chrishausener Str. 2, 55430 Oberwesel',
+      latitude: 50.1082,
+      longitude: 7.7285,
+      clusterNum: 20,
+    ),
+    Store(
+      id: '44444444-0000-0000-0000-000000000007',
+      chain: SupermarketChain.rewe,
+      name: 'REWE City Oberwesel',
+      address: 'Koblenzer Str. 18, 55430 Oberwesel',
+      latitude: 50.1105,
+      longitude: 7.7260, // 300m from Netto -> Cluster 20!
+      clusterNum: 20,
+    ),
     Store(
       id: '33333333-0000-0000-0000-000000000001',
       chain: SupermarketChain.lidl,

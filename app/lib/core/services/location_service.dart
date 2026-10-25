@@ -11,10 +11,18 @@ class UserLocation {
 }
 
 class LocationService {
-  // Default fallback location: Köln Kalk / Deutz Center (matches seed stores)
+  // Default fallback locations
+  static const UserLocation bingenLocation = UserLocation(
+    latitude: 49.9650,
+    longitude: 7.9000,
+  );
+  static const UserLocation oberweselLocation = UserLocation(
+    latitude: 50.1080,
+    longitude: 7.7280,
+  );
   static const UserLocation fallbackLocation = UserLocation(
-    latitude: 50.9340,
-    longitude: 6.9950,
+    latitude: 49.9650, // Default to Bingen am Rhein (Pilot Region RLP)
+    longitude: 7.9000,
   );
 
   /// Requests foreground location only when the user explicitly triggers

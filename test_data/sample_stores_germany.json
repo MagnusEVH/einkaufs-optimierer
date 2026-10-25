@@ -6,6 +6,9 @@
     "address": "Rolshover Str. 11, 51105 Köln",
     "latitude": 50.9335,
     "longitude": 6.9942,
+    "postal_code": "51105",
+    "city": "Köln",
+    "cluster_id": 1,
     "google_place_id": "ChIJ_lidl_kalk_001"
   },
   {
@@ -15,6 +18,9 @@
     "address": "Kalker Hauptstraße 55, 51103 Köln",
     "latitude": 50.9348,
     "longitude": 6.9965,
+    "postal_code": "51103",
+    "city": "Köln",
+    "cluster_id": 1,
     "google_place_id": "ChIJ_rewe_kalk_002"
   },
   {
@@ -24,6 +30,9 @@
     "address": "Siegburger Str. 149, 50679 Köln",
     "latitude": 50.9270,
     "longitude": 6.9805,
+    "postal_code": "50679",
+    "city": "Köln",
+    "cluster_id": 2,
     "google_place_id": "ChIJ_aldi_deutz_003"
   },
   {
@@ -33,6 +42,9 @@
     "address": "Deutzer Freiheit 70, 50679 Köln",
     "latitude": 50.9290,
     "longitude": 6.9775,
+    "postal_code": "50679",
+    "city": "Köln",
+    "cluster_id": 2,
     "google_place_id": "ChIJ_lidl_deutz_004"
   },
   {
@@ -42,6 +54,9 @@
     "address": "Kalker Post 12, 51103 Köln",
     "latitude": 50.9352,
     "longitude": 6.9930,
+    "postal_code": "51103",
+    "city": "Köln",
+    "cluster_id": 1,
     "google_place_id": "ChIJ_netto_kalk_005"
   },
   {
@@ -51,6 +66,93 @@
     "address": "Frankfurter Str. 35, 51065 Köln",
     "latitude": 50.9650,
     "longitude": 7.0090,
+    "postal_code": "51065",
+    "city": "Köln",
+    "cluster_id": 3,
     "google_place_id": "ChIJ_rewe_muelheim_006"
+  },
+  {
+    "id": "44444444-0000-0000-0000-000000000001",
+    "chain": "aldi_sued",
+    "name": "ALDI SÜD Bingen-Büdesheim",
+    "address": "Saarlandstraße 165, 55411 Bingen am Rhein",
+    "latitude": 49.9545,
+    "longitude": 7.9172,
+    "postal_code": "55411",
+    "city": "Bingen am Rhein",
+    "cluster_id": 10,
+    "google_place_id": "ChIJ_aldi_bingen_001"
+  },
+  {
+    "id": "44444444-0000-0000-0000-000000000002",
+    "chain": "lidl",
+    "name": "Lidl Filiale Bingen-Büdesheim",
+    "address": "Saarlandstraße 171, 55411 Bingen am Rhein",
+    "latitude": 49.9542,
+    "longitude": 7.9160,
+    "postal_code": "55411",
+    "city": "Bingen am Rhein",
+    "cluster_id": 10,
+    "google_place_id": "ChIJ_lidl_bingen_002"
+  },
+  {
+    "id": "44444444-0000-0000-0000-000000000003",
+    "chain": "rewe",
+    "name": "REWE Markt Bingen",
+    "address": "Mainzer Straße 44, 55411 Bingen am Rhein",
+    "latitude": 49.9658,
+    "longitude": 7.9045,
+    "postal_code": "55411",
+    "city": "Bingen am Rhein",
+    "cluster_id": 11,
+    "google_place_id": "ChIJ_rewe_bingen_003"
+  },
+  {
+    "id": "44444444-0000-0000-0000-000000000004",
+    "chain": "dm",
+    "name": "dm-drogerie markt Bingen",
+    "address": "Vorstadt 10-12, 55411 Bingen am Rhein",
+    "latitude": 49.9662,
+    "longitude": 7.8965,
+    "postal_code": "55411",
+    "city": "Bingen am Rhein",
+    "cluster_id": 12,
+    "google_place_id": "ChIJ_dm_bingen_004"
+  },
+  {
+    "id": "44444444-0000-0000-0000-000000000005",
+    "chain": "rossmann",
+    "name": "Rossmann Drogeriemarkt Bingen",
+    "address": "Basilikastraße 3, 55411 Bingen am Rhein",
+    "latitude": 49.9670,
+    "longitude": 7.8940,
+    "postal_code": "55411",
+    "city": "Bingen am Rhein",
+    "cluster_id": 12,
+    "google_place_id": "ChIJ_rossmann_bingen_005"
+  },
+  {
+    "id": "44444444-0000-0000-0000-000000000006",
+    "chain": "netto",
+    "name": "Netto Marken-Discount Oberwesel",
+    "address": "Chrishausener Str. 2, 55430 Oberwesel",
+    "latitude": 50.1082,
+    "longitude": 7.7285,
+    "postal_code": "55430",
+    "city": "Oberwesel",
+    "cluster_id": 20,
+    "google_place_id": "ChIJ_netto_oberwesel_006"
+  },
+  {
+    "id": "44444444-0000-0000-0000-000000000007",
+    "chain": "rewe",
+    "name": "REWE City Oberwesel",
+    "address": "Koblenzer Str. 18, 55430 Oberwesel",
+    "latitude": 50.1105,
+    "longitude": 7.7260,
+    "postal_code": "55430",
+    "city": "Oberwesel",
+    "cluster_id": 20,
+    "google_place_id": "ChIJ_rewe_oberwesel_007"
   }
 ]

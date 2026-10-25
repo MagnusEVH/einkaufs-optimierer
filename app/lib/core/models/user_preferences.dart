@@ -17,8 +17,9 @@ class UserPreferences {
     this.categoryStorePreferences = const {
       'obst': 'netto',
       'gemuese': 'lidl',
+      'drogerie': 'dm',
     },
-    this.preferredChains = const ['lidl', 'aldi_nord', 'aldi_sued', 'netto', 'rewe'],
+    this.preferredChains = const ['lidl', 'aldi_nord', 'aldi_sued', 'netto', 'rewe', 'dm', 'rossmann'],
     this.transportMode = 'car',
     this.costPerKmCents = 30.0,
     this.minuteValueCents = 15.0,
@@ -74,11 +75,11 @@ class UserPreferences {
       bioPreference: json['bio_preference'] ?? 'neutral',
       categoryStorePreferences: catPrefs.isNotEmpty
           ? catPrefs
-          : const {'obst': 'netto', 'gemuese': 'lidl'},
+          : const {'obst': 'netto', 'gemuese': 'lidl', 'drogerie': 'dm'},
       preferredChains: (json['preferred_chains'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
-          const ['lidl', 'aldi_nord', 'aldi_sued', 'netto', 'rewe'],
+          const ['lidl', 'aldi_nord', 'aldi_sued', 'netto', 'rewe', 'dm', 'rossmann'],
       transportMode: json['transport_mode'] ?? 'car',
       costPerKmCents: (json['cost_per_km_cents'] as num?)?.toDouble() ?? 30.0,
       minuteValueCents: (json['minute_value_cents'] as num?)?.toDouble() ?? 15.0,

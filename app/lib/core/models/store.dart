@@ -5,7 +5,9 @@ enum SupermarketChain {
   aldi_nord,
   aldi_sued,
   netto,
-  rewe;
+  rewe,
+  dm,
+  rossmann;
 
   String get displayName {
     switch (this) {
@@ -19,6 +21,10 @@ enum SupermarketChain {
         return 'Netto';
       case SupermarketChain.rewe:
         return 'REWE';
+      case SupermarketChain.dm:
+        return 'dm-drogerie markt';
+      case SupermarketChain.rossmann:
+        return 'Rossmann';
     }
   }
 
@@ -36,6 +42,11 @@ enum SupermarketChain {
         return SupermarketChain.netto;
       case 'rewe':
         return SupermarketChain.rewe;
+      case 'dm':
+      case 'dm_drogerie_markt':
+        return SupermarketChain.dm;
+      case 'rossmann':
+        return SupermarketChain.rossmann;
       default:
         return SupermarketChain.rewe;
     }
@@ -51,6 +62,8 @@ class Store {
   final double longitude;
   final int? clusterNum;
   final double? distanceMeters;
+  final String? postalCode;
+  final String? city;
 
   const Store({
     required this.id,
@@ -61,6 +74,8 @@ class Store {
     required this.longitude,
     this.clusterNum,
     this.distanceMeters,
+    this.postalCode,
+    this.city,
   });
 
   factory Store.fromJson(Map<String, dynamic> json) {
@@ -73,6 +88,8 @@ class Store {
       longitude: (json['longitude'] as num?)?.toDouble() ?? 6.9942,
       clusterNum: json['cluster_num'] ?? json['cluster_id'],
       distanceMeters: (json['distance_meters'] as num?)?.toDouble(),
+      postalCode: json['postal_code']?.toString(),
+      city: json['city']?.toString(),
     );
   }
 
@@ -86,6 +103,8 @@ class Store {
       'longitude': longitude,
       'cluster_num': clusterNum,
       'distance_meters': distanceMeters,
+      'postal_code': postalCode,
+      'city': city,
     };
   }
 }

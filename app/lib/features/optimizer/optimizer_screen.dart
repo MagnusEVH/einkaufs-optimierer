@@ -68,6 +68,10 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
         return Colors.red.shade700;
       case SupermarketChain.netto:
         return Colors.amber.shade800;
+      case SupermarketChain.dm:
+        return Colors.purple.shade700;
+      case SupermarketChain.rossmann:
+        return Colors.red.shade900;
     }
   }
 

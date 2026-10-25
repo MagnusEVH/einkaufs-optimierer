@@ -31,3 +31,4 @@ flutter:
     - assets/products_seed_250.json
     - assets/sample_stores_germany.json
     - assets/sample_offers_and_wallet.json
+    - assets/live_scraped_offers_rlp.json
