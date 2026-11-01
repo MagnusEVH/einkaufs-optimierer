@@ -216,12 +216,19 @@ class _WalletScreenState extends State<WalletScreen> {
           Container(
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.teal.shade800, Colors.teal.shade600],
+              gradient: const LinearGradient(
+                colors: [Color(0xFF065F46), Color(0xFF059669)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF059669).withValues(alpha: 0.3),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,8 +247,8 @@ class _WalletScreenState extends State<WalletScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Über ${_accounts.where((a) => a.pointsBalance > 0).length} aktive Treueprogramme',
-                  style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 13),
+                  'Über ${_accounts.where((a) => a.pointsBalance > 0).length} aktive Treueprogramme (inkl. PAYBACK & Rossmann 10%)',
+                  style: TextStyle(color: Colors.white.withValues(alpha: 0.9), fontSize: 13),
                 ),
               ],
             ),
@@ -351,9 +358,9 @@ class _WalletScreenState extends State<WalletScreen> {
           // 3. Weekly Promotional Offers from Brochures
           Row(
             children: [
-              const Icon(Icons.campaign, color: Colors.teal),
+              const Icon(Icons.campaign, color: Color(0xFF059669)),
               const SizedBox(width: 8),
-              Text('Wöchentliche Prospekt-Angebote', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+              Text('Wöchentliche Angebote (Bingen & Oberwesel)', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
             ],
           ),
           const SizedBox(height: 10),

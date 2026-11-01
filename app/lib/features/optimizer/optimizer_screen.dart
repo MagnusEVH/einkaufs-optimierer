@@ -10,7 +10,9 @@ import '../../core/services/optimizer_service.dart';
 import '../shopping_list/shopping_list_controller.dart';
 
 class OptimizerResultScreen extends ConsumerStatefulWidget {
-  const OptimizerResultScreen({super.key});
+  final Store? startStore;
+
+  const OptimizerResultScreen({super.key, this.startStore});
 
   @override
   ConsumerState<OptimizerResultScreen> createState() => _OptimizerResultScreenState();
@@ -43,6 +45,7 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
         userLocation: location,
         items: items,
         preferences: const UserPreferences(),
+        anchorStore: widget.startStore,
       );
 
       setState(() {
@@ -128,6 +131,29 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
                   : ListView(
                       padding: const EdgeInsets.all(16),
                       children: [
+                        if (widget.startStore != null) ...[
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.amber.shade50,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.amber.shade300),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.flag_rounded, color: Colors.amber.shade800, size: 20),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'Ausgangsfiliale festgelegt: ${widget.startStore!.name}',
+                                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.brown.shade800, fontSize: 13),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                        ],
                         // Net Savings Hero Card
                         _buildHeroSavingsCard(theme),
                         const SizedBox(height: 16),

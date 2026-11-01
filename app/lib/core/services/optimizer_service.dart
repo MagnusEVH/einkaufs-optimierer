@@ -20,6 +20,7 @@ class OptimizerService {
     required List<ShoppingListItem> items,
     required UserPreferences preferences,
     List<Store>? availableStores,
+    Store? anchorStore,
   }) async {
     if (items.isEmpty) {
       throw Exception('Einkaufsliste ist leer.');
@@ -61,6 +62,7 @@ class OptimizerService {
       items: items,
       preferences: preferences,
       stores: availableStores ?? _defaultSampleStores,
+      anchorStore: anchorStore,
     );
   }
 
@@ -96,6 +98,7 @@ class OptimizerService {
     required List<ShoppingListItem> items,
     required UserPreferences preferences,
     required List<Store> stores,
+    Store? anchorStore,
   }) {
     // 1. Resolve catalog items
     final resolvedList = items.map((it) {
@@ -109,10 +112,10 @@ class OptimizerService {
 
     // 2. Evaluate Single Store solutions
     int bestSingleBasket = 999999999;
-    Store bestSingleStore = stores.first;
+    Store bestSingleStore = anchorStore ?? stores.first;
     double bestSingleDist = 99999999.0;
 
-    for (final store in stores) {
+    for (final store in (anchorStore != null ? [anchorStore] : stores)) {
       int sum = 0;
       for (final it in resolvedList) {
         final prod = it['matched'] as Product?;
@@ -146,8 +149,19 @@ class OptimizerService {
 
     for (int i = 0; i < stores.length; i++) {
       for (int j = i + 1; j < stores.length; j++) {
-        final s1 = stores[i];
-        final s2 = stores[j];
+        var s1 = stores[i];
+        var s2 = stores[j];
+
+        // If an anchorStore is selected, enforce that the route starts with this store
+        if (anchorStore != null) {
+          if (s1.id != anchorStore.id && s2.id != anchorStore.id) continue;
+          if (s2.id == anchorStore.id) {
+            // Swap so anchorStore is s1 (Start stop)
+            final temp = s1;
+            s1 = s2;
+            s2 = temp;
+          }
+        }
 
         int comboSum = 0;
         final s1Items = <AllocatedItem>[];

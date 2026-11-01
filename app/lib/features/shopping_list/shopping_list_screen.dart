@@ -91,10 +91,11 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceVariant.withOpacity(0.4),
-              border: Border(bottom: BorderSide(color: theme.dividerColor.withOpacity(0.1))),
+              color: Colors.white,
+              border: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.06))),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
                   controller: _inputController,
@@ -103,17 +104,51 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                   onSubmitted: (_) => _submitItem(),
                   decoration: InputDecoration(
                     hintText: 'Artikel hinzufügen (z. B. Skyr, Bio Eier, ja!...)',
-                    prefixIcon: const Icon(Icons.add_shopping_cart),
+                    prefixIcon: const Icon(Icons.search_rounded, color: Color(0xFF059669)),
                     suffixIcon: IconButton(
-                      icon: const Icon(Icons.add_circle, color: Colors.teal),
+                      icon: const Icon(Icons.add_circle, color: Color(0xFF059669)),
                       onPressed: () => _submitItem(),
                     ),
                     filled: true,
-                    fillColor: theme.colorScheme.surface,
+                    fillColor: const Color(0xFFF1F5F9),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide.none,
                     ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                ),
+
+                // Quick Add Chips
+                const SizedBox(height: 10),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Schnellwahl:',
+                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF64748B)),
+                      ),
+                      const SizedBox(width: 8),
+                      ...['Skyr Natur', 'Vollmilch', 'Markenbutter', 'Bananen', 'Toilettenpapier', 'Haferflocken'].map((quickItem) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 6),
+                          child: ActionChip(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            label: Text(
+                              '+ $quickItem',
+                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF065F46)),
+                            ),
+                            backgroundColor: const Color(0xFFD1FAE5),
+                            side: BorderSide.none,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            onPressed: () {
+                              ref.read(shoppingListProvider.notifier).addItem(quickItem);
+                            },
+                          ),
+                        );
+                      }),
+                    ],
                   ),
                 ),
 
@@ -122,11 +157,12 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                   Container(
                     margin: const EdgeInsets.only(top: 8),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surface,
-                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(14),
                       boxShadow: [
-                        BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 8, offset: const Offset(0, 4)),
+                        BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 10, offset: const Offset(0, 4)),
                       ],
+                      border: Border.all(color: Colors.black.withValues(alpha: 0.06)),
                     ),
                     child: ListView.separated(
                       shrinkWrap: true,
@@ -137,11 +173,11 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                         final prod = _suggestions[index];
                         return ListTile(
                           dense: true,
-                          leading: const Icon(Icons.shopping_basket_outlined, color: Colors.teal, size: 20),
+                          leading: const Icon(Icons.shopping_basket_outlined, color: Color(0xFF059669), size: 20),
                           title: Text(prod.name, style: const TextStyle(fontWeight: FontWeight.w600)),
                           subtitle: Text(
                             prod.isBio ? 'Bio-Produkt' : (prod.brand ?? 'Eigenmarke'),
-                            style: TextStyle(fontSize: 12, color: prod.isBio ? Colors.green : Colors.grey),
+                            style: TextStyle(fontSize: 12, color: prod.isBio ? Colors.green.shade700 : Colors.grey),
                           ),
                           trailing: const Icon(Icons.arrow_forward_ios, size: 14),
                           onTap: () => _submitItem(prod),
@@ -161,11 +197,16 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
               children: [
                 Text(
                   '${state.items.length} Artikel auf der Liste',
-                  style: theme.textTheme.labelLarge?.copyWith(color: Colors.grey.shade700),
+                  style: const TextStyle(color: Color(0xFF475569), fontWeight: FontWeight.w600, fontSize: 13),
                 ),
-                Text(
-                  'Lidl • Aldi • Rewe',
-                  style: theme.textTheme.labelMedium?.copyWith(color: Colors.teal.shade700, fontWeight: FontWeight.bold),
+                const SizedBox(width: 8),
+                const Flexible(
+                  child: Text(
+                    '6 Ketten aktiv (Lidl, Aldi, Rewe, Netto, dm, Rossmann)',
+                    style: TextStyle(color: Color(0xFF059669), fontWeight: FontWeight.bold, fontSize: 11),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                  ),
                 ),
               ],
             ),
@@ -306,21 +347,24 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
+            color: Colors.white,
             boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -4)),
+              BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, -4)),
             ],
+            border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.06))),
           ),
           child: FilledButton.icon(
-            icon: const Icon(Icons.route_outlined),
+            icon: const Icon(Icons.bolt_rounded, size: 22),
             label: Text(
               'Günstigste Route berechnen (${state.items.length} Artikel)',
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             style: FilledButton.styleFrom(
-              backgroundColor: Colors.teal.shade700,
+              backgroundColor: const Color(0xFF059669),
+              foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              elevation: 2,
             ),
             onPressed: state.items.isEmpty
                 ? null
