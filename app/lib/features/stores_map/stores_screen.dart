@@ -2,34 +2,16 @@
 
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import '../../core/models/store.dart';
 import '../../core/services/location_service.dart';
 import '../optimizer/optimizer_screen.dart';
 
-/// Enum to allow toggling between the offline Interactive Vector Map and native Google Maps
-enum MapProvider {
-  vectorInteractive,
-  googleMapsNative,
-}
-
-enum RoadType {
-  autobahn,
-  federal,
-  mainStreet,
-  localStreet,
-}
-
-/// Extensible model for roads with optional names
-class MapRoad {
-  final String? name;
-  final RoadType type;
-  final List<Offset> geoPoints; // (lat, lng)
-
-  const MapRoad({
-    this.name,
-    required this.type,
-    required this.geoPoints,
-  });
+enum TileStyle {
+  voyager,
+  openStreetMap,
+  satellite,
 }
 
 class StoresScreen extends StatefulWidget {
@@ -46,29 +28,16 @@ class _StoresScreenState extends State<StoresScreen> {
   String _activeDistrict = 'Alle';
   String _activeChainFilter = 'Alle';
 
-  // Initially NO store is selected: user gets full, clean map view
+  // Selected Store for on-demand bottom sheet
   Store? _selectedStore;
 
-  // Toggle for road names (can be toggled in AppBar or at deep zoom)
-  bool _showRoadNames = false;
+  // Selected Tile Style: Voyager by default (Google Maps clean aesthetic)
+  TileStyle _tileStyle = TileStyle.voyager;
 
-  // Map engine selection
-  MapProvider _mapProvider = MapProvider.vectorInteractive;
+  // Map Controller for smooth programmatic zooming and centering
+  final MapController _mapController = MapController();
 
-  // InteractiveViewer Transformation Controller
-  final TransformationController _transformationController = TransformationController();
-
-  // Geographic Bounding Box for Mainz-Bingen & Rhein-Hunsrück-Kreis
-  static const double minLat = 49.84;
-  static const double maxLat = 50.29;
-  static const double minLng = 7.34;
-  static const double maxLng = 8.24;
-
-  // Virtual Canvas Dimension for realistic scaling
-  static const double virtualCanvasWidth = 2400.0;
-  static const double virtualCanvasHeight = 1900.0;
-
-  // Complete preloaded dataset for both Landkreise (30 real stores with authentic addresses & opening hours)
+  // Complete preloaded dataset for both Landkreise (30 real stores with authentic coordinates & opening hours)
   final List<Store> _allStores = const [
     // ==========================================
     // LANDKREIS MAINZ-BINGEN (14 Stores)
@@ -505,35 +474,15 @@ class _StoresScreenState extends State<StoresScreen> {
     _loadLocation();
   }
 
-  @override
-  void dispose() {
-    _transformationController.dispose();
-    super.dispose();
-  }
-
   Future<void> _loadLocation() async {
     final loc = await LocationService.getCurrentLocation();
     if (mounted) {
       setState(() {
         _location = loc;
         _isLoading = false;
-        // User request: DO NOT preselect any store! Keep view clean!
-        _selectedStore = null;
+        _selectedStore = null; // Clean start without initial overlay
       });
-      // Initial viewpoint centered around Bingen / Middle Rhine
-      _focusOnLocation(49.96, 7.91, 1.05);
     }
-  }
-
-  /// Converts true GPS (lat, lng) to virtual map canvas pixel coordinates (x, y)
-  static Offset projectGpsToCanvas(double lat, double lng, Size canvasSize) {
-    final clampedLat = lat.clamp(minLat, maxLat);
-    final clampedLng = lng.clamp(minLng, maxLng);
-
-    final x = ((clampedLng - minLng) / (maxLng - minLng)) * canvasSize.width;
-    final y = ((maxLat - clampedLat) / (maxLat - minLat)) * canvasSize.height;
-
-    return Offset(x, y);
   }
 
   List<Store> get _filteredStores {
@@ -609,39 +558,49 @@ class _StoresScreenState extends State<StoresScreen> {
   }
 
   void _zoomIn() {
-    final matrix = _transformationController.value.clone();
-    matrix.multiply(Matrix4.diagonal3Values(1.3, 1.3, 1.0));
-    _transformationController.value = matrix;
+    final currentZoom = _mapController.camera.zoom;
+    _mapController.move(_mapController.camera.center, currentZoom + 1.0);
   }
 
   void _zoomOut() {
-    final matrix = _transformationController.value.clone();
-    matrix.multiply(Matrix4.diagonal3Values(0.77, 0.77, 1.0));
-    _transformationController.value = matrix;
+    final currentZoom = _mapController.camera.zoom;
+    _mapController.move(_mapController.camera.center, currentZoom - 1.0);
   }
 
-  void _focusOnLocation(double lat, double lng, [double zoom = 1.1]) {
-    final target = projectGpsToCanvas(lat, lng, const Size(virtualCanvasWidth, virtualCanvasHeight));
-    final tx = -target.dx * zoom + 200;
-    final ty = -target.dy * zoom + 320;
-    final matrix = Matrix4.identity()
-      ..translateByDouble(tx, ty, 0.0, 1.0)
-      ..multiply(Matrix4.diagonal3Values(zoom, zoom, 1.0));
-    _transformationController.value = matrix;
+  void _recenterOnUser() {
+    final userLoc = _location ?? LocationService.bingenLocation;
+    _mapController.move(LatLng(userLoc.latitude, userLoc.longitude), 14.0);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Zentriert auf deinen Standort 📍'),
+        duration: Duration(milliseconds: 1200),
+      ),
+    );
   }
 
   void _onDistrictSelected(String district) {
     setState(() {
       _activeDistrict = district;
-      _selectedStore = null; // Reset selection so user can look around freely
+      _selectedStore = null;
     });
 
     if (district == 'Mainz-Bingen') {
-      _focusOnLocation(49.96, 7.95, 1.25);
+      _mapController.move(const LatLng(49.965, 7.95), 12.0);
     } else if (district == 'Rhein-Hunsrück') {
-      _focusOnLocation(50.08, 7.60, 1.15);
+      _mapController.move(const LatLng(50.08, 7.60), 11.0);
     } else {
-      _focusOnLocation(50.02, 7.78, 0.95);
+      _mapController.move(const LatLng(50.02, 7.78), 10.5);
+    }
+  }
+
+  String _getTileUrl() {
+    switch (_tileStyle) {
+      case TileStyle.voyager:
+        return 'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png';
+      case TileStyle.openStreetMap:
+        return 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+      case TileStyle.satellite:
+        return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
     }
   }
 
@@ -672,53 +631,54 @@ class _StoresScreenState extends State<StoresScreen> {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    _activeDistrict == 'Alle' ? 'MZ-BIN & RH' : _activeDistrict,
+                    _tileStyle == TileStyle.voyager
+                        ? 'CartoDB Voyager'
+                        : (_tileStyle == TileStyle.satellite ? 'Satellit' : 'OSM'),
                     style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF065F46)),
                   ),
                 ),
               ],
             ),
             Text(
-              '${_filteredStores.length} Filialen • Tippe einen Laden an',
+              '${_filteredStores.length} Filialen • Echte Straßenkarten',
               style: TextStyle(fontSize: 12, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
             ),
           ],
         ),
         actions: [
-          // Toggle Road Names on/off
-          IconButton(
-            icon: Icon(
-              _showRoadNames ? Icons.label_rounded : Icons.label_outline_rounded,
-              color: _showRoadNames ? const Color(0xFF059669) : const Color(0xFF334155),
-              size: 20,
-            ),
-            tooltip: _showRoadNames ? 'Straßennamen verbergen' : 'Straßennamen anzeigen',
-            onPressed: () => setState(() => _showRoadNames = !_showRoadNames),
-          ),
-
-          // Engine Switcher
-          PopupMenuButton<MapProvider>(
+          // Kartenstil-Wähler (Voyager, OpenStreetMap, Satellit)
+          PopupMenuButton<TileStyle>(
             icon: const Icon(Icons.layers_outlined, color: Color(0xFF334155)),
-            tooltip: 'Karten-Engine',
-            onSelected: (prov) => setState(() => _mapProvider = prov),
+            tooltip: 'Kartenansicht wechseln',
+            onSelected: (style) => setState(() => _tileStyle = style),
             itemBuilder: (ctx) => [
               const PopupMenuItem(
-                value: MapProvider.vectorInteractive,
+                value: TileStyle.voyager,
                 child: Row(
                   children: [
-                    Icon(Icons.brush_rounded, size: 18, color: Color(0xFF059669)),
+                    Icon(Icons.map_rounded, size: 18, color: Color(0xFF059669)),
                     SizedBox(width: 10),
-                    Text('Interaktive Vektor-Karte (Aktiv)'),
+                    Text('CartoDB Voyager (Empfohlen)'),
                   ],
                 ),
               ),
               const PopupMenuItem(
-                value: MapProvider.googleMapsNative,
+                value: TileStyle.openStreetMap,
                 child: Row(
                   children: [
-                    Icon(Icons.public_rounded, size: 18, color: Color(0xFF2563EB)),
+                    Icon(Icons.streetview_rounded, size: 18, color: Color(0xFF2563EB)),
                     SizedBox(width: 10),
-                    Text('Google Maps (Vorbereitung)'),
+                    Text('OpenStreetMap Classic'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: TileStyle.satellite,
+                child: Row(
+                  children: [
+                    Icon(Icons.satellite_alt_rounded, size: 18, color: Color(0xFFD97706)),
+                    SizedBox(width: 10),
+                    Text('Satellit / Luftbild'),
                   ],
                 ),
               ),
@@ -763,12 +723,10 @@ class _StoresScreenState extends State<StoresScreen> {
                     // Top District & Chain Filter Chips Bar
                     _buildDistrictAndFilterBar(),
 
-                    // Map Canvas or List View
+                    // Main Content: Echte hochauflösende Kachel-Karte
                     Expanded(
                       child: _isMapView
-                          ? (_mapProvider == MapProvider.vectorInteractive
-                              ? _buildInteractiveVectorMapView(userLoc)
-                              : _buildGoogleMapsPlaceholderView())
+                          ? _buildRealTileMapView(userLoc)
                           : _buildStoreListView(theme),
                     ),
                   ],
@@ -884,43 +842,45 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 
-  /// Full Interactive Vector Map with Boundless Scrolling & GPU RepaintBoundary
-  Widget _buildInteractiveVectorMapView(UserLocation userLoc) {
-    const canvasSize = Size(virtualCanvasWidth, virtualCanvasHeight);
+  /// Real Tile Map View powered by flutter_map and CartoDB/OpenStreetMap
+  Widget _buildRealTileMapView(UserLocation userLoc) {
+    final userPos = LatLng(userLoc.latitude, userLoc.longitude);
 
     return Stack(
       children: [
-        // Gesture-enabled Interactive Canvas (Pan & Pinch-to-Zoom on iPhone)
-        InteractiveViewer(
-          transformationController: _transformationController,
-          minScale: 0.35,
-          maxScale: 4.0,
-          // Massive boundary margins: frees the map completely so user never hits invisible walls!
-          boundaryMargin: const EdgeInsets.all(5000),
-          panAxis: PanAxis.free,
-          clipBehavior: Clip.none,
-          child: SizedBox(
-            width: canvasSize.width,
-            height: canvasSize.height,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                // RepaintBoundary caches background paths & street network for smooth 60fps on iPhone!
-                RepaintBoundary(
-                  child: CustomPaint(
-                    size: canvasSize,
-                    painter: _RegionalVectorMapPainter(canvasSize, showRoadNames: _showRoadNames),
-                  ),
-                ),
-
-                // GPS User Location Marker
-                _buildUserLocationMarker(userLoc, canvasSize),
-
-                // Store Map Pins positioned with exact GPS projection strictly on land
-                ..._buildProjectedStorePins(canvasSize),
-              ],
+        FlutterMap(
+          mapController: _mapController,
+          options: MapOptions(
+            initialCenter: userPos,
+            initialZoom: 13.0,
+            minZoom: 7.0,
+            maxZoom: 18.5,
+            interactionOptions: const InteractionOptions(
+              flags: InteractiveFlag.all,
             ),
           ),
+          children: [
+            // Echte Kartenkacheln (CartoDB Voyager oder OpenStreetMap)
+            TileLayer(
+              urlTemplate: _getTileUrl(),
+              userAgentPackageName: 'de.einkaufsoptimierer.app',
+              maxZoom: 19,
+            ),
+
+            // User Location Marker
+            MarkerLayer(
+              markers: [
+                Marker(
+                  point: userPos,
+                  width: 50,
+                  height: 50,
+                  alignment: Alignment.center,
+                  child: _buildUserLocationMarker(),
+                ),
+                ..._buildStoreMarkers(),
+              ],
+            ),
+          ],
         ),
 
         // Floating Zoom and Navigation Controls (Right Edge)
@@ -931,7 +891,7 @@ class _StoresScreenState extends State<StoresScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               FloatingActionButton.small(
-                heroTag: 'map_zoom_in_pwa',
+                heroTag: 'map_zoom_in_tile',
                 backgroundColor: Colors.white,
                 foregroundColor: const Color(0xFF0F172A),
                 elevation: 3,
@@ -941,7 +901,7 @@ class _StoresScreenState extends State<StoresScreen> {
               ),
               const SizedBox(height: 8),
               FloatingActionButton.small(
-                heroTag: 'map_zoom_out_pwa',
+                heroTag: 'map_zoom_out_tile',
                 backgroundColor: Colors.white,
                 foregroundColor: const Color(0xFF0F172A),
                 elevation: 3,
@@ -951,12 +911,12 @@ class _StoresScreenState extends State<StoresScreen> {
               ),
               const SizedBox(height: 8),
               FloatingActionButton.small(
-                heroTag: 'map_recenter_pwa',
+                heroTag: 'map_recenter_tile',
                 backgroundColor: const Color(0xFF059669),
                 foregroundColor: Colors.white,
                 elevation: 4,
                 tooltip: 'Mein Standort zentrieren',
-                onPressed: () => _focusOnLocation(userLoc.latitude, userLoc.longitude, 1.4),
+                onPressed: _recenterOnUser,
                 child: const Icon(Icons.my_location_rounded, size: 18),
               ),
             ],
@@ -966,174 +926,135 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 
-  Widget _buildUserLocationMarker(UserLocation userLoc, Size canvasSize) {
-    final pos = projectGpsToCanvas(userLoc.latitude, userLoc.longitude, canvasSize);
-
-    return Positioned(
-      left: pos.dx - 45,
-      top: pos.dy - 40,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
-            decoration: BoxDecoration(
-              color: const Color(0xFF2563EB),
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF2563EB).withValues(alpha: 0.35),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.person_pin, color: Colors.white, size: 12),
-                SizedBox(width: 3),
-                Text(
-                  'Mein Standort',
-                  style: TextStyle(color: Colors.white, fontSize: 9.5, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+  Widget _buildUserLocationMarker() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: const Color(0xFF3B82F6).withValues(alpha: 0.25),
           ),
-          const SizedBox(height: 3),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFF3B82F6).withValues(alpha: 0.25),
-                ),
-              ),
-              Container(
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: const Color(0xFF2563EB),
-                  border: Border.all(color: Colors.white, width: 2.5),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.25),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
+        ),
+        Container(
+          width: 22,
+          height: 22,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: const Color(0xFF2563EB),
+            border: Border.all(color: Colors.white, width: 3),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 6,
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  List<Widget> _buildProjectedStorePins(Size canvasSize) {
+  List<Marker> _buildStoreMarkers() {
     return _filteredStores.map((store) {
-      final pos = projectGpsToCanvas(store.latitude, store.longitude, canvasSize);
       final isSelected = _selectedStore?.id == store.id;
       final chainColor = _getChainColor(store.chain);
       final badge = _getChainBadge(store.chain);
 
-      return Positioned(
-        left: pos.dx - 36,
-        top: pos.dy - 42,
+      return Marker(
+        point: LatLng(store.latitude, store.longitude),
+        width: 68,
+        height: 64,
+        alignment: Alignment.topCenter,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () {
+          // onTapDown löst SOFORT beim ersten Touch aus (kein Wisch-Konflikt!)
+          onTapDown: (_) {
             setState(() {
               _selectedStore = store;
             });
           },
-          child: AnimatedScale(
-            scale: isSelected ? 1.25 : 1.0,
-            duration: const Duration(milliseconds: 180),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Store Badge Pill
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
-                  decoration: BoxDecoration(
-                    color: isSelected ? const Color(0xFF0F172A) : Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: isSelected ? 0.35 : 0.15),
-                        blurRadius: isSelected ? 7 : 3,
-                        offset: const Offset(0, 1.5),
-                      ),
-                    ],
-                    border: Border.all(
-                      color: isSelected ? const Color(0xFF10B981) : Colors.transparent,
-                      width: 1.5,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Store Badge Pill
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                decoration: BoxDecoration(
+                  color: isSelected ? const Color(0xFF0F172A) : Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: isSelected ? 0.4 : 0.2),
+                      blurRadius: isSelected ? 8 : 4,
+                      offset: const Offset(0, 2),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                        decoration: BoxDecoration(
-                          color: chainColor,
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                        child: Text(
-                          badge,
-                          style: const TextStyle(color: Colors.white, fontSize: 8.5, fontWeight: FontWeight.w900),
-                        ),
-                      ),
-                      const SizedBox(width: 3),
-                      Text(
-                        store.city ?? '',
-                        style: TextStyle(
-                          fontSize: 8.5,
-                          fontWeight: FontWeight.bold,
-                          color: isSelected ? Colors.white : const Color(0xFF1E293B),
-                        ),
-                      ),
-                    ],
+                  ],
+                  border: Border.all(
+                    color: isSelected ? const Color(0xFF10B981) : Colors.transparent,
+                    width: 1.5,
                   ),
                 ),
-                const SizedBox(height: 2),
-
-                // Map Pin Head
-                Stack(
-                  alignment: Alignment.center,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.location_on,
-                      size: isSelected ? 42 : 34,
-                      color: chainColor,
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                      decoration: BoxDecoration(
+                        color: chainColor,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      child: Text(
+                        badge,
+                        style: const TextStyle(color: Colors.white, fontSize: 8.5, fontWeight: FontWeight.w900),
+                      ),
                     ),
-                    Positioned(
-                      top: isSelected ? 7 : 5,
-                      child: Container(
-                        width: isSelected ? 16 : 13,
-                        height: isSelected ? 16 : 13,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                        child: Icon(
-                          store.chain == SupermarketChain.dm || store.chain == SupermarketChain.rossmann
-                              ? Icons.sanitizer_outlined
-                              : Icons.shopping_basket_rounded,
-                          size: isSelected ? 10 : 8,
-                          color: chainColor,
-                        ),
+                    const SizedBox(width: 3),
+                    Text(
+                      store.city ?? '',
+                      style: TextStyle(
+                        fontSize: 8.5,
+                        fontWeight: FontWeight.bold,
+                        color: isSelected ? Colors.white : const Color(0xFF1E293B),
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 1),
+
+              // Pin Icon
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    size: isSelected ? 40 : 32,
+                    color: chainColor,
+                  ),
+                  Positioned(
+                    top: isSelected ? 6 : 5,
+                    child: Container(
+                      width: isSelected ? 15 : 12,
+                      height: isSelected ? 15 : 12,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: Icon(
+                        store.chain == SupermarketChain.dm || store.chain == SupermarketChain.rossmann
+                            ? Icons.sanitizer_outlined
+                            : Icons.shopping_basket_rounded,
+                        size: isSelected ? 9 : 7,
+                        color: chainColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       );
@@ -1208,7 +1129,6 @@ class _StoresScreenState extends State<StoresScreen> {
                   ],
                 ),
               ),
-              // Close button to dismiss card
               IconButton(
                 visualDensity: VisualDensity.compact,
                 icon: const Icon(Icons.close_rounded, size: 20, color: Color(0xFF64748B)),
@@ -1221,7 +1141,7 @@ class _StoresScreenState extends State<StoresScreen> {
           ),
           const SizedBox(height: 10),
 
-          // Opening Hours Pill (User requirement: Öffnungszeiten werden prominent angezeigt!)
+          // Opening Hours Pill (prominent)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
@@ -1406,363 +1326,4 @@ class _StoresScreenState extends State<StoresScreen> {
       },
     );
   }
-
-  Widget _buildGoogleMapsPlaceholderView() {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.all(24),
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.map_rounded, color: Color(0xFF2563EB), size: 48),
-            const SizedBox(height: 12),
-            const Text(
-              'Google Maps Modus',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Die Umschaltung auf native Google Maps ist vorbereitet. Die Offline-Vektor-Karte ist aktuell für Mainz-Bingen & Rhein-Hunsrück optimiert.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () => setState(() => _mapProvider = MapProvider.vectorInteractive),
-              child: const Text('Zurück zur Vektor-Karte'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Regional Vector Painter drawing boundless terrain, accurate Rhine riverbed, and extensible street network
-class _RegionalVectorMapPainter extends CustomPainter {
-  final Size canvasSize;
-  final bool showRoadNames;
-  const _RegionalVectorMapPainter(this.canvasSize, {this.showRoadNames = false});
-
-  Offset toPx(double lat, double lng) {
-    return _StoresScreenState.projectGpsToCanvas(lat, lng, canvasSize);
-  }
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    // 1. Boundless Base Terrain: extends infinitely beyond canvas edges so user never sees borders!
-    final bgPaint = Paint()..color = const Color(0xFFF2EFE9);
-    canvas.drawRect(
-      Rect.fromLTWH(-3000, -3000, size.width + 6000, size.height + 6000),
-      bgPaint,
-    );
-
-    // 2. Natural Forests (Soonwald, Hunsrück, Binger Wald & Rheingau)
-    final forestPaint = Paint()..color = const Color(0xFFDCEAD7);
-    final forestPath = Path()
-      ..moveTo(toPx(50.18, 7.36).dx, toPx(50.18, 7.36).dy)
-      ..lineTo(toPx(50.27, 7.50).dx, toPx(50.27, 7.50).dy)
-      ..lineTo(toPx(50.06, 7.66).dx, toPx(50.06, 7.66).dy)
-      ..lineTo(toPx(49.88, 7.56).dx, toPx(49.88, 7.56).dy)
-      ..lineTo(toPx(49.90, 7.38).dx, toPx(49.90, 7.38).dy)
-      ..close();
-    canvas.drawPath(forestPath, forestPaint);
-
-    final bingerWald = Path()
-      ..moveTo(toPx(50.02, 7.74).dx, toPx(50.02, 7.74).dy)
-      ..lineTo(toPx(50.04, 7.85).dx, toPx(50.04, 7.85).dy)
-      ..lineTo(toPx(49.97, 7.86).dx, toPx(49.97, 7.86).dy)
-      ..lineTo(toPx(49.95, 7.75).dx, toPx(49.95, 7.75).dy)
-      ..close();
-    canvas.drawPath(bingerWald, forestPaint);
-
-    // 3. District Border Line (Dashed subtle border)
-    final borderPaint = Paint()
-      ..color = const Color(0xFF94A3B8)
-      ..strokeWidth = 2.0
-      ..style = PaintingStyle.stroke;
-    final bPath = Path()
-      ..moveTo(toPx(50.20, 7.72).dx, toPx(50.20, 7.72).dy)
-      ..lineTo(toPx(50.09, 7.75).dx, toPx(50.09, 7.75).dy)
-      ..lineTo(toPx(49.99, 7.79).dx, toPx(49.99, 7.79).dy)
-      ..lineTo(toPx(49.86, 7.83).dx, toPx(49.86, 7.83).dy);
-    canvas.drawPath(bPath, borderPaint);
-
-    // 4. Street Network (hierarchical with road styles)
-    _paintRoads(canvas);
-
-    // 5. River Rhine (Rhein): Mathematically shifted strictly to the EAST (right bank) of all stores!
-    // NO STORE WILL EVER BE IN THE WATER!
-    final riverPaint = Paint()
-      ..color = const Color(0xFFA5D7FE)
-      ..strokeWidth = 24
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-
-    final riverPath = Path()
-      ..moveTo(toPx(50.005, 8.24).dx, toPx(50.005, 8.24).dy) // East towards Mainz/Wiesbaden
-      ..lineTo(toPx(50.003, 8.06).dx, toPx(50.003, 8.06).dy) // North of Ingelheim stores (Ingelheim is at 49.97)
-      ..lineTo(toPx(49.975, 7.915).dx, toPx(49.975, 7.915).dy) // North of Bingen Stadt stores (Bingen is at 49.966)
-      ..lineTo(toPx(49.978, 7.888).dx, toPx(49.978, 7.888).dy) // Binger Loch Mäuseturm bend
-      ..cubicTo(
-        toPx(50.02, 7.81).dx, toPx(50.02, 7.81).dy,
-        toPx(50.06, 7.785).dx, toPx(50.06, 7.785).dy,
-        toPx(50.108, 7.738).dx, toPx(50.108, 7.738).dy, // East of Oberwesel stores (Oberwesel is at 7.726)
-      )
-      ..lineTo(toPx(50.152, 7.722).dx, toPx(50.152, 7.722).dy) // East of St. Goar (St. Goar is at 7.712)
-      ..cubicTo(
-        toPx(50.18, 7.68).dx, toPx(50.18, 7.68).dy,
-        toPx(50.21, 7.61).dx, toPx(50.21, 7.61).dy,
-        toPx(50.236, 7.602).dx, toPx(50.236, 7.602).dy, // East of Boppard stores (Boppard is at 7.585)
-      )
-      ..lineTo(toPx(50.260, 7.610).dx, toPx(50.260, 7.610).dy); // North to Koblenz
-    canvas.drawPath(riverPath, riverPaint);
-
-    // River Nahe (joins Rhine at Bingen Knie): strictly narrow and cleanly South of Bingen Stadt
-    final nahePaint = Paint()
-      ..color = const Color(0xFFA5D7FE)
-      ..strokeWidth = 9
-      ..style = PaintingStyle.stroke;
-    final nahePath = Path()
-      ..moveTo(toPx(49.85, 7.94).dx, toPx(49.85, 7.94).dy) // from Bad Kreuznach/Gensingen
-      ..lineTo(toPx(49.945, 7.925).dx, toPx(49.945, 7.925).dy) // east of Büdesheim
-      ..lineTo(toPx(49.970, 7.892).dx, toPx(49.970, 7.892).dy); // mouth into Rhine
-    canvas.drawPath(nahePath, nahePaint);
-
-    // 6. Geographic Region & District Labels
-    _drawLabel(canvas, 'RHEIN-HUNSRÜCK-KREIS', toPx(50.10, 7.46), 14, const Color(0xFF64748B), true);
-    _drawLabel(canvas, 'LANDKREIS MAINZ-BINGEN', toPx(49.92, 8.08), 14, const Color(0xFF64748B), true);
-
-    // Towns
-    _drawLabel(canvas, 'Bingen am Rhein', toPx(49.967, 7.886), 11.5, const Color(0xFF0F172A), true);
-    _drawLabel(canvas, 'Büdesheim', toPx(49.952, 7.915), 10, const Color(0xFF334155), false);
-    _drawLabel(canvas, 'Ingelheim am Rhein', toPx(49.975, 8.040), 11.5, const Color(0xFF0F172A), true);
-    _drawLabel(canvas, 'Gau-Algesheim', toPx(49.955, 8.016), 10, const Color(0xFF334155), false);
-    _drawLabel(canvas, 'Oberwesel', toPx(50.111, 7.720), 11, const Color(0xFF0F172A), true);
-    _drawLabel(canvas, 'Boppard', toPx(50.230, 7.570), 11.5, const Color(0xFF0F172A), true);
-    _drawLabel(canvas, 'Simmern (Hunsrück)', toPx(49.985, 7.518), 11.5, const Color(0xFF0F172A), true);
-    _drawLabel(canvas, 'Emmelshausen', toPx(50.155, 7.632), 10.5, const Color(0xFF0F172A), true);
-    _drawLabel(canvas, 'Kastellaun', toPx(50.070, 7.430), 10, const Color(0xFF334155), false);
-    _drawLabel(canvas, 'St. Goar', toPx(50.149, 7.705), 10, const Color(0xFF334155), false);
-    _drawLabel(canvas, '~ RHEIN ~', toPx(50.04, 7.80), 11, const Color(0xFF1E3A8A), true);
-  }
-
-  void _paintRoads(Canvas canvas) {
-    // Road Definition List (Extensible: name is included and ready for tooltips/labels)
-    final roads = [
-      // Bundesstraße B9 along the Rhine (left bank)
-      MapRoad(
-        name: 'B9',
-        type: RoadType.federal,
-        geoPoints: [
-          toPx(49.98, 8.16),
-          toPx(49.972, 8.045), // Ingelheim
-          toPx(49.965, 7.905), // Bingen Mainzer Str.
-          toPx(49.967, 7.893), // Bingen Stadt
-          toPx(50.060, 7.768), // Bacharach
-          toPx(50.110, 7.727), // Oberwesel Koblenzer Str.
-          toPx(50.150, 7.712), // St. Goar
-          toPx(50.228, 7.584), // Boppard Mainzer Str.
-          toPx(50.270, 7.580), // towards Koblenz
-        ],
-      ),
-
-      // Autobahn A61
-      MapRoad(
-        name: 'A61',
-        type: RoadType.autobahn,
-        geoPoints: [
-          toPx(49.85, 7.96),
-          toPx(49.95, 7.88),
-          toPx(50.04, 7.68), // Rheinböllen
-          toPx(50.16, 7.62), // Emmelshausen
-          toPx(50.23, 7.52), // Boppard-Buchholz
-          toPx(50.28, 7.48),
-        ],
-      ),
-
-      // Bundesstraße B50 (Simmern to Rheinböllen/A61)
-      MapRoad(
-        name: 'B50',
-        type: RoadType.federal,
-        geoPoints: [
-          toPx(49.97, 7.42), // Kirchberg
-          toPx(49.986, 7.53), // Simmern
-          toPx(50.005, 7.675), // Rheinböllen
-        ],
-      ),
-
-      // Bundesstraße B327 (Hunsrückhöhenstraße)
-      MapRoad(
-        name: 'B327',
-        type: RoadType.federal,
-        geoPoints: [
-          toPx(50.16, 7.64), // Emmelshausen
-          toPx(50.07, 7.44), // Kastellaun
-          toPx(49.98, 7.36),
-        ],
-      ),
-
-      // Autobahn A60 (Ingelheim -> Mainz)
-      MapRoad(
-        name: 'A60',
-        type: RoadType.autobahn,
-        geoPoints: [
-          toPx(49.968, 7.98),
-          toPx(49.965, 8.06),
-          toPx(49.940, 8.16),
-          toPx(49.920, 8.24),
-        ],
-      ),
-
-      // Connecting Main Roads:
-      // Bingen to Simmern connection via Soonwald (L214)
-      MapRoad(
-        name: 'L214',
-        type: RoadType.mainStreet,
-        geoPoints: [
-          toPx(49.954, 7.917), // Bingen Büdesheim
-          toPx(49.98, 7.76),
-          toPx(50.005, 7.675), // Rheinböllen
-        ],
-      ),
-
-      // Bingen to Gensingen / Bad Kreuznach (B41 / L417)
-      MapRoad(
-        name: 'B41',
-        type: RoadType.federal,
-        geoPoints: [
-          toPx(49.954, 7.916), // Büdesheim
-          toPx(49.91, 7.92),
-          toPx(49.896, 7.928), // Gensingen
-        ],
-      ),
-
-      // Local town grid lines (Clean, soft secondary streets)
-      MapRoad(
-        name: 'Saarlandstraße',
-        type: RoadType.localStreet,
-        geoPoints: [toPx(49.945, 7.910), toPx(49.960, 7.925)],
-      ),
-      MapRoad(
-        name: 'Mainzer Straße',
-        type: RoadType.localStreet,
-        geoPoints: [toPx(49.963, 7.900), toPx(49.968, 7.915)],
-      ),
-      MapRoad(
-        name: 'Ingelheim Zentrum',
-        type: RoadType.localStreet,
-        geoPoints: [toPx(49.968, 8.040), toPx(49.978, 8.060)],
-      ),
-      MapRoad(
-        name: 'Simmern Zentrum',
-        type: RoadType.localStreet,
-        geoPoints: [toPx(49.980, 7.518), toPx(49.990, 7.540)],
-      ),
-      MapRoad(
-        name: 'Boppard Rheinufer',
-        type: RoadType.localStreet,
-        geoPoints: [toPx(50.225, 7.580), toPx(50.235, 7.595)],
-      ),
-    ];
-
-    // Paint in layers: Outlines first, then fills!
-    // 1. Autobahn Layer
-    final autobahnOutline = Paint()
-      ..color = const Color(0xFFF59E0B)
-      ..strokeWidth = 7.5
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-
-    final autobahnFill = Paint()
-      ..color = const Color(0xFFFEF3C7)
-      ..strokeWidth = 5.0
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-
-    // 2. Federal Road Layer (Bundesstraße)
-    final federalOutline = Paint()
-      ..color = const Color(0xFFE2E8F0)
-      ..strokeWidth = 6.0
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-
-    final federalFill = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 4.0
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-
-    // 3. Local Street Layer
-    final localPaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.8)
-      ..strokeWidth = 2.5
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    for (final r in roads) {
-      if (r.geoPoints.length < 2) continue;
-      final path = Path()..moveTo(r.geoPoints.first.dx, r.geoPoints.first.dy);
-      for (int i = 1; i < r.geoPoints.length; i++) {
-        path.lineTo(r.geoPoints[i].dx, r.geoPoints[i].dy);
-      }
-
-      if (r.type == RoadType.autobahn) {
-        canvas.drawPath(path, autobahnOutline);
-        canvas.drawPath(path, autobahnFill);
-      } else if (r.type == RoadType.federal) {
-        canvas.drawPath(path, federalOutline);
-        canvas.drawPath(path, federalFill);
-      } else {
-        canvas.drawPath(path, localPaint);
-      }
-    }
-
-    // Optional road names rendering
-    if (showRoadNames) {
-      for (final r in roads) {
-        if (r.name != null && r.geoPoints.length >= 2) {
-          final mid = r.geoPoints[r.geoPoints.length ~/ 2];
-          _drawLabel(canvas, r.name!, mid, 9.5, const Color(0xFF334155), true);
-        }
-      }
-    }
-  }
-
-  void _drawLabel(Canvas canvas, String text, Offset pos, double fontSize, Color color, bool isBold) {
-    final tp = TextPainter(
-      text: TextSpan(
-        text: text,
-        style: TextStyle(
-          color: color,
-          fontSize: fontSize,
-          fontWeight: isBold ? FontWeight.w800 : FontWeight.w600,
-          letterSpacing: isBold ? 1.4 : 0.2,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    );
-    tp.layout();
-    tp.paint(canvas, Offset(pos.dx - tp.width / 2, pos.dy - tp.height / 2));
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

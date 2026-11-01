@@ -245,18 +245,23 @@ class OptimizerService {
 
         if (s1Items.isEmpty || s2Items.isEmpty) continue;
 
-        // Route distance with cluster discount (< 500m)
+        // Intra-store distance between s1 and s2
         final intraDist = _haversineMeters(s1.latitude, s1.longitude, s2.latitude, s2.longitude);
+        final isClusteredOrWalkable = (s1.clusterNum != null && s1.clusterNum == s2.clusterNum) || intraDist <= 800;
+
         double routeDist = _haversineMeters(userLocation.latitude, userLocation.longitude, s1.latitude, s1.longitude);
-        if (intraDist <= 500) {
-          routeDist += intraDist * 0.2; // 80% discount for clustered stops
+        if (isClusteredOrWalkable) {
+          routeDist += intraDist * 0.05; // Vernachlässigbare Distanz für Fußweg / kurzes Umparken
         } else {
           routeDist += intraDist;
         }
         routeDist += _haversineMeters(s2.latitude, s2.longitude, userLocation.latitude, userLocation.longitude);
 
         final extraDist = max(0.0, routeDist - bestSingleDist);
-        final travelPenalty = ((extraDist / 1000.0) * preferences.costPerKmCents).round();
+        // Für benachbarte Cluster-Märkte keine Fahrtkosten-Abzüge berechnen
+        final travelPenalty = isClusteredOrWalkable
+            ? 0
+            : ((extraDist / 1000.0) * preferences.costPerKmCents).round();
         final grossSavings = bestSingleBasket - comboSum;
         final netSavings = grossSavings - travelPenalty;
 
@@ -350,7 +355,7 @@ class OptimizerService {
     );
   }
 
-  static final List<Store> _defaultSampleStores = [
+  static const List<Store> _defaultSampleStores = [
     Store(
       id: '44444444-0000-0000-0000-000000000001',
       chain: SupermarketChain.aldi_sued,
