@@ -23,19 +23,33 @@ class _StoresScreenState extends State<StoresScreen> {
   UserLocation? _location;
   bool _isLoading = true;
   bool _isMapView = true;
-  String _activeFilter = 'Alle';
+  String _activeDistrict = 'Alle';
+  String _activeChainFilter = 'Alle';
   Store? _selectedStore;
 
-  // Map engine selection: defaults to the vector map, with Google Maps ready to be enabled
+  // Map engine selection
   MapProvider _mapProvider = MapProvider.vectorInteractive;
 
-  // Controller for pan & zoom gestures
+  // InteractiveViewer Transformation Controller
   final TransformationController _transformationController = TransformationController();
 
-  // Stores in Bingen am Rhein (55411) and Oberwesel (55430)
+  // Geographic Bounding Box for Mainz-Bingen & Rhein-Hunsrück-Kreis
+  static const double minLat = 49.85;
+  static const double maxLat = 50.28;
+  static const double minLng = 7.35;
+  static const double maxLng = 8.22;
+
+  // Virtual Canvas Dimension for realistic scaling
+  static const double virtualCanvasWidth = 1600.0;
+  static const double virtualCanvasHeight = 1300.0;
+
+  // Complete preloaded dataset for both Landkreise (30 real stores)
   final List<Store> _allStores = const [
+    // ==========================================
+    // LANDKREIS MAINZ-BINGEN (14 Stores)
+    // ==========================================
     Store(
-      id: 'b-1',
+      id: 'mb-1',
       chain: SupermarketChain.aldi_sued,
       name: 'ALDI SÜD Bingen-Büdesheim',
       address: 'Saarlandstraße 165, 55411 Bingen am Rhein',
@@ -44,22 +58,24 @@ class _StoresScreenState extends State<StoresScreen> {
       clusterNum: 10,
       postalCode: '55411',
       city: 'Bingen am Rhein',
+      district: 'Mainz-Bingen',
       distanceMeters: 80,
     ),
     Store(
-      id: 'b-2',
+      id: 'mb-2',
       chain: SupermarketChain.lidl,
-      name: 'Lidl Filiale Bingen-Büdesheim',
+      name: 'Lidl Bingen-Büdesheim',
       address: 'Saarlandstraße 171, 55411 Bingen am Rhein',
       latitude: 49.9542,
       longitude: 7.9160,
       clusterNum: 10,
       postalCode: '55411',
       city: 'Bingen am Rhein',
+      district: 'Mainz-Bingen',
       distanceMeters: 120,
     ),
     Store(
-      id: 'b-3',
+      id: 'mb-3',
       chain: SupermarketChain.rewe,
       name: 'REWE Markt Bingen',
       address: 'Mainzer Straße 44, 55411 Bingen am Rhein',
@@ -68,10 +84,11 @@ class _StoresScreenState extends State<StoresScreen> {
       clusterNum: 11,
       postalCode: '55411',
       city: 'Bingen am Rhein',
+      district: 'Mainz-Bingen',
       distanceMeters: 950,
     ),
     Store(
-      id: 'b-4',
+      id: 'mb-4',
       chain: SupermarketChain.dm,
       name: 'dm-drogerie markt Bingen',
       address: 'Vorstadt 10-12, 55411 Bingen am Rhein',
@@ -80,22 +97,145 @@ class _StoresScreenState extends State<StoresScreen> {
       clusterNum: 12,
       postalCode: '55411',
       city: 'Bingen am Rhein',
+      district: 'Mainz-Bingen',
       distanceMeters: 1400,
     ),
     Store(
-      id: 'b-5',
+      id: 'mb-5',
       chain: SupermarketChain.rossmann,
-      name: 'Rossmann Drogeriemarkt Bingen',
+      name: 'Rossmann Bingen Innenstadt',
       address: 'Basilikastraße 3, 55411 Bingen am Rhein',
       latitude: 49.9670,
       longitude: 7.8940,
       clusterNum: 12,
       postalCode: '55411',
       city: 'Bingen am Rhein',
+      district: 'Mainz-Bingen',
       distanceMeters: 1450,
     ),
     Store(
-      id: 'o-1',
+      id: 'mb-6',
+      chain: SupermarketChain.aldi_sued,
+      name: 'ALDI SÜD Ingelheim',
+      address: 'Nahering 1, 55218 Ingelheim am Rhein',
+      latitude: 49.9720,
+      longitude: 8.0450,
+      clusterNum: 13,
+      postalCode: '55218',
+      city: 'Ingelheim am Rhein',
+      district: 'Mainz-Bingen',
+      distanceMeters: 9200,
+    ),
+    Store(
+      id: 'mb-7',
+      chain: SupermarketChain.lidl,
+      name: 'Lidl Ingelheim',
+      address: 'Konrad-Adenauer-Straße 44, 55218 Ingelheim',
+      latitude: 49.9710,
+      longitude: 8.0480,
+      clusterNum: 13,
+      postalCode: '55218',
+      city: 'Ingelheim am Rhein',
+      district: 'Mainz-Bingen',
+      distanceMeters: 9400,
+    ),
+    Store(
+      id: 'mb-8',
+      chain: SupermarketChain.rewe,
+      name: 'REWE Center Ingelheim',
+      address: 'Am Hahnenbusch 1, 55218 Ingelheim',
+      latitude: 49.9745,
+      longitude: 8.0530,
+      clusterNum: 14,
+      postalCode: '55218',
+      city: 'Ingelheim am Rhein',
+      district: 'Mainz-Bingen',
+      distanceMeters: 9800,
+    ),
+    Store(
+      id: 'mb-9',
+      chain: SupermarketChain.dm,
+      name: 'dm-drogerie markt Ingelheim',
+      address: 'Binger Straße 85, 55218 Ingelheim',
+      latitude: 49.9730,
+      longitude: 8.0520,
+      clusterNum: 14,
+      postalCode: '55218',
+      city: 'Ingelheim am Rhein',
+      district: 'Mainz-Bingen',
+      distanceMeters: 9700,
+    ),
+    Store(
+      id: 'mb-10',
+      chain: SupermarketChain.netto,
+      name: 'Netto Gau-Algesheim',
+      address: 'Appenheimer Str. 36, 55435 Gau-Algesheim',
+      latitude: 49.9540,
+      longitude: 8.0180,
+      clusterNum: 15,
+      postalCode: '55435',
+      city: 'Gau-Algesheim',
+      district: 'Mainz-Bingen',
+      distanceMeters: 7400,
+    ),
+    Store(
+      id: 'mb-11',
+      chain: SupermarketChain.rewe,
+      name: 'REWE Markt Gau-Algesheim',
+      address: 'Schlossgasse 22, 55435 Gau-Algesheim',
+      latitude: 49.9560,
+      longitude: 8.0210,
+      clusterNum: 15,
+      postalCode: '55435',
+      city: 'Gau-Algesheim',
+      district: 'Mainz-Bingen',
+      distanceMeters: 7600,
+    ),
+    Store(
+      id: 'mb-12',
+      chain: SupermarketChain.aldi_sued,
+      name: 'ALDI SÜD Nieder-Olm',
+      address: 'Am Woog 2, 55268 Nieder-Olm',
+      latitude: 49.9110,
+      longitude: 8.1960,
+      clusterNum: 16,
+      postalCode: '55268',
+      city: 'Nieder-Olm',
+      district: 'Mainz-Bingen',
+      distanceMeters: 22000,
+    ),
+    Store(
+      id: 'mb-13',
+      chain: SupermarketChain.lidl,
+      name: 'Lidl Nieder-Olm',
+      address: 'Oppenheimer Str. 18, 55268 Nieder-Olm',
+      latitude: 49.9100,
+      longitude: 8.1980,
+      clusterNum: 16,
+      postalCode: '55268',
+      city: 'Nieder-Olm',
+      district: 'Mainz-Bingen',
+      distanceMeters: 22200,
+    ),
+    Store(
+      id: 'mb-14',
+      chain: SupermarketChain.rewe,
+      name: 'REWE Center Gensingen',
+      address: 'Binger Straße 83, 55457 Gensingen',
+      latitude: 49.8960,
+      longitude: 7.9280,
+      clusterNum: 17,
+      postalCode: '55457',
+      city: 'Gensingen',
+      district: 'Mainz-Bingen',
+      distanceMeters: 6700,
+    ),
+
+    // ==========================================
+    // RHEIN-HUNSRÜCK-KREIS (16 Stores)
+    // ==========================================
+    Store(
+      id: 'rh-1',
       chain: SupermarketChain.netto,
       name: 'Netto Marken-Discount Oberwesel',
       address: 'Chrishausener Str. 2, 55430 Oberwesel',
@@ -104,10 +244,11 @@ class _StoresScreenState extends State<StoresScreen> {
       clusterNum: 20,
       postalCode: '55430',
       city: 'Oberwesel',
-      distanceMeters: 350,
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 18500,
     ),
     Store(
-      id: 'o-2',
+      id: 'rh-2',
       chain: SupermarketChain.rewe,
       name: 'REWE City Oberwesel',
       address: 'Koblenzer Str. 18, 55430 Oberwesel',
@@ -116,7 +257,190 @@ class _StoresScreenState extends State<StoresScreen> {
       clusterNum: 20,
       postalCode: '55430',
       city: 'Oberwesel',
-      distanceMeters: 550,
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 18700,
+    ),
+    Store(
+      id: 'rh-3',
+      chain: SupermarketChain.rewe,
+      name: 'REWE Markt Boppard',
+      address: 'Hellerwaldstr. 1, 56154 Boppard',
+      latitude: 50.2310,
+      longitude: 7.5760,
+      clusterNum: 21,
+      postalCode: '56154',
+      city: 'Boppard',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 33000,
+    ),
+    Store(
+      id: 'rh-4',
+      chain: SupermarketChain.lidl,
+      name: 'Lidl Boppard',
+      address: 'Mainzer Str. 48, 56154 Boppard',
+      latitude: 50.2280,
+      longitude: 7.5840,
+      clusterNum: 21,
+      postalCode: '56154',
+      city: 'Boppard',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 32600,
+    ),
+    Store(
+      id: 'rh-5',
+      chain: SupermarketChain.aldi_sued,
+      name: 'ALDI SÜD Boppard-Buchholz',
+      address: 'Buchenauer Str. 6, 56154 Boppard',
+      latitude: 50.2180,
+      longitude: 7.5360,
+      clusterNum: 22,
+      postalCode: '56154',
+      city: 'Boppard',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 34000,
+    ),
+    Store(
+      id: 'rh-6',
+      chain: SupermarketChain.dm,
+      name: 'dm-drogerie markt Boppard',
+      address: 'Heerstraße 145, 56154 Boppard',
+      latitude: 50.2330,
+      longitude: 7.5910,
+      clusterNum: 23,
+      postalCode: '56154',
+      city: 'Boppard',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 33200,
+    ),
+    Store(
+      id: 'rh-7',
+      chain: SupermarketChain.aldi_sued,
+      name: 'ALDI SÜD Simmern',
+      address: 'August-Horch-Straße 2, 55469 Simmern',
+      latitude: 49.9880,
+      longitude: 7.5310,
+      clusterNum: 24,
+      postalCode: '55469',
+      city: 'Simmern',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 28000,
+    ),
+    Store(
+      id: 'rh-8',
+      chain: SupermarketChain.lidl,
+      name: 'Lidl Simmern',
+      address: 'Bingener Str. 30, 55469 Simmern',
+      latitude: 49.9860,
+      longitude: 7.5340,
+      clusterNum: 24,
+      postalCode: '55469',
+      city: 'Simmern',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 28200,
+    ),
+    Store(
+      id: 'rh-9',
+      chain: SupermarketChain.rewe,
+      name: 'REWE Markt Simmern',
+      address: 'Am Simmerbach 3, 55469 Simmern',
+      latitude: 49.9830,
+      longitude: 7.5250,
+      clusterNum: 25,
+      postalCode: '55469',
+      city: 'Simmern',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 28500,
+    ),
+    Store(
+      id: 'rh-10',
+      chain: SupermarketChain.dm,
+      name: 'dm-drogerie markt Simmern',
+      address: 'Schmiedelstraße 2, 55469 Simmern',
+      latitude: 49.9850,
+      longitude: 7.5280,
+      clusterNum: 25,
+      postalCode: '55469',
+      city: 'Simmern',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 28300,
+    ),
+    Store(
+      id: 'rh-11',
+      chain: SupermarketChain.rossmann,
+      name: 'Rossmann Simmern Schloßplatz',
+      address: 'Schloßplatz 3, 55469 Simmern',
+      latitude: 49.9820,
+      longitude: 7.5210,
+      clusterNum: 25,
+      postalCode: '55469',
+      city: 'Simmern',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 28700,
+    ),
+    Store(
+      id: 'rh-12',
+      chain: SupermarketChain.netto,
+      name: 'Netto Emmelshausen',
+      address: 'Rhein-Mosel-Str. 98, 56281 Emmelshausen',
+      latitude: 50.1560,
+      longitude: 7.6380,
+      clusterNum: 26,
+      postalCode: '56281',
+      city: 'Emmelshausen',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 27500,
+    ),
+    Store(
+      id: 'rh-13',
+      chain: SupermarketChain.aldi_sued,
+      name: 'ALDI SÜD Emmelshausen',
+      address: 'Argenschwanger Weg 1, 56281 Emmelshausen',
+      latitude: 50.1580,
+      longitude: 7.6410,
+      clusterNum: 26,
+      postalCode: '56281',
+      city: 'Emmelshausen',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 27700,
+    ),
+    Store(
+      id: 'rh-14',
+      chain: SupermarketChain.lidl,
+      name: 'Lidl Emmelshausen',
+      address: 'Liesenfelder Weg 14, 56281 Emmelshausen',
+      latitude: 50.1540,
+      longitude: 7.6430,
+      clusterNum: 26,
+      postalCode: '56281',
+      city: 'Emmelshausen',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 27600,
+    ),
+    Store(
+      id: 'rh-15',
+      chain: SupermarketChain.netto,
+      name: 'Netto Kastellaun',
+      address: 'Zeller Str. 32, 56288 Kastellaun',
+      latitude: 50.0710,
+      longitude: 7.4380,
+      clusterNum: 27,
+      postalCode: '56288',
+      city: 'Kastellaun',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 36000,
+    ),
+    Store(
+      id: 'rh-16',
+      chain: SupermarketChain.netto,
+      name: 'Netto St. Goar / Werlau',
+      address: 'An der Loreley 1, 56329 St. Goar',
+      latitude: 50.1500,
+      longitude: 7.7120,
+      clusterNum: 28,
+      postalCode: '56329',
+      city: 'St. Goar',
+      district: 'Rhein-Hunsrück',
+      distanceMeters: 22500,
     ),
   ];
 
@@ -140,25 +464,45 @@ class _StoresScreenState extends State<StoresScreen> {
         _isLoading = false;
         _selectedStore = _allStores.first;
       });
+      // Initial viewpoint centered around Bingen / Middle Rhine
+      _focusOnLocation(49.96, 7.91, 1.1);
     }
+  }
+
+  /// Converts true GPS (lat, lng) to virtual map canvas pixel coordinates (x, y)
+  static Offset projectGpsToCanvas(double lat, double lng, Size canvasSize) {
+    final clampedLat = lat.clamp(minLat, maxLat);
+    final clampedLng = lng.clamp(minLng, maxLng);
+
+    final x = ((clampedLng - minLng) / (maxLng - minLng)) * canvasSize.width;
+    final y = ((maxLat - clampedLat) / (maxLat - minLat)) * canvasSize.height;
+
+    return Offset(x, y);
   }
 
   List<Store> get _filteredStores {
     return _allStores.where((s) {
-      if (_activeFilter == 'Discounter') {
+      // 1. District isolation filter
+      if (_activeDistrict != 'Alle' && s.district != _activeDistrict) {
+        return false;
+      }
+
+      // 2. Supermarket chain filter
+      if (_activeChainFilter == 'Discounter') {
         return s.chain == SupermarketChain.aldi_sued ||
             s.chain == SupermarketChain.lidl ||
             s.chain == SupermarketChain.netto;
       }
-      if (_activeFilter == 'Supermarkt') {
+      if (_activeChainFilter == 'Supermarkt') {
         return s.chain == SupermarketChain.rewe;
       }
-      if (_activeFilter == 'Drogerie') {
+      if (_activeChainFilter == 'Drogerie') {
         return s.chain == SupermarketChain.dm || s.chain == SupermarketChain.rossmann;
       }
-      if (_activeFilter == 'Cluster (<500m)') {
-        return s.clusterNum == 10 || s.clusterNum == 12 || s.clusterNum == 20;
+      if (_activeChainFilter == 'Cluster (<500m)') {
+        return s.clusterNum != null;
       }
+
       return true;
     }).toList();
   }
@@ -210,24 +554,39 @@ class _StoresScreenState extends State<StoresScreen> {
 
   void _zoomIn() {
     final matrix = _transformationController.value.clone();
-    matrix.scaleByDouble(1.25, 1.25, 1.0, 1.0);
+    matrix.multiply(Matrix4.diagonal3Values(1.3, 1.3, 1.0));
     _transformationController.value = matrix;
   }
 
   void _zoomOut() {
     final matrix = _transformationController.value.clone();
-    matrix.scaleByDouble(0.8, 0.8, 1.0, 1.0);
+    matrix.multiply(Matrix4.diagonal3Values(0.77, 0.77, 1.0));
     _transformationController.value = matrix;
   }
 
-  void _recenterMap() {
-    _transformationController.value = Matrix4.identity();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Karte auf deinen Standort zentriert 📍'),
-        duration: Duration(milliseconds: 1200),
-      ),
-    );
+  void _focusOnLocation(double lat, double lng, [double zoom = 1.2]) {
+    final target = projectGpsToCanvas(lat, lng, const Size(virtualCanvasWidth, virtualCanvasHeight));
+    // Center viewport on target
+    final tx = -target.dx * zoom + 180;
+    final ty = -target.dy * zoom + 260;
+    final matrix = Matrix4.identity()
+      ..translateByDouble(tx, ty, 0.0, 1.0)
+      ..multiply(Matrix4.diagonal3Values(zoom, zoom, 1.0));
+    _transformationController.value = matrix;
+  }
+
+  void _onDistrictSelected(String district) {
+    setState(() {
+      _activeDistrict = district;
+    });
+
+    if (district == 'Mainz-Bingen') {
+      _focusOnLocation(49.96, 7.95, 1.25);
+    } else if (district == 'Rhein-Hunsrück') {
+      _focusOnLocation(50.08, 7.60, 1.15);
+    } else {
+      _focusOnLocation(50.02, 7.78, 0.95);
+    }
   }
 
   @override
@@ -257,23 +616,23 @@ class _StoresScreenState extends State<StoresScreen> {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    _mapProvider == MapProvider.vectorInteractive ? 'Live-Vektor' : 'Google Maps',
+                    _activeDistrict == 'Alle' ? 'MZ-BIN & RH' : _activeDistrict,
                     style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF065F46)),
                   ),
                 ),
               ],
             ),
             Text(
-              'Bingen & Oberwesel • ${_filteredStores.length} Lebensmittelmärkte',
+              '${_filteredStores.length} Filialen vorgeladen • Echtzeit-GPS',
               style: TextStyle(fontSize: 12, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
             ),
           ],
         ),
         actions: [
-          // Engine Switcher (Vector vs Google Maps)
+          // Engine Switcher
           PopupMenuButton<MapProvider>(
             icon: const Icon(Icons.layers_outlined, color: Color(0xFF334155)),
-            tooltip: 'Karten-Engine wählen',
+            tooltip: 'Karten-Engine',
             onSelected: (prov) => setState(() => _mapProvider = prov),
             itemBuilder: (ctx) => [
               const PopupMenuItem(
@@ -282,7 +641,7 @@ class _StoresScreenState extends State<StoresScreen> {
                   children: [
                     Icon(Icons.brush_rounded, size: 18, color: Color(0xFF059669)),
                     SizedBox(width: 10),
-                    Text('Interaktive Vektor-Karte (Offline)'),
+                    Text('Interaktive Vektor-Karte (Aktiv)'),
                   ],
                 ),
               ),
@@ -292,7 +651,7 @@ class _StoresScreenState extends State<StoresScreen> {
                   children: [
                     Icon(Icons.public_rounded, size: 18, color: Color(0xFF2563EB)),
                     SizedBox(width: 10),
-                    Text('Google Maps (Native Vorbereitung)'),
+                    Text('Google Maps (Vorbereitung)'),
                   ],
                 ),
               ),
@@ -332,8 +691,8 @@ class _StoresScreenState extends State<StoresScreen> {
           ? const Center(child: CircularProgressIndicator(color: Color(0xFF059669)))
           : Column(
               children: [
-                // Filter Bar
-                _buildFilterChips(),
+                // Top District & Chain Filter Chips Bar
+                _buildDistrictAndFilterBar(),
 
                 // Map Canvas or List View
                 Expanded(
@@ -344,256 +703,230 @@ class _StoresScreenState extends State<StoresScreen> {
                       : _buildStoreListView(theme),
                 ),
 
-                // Selected Store Action Card / Bottom Sheet
+                // Selected Store Action Card
                 if (_selectedStore != null) _buildSelectedStoreSheet(theme),
               ],
             ),
     );
   }
 
-  Widget _buildFilterChips() {
-    final filters = ['Alle', 'Discounter', 'Supermarkt', 'Drogerie', 'Cluster (<500m)'];
-
+  Widget _buildDistrictAndFilterBar() {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: filters.map((f) {
-            final isSelected = _activeFilter == f;
-            return Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: FilterChip(
-                selected: isSelected,
-                label: Text(
-                  f,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                    color: isSelected ? Colors.white : const Color(0xFF334155),
-                  ),
+      padding: const EdgeInsets.fromLTRB(12, 6, 12, 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Row 1: District Isolation (Mainz-Bingen vs Rhein-Hunsrück)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                const Text(
+                  'Landkreis:',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF475569)),
                 ),
-                backgroundColor: const Color(0xFFF1F5F9),
-                selectedColor: const Color(0xFF059669),
-                checkmarkColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                side: BorderSide(
-                  color: isSelected ? const Color(0xFF059669) : Colors.transparent,
-                ),
-                onSelected: (val) {
-                  setState(() => _activeFilter = f);
-                },
-              ),
-            );
-          }).toList(),
-        ),
+                const SizedBox(width: 8),
+                _buildDistrictChip('Alle', '${_allStores.length}'),
+                _buildDistrictChip('Mainz-Bingen', '14'),
+                _buildDistrictChip('Rhein-Hunsrück', '16'),
+              ],
+            ),
+          ),
+          const SizedBox(height: 6),
+
+          // Row 2: Category Filter Chips
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _buildCategoryChip('Alle'),
+                _buildCategoryChip('Discounter'),
+                _buildCategoryChip('Supermarkt'),
+                _buildCategoryChip('Drogerie'),
+                _buildCategoryChip('Cluster (<500m)'),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  /// Full Interactive Vector Map with Panning, Pinch-to-Zoom and Store Pins
-  Widget _buildInteractiveVectorMapView(UserLocation userLoc) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final canvasWidth = math.max(constraints.maxWidth, 700.0);
-        final canvasHeight = math.max(constraints.maxHeight, 700.0);
+  Widget _buildDistrictChip(String districtName, String count) {
+    final isSelected = _activeDistrict == districtName;
 
-        return Stack(
-          children: [
-            // Gesture-enabled Interactive Canvas (Pan & Zoom)
-            InteractiveViewer(
-              transformationController: _transformationController,
-              minScale: 0.7,
-              maxScale: 3.0,
-              boundaryMargin: const EdgeInsets.all(300),
-              clipBehavior: Clip.hardEdge,
-              child: SizedBox(
-                width: canvasWidth,
-                height: canvasHeight,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    // Base Map Painter: Rhine River, B9 Highway, Streets, City Districts
-                    CustomPaint(
-                      size: Size(canvasWidth, canvasHeight),
-                      painter: _GoogleMapsStyleVectorPainter(),
-                    ),
-
-                    // User Location Marker (Blue Pulsing Target)
-                    _buildUserLocationMarker(canvasWidth, canvasHeight),
-
-                    // Store Map Pins
-                    ..._buildStorePins(canvasWidth, canvasHeight),
-                  ],
-                ),
-              ),
-            ),
-
-            // Top Status Badge: Stores Only Notice
-            Positioned(
-              top: 12,
-              left: 14,
-              right: 14,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.94),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.08),
-                      blurRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                  border: Border.all(color: Colors.black.withValues(alpha: 0.06)),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF059669).withValues(alpha: 0.12),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(Icons.storefront_rounded, color: Color(0xFF059669), size: 16),
-                    ),
-                    const SizedBox(width: 10),
-                    const Expanded(
-                      child: Text(
-                        'Ausschließlich Supermärkte & Drogerien im Fokus',
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF0F172A)),
-                      ),
-                    ),
-                    Text(
-                      '${_filteredStores.length} Filialen',
-                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF059669)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Floating Controls: Zoom In / Out & Recenter GPS
-            Positioned(
-              right: 14,
-              bottom: 16,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  FloatingActionButton.small(
-                    heroTag: 'map_zoom_in',
-                    backgroundColor: Colors.white,
-                    foregroundColor: const Color(0xFF0F172A),
-                    elevation: 3,
-                    tooltip: 'Heranzoomen',
-                    onPressed: _zoomIn,
-                    child: const Icon(Icons.add_rounded, size: 20),
-                  ),
-                  const SizedBox(height: 8),
-                  FloatingActionButton.small(
-                    heroTag: 'map_zoom_out',
-                    backgroundColor: Colors.white,
-                    foregroundColor: const Color(0xFF0F172A),
-                    elevation: 3,
-                    tooltip: 'Herauszoomen',
-                    onPressed: _zoomOut,
-                    child: const Icon(Icons.remove_rounded, size: 20),
-                  ),
-                  const SizedBox(height: 8),
-                  FloatingActionButton.small(
-                    heroTag: 'map_recenter',
-                    backgroundColor: const Color(0xFF059669),
-                    foregroundColor: Colors.white,
-                    elevation: 4,
-                    tooltip: 'Mein Standort zentrieren',
-                    onPressed: _recenterMap,
-                    child: const Icon(Icons.my_location_rounded, size: 18),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.only(right: 6),
+      child: ChoiceChip(
+        selected: isSelected,
+        label: Text('$districtName ($count)'),
+        labelStyle: TextStyle(
+          fontSize: 11,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+          color: isSelected ? Colors.white : const Color(0xFF1E293B),
+        ),
+        selectedColor: const Color(0xFF0F172A),
+        backgroundColor: const Color(0xFFF1F5F9),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        side: BorderSide(
+          color: isSelected ? const Color(0xFF0F172A) : Colors.transparent,
+        ),
+        onSelected: (_) => _onDistrictSelected(districtName),
+      ),
     );
   }
 
-  /// Placeholder/Slot for native Google Maps when API keys & SDK are active
-  Widget _buildGoogleMapsPlaceholderView() {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.all(24),
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 20,
-              offset: const Offset(0, 4),
-            ),
-          ],
-          border: Border.all(color: Colors.grey.shade200),
+  Widget _buildCategoryChip(String filterName) {
+    final isSelected = _activeChainFilter == filterName;
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 6),
+      child: FilterChip(
+        selected: isSelected,
+        label: Text(filterName),
+        labelStyle: TextStyle(
+          fontSize: 11,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+          color: isSelected ? Colors.white : const Color(0xFF475569),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2563EB).withValues(alpha: 0.1),
-                shape: BoxShape.circle,
+        selectedColor: const Color(0xFF059669),
+        backgroundColor: Colors.white,
+        checkmarkColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        side: BorderSide(
+          color: isSelected ? const Color(0xFF059669) : Colors.grey.shade300,
+        ),
+        onSelected: (val) {
+          setState(() => _activeChainFilter = filterName);
+        },
+      ),
+    );
+  }
+
+  /// Full Interactive Vector Map with Natural Scale
+  Widget _buildInteractiveVectorMapView(UserLocation userLoc) {
+    const canvasSize = Size(virtualCanvasWidth, virtualCanvasHeight);
+
+    return Stack(
+      children: [
+        // Gesture-enabled Interactive Canvas (Pan & Pinch-to-Zoom on iPhone)
+        InteractiveViewer(
+          transformationController: _transformationController,
+          minScale: 0.5,
+          maxScale: 3.5,
+          boundaryMargin: const EdgeInsets.all(500),
+          clipBehavior: Clip.hardEdge,
+          child: SizedBox(
+            width: canvasSize.width,
+            height: canvasSize.height,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                // Base Vector Map: Rhine River, B9 & A61 Highway, Boundaries, Landkreise
+                const CustomPaint(
+                  size: canvasSize,
+                  painter: _RegionalVectorMapPainter(canvasSize),
+                ),
+
+                // GPS User Location Marker
+                _buildUserLocationMarker(userLoc, canvasSize),
+
+                // Store Map Pins positioned with exact GPS projection
+                ..._buildProjectedStorePins(canvasSize),
+              ],
+            ),
+          ),
+        ),
+
+        // District Legend Overlay (Top Left)
+        Positioned(
+          top: 10,
+          left: 12,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.94),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.08),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.map_outlined, color: Color(0xFF059669), size: 14),
+                const SizedBox(width: 6),
+                Text(
+                  'Fokus: Mainz-Bingen & Rhein-Hunsrück (${_filteredStores.length} Märkte)',
+                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // Floating Zoom and Navigation Controls (Right Edge)
+        Positioned(
+          right: 14,
+          bottom: 16,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FloatingActionButton.small(
+                heroTag: 'map_zoom_in_pwa',
+                backgroundColor: Colors.white,
+                foregroundColor: const Color(0xFF0F172A),
+                elevation: 3,
+                tooltip: 'Heranzoomen',
+                onPressed: _zoomIn,
+                child: const Icon(Icons.add_rounded, size: 20),
               ),
-              child: const Icon(Icons.map_rounded, color: Color(0xFF2563EB), size: 48),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Google Maps Modus vorbereitet',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Die native Google Maps Schnittstelle ist im Projekt vorbereitet. Sobald der API-Key in deiner Konfiguration hinterlegt ist, schaltet dieser Tab nahtlos auf die Satelliten- und Straßenkarten um.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade600, height: 1.4),
-            ),
-            const SizedBox(height: 20),
-            FilledButton.icon(
-              style: FilledButton.styleFrom(
+              const SizedBox(height: 8),
+              FloatingActionButton.small(
+                heroTag: 'map_zoom_out_pwa',
+                backgroundColor: Colors.white,
+                foregroundColor: const Color(0xFF0F172A),
+                elevation: 3,
+                tooltip: 'Herauszoomen',
+                onPressed: _zoomOut,
+                child: const Icon(Icons.remove_rounded, size: 20),
+              ),
+              const SizedBox(height: 8),
+              FloatingActionButton.small(
+                heroTag: 'map_recenter_pwa',
                 backgroundColor: const Color(0xFF059669),
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                elevation: 4,
+                tooltip: 'Mein Standort zentrieren',
+                onPressed: () => _focusOnLocation(userLoc.latitude, userLoc.longitude, 1.4),
+                child: const Icon(Icons.my_location_rounded, size: 18),
               ),
-              icon: const Icon(Icons.brush_rounded, size: 18),
-              label: const Text('Zurück zur Live-Vektor-Karte'),
-              onPressed: () {
-                setState(() => _mapProvider = MapProvider.vectorInteractive);
-              },
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
-  Widget _buildUserLocationMarker(double canvasWidth, double canvasHeight) {
-    final cx = canvasWidth / 2;
-    final cy = canvasHeight / 2 - 10;
+  Widget _buildUserLocationMarker(UserLocation userLoc, Size canvasSize) {
+    final pos = projectGpsToCanvas(userLoc.latitude, userLoc.longitude, canvasSize);
 
     return Positioned(
-      left: cx - 55,
-      top: cy - 40,
+      left: pos.dx - 45,
+      top: pos.dy - 40,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
             decoration: BoxDecoration(
               color: const Color(0xFF2563EB),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(8),
               boxShadow: [
                 BoxShadow(
                   color: const Color(0xFF2563EB).withValues(alpha: 0.35),
@@ -605,34 +938,34 @@ class _StoresScreenState extends State<StoresScreen> {
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.person_pin, color: Colors.white, size: 13),
-                SizedBox(width: 4),
+                Icon(Icons.person_pin, color: Colors.white, size: 12),
+                SizedBox(width: 3),
                 Text(
                   'Mein Standort',
-                  style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700),
+                  style: TextStyle(color: Colors.white, fontSize: 9.5, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 3),
           Stack(
             alignment: Alignment.center,
             children: [
               Container(
-                width: 42,
-                height: 42,
+                width: 38,
+                height: 38,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFF3B82F6).withValues(alpha: 0.22),
+                  color: const Color(0xFF3B82F6).withValues(alpha: 0.25),
                 ),
               ),
               Container(
-                width: 22,
-                height: 22,
+                width: 20,
+                height: 20,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: const Color(0xFF2563EB),
-                  border: Border.all(color: Colors.white, width: 3),
+                  border: Border.all(color: Colors.white, width: 2.5),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.25),
@@ -648,30 +981,16 @@ class _StoresScreenState extends State<StoresScreen> {
     );
   }
 
-  List<Widget> _buildStorePins(double canvasWidth, double canvasHeight) {
-    final cx = canvasWidth / 2;
-    final cy = canvasHeight / 2 - 10;
-
-    // Offsets positioned in realistic layout across Bingen & Oberwesel
-    final pinOffsets = {
-      'b-1': Offset(cx - 100, cy - 90), // ALDI SÜD Bingen Büdesheim
-      'b-2': Offset(cx - 20, cy - 95),  // Lidl Bingen Büdesheim (Cluster 10 with ALDI)
-      'b-3': Offset(cx + 95, cy - 35),  // REWE Markt Bingen Mainzer Str.
-      'b-4': Offset(cx - 120, cy + 55), // dm Bingen Vorstadt
-      'b-5': Offset(cx - 45, cy + 75),  // Rossmann Bingen Basilikastr. (Cluster 12 with dm)
-      'o-1': Offset(cx + 115, cy + 95), // Netto Oberwesel
-      'o-2': Offset(cx + 60, cy + 145), // REWE City Oberwesel (Cluster 20 with Netto)
-    };
-
+  List<Widget> _buildProjectedStorePins(Size canvasSize) {
     return _filteredStores.map((store) {
-      final offset = pinOffsets[store.id] ?? Offset(cx, cy);
+      final pos = projectGpsToCanvas(store.latitude, store.longitude, canvasSize);
       final isSelected = _selectedStore?.id == store.id;
       final chainColor = _getChainColor(store.chain);
       final badge = _getChainBadge(store.chain);
 
       return Positioned(
-        left: offset.dx - 45,
-        top: offset.dy - 45,
+        left: pos.dx - 35,
+        top: pos.dy - 42,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
@@ -680,22 +999,22 @@ class _StoresScreenState extends State<StoresScreen> {
             });
           },
           child: AnimatedScale(
-            scale: isSelected ? 1.18 : 1.0,
-            duration: const Duration(milliseconds: 200),
+            scale: isSelected ? 1.25 : 1.0,
+            duration: const Duration(milliseconds: 180),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Top Tag Pill
+                // Store Badge Pill
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2.5),
                   decoration: BoxDecoration(
                     color: isSelected ? const Color(0xFF0F172A) : Colors.white,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(8),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: isSelected ? 0.35 : 0.15),
-                        blurRadius: isSelected ? 8 : 4,
-                        offset: const Offset(0, 2),
+                        blurRadius: isSelected ? 7 : 3,
+                        offset: const Offset(0, 1.5),
                       ),
                     ],
                     border: Border.all(
@@ -707,21 +1026,21 @@ class _StoresScreenState extends State<StoresScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1.5),
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                         decoration: BoxDecoration(
                           color: chainColor,
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(3),
                         ),
                         child: Text(
                           badge,
-                          style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w900),
+                          style: const TextStyle(color: Colors.white, fontSize: 8.5, fontWeight: FontWeight.w900),
                         ),
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 3),
                       Text(
-                        '${store.distanceMeters?.toInt()} m',
+                        store.city ?? '',
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 8.5,
                           fontWeight: FontWeight.bold,
                           color: isSelected ? Colors.white : const Color(0xFF1E293B),
                         ),
@@ -731,20 +1050,20 @@ class _StoresScreenState extends State<StoresScreen> {
                 ),
                 const SizedBox(height: 2),
 
-                // Distinct Pin Shape
+                // Map Pin Head
                 Stack(
                   alignment: Alignment.center,
                   children: [
                     Icon(
                       Icons.location_on,
-                      size: isSelected ? 46 : 38,
+                      size: isSelected ? 42 : 34,
                       color: chainColor,
                     ),
                     Positioned(
-                      top: isSelected ? 8 : 6,
+                      top: isSelected ? 7 : 5,
                       child: Container(
-                        width: isSelected ? 18 : 15,
-                        height: isSelected ? 18 : 15,
+                        width: isSelected ? 16 : 13,
+                        height: isSelected ? 16 : 13,
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.white,
@@ -753,7 +1072,7 @@ class _StoresScreenState extends State<StoresScreen> {
                           store.chain == SupermarketChain.dm || store.chain == SupermarketChain.rossmann
                               ? Icons.sanitizer_outlined
                               : Icons.shopping_basket_rounded,
-                          size: isSelected ? 11 : 9,
+                          size: isSelected ? 10 : 8,
                           color: chainColor,
                         ),
                       ),
@@ -772,12 +1091,12 @@ class _StoresScreenState extends State<StoresScreen> {
   Widget _buildSelectedStoreSheet(ThemeData theme) {
     final store = _selectedStore!;
     final chainColor = _getChainColor(store.chain);
-    final distanceMeters = store.distanceMeters?.toInt() ?? 100;
+    final distanceMeters = store.distanceMeters?.toInt() ?? 250;
     final walkMinutes = (distanceMeters / 75).ceil();
     final driveMinutes = math.max(1, (distanceMeters / 400).ceil());
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(14, 6, 14, 14),
+      margin: const EdgeInsets.fromLTRB(14, 4, 14, 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -785,7 +1104,7 @@ class _StoresScreenState extends State<StoresScreen> {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.12),
-            blurRadius: 20,
+            blurRadius: 18,
             offset: const Offset(0, 4),
           ),
         ],
@@ -795,15 +1114,14 @@ class _StoresScreenState extends State<StoresScreen> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Row
           Row(
             children: [
               Container(
-                width: 46,
-                height: 46,
+                width: 44,
+                height: 44,
                 decoration: BoxDecoration(
                   color: chainColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: chainColor.withValues(alpha: 0.25)),
                 ),
                 child: Icon(
@@ -811,7 +1129,7 @@ class _StoresScreenState extends State<StoresScreen> {
                       ? Icons.clean_hands_rounded
                       : Icons.storefront_rounded,
                   color: chainColor,
-                  size: 26,
+                  size: 24,
                 ),
               ),
               const SizedBox(width: 12),
@@ -821,7 +1139,7 @@ class _StoresScreenState extends State<StoresScreen> {
                   children: [
                     Text(
                       store.name,
-                      style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16, color: Color(0xFF0F172A)),
+                      style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15, color: Color(0xFF0F172A)),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -835,38 +1153,36 @@ class _StoresScreenState extends State<StoresScreen> {
                   ],
                 ),
               ),
-              // Cluster Badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                 decoration: BoxDecoration(
                   color: const Color(0xFFD1FAE5),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFF10B981).withValues(alpha: 0.3)),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  'Cluster ${store.clusterNum}',
-                  style: const TextStyle(color: Color(0xFF065F46), fontSize: 11, fontWeight: FontWeight.bold),
+                  store.district ?? 'RLP',
+                  style: const TextStyle(color: Color(0xFF065F46), fontSize: 10, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
-          // Travel Times & Details
+          // Details row
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF1F5F9),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.directions_walk_rounded, size: 15, color: Color(0xFF475569)),
+                    const Icon(Icons.directions_walk_rounded, size: 14, color: Color(0xFF475569)),
                     const SizedBox(width: 4),
                     Text(
-                      '~$walkMinutes Min. zu Fuß',
+                      '~$walkMinutes Min. Fuß',
                       style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF334155)),
                     ),
                   ],
@@ -874,14 +1190,14 @@ class _StoresScreenState extends State<StoresScreen> {
               ),
               const SizedBox(width: 8),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF1F5F9),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.directions_car_rounded, size: 15, color: Color(0xFF475569)),
+                    const Icon(Icons.directions_car_rounded, size: 14, color: Color(0xFF475569)),
                     const SizedBox(width: 4),
                     Text(
                       '~$driveMinutes Min. Auto',
@@ -892,28 +1208,27 @@ class _StoresScreenState extends State<StoresScreen> {
               ),
               const Spacer(),
               Text(
-                '$distanceMeters m Distanz',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Colors.grey.shade800),
+                'Cluster ${store.clusterNum ?? '-'}',
+                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF059669)),
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
 
           // Primary Action Button: "Von diesem Laden ausplanen"
           SizedBox(
             width: double.infinity,
-            height: 48,
+            height: 46,
             child: FilledButton.icon(
               style: FilledButton.styleFrom(
                 backgroundColor: const Color(0xFF059669),
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                elevation: 2,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
-              icon: const Icon(Icons.alt_route_rounded, size: 20),
+              icon: const Icon(Icons.alt_route_rounded, size: 18),
               label: const Text(
                 'Von diesem Laden ausplanen 🚀',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
               onPressed: () => _planFromStore(store),
             ),
@@ -925,7 +1240,7 @@ class _StoresScreenState extends State<StoresScreen> {
 
   Widget _buildStoreListView(ThemeData theme) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       itemCount: _filteredStores.length,
       itemBuilder: (ctx, index) {
         final store = _filteredStores[index];
@@ -934,9 +1249,9 @@ class _StoresScreenState extends State<StoresScreen> {
 
         return Card(
           elevation: 0,
-          margin: const EdgeInsets.symmetric(vertical: 6),
+          margin: const EdgeInsets.symmetric(vertical: 5),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(14),
             side: BorderSide(
               color: isSelected ? const Color(0xFF059669) : Colors.black.withValues(alpha: 0.08),
               width: isSelected ? 2 : 1,
@@ -944,7 +1259,7 @@ class _StoresScreenState extends State<StoresScreen> {
           ),
           color: isSelected ? const Color(0xFFECFDF5) : Colors.white,
           child: Padding(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.all(12),
             child: Row(
               children: [
                 CircleAvatar(
@@ -954,42 +1269,34 @@ class _StoresScreenState extends State<StoresScreen> {
                         ? Icons.sanitizer_outlined
                         : Icons.storefront_rounded,
                     color: chainColor,
+                    size: 20,
                   ),
                 ),
-                const SizedBox(width: 14),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         store.name,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         store.address,
-                        style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                        style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
                       ),
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          Icon(Icons.directions_walk, size: 14, color: Colors.grey.shade700),
-                          const SizedBox(width: 4),
                           Text(
-                            '${store.distanceMeters?.toInt()} m',
-                            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Colors.grey.shade800),
+                            store.district ?? '',
+                            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF059669)),
                           ),
-                          const SizedBox(width: 10),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade100,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Text(
-                              'Cluster ${store.clusterNum}',
-                              style: TextStyle(fontSize: 10, color: Colors.grey.shade700, fontWeight: FontWeight.bold),
-                            ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Cluster ${store.clusterNum}',
+                            style: TextStyle(fontSize: 10, color: Colors.grey.shade600),
                           ),
                         ],
                       ),
@@ -1002,7 +1309,7 @@ class _StoresScreenState extends State<StoresScreen> {
                     foregroundColor: const Color(0xFF065F46),
                   ),
                   tooltip: 'Von hier ausplanen',
-                  icon: const Icon(Icons.arrow_forward_rounded, size: 20),
+                  icon: const Icon(Icons.arrow_forward_rounded, size: 18),
                   onPressed: () => _planFromStore(store),
                 ),
               ],
@@ -1012,141 +1319,175 @@ class _StoresScreenState extends State<StoresScreen> {
       },
     );
   }
+
+  Widget _buildGoogleMapsPlaceholderView() {
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 16,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.map_rounded, color: Color(0xFF2563EB), size: 48),
+            const SizedBox(height: 12),
+            const Text(
+              'Google Maps Modus',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Die Umschaltung auf native Google Maps ist vorbereitet. Die Offline-Vektor-Karte ist aktuell für Mainz-Bingen & Rhein-Hunsrück optimiert.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            const SizedBox(height: 16),
+            FilledButton(
+              onPressed: () => setState(() => _mapProvider = MapProvider.vectorInteractive),
+              child: const Text('Zurück zur Vektor-Karte'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-/// Google Maps styled Vector Painter (Water, B9 Highway, Roads, Green Parks)
-class _GoogleMapsStyleVectorPainter extends CustomPainter {
+/// Regional Vector Painter drawing Rhine River, B9, A61 Highway and District Boundaries
+class _RegionalVectorMapPainter extends CustomPainter {
+  final Size canvasSize;
+  const _RegionalVectorMapPainter(this.canvasSize);
+
+  Offset toPx(double lat, double lng) {
+    return _StoresScreenState.projectGpsToCanvas(lat, lng, canvasSize);
+  }
+
   @override
   void paint(Canvas canvas, Size size) {
-    // 1. Background Land (Soft Google Maps Beige/Gray)
+    // 1. Terrain Background
     final bgPaint = Paint()..color = const Color(0xFFF1EFE9);
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPaint);
 
-    // 2. Green Parks & Vineyards (Binger Wald & Rheingau)
-    final parkPaint = Paint()..color = const Color(0xFFDCEAD7);
-    final parkPath1 = Path()
-      ..moveTo(0, 0)
-      ..lineTo(size.width * 0.35, 0)
-      ..lineTo(size.width * 0.15, size.height * 0.25)
-      ..lineTo(0, size.height * 0.30)
+    // 2. Forests & Natural Parks (Soonwald / Hunsrück & Rheingau)
+    final hunsrueckForest = Paint()..color = const Color(0xFFDCEAD7);
+    final forestPath = Path()
+      ..moveTo(toPx(50.15, 7.38).dx, toPx(50.15, 7.38).dy)
+      ..lineTo(toPx(50.25, 7.50).dx, toPx(50.25, 7.50).dy)
+      ..lineTo(toPx(50.05, 7.65).dx, toPx(50.05, 7.65).dy)
+      ..lineTo(toPx(49.90, 7.55).dx, toPx(49.90, 7.55).dy)
+      ..lineTo(toPx(49.92, 7.40).dx, toPx(49.92, 7.40).dy)
       ..close();
-    canvas.drawPath(parkPath1, parkPaint);
+    canvas.drawPath(forestPath, hunsrueckForest);
 
-    final parkPath2 = Path()
-      ..moveTo(size.width * 0.70, size.height * 0.65)
-      ..lineTo(size.width, size.height * 0.55)
-      ..lineTo(size.width, size.height)
-      ..lineTo(size.width * 0.65, size.height)
-      ..close();
-    canvas.drawPath(parkPath2, parkPaint);
+    // 3. District Border Line (Dashed soft line between Rhein-Hunsrück & Mainz-Bingen)
+    final borderPaint = Paint()
+      ..color = const Color(0xFF94A3B8)
+      ..strokeWidth = 2.5
+      ..style = PaintingStyle.stroke;
+    final bPath = Path()
+      ..moveTo(toPx(50.18, 7.72).dx, toPx(50.18, 7.72).dy)
+      ..lineTo(toPx(50.08, 7.74).dx, toPx(50.08, 7.74).dy)
+      ..lineTo(toPx(49.98, 7.78).dx, toPx(49.98, 7.78).dy)
+      ..lineTo(toPx(49.88, 7.82).dx, toPx(49.88, 7.82).dy);
+    canvas.drawPath(bPath, borderPaint);
 
-    // 3. Water body: River Rhine (Light Blue with smooth Google Maps styling)
+    // 4. River Rhine (Rhein): Flows from Ingelheim -> Bingen -> Oberwesel -> St. Goar -> Boppard
     final riverPaint = Paint()
       ..color = const Color(0xFFA5D7FE)
-      ..strokeWidth = 48
+      ..strokeWidth = 32
       ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round;
+
+    final pIngelheim = toPx(49.98, 8.08);
+    final pBingenKnie = toPx(49.97, 7.90);
+    final pBacharach = toPx(50.06, 7.77);
+    final pOberwesel = toPx(50.11, 7.73);
+    final pStGoar = toPx(50.15, 7.71);
+    final pBoppard = toPx(50.23, 7.59);
 
     final riverPath = Path()
-      ..moveTo(0, size.height * 0.15)
-      ..cubicTo(
-        size.width * 0.35, size.height * 0.35,
-        size.width * 0.65, size.height * 0.72,
-        size.width, size.height * 0.90,
-      );
+      ..moveTo(pIngelheim.dx, pIngelheim.dy)
+      ..lineTo(pBingenKnie.dx, pBingenKnie.dy)
+      ..cubicTo(pBingenKnie.dx, pBingenKnie.dy, pBacharach.dx, pBacharach.dy, pOberwesel.dx, pOberwesel.dy)
+      ..lineTo(pStGoar.dx, pStGoar.dy)
+      ..cubicTo(pStGoar.dx, pStGoar.dy, toPx(50.20, 7.62).dx, toPx(50.20, 7.62).dy, pBoppard.dx, pBoppard.dy);
     canvas.drawPath(riverPath, riverPaint);
 
-    // Nahe River estuary joining the Rhine
+    // River Nahe joining Rhine at Bingen
     final nahePaint = Paint()
       ..color = const Color(0xFFA5D7FE)
-      ..strokeWidth = 18
+      ..strokeWidth = 14
       ..style = PaintingStyle.stroke;
     final nahePath = Path()
-      ..moveTo(size.width * 0.25, size.height)
-      ..cubicTo(
-        size.width * 0.28, size.height * 0.75,
-        size.width * 0.35, size.height * 0.50,
-        size.width * 0.42, size.height * 0.42,
-      );
+      ..moveTo(toPx(49.86, 7.93).dx, toPx(49.86, 7.93).dy)
+      ..lineTo(toPx(49.93, 7.92).dx, toPx(49.93, 7.92).dy)
+      ..lineTo(pBingenKnie.dx, pBingenKnie.dy);
     canvas.drawPath(nahePath, nahePaint);
 
-    // 4. Secondary Streets (White with subtle shadow)
-    final secRoadPaint = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 7
-      ..style = PaintingStyle.stroke;
-
-    canvas.drawLine(
-      Offset(size.width * 0.1, 0),
-      Offset(size.width * 0.55, size.height),
-      secRoadPaint,
-    );
-    canvas.drawLine(
-      Offset(0, size.height * 0.65),
-      Offset(size.width, size.height * 0.45),
-      secRoadPaint,
-    );
-    canvas.drawLine(
-      Offset(size.width * 0.3, size.height * 0.2),
-      Offset(size.width * 0.85, size.height * 0.3),
-      secRoadPaint,
-    );
-
-    // 5. Major Highway B9 (Golden Yellow with outline)
-    final b9OutlinePaint = Paint()
+    // 5. Autobahn A61 (Orange Highway with White center)
+    final a61Outline = Paint()
       ..color = const Color(0xFFF59E0B)
-      ..strokeWidth = 11
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
+      ..strokeWidth = 8
+      ..style = PaintingStyle.stroke;
+    final a61Path = Path()
+      ..moveTo(toPx(49.86, 7.96).dx, toPx(49.86, 7.96).dy)
+      ..lineTo(toPx(49.96, 7.86).dx, toPx(49.96, 7.86).dy)
+      ..lineTo(toPx(50.05, 7.68).dx, toPx(50.05, 7.68).dy)
+      ..lineTo(toPx(50.16, 7.62).dx, toPx(50.16, 7.62).dy)
+      ..lineTo(toPx(50.24, 7.51).dx, toPx(50.24, 7.51).dy);
+    canvas.drawPath(a61Path, a61Outline);
 
-    final b9FillPaint = Paint()
-      ..color = const Color(0xFFFEF3C7)
-      ..strokeWidth = 7
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
-
-    final b9Path = Path()
-      ..moveTo(0, size.height * 0.23)
-      ..cubicTo(
-        size.width * 0.33, size.height * 0.42,
-        size.width * 0.62, size.height * 0.78,
-        size.width, size.height * 0.96,
-      );
-    canvas.drawPath(b9Path, b9OutlinePaint);
-    canvas.drawPath(b9Path, b9FillPaint);
-
-    // 6. Geographic Water & District Labels
-    const textStyle = TextStyle(
-      color: Color(0xFF1E3A8A),
-      fontSize: 11,
-      fontWeight: FontWeight.w700,
-      letterSpacing: 1.2,
+    // Bundesstraße B50 (Simmern to Rheinböllen/A61)
+    final b50Paint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 5
+      ..style = PaintingStyle.stroke;
+    canvas.drawLine(
+      toPx(49.98, 7.53),
+      toPx(50.01, 7.67),
+      b50Paint,
     );
-    final textPainter = TextPainter(
-      text: const TextSpan(text: '~ RHEIN ~', style: textStyle),
+
+    // 6. Geographic Region Labels
+    _drawLabel(canvas, 'RHEIN-HUNSRÜCK-KREIS', toPx(50.10, 7.48), 13, const Color(0xFF475569), true);
+    _drawLabel(canvas, 'LANDKREIS MAINZ-BINGEN', toPx(49.92, 8.04), 13, const Color(0xFF475569), true);
+
+    // City Labels
+    _drawLabel(canvas, 'Bingen am Rhein', toPx(49.97, 7.88), 11, const Color(0xFF0F172A), false);
+    _drawLabel(canvas, 'Ingelheim am Rhein', toPx(49.98, 8.04), 11, const Color(0xFF0F172A), false);
+    _drawLabel(canvas, 'Oberwesel', toPx(50.11, 7.74), 10, const Color(0xFF0F172A), false);
+    _drawLabel(canvas, 'Boppard', toPx(50.24, 7.59), 11, const Color(0xFF0F172A), false);
+    _drawLabel(canvas, 'Simmern (Hunsrück)', toPx(49.99, 7.53), 11, const Color(0xFF0F172A), false);
+    _drawLabel(canvas, 'Emmelshausen', toPx(50.16, 7.65), 10, const Color(0xFF0F172A), false);
+    _drawLabel(canvas, '~ RHEIN ~', toPx(50.04, 7.79), 10, const Color(0xFF1E3A8A), true);
+  }
+
+  void _drawLabel(Canvas canvas, String text, Offset pos, double fontSize, Color color, bool isBold) {
+    final tp = TextPainter(
+      text: TextSpan(
+        text: text,
+        style: TextStyle(
+          color: color,
+          fontSize: fontSize,
+          fontWeight: isBold ? FontWeight.w800 : FontWeight.w600,
+          letterSpacing: isBold ? 1.4 : 0.2,
+        ),
+      ),
       textDirection: TextDirection.ltr,
     );
-    textPainter.layout();
-    textPainter.paint(canvas, Offset(size.width * 0.52, size.height * 0.58));
-
-    const districtStyle = TextStyle(
-      color: Color(0xFF64748B),
-      fontSize: 10,
-      fontWeight: FontWeight.w600,
-    );
-    final dPainter = TextPainter(
-      text: const TextSpan(text: 'Bingen am Rhein', style: districtStyle),
-      textDirection: TextDirection.ltr,
-    );
-    dPainter.layout();
-    dPainter.paint(canvas, Offset(size.width * 0.25, size.height * 0.30));
-
-    final d2Painter = TextPainter(
-      text: const TextSpan(text: 'Büdesheim', style: districtStyle),
-      textDirection: TextDirection.ltr,
-    );
-    d2Painter.layout();
-    d2Painter.paint(canvas, Offset(size.width * 0.12, size.height * 0.52));
+    tp.layout();
+    tp.paint(canvas, Offset(pos.dx - tp.width / 2, pos.dy - tp.height / 2));
   }
 
   @override

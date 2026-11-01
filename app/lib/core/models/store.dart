@@ -64,6 +64,7 @@ class Store {
   final double? distanceMeters;
   final String? postalCode;
   final String? city;
+  final String? district;
 
   const Store({
     required this.id,
@@ -76,6 +77,7 @@ class Store {
     this.distanceMeters,
     this.postalCode,
     this.city,
+    this.district,
   });
 
   factory Store.fromJson(Map<String, dynamic> json) {
@@ -90,6 +92,7 @@ class Store {
       distanceMeters: (json['distance_meters'] as num?)?.toDouble(),
       postalCode: json['postal_code']?.toString(),
       city: json['city']?.toString(),
+      district: json['district']?.toString(),
     );
   }
 
@@ -105,6 +108,7 @@ class Store {
       'distance_meters': distanceMeters,
       'postal_code': postalCode,
       'city': city,
+      'district': district,
     };
   }
 }
