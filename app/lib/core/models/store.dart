@@ -65,6 +65,7 @@ class Store {
   final String? postalCode;
   final String? city;
   final String? district;
+  final String? openingHours;
 
   const Store({
     required this.id,
@@ -78,7 +79,18 @@ class Store {
     this.postalCode,
     this.city,
     this.district,
+    this.openingHours,
   });
+
+  String get displayOpeningHours {
+    if (openingHours != null && openingHours!.isNotEmpty) {
+      return openingHours!;
+    }
+    if (chain == SupermarketChain.dm || chain == SupermarketChain.rossmann) {
+      return 'Mo–Sa 08:30–20:00 Uhr';
+    }
+    return 'Mo–Sa 07:00–21:00 Uhr';
+  }
 
   factory Store.fromJson(Map<String, dynamic> json) {
     return Store(
@@ -93,6 +105,7 @@ class Store {
       postalCode: json['postal_code']?.toString(),
       city: json['city']?.toString(),
       district: json['district']?.toString(),
+      openingHours: json['opening_hours']?.toString(),
     );
   }
 
@@ -109,6 +122,7 @@ class Store {
       'postal_code': postalCode,
       'city': city,
       'district': district,
+      'opening_hours': openingHours,
     };
   }
 }
