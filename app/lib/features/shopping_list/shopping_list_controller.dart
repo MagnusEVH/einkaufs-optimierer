@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/models/list_item.dart';
 import '../../core/models/product.dart';
+import '../../core/services/analytics_service.dart';
 import '../../core/services/catalog_service.dart';
 import '../../core/services/supabase_service.dart';
 
@@ -77,6 +78,11 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     final item = _createItem(text.trim(), quantity: quantity, product: matchedProduct);
     state = state.copyWith(items: [item, ...state.items]);
     SupabaseService.saveListItem(item);
+
+    AnalyticsService.trackShoppingListItemAdded(
+      item.rawText,
+      category: item.matchedProduct?.categoryId,
+    );
   }
 
   void updateQuantity(String id, double delta) {
@@ -97,8 +103,15 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     state = state.copyWith(
       items: state.items.map((it) {
         if (it.id == id) {
-          final updated = it.copyWith(isChecked: !it.isChecked);
+          final newChecked = !it.isChecked;
+          final updated = it.copyWith(isChecked: newChecked);
           SupabaseService.saveListItem(updated);
+
+          AnalyticsService.trackShoppingListItemCompleted(
+            it.rawText,
+            isChecked: newChecked,
+          );
+
           return updated;
         }
         return it;
@@ -107,10 +120,23 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   }
 
   void removeItem(String id) {
+    final itemToRemove = state.items.firstWhere(
+      (it) => it.id == id,
+      orElse: () => _createItem(''),
+    );
+
     state = state.copyWith(
       items: state.items.where((it) => it.id != id).toList(),
     );
     SupabaseService.deleteListItem(id);
+
+    if (itemToRemove.rawText.isNotEmpty) {
+      AnalyticsService.trackEvent(
+        'shopping_list_item_removed',
+        category: 'shopping_list',
+        properties: {'product_name': itemToRemove.rawText},
+      );
+    }
   }
 
   void clearList() {

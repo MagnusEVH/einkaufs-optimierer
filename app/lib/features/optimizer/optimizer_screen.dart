@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/models/optimization_result.dart';
 import '../../core/models/store.dart';
 import '../../core/models/user_preferences.dart';
+import '../../core/services/analytics_service.dart';
 import '../../core/services/location_service.dart';
 import '../../core/services/optimizer_service.dart';
 import '../shopping_list/shopping_list_controller.dart';
@@ -52,6 +53,11 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
         _result = res;
         _isLoading = false;
       });
+
+      AnalyticsService.trackShoppingRouteStarted(
+        stopCount: res.selectedRoute.stops.length,
+        totalDistanceKm: res.selectedRoute.totalDistanceKm,
+      );
     } catch (e) {
       setState(() {
         _errorMessage = e.toString().replaceAll('Exception: ', '');

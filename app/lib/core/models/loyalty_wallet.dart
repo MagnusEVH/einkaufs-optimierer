@@ -2,6 +2,84 @@
 
 import 'store.dart';
 
+enum SyncStatus {
+  disconnected,
+  syncing,
+  synced,
+  reAuthRequired,
+  failed,
+}
+
+enum IntegrationType {
+  oauthSessionToken,   // e.g. Lidl Plus OAuth token flow
+  partnerRestSession,  // e.g. PAYBACK partner API session
+  barcodeCardNumber,   // e.g. Rossmann barcode / customer ID
+  webSessionVault,     // e.g. DeutschlandCard token vault
+}
+
+class AppIntegrationInfo {
+  final String id;
+  final SupermarketChain chain;
+  final String programName;
+  final String description;
+  final IntegrationType integrationType;
+  final String apiDocumentation;
+  final bool isConnected;
+  final SyncStatus syncStatus;
+  final int importedCouponsCount;
+  final int pointsBalance;
+  final DateTime? lastSyncedAt;
+  final int syncIntervalHours;
+  final String? statusMessage;
+  final List<String> importedDataSummary;
+
+  const AppIntegrationInfo({
+    required this.id,
+    required this.chain,
+    required this.programName,
+    required this.description,
+    required this.integrationType,
+    required this.apiDocumentation,
+    this.isConnected = false,
+    this.syncStatus = SyncStatus.disconnected,
+    this.importedCouponsCount = 0,
+    this.pointsBalance = 0,
+    this.lastSyncedAt,
+    this.syncIntervalHours = 6,
+    this.statusMessage,
+    this.importedDataSummary = const [],
+  });
+
+  bool get needsReAuth => syncStatus == SyncStatus.reAuthRequired;
+
+  AppIntegrationInfo copyWith({
+    bool? isConnected,
+    SyncStatus? syncStatus,
+    int? importedCouponsCount,
+    int? pointsBalance,
+    DateTime? lastSyncedAt,
+    String? statusMessage,
+    List<String>? importedDataSummary,
+  }) {
+    return AppIntegrationInfo(
+      id: id,
+      chain: chain,
+      programName: programName,
+      description: description,
+      integrationType: integrationType,
+      apiDocumentation: apiDocumentation,
+      isConnected: isConnected ?? this.isConnected,
+      syncStatus: syncStatus ?? this.syncStatus,
+      importedCouponsCount: importedCouponsCount ?? this.importedCouponsCount,
+      pointsBalance: pointsBalance ?? this.pointsBalance,
+      lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
+      syncIntervalHours: syncIntervalHours,
+      statusMessage: statusMessage ?? this.statusMessage,
+      importedDataSummary: importedDataSummary ?? this.importedDataSummary,
+    );
+  }
+}
+
 class LoyaltyAccount {
   final String id;
   final SupermarketChain chain;
@@ -56,6 +134,7 @@ class UserCoupon {
   final String? categorySlug;
   final int minSpendCents;
   final bool isActive;
+  final DateTime? validUntil;
 
   const UserCoupon({
     required this.id,
@@ -66,6 +145,7 @@ class UserCoupon {
     this.categorySlug,
     this.minSpendCents = 0,
     this.isActive = true,
+    this.validUntil,
   });
 
   UserCoupon copyWith({bool? isActive}) {
@@ -78,6 +158,7 @@ class UserCoupon {
       categorySlug: categorySlug,
       minSpendCents: minSpendCents,
       isActive: isActive ?? this.isActive,
+      validUntil: validUntil,
     );
   }
 
@@ -91,6 +172,7 @@ class UserCoupon {
       categorySlug: json['category_slug'],
       minSpendCents: json['min_spend_cents'] ?? 0,
       isActive: json['is_active'] ?? true,
+      validUntil: json['valid_until'] != null ? DateTime.parse(json['valid_until']) : null,
     );
   }
 }

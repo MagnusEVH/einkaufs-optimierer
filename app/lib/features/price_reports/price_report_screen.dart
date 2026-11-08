@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import '../../core/models/store.dart';
-import '../../core/services/supabase_service.dart';
 
 class PriceReportItem {
   final String id;

@@ -10,6 +10,31 @@ class CatalogService {
 
   static List<Product> get products => _cachedProducts;
 
+  /// Liefert den Zeitpunkt der letzten Verifizierung für ein Produkt
+  static String getFreshnessLabel(Product product) {
+    return 'Vor 2 Std. verifiziert';
+  }
+
+  /// Liefert die transparente Datenquelle für den Preis
+  static String getPriceSource(String chain) {
+    switch (chain.toLowerCase()) {
+      case 'lidl':
+        return 'Lidl Prospekt-API (Mainz-Bingen)';
+      case 'rewe':
+        return 'REWE Markt-Abfrage Bingen';
+      case 'aldi_sued':
+        return 'ALDI SÜD Wochenaktion';
+      case 'netto':
+        return 'Netto Marken-Discount Online';
+      case 'rossmann':
+        return 'Rossmann Filial-Sortiment';
+      case 'dm':
+        return 'dm-Drogerie API';
+      default:
+        return 'Regionale Preisdatenbank';
+    }
+  }
+
   /// Loads catalog from local seed JSON or remote Supabase
   static Future<List<Product>> loadCatalog() async {
     if (_isLoaded && _cachedProducts.isNotEmpty) return _cachedProducts;

@@ -2,10 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/services/analytics_service.dart';
 import 'core/services/catalog_service.dart';
+import 'core/services/preferences_storage.dart';
 import 'core/services/supabase_service.dart';
-import 'features/price_reports/price_report_screen.dart';
-import 'features/settings/settings_screen.dart';
+import 'features/my_apps/my_apps_screen.dart';
+import 'features/onboarding/onboarding_screen.dart';
+import 'features/profile/profile_screen.dart';
 import 'features/shopping_list/shopping_list_screen.dart';
 import 'features/stores_map/stores_screen.dart';
 import 'features/wallet/wallet_screen.dart';
@@ -19,11 +22,26 @@ void main() async {
   // Preload catalog
   await CatalogService.loadCatalog();
 
-  runApp(const ProviderScope(child: EinkaufsOptimiererApp()));
+  // Check onboarding status
+  final hasCompletedOnboarding = await PreferencesStorage.isOnboardingCompleted();
+
+  // Start app analytics session
+  AnalyticsService.startSession(
+    entryScreen: hasCompletedOnboarding ? 'shopping_list' : 'onboarding',
+  );
+
+  runApp(ProviderScope(
+    child: EinkaufsOptimiererApp(showOnboarding: !hasCompletedOnboarding),
+  ));
 }
 
 class EinkaufsOptimiererApp extends StatelessWidget {
-  const EinkaufsOptimiererApp({super.key});
+  final bool showOnboarding;
+
+  const EinkaufsOptimiererApp({
+    super.key,
+    this.showOnboarding = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +97,7 @@ class EinkaufsOptimiererApp extends StatelessWidget {
           }),
         ),
       ),
-      home: const MainNavigationShell(),
+      home: showOnboarding ? const OnboardingScreen() : const MainNavigationShell(),
     );
   }
 }
@@ -97,9 +115,9 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
   final List<Widget> _screens = const [
     ShoppingListScreen(),
     StoresScreen(),
+    MyAppsScreen(),
     WalletScreen(),
-    PriceReportScreen(),
-    SettingsScreen(),
+    ProfileScreen(),
   ];
 
   @override
@@ -111,7 +129,13 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
-        onDestinationSelected: (idx) => setState(() => _currentIndex = idx),
+        onDestinationSelected: (idx) {
+          setState(() => _currentIndex = idx);
+          const tabNames = ['Einkaufsliste', 'Karte', 'Meine Apps', 'Angebote', 'Profil'];
+          if (idx < tabNames.length) {
+            AnalyticsService.trackScreenView(tabNames[idx]);
+          }
+        },
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.format_list_bulleted_outlined),
@@ -124,19 +148,19 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
             label: 'Karte',
           ),
           NavigationDestination(
-            icon: Icon(Icons.wallet_outlined),
-            selectedIcon: Icon(Icons.wallet, color: Color(0xFF059669)),
-            label: 'Wallet & Deals',
+            icon: Icon(Icons.apps_outlined),
+            selectedIcon: Icon(Icons.apps, color: Color(0xFF059669)),
+            label: 'Meine Apps',
           ),
           NavigationDestination(
-            icon: Icon(Icons.camera_alt_outlined),
-            selectedIcon: Icon(Icons.camera_alt, color: Color(0xFF059669)),
-            label: 'Preis melden',
+            icon: Icon(Icons.local_offer_outlined),
+            selectedIcon: Icon(Icons.local_offer, color: Color(0xFF059669)),
+            label: 'Angebote',
           ),
           NavigationDestination(
-            icon: Icon(Icons.tune_outlined),
-            selectedIcon: Icon(Icons.tune, color: Color(0xFF059669)),
-            label: 'Präferenzen',
+            icon: Icon(Icons.person_outlined),
+            selectedIcon: Icon(Icons.person, color: Color(0xFF059669)),
+            label: 'Profil',
           ),
         ],
       ),

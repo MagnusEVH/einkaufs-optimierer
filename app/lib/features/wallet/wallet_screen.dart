@@ -1,4 +1,7 @@
 // app/lib/features/wallet/wallet_screen.dart
+//
+// Refactored: Now a pure "Angebote" (Deals) feed.
+// Loyalty accounts / Kundenkarten have moved to MyAppsScreen.
 
 import 'package:flutter/material.dart';
 import '../../core/models/loyalty_wallet.dart';
@@ -13,7 +16,6 @@ class WalletScreen extends StatefulWidget {
 }
 
 class _WalletScreenState extends State<WalletScreen> {
-  List<LoyaltyAccount> _accounts = [];
   List<UserCoupon> _coupons = [];
   List<WeeklyOffer> _offers = [];
 
@@ -25,7 +27,6 @@ class _WalletScreenState extends State<WalletScreen> {
 
   void _refresh() {
     setState(() {
-      _accounts = WalletService.accounts;
       _coupons = WalletService.coupons;
       _offers = WalletService.weeklyOffers;
     });
@@ -34,49 +35,19 @@ class _WalletScreenState extends State<WalletScreen> {
   Color _getChainColor(SupermarketChain chain) {
     switch (chain) {
       case SupermarketChain.lidl:
-        return Colors.blue.shade700;
+        return const Color(0xFF0050AA);
       case SupermarketChain.aldi_nord:
       case SupermarketChain.aldi_sued:
-        return Colors.indigo.shade800;
+        return const Color(0xFF001A9C);
       case SupermarketChain.netto:
-        return Colors.orange.shade800;
+        return const Color(0xFFE2A800);
       case SupermarketChain.rewe:
-        return Colors.red.shade700;
+        return const Color(0xFFCC071E);
       case SupermarketChain.dm:
-        return Colors.purple.shade700;
+        return const Color(0xFF2F2482);
       case SupermarketChain.rossmann:
-        return Colors.red.shade900;
+        return const Color(0xFFC8102E);
     }
-  }
-
-  void _editPoints(LoyaltyAccount acc) {
-    final controller = TextEditingController(text: acc.pointsBalance.toString());
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('${acc.programName} Punktestand'),
-        content: TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-            labelText: 'Punkte-Guthaben',
-            suffixText: 'Punkte',
-          ),
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Abbrechen')),
-          FilledButton(
-            onPressed: () {
-              final newPoints = int.tryParse(controller.text) ?? acc.pointsBalance;
-              WalletService.updatePoints(acc.chain, newPoints);
-              Navigator.pop(ctx);
-              _refresh();
-            },
-            child: const Text('Speichern'),
-          ),
-        ],
-      ),
-    );
   }
 
   void _showAddCouponDialog() {
@@ -196,11 +167,11 @@ class _WalletScreenState extends State<WalletScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final totalPointsValue = _accounts.fold<double>(0, (acc, a) => acc + a.pointsValueEuros);
+    final activeCoupons = _coupons.where((c) => c.isActive).length;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bonus-Wallet & Angebote', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Angebote & Coupons', style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
             icon: const Icon(Icons.add_card),
@@ -212,7 +183,7 @@ class _WalletScreenState extends State<WalletScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Total Loyalty Value Hero Banner
+          // Hero Banner: Deals Overview
           Container(
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
@@ -224,7 +195,7 @@ class _WalletScreenState extends State<WalletScreen> {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF059669).withValues(alpha: 0.3),
+                  color: const Color(0xFF059669).withOpacity(0.3),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -235,68 +206,37 @@ class _WalletScreenState extends State<WalletScreen> {
               children: [
                 const Row(
                   children: [
-                    Icon(Icons.wallet, color: Colors.white, size: 24),
+                    Icon(Icons.local_offer_rounded, color: Colors.white, size: 24),
                     SizedBox(width: 8),
-                    Text('GESAMTES PUNKTE-GUTHABEN', style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 12)),
+                    Text('AKTIVE ANGEBOTE', style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 12)),
                   ],
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  '${totalPointsValue.toStringAsFixed(2)} €',
-                  style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                const SizedBox(height: 12),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '$activeCoupons Coupons',
+                      style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      '+ ${_offers.length} Wochenangebote',
+                      style: TextStyle(color: Colors.white.withOpacity(0.85), fontSize: 16),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 6),
                 Text(
-                  'Über ${_accounts.where((a) => a.pointsBalance > 0).length} aktive Treueprogramme (inkl. PAYBACK & Rossmann 10%)',
-                  style: TextStyle(color: Colors.white.withValues(alpha: 0.9), fontSize: 13),
+                  'Alle aktiven Coupons fließen automatisch in die Routen-Optimierung ein.',
+                  style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 13),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 20),
 
-          // 1. Retail Loyalty Accounts
-          Row(
-            children: [
-              const Icon(Icons.credit_card, color: Colors.teal),
-              const SizedBox(width: 8),
-              Text('Deine Kundenkarten & Punktestände', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-            ],
-          ),
-          const SizedBox(height: 10),
-
-          ..._accounts.map((acc) {
-            final chainColor = _getChainColor(acc.chain);
-            return Card(
-              elevation: 0,
-              margin: const EdgeInsets.symmetric(vertical: 4),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-                side: BorderSide(color: chainColor.withOpacity(0.2)),
-              ),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: chainColor.withOpacity(0.1),
-                  child: Icon(Icons.loyalty, color: chainColor),
-                ),
-                title: Row(
-                  children: [
-                    Text(acc.programName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    const SizedBox(width: 6),
-                    Text('(${acc.chain.displayName})', style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
-                  ],
-                ),
-                subtitle: Text('${acc.pointsBalance} Punkte • entspricht ${acc.pointsValueEuros.toStringAsFixed(2)} €'),
-                trailing: IconButton(
-                  icon: const Icon(Icons.edit_outlined, size: 20),
-                  onPressed: () => _editPoints(acc),
-                ),
-              ),
-            );
-          }),
-          const SizedBox(height: 24),
-
-          // 2. Active User Coupons
+          // ── Active Coupons ──
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -304,7 +244,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 children: [
                   const Icon(Icons.local_offer, color: Colors.teal),
                   const SizedBox(width: 8),
-                  Text('Aktive Coupons (${_coupons.where((c) => c.isActive).length})', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  Text('Aktive Coupons ($activeCoupons)', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                 ],
               ),
               TextButton.icon(
@@ -314,10 +254,10 @@ class _WalletScreenState extends State<WalletScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Text(
-            'Aktive Coupons werden automatisch in der Routen-Optimierung angerechnet.',
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+            'Manuell hinzugefügt oder über „Meine Apps" importiert.',
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
           ),
           const SizedBox(height: 10),
 
@@ -355,13 +295,18 @@ class _WalletScreenState extends State<WalletScreen> {
           }),
           const SizedBox(height: 24),
 
-          // 3. Weekly Promotional Offers from Brochures
+          // ── Weekly Promotional Offers ──
           Row(
             children: [
               const Icon(Icons.campaign, color: Color(0xFF059669)),
               const SizedBox(width: 8),
-              Text('Wöchentliche Angebote (Bingen & Oberwesel)', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+              Text('Wöchentliche Angebote', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
             ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Aktuelle Prospekt-Angebote aus Bingen, Oberwesel & Umgebung.',
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
           ),
           const SizedBox(height: 10),
 
@@ -378,13 +323,13 @@ class _WalletScreenState extends State<WalletScreen> {
                 leading: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.red.shade50,
+                    color: chainColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.red.shade200),
+                    border: Border.all(color: chainColor.withValues(alpha: 0.4)),
                   ),
                   child: Text(
                     '-${off.discountPercent}%',
-                    style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 12),
+                    style: TextStyle(color: chainColor, fontWeight: FontWeight.bold, fontSize: 12),
                   ),
                 ),
                 title: Text(off.productName, style: const TextStyle(fontWeight: FontWeight.bold)),

@@ -48,6 +48,29 @@ class ThirdPartyVaultService {
   }
 
   /**
+   * Filters out expired coupons and prevents duplicate coupon imports
+   * @param {Array} existingCoupons
+   * @param {Array} newCoupons
+   */
+  deduplicateAndValidateCoupons(existingCoupons = [], newCoupons = []) {
+    const seenTitles = new Set(existingCoupons.map(c => `${c.chain}_${c.title.trim().toLowerCase()}`));
+    const valid = [];
+    const now = new Date();
+
+    for (const coup of newCoupons) {
+      if (coup.valid_until && new Date(coup.valid_until) < now) {
+        continue; // Expired
+      }
+      const key = `${coup.chain}_${coup.title.trim().toLowerCase()}`;
+      if (!seenTitles.has(key)) {
+        seenTitles.add(key);
+        valid.push(coup);
+      }
+    }
+    return valid;
+  }
+
+  /**
    * Syncs latest coupons and points balances from the third-party provider
    */
   async syncAccountData(userId, service) {

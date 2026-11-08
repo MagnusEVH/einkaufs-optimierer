@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/models/product.dart';
 import '../../core/services/catalog_service.dart';
 import '../optimizer/optimizer_screen.dart';
+import 'post_shopping_summary_dialog.dart';
 import 'shopping_list_controller.dart';
 
 class ShoppingListScreen extends ConsumerStatefulWidget {
@@ -58,6 +59,33 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
           ],
         ),
         actions: [
+          if (state.items.any((it) => it.isChecked))
+            TextButton.icon(
+              icon: const Icon(Icons.check_circle_outline_rounded, color: Color(0xFF007AFF), size: 20),
+              label: const Text(
+                'Fertig',
+                style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xFF007AFF), fontSize: 15),
+              ),
+              onPressed: () {
+                final purchased = state.items.where((it) => it.isChecked).toList();
+                final skipped = state.items.where((it) => !it.isChecked).toList();
+
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) => PostShoppingSummarySheet(
+                    purchasedItems: purchased,
+                    skippedItems: skipped,
+                    onFinishAndClear: () {
+                      for (final p in purchased) {
+                        ref.read(shoppingListProvider.notifier).removeItem(p.id);
+                      }
+                    },
+                  ),
+                );
+              },
+            ),
           IconButton(
             icon: const Icon(Icons.delete_sweep_outlined),
             tooltip: 'Liste leeren',
@@ -188,6 +216,41 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
               ],
             ),
           ),
+
+          // Live In-Store Shopping Progress
+          if (state.items.isNotEmpty) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${state.items.where((it) => it.isChecked).length} von ${state.items.length} eingekauft',
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF64748B)),
+                      ),
+                      Text(
+                        '${(state.items.where((it) => it.isChecked).length / state.items.length * 100).round()}%',
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF007AFF)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: LinearProgressIndicator(
+                      value: state.items.where((it) => it.isChecked).length / state.items.length,
+                      backgroundColor: const Color(0xFFE2E8F0),
+                      color: const Color(0xFF007AFF),
+                      minHeight: 6,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
 
           // Items Count Banner
           Padding(
