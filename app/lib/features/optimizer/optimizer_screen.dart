@@ -55,8 +55,8 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
       });
 
       AnalyticsService.trackShoppingRouteStarted(
-        stopCount: res.selectedRoute.stops.length,
-        totalDistanceKm: res.selectedRoute.totalDistanceKm,
+        stopCount: res.stops.length,
+        totalDistanceKm: res.summary.routeDistanceKm,
       );
     } catch (e) {
       setState(() {

@@ -325,4 +325,8 @@ class WalletService {
       return c;
     }).toList();
   }
+
+  static void addCoupon(UserCoupon coupon) {
+    _coupons = [coupon, ..._coupons];
+  }
 }

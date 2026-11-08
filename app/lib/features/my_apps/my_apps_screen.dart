@@ -149,7 +149,7 @@ class _MyAppsScreenState extends State<MyAppsScreen> {
                       children: [
                         const Row(
                           children: [
-                            Icon(Icons.sync_saved_locally_rounded, size: 18, color: Color(0xFF34C759)),
+                            Icon(Icons.sync_rounded, size: 18, color: Color(0xFF34C759)),
                             SizedBox(width: 8),
                             Text(
                               'Importierte Live-Daten',
