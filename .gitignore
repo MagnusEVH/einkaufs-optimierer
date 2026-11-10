@@ -1,0 +1,38 @@
+# ── Secrets & local env ─────────────────────────────────────────
+.env
+.env.*
+*.env
+app/.env
+
+# ── Flutter / Dart ───────────────────────────────────────────────
+**/build/
+**/.dart_tool/
+**/.packages
+**/pubspec.lock
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+
+# ── Android ─────────────────────────────────────────────────────
+**/android/.gradle/
+**/android/key.properties
+**/android/app/google-services.json
+**/android/local.properties
+
+# ── iOS / macOS ──────────────────────────────────────────────────
+**/ios/Pods/
+**/ios/.symlinks/
+**/macos/Pods/
+**/*.xcworkspace
+
+# ── Node / Scrapers ──────────────────────────────────────────────
+node_modules/
+scrapers/node_modules/
+npm-debug.log*
+
+# ── OS / Editor ──────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+

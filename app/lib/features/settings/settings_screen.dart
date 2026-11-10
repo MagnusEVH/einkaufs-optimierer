@@ -1,7 +1,6 @@
 // app/lib/features/settings/settings_screen.dart
 
 import 'package:flutter/material.dart';
-import '../../core/models/store.dart';
 import '../../core/models/user_preferences.dart';
 import '../../core/services/supabase_service.dart';
 

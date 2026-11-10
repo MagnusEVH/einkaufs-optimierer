@@ -9,7 +9,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import '../models/loyalty_wallet.dart';
 import 'analytics_service.dart';
-import 'preferences_storage.dart';
 import 'supabase_service.dart';
 
 class NotificationService {

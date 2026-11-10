@@ -6,6 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../../core/models/store.dart';
 import '../../core/services/location_service.dart';
+import '../../core/config/app_config.dart';
 import '../optimizer/optimizer_screen.dart';
 
 enum TileStyle {
@@ -596,11 +597,11 @@ class _StoresScreenState extends State<StoresScreen> {
   String _getTileUrl() {
     switch (_tileStyle) {
       case TileStyle.voyager:
-        return 'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png';
+        return AppConfig.cartoVoyagerUrl;
       case TileStyle.openStreetMap:
-        return 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+        return AppConfig.openStreetMapUrl;
       case TileStyle.satellite:
-        return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+        return AppConfig.satelliteUrl;
     }
   }
 

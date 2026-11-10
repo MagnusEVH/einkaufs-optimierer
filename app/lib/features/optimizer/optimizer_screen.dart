@@ -23,6 +23,7 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
   bool _isLoading = true;
   String? _errorMessage;
   OptimizationResult? _result;
+  // ignore: unused_field
   UserLocation? _userLocation;
 
   @override
