@@ -1,7 +1,9 @@
 // app/lib/core/services/wallet_service.dart
 
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import '../models/loyalty_wallet.dart';
 import '../models/store.dart';
 import 'analytics_service.dart';
@@ -160,6 +162,8 @@ class WalletService {
       discountPriceCents: 149,
       regularPriceCents: 199,
       discountPercent: 25,
+      periodLabel: 'Gültig bis Sa.',
+      unitInfo: '500g Packung',
     ),
     const WeeklyOffer(
       id: 'off-2',
@@ -169,6 +173,8 @@ class WalletService {
       discountPriceCents: 219,
       regularPriceCents: 279,
       discountPercent: 21,
+      periodLabel: 'Gültig bis Sa.',
+      unitInfo: '250g Stück',
     ),
     const WeeklyOffer(
       id: 'off-3',
@@ -178,6 +184,8 @@ class WalletService {
       discountPriceCents: 159,
       regularPriceCents: 199,
       discountPercent: 20,
+      periodLabel: 'Gültig bis Sa.',
+      unitInfo: '1kg Bund',
     ),
     const WeeklyOffer(
       id: 'off-4',
@@ -187,6 +195,8 @@ class WalletService {
       discountPriceCents: 95,
       regularPriceCents: 115,
       discountPercent: 17,
+      periodLabel: 'Gültig 14 Tage',
+      unitInfo: '1L Tetra Pak',
     ),
     const WeeklyOffer(
       id: 'off-5',
@@ -196,12 +206,64 @@ class WalletService {
       discountPriceCents: 299,
       regularPriceCents: 379,
       discountPercent: 21,
+      periodLabel: 'Gültig 14 Tage',
+      unitInfo: '8 Rollen Packung',
     ),
   ];
+
+  static bool _offersLoaded = false;
 
   static List<AppIntegrationInfo> get integratedApps => _integratedApps;
   static List<UserCoupon> get coupons => _coupons;
   static List<WeeklyOffer> get weeklyOffers => _weeklyOffers;
+
+  /// Lädt tagesaktuelle, gescrapte Angebote mit Datumsbereich aus dem Asset-Store
+  static Future<List<WeeklyOffer>> loadScrapedOffers({bool forceRefresh = false}) async {
+    if (_offersLoaded && !forceRefresh && _weeklyOffers.length > 5) {
+      return _weeklyOffers;
+    }
+
+    try {
+      final jsonStr = await rootBundle.loadString('assets/live_scraped_offers_rlp.json');
+      final Map<String, dynamic> data = json.decode(jsonStr);
+      final List<dynamic>? rawOffers = data['offers'];
+
+      if (rawOffers != null && rawOffers.isNotEmpty) {
+        final parsed = rawOffers.map((o) {
+          final map = o as Map<String, dynamic>;
+          final chainVal = map['chain']?.toString() ?? 'rewe';
+          final pName = map['matched_product_name'] ?? map['raw_title'] ?? '';
+          return WeeklyOffer.fromJson({
+            'id': 'scraped-$chainVal-${map['matched_product_id'] ?? pName.hashCode}',
+            'chain': chainVal,
+            'product_name': pName,
+            'title': map['raw_title'] ?? pName,
+            'discount_price_cents': map['price_cents'] ?? 0,
+            'regular_price_cents': map['original_price_cents'] ?? map['price_cents'] ?? 0,
+            'discount_percent': map['discount_percent'] ?? 0,
+            'is_active': true,
+            'valid_from': map['valid_from'],
+            'valid_to': map['valid_to'],
+            'period_label': map['period_label'],
+            'unit_info': map['unit_info'],
+          });
+        }).toList();
+
+        if (parsed.isNotEmpty) {
+          _weeklyOffers
+            ..clear()
+            ..addAll(parsed);
+          _offersLoaded = true;
+          return _weeklyOffers;
+        }
+      }
+    } catch (e) {
+      debugPrint('[WalletService] Fallback auf kuratierte Angebote: $e');
+    }
+
+    _offersLoaded = true;
+    return _weeklyOffers;
+  }
 
   /// Verknüpft eine externe Supermarkt-App
   static Future<void> linkApp(

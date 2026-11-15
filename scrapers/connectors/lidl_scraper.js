@@ -26,6 +26,8 @@ class LidlScraper extends BaseScraper {
       console.log(`[Lidl Scraper] Live endpoint fallback engaged: ${e.message}`);
     }
 
+    const promoDates = this.getPromoValidityDates(5);
+
     return [
       {
         chain: 'lidl',
@@ -37,8 +39,9 @@ class LidlScraper extends BaseScraper {
         unit_info: '500g Becher',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.lidl.de/c/billiger-einkaufen',
       },
       {
@@ -51,8 +54,9 @@ class LidlScraper extends BaseScraper {
         unit_info: '500g Folie',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.lidl.de/c/billiger-einkaufen',
       },
       {
@@ -65,8 +69,9 @@ class LidlScraper extends BaseScraper {
         unit_info: '250g Stück',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.lidl.de/c/billiger-einkaufen',
       },
       {
@@ -79,8 +84,9 @@ class LidlScraper extends BaseScraper {
         unit_info: '500g Packung',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.lidl.de/c/billiger-einkaufen',
       }
     ];

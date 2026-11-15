@@ -25,11 +25,14 @@ class _WalletScreenState extends State<WalletScreen> {
     _refresh();
   }
 
-  void _refresh() {
-    setState(() {
-      _coupons = WalletService.coupons;
-      _offers = WalletService.weeklyOffers;
-    });
+  Future<void> _refresh() async {
+    final offers = await WalletService.loadScrapedOffers();
+    if (mounted) {
+      setState(() {
+        _coupons = WalletService.coupons;
+        _offers = offers;
+      });
+    }
   }
 
   Color _getChainColor(SupermarketChain chain) {
@@ -317,9 +320,10 @@ class _WalletScreenState extends State<WalletScreen> {
               margin: const EdgeInsets.symmetric(vertical: 4),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
-                side: BorderSide(color: theme.dividerColor.withOpacity(0.1)),
+                side: BorderSide(color: theme.dividerColor.withValues(alpha: 0.1)),
               ),
               child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                 leading: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
@@ -332,19 +336,69 @@ class _WalletScreenState extends State<WalletScreen> {
                     style: TextStyle(color: chainColor, fontWeight: FontWeight.bold, fontSize: 12),
                   ),
                 ),
-                title: Text(off.productName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text('${off.chain.displayName} • ${off.title}'),
+                title: Text(off.productName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 2),
+                    Text(
+                      '${off.chain.displayName} • ${off.unitInfo ?? off.title}',
+                      style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_today_rounded,
+                          size: 11,
+                          color: off.isExpired ? Colors.red : const Color(0xFF007AFF),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          off.displayValidity,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: off.isExpired ? Colors.red : const Color(0xFF007AFF),
+                          ),
+                        ),
+                        if (off.daysRemaining != null && off.daysRemaining! <= 3 && !off.isExpired) ...[
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFF9500).withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              off.daysRemaining == 0 ? 'Heute letztmals' : 'Noch ${off.daysRemaining} Tage',
+                              style: const TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFD97706),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ],
+                ),
                 trailing: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       '${off.discountPriceEuros.toStringAsFixed(2)} €',
-                      style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 15),
+                      style: const TextStyle(color: Color(0xFF34C759), fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     Text(
                       'statt ${off.regularPriceEuros.toStringAsFixed(2)} €',
-                      style: TextStyle(color: Colors.grey.shade600, fontSize: 11, decoration: TextDecoration.lineThrough),
+                      style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 11,
+                        decoration: TextDecoration.lineThrough,
+                      ),
                     ),
                   ],
                 ),

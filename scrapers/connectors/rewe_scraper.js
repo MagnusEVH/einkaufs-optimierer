@@ -11,6 +11,8 @@ class ReweScraper extends BaseScraper {
   async scrapeOffers(location = { postalCode: '55411', city: 'Bingen am Rhein' }) {
     console.log(`[REWE Scraper] Fetching weekly deals for ${location.city} (${location.postalCode})...`);
 
+    const promoDates = this.getPromoValidityDates(5);
+
     try {
       // In production, queries REWE digital API with postal code & market ID:
       // https://shop.rewe.de/api/products?search=angebote&marketZipCode=${location.postalCode}
@@ -19,7 +21,7 @@ class ReweScraper extends BaseScraper {
       
       if (res.ok) {
         const json = await res.json();
-        if (json._embedded && json._embedded.products) {
+        if (json._embedded && Array.isArray(json._embedded.products) && json._embedded.products.length > 0) {
           return json._embedded.products.map(p => ({
             chain: 'rewe',
             raw_title: p.name,
@@ -30,8 +32,9 @@ class ReweScraper extends BaseScraper {
             unit_info: p.grammage || 'Stück',
             postal_code: location.postalCode,
             city: location.city,
-            valid_from: new Date().toISOString(),
-            valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+            valid_from: promoDates.valid_from,
+            valid_to: promoDates.valid_to,
+            period_label: promoDates.period_label,
             source_url: `https://shop.rewe.de/p/${p.id}`,
           }));
         }
@@ -52,8 +55,9 @@ class ReweScraper extends BaseScraper {
         unit_info: '500g Packung',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://shop.rewe.de/angebote',
       },
       {
@@ -66,8 +70,9 @@ class ReweScraper extends BaseScraper {
         unit_info: '250g Stück',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://shop.rewe.de/angebote',
       },
       {
@@ -80,8 +85,9 @@ class ReweScraper extends BaseScraper {
         unit_info: '1L Packung',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://shop.rewe.de/angebote',
       },
       {
@@ -94,8 +100,9 @@ class ReweScraper extends BaseScraper {
         unit_info: '1kg Beutel',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://shop.rewe.de/angebote',
       },
       {
@@ -108,8 +115,9 @@ class ReweScraper extends BaseScraper {
         unit_info: '1 Stück',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://shop.rewe.de/angebote',
       }
     ];

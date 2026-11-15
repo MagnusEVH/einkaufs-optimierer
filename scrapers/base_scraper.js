@@ -60,6 +60,37 @@ class BaseScraper {
   }
 
   /**
+   * Helper to compute standardized promotional validity dates.
+   * Supermarket offers in Germany run typically from Monday to Saturday of the current week.
+   * Drugstores typically run for 14 days.
+   * @param {number} cycleDays - default 5 days (Mon 00:00 to Sat 23:59 = 6 days total span)
+   */
+  getPromoValidityDates(cycleDays = 5) {
+    const now = new Date();
+    const dayOfWeek = now.getDay(); // 0 is Sunday, 1 is Monday...
+    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+
+    const monday = new Date(now);
+    monday.setDate(now.getDate() + diffToMonday);
+    monday.setHours(0, 0, 0, 0);
+
+    const validTo = new Date(monday);
+    validTo.setDate(monday.getDate() + cycleDays);
+    validTo.setHours(23, 59, 59, 999);
+
+    const pad = (n) => String(n).padStart(2, '0');
+    const fromStr = `${pad(monday.getDate())}.${pad(monday.getMonth() + 1)}.`;
+    const toStr = `${pad(validTo.getDate())}.${pad(validTo.getMonth() + 1)}.`;
+    const periodLabel = `Gültig: ${fromStr} – ${toStr}`;
+
+    return {
+      valid_from: monday.toISOString(),
+      valid_to: validTo.toISOString(),
+      period_label: periodLabel,
+    };
+  }
+
+  /**
    * Abstract method to be overridden by each chain connector
    * @param {Object} location - { postalCode: '55411', city: 'Bingen am Rhein' }
    * @returns {Promise<Array<ScrapedOffer>>}

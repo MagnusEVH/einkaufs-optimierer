@@ -11,6 +11,8 @@ class NettoScraper extends BaseScraper {
   async scrapeOffers(location = { postalCode: '55430', city: 'Oberwesel' }) {
     console.log(`[Netto Scraper] Fetching weekly deals for ${location.city} (${location.postalCode})...`);
 
+    const promoDates = this.getPromoValidityDates(5);
+
     return [
       {
         chain: 'netto',
@@ -22,8 +24,9 @@ class NettoScraper extends BaseScraper {
         unit_info: '1kg Bund',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.netto-online.de/angebote',
       },
       {
@@ -36,8 +39,9 @@ class NettoScraper extends BaseScraper {
         unit_info: '300g Schale',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.netto-online.de/angebote',
       },
       {
@@ -50,8 +54,9 @@ class NettoScraper extends BaseScraper {
         unit_info: '250g Packung',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.netto-online.de/angebote',
       }
     ];

@@ -186,6 +186,10 @@ class WeeklyOffer {
   final int regularPriceCents;
   final int discountPercent;
   final bool isActive;
+  final DateTime? validFrom;
+  final DateTime? validTo;
+  final String? periodLabel;
+  final String? unitInfo;
 
   const WeeklyOffer({
     required this.id,
@@ -196,21 +200,79 @@ class WeeklyOffer {
     required this.regularPriceCents,
     required this.discountPercent,
     this.isActive = true,
+    this.validFrom,
+    this.validTo,
+    this.periodLabel,
+    this.unitInfo,
   });
 
   double get discountPriceEuros => discountPriceCents / 100.0;
   double get regularPriceEuros => regularPriceCents / 100.0;
 
+  bool get isExpired {
+    if (validTo == null) return false;
+    return DateTime.now().isAfter(validTo!);
+  }
+
+  int? get daysRemaining {
+    if (validTo == null) return null;
+    final diff = validTo!.difference(DateTime.now()).inDays;
+    return diff < 0 ? 0 : diff;
+  }
+
+  String get displayValidity {
+    if (periodLabel != null && periodLabel!.isNotEmpty) {
+      return periodLabel!;
+    }
+    if (validTo != null) {
+      String pad(int n) => n.toString().padLeft(2, '0');
+      return 'Gültig bis ${pad(validTo!.day)}.${pad(validTo!.month)}.';
+    }
+    return 'Wochenangebot';
+  }
+
   factory WeeklyOffer.fromJson(Map<String, dynamic> json) {
+    DateTime? parseDate(dynamic val) {
+      if (val == null) return null;
+      if (val is DateTime) return val;
+      return DateTime.tryParse(val.toString());
+    }
+
+    final pName = json['product_name'] ?? json['matched_product_name'] ?? json['raw_title'] ?? '';
+    final tName = json['title'] ?? json['raw_title'] ?? pName;
+    final pCents = json['discount_price_cents'] ?? json['price_cents'] ?? 0;
+    final rCents = json['regular_price_cents'] ?? json['original_price_cents'] ?? pCents;
+
     return WeeklyOffer(
-      id: json['id'] ?? '',
+      id: json['id']?.toString() ?? '',
       chain: SupermarketChain.fromString(json['chain'] ?? 'rewe'),
-      productName: json['product_name'] ?? '',
-      title: json['title'] ?? '',
-      discountPriceCents: json['discount_price_cents'] ?? 0,
-      regularPriceCents: json['regular_price_cents'] ?? 0,
-      discountPercent: json['discount_percent'] ?? 0,
+      productName: pName.toString(),
+      title: tName.toString(),
+      discountPriceCents: pCents is num ? pCents.toInt() : int.tryParse(pCents.toString()) ?? 0,
+      regularPriceCents: rCents is num ? rCents.toInt() : int.tryParse(rCents.toString()) ?? 0,
+      discountPercent: (json['discount_percent'] as num?)?.toInt() ?? 0,
       isActive: json['is_active'] ?? true,
+      validFrom: parseDate(json['valid_from'] ?? json['starts_at']),
+      validTo: parseDate(json['valid_to'] ?? json['ends_at']),
+      periodLabel: json['period_label']?.toString(),
+      unitInfo: json['unit_info']?.toString(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'chain': chain.name,
+      'product_name': productName,
+      'title': title,
+      'discount_price_cents': discountPriceCents,
+      'regular_price_cents': regularPriceCents,
+      'discount_percent': discountPercent,
+      'is_active': isActive,
+      'valid_from': validFrom?.toIso8601String(),
+      'valid_to': validTo?.toIso8601String(),
+      'period_label': periodLabel,
+      'unit_info': unitInfo,
+    };
   }
 }

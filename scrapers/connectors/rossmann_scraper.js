@@ -22,6 +22,8 @@ class RossmannScraper extends BaseScraper {
       console.log(`[Rossmann Scraper] Live endpoint fallback engaged: ${e.message}`);
     }
 
+    const promoDates = this.getPromoValidityDates(13);
+
     return [
       {
         chain: 'rossmann',
@@ -33,8 +35,9 @@ class RossmannScraper extends BaseScraper {
         unit_info: '8 Rollen Sparpack',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.rossmann.de/de/haushalt-alouette-toilettenpapier/p/4305615712435',
       },
       {
@@ -47,8 +50,9 @@ class RossmannScraper extends BaseScraper {
         unit_info: '300ml Flasche',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.rossmann.de/de/pflege-und-duft-isana-cremedusche/p/4305615827368',
       },
       {
@@ -61,8 +65,9 @@ class RossmannScraper extends BaseScraper {
         unit_info: '500g Beutel',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.rossmann.de/de/lebensmittel-enerbio-haferflocken/p/4305615764830',
       },
       {
@@ -75,8 +80,9 @@ class RossmannScraper extends BaseScraper {
         unit_info: '4 Rollen',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.rossmann.de/de/haushalt-alouette-kuechentuecher/p/4305615712459',
       }
     ];

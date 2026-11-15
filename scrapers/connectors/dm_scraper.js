@@ -26,6 +26,8 @@ class DmScraper extends BaseScraper {
       console.log(`[dm Scraper] Live endpoint fallback engaged: ${e.message}`);
     }
 
+    const promoDates = this.getPromoValidityDates(13);
+
     return [
       {
         chain: 'dm',
@@ -37,8 +39,9 @@ class DmScraper extends BaseScraper {
         unit_info: '1L Tetra Pak',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 14 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.dm.de/dmbio-haferdrink-natur-p4058172684271.html',
       },
       {
@@ -51,8 +54,9 @@ class DmScraper extends BaseScraper {
         unit_info: '8 Rollen Packung',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 14 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.dm.de/sanft-und-sicher-toilettenpapier-p4066447239003.html',
       },
       {
@@ -65,8 +69,9 @@ class DmScraper extends BaseScraper {
         unit_info: '300ml Flasche',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 14 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.dm.de/balea-cremedusche-p4058172922113.html',
       },
       {
@@ -79,8 +84,9 @@ class DmScraper extends BaseScraper {
         unit_info: '500ml Flasche',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 14 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.dm.de/denkmit-spuelmittel-p4058172921895.html',
       }
     ];

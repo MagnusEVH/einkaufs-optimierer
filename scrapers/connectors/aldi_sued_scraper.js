@@ -11,6 +11,8 @@ class AldiSuedScraper extends BaseScraper {
   async scrapeOffers(location = { postalCode: '55411', city: 'Bingen am Rhein' }) {
     console.log(`[ALDI SÜD Scraper] Fetching weekly deals for ${location.city} (${location.postalCode})...`);
 
+    const promoDates = this.getPromoValidityDates(5);
+
     return [
       {
         chain: 'aldi_sued',
@@ -22,8 +24,9 @@ class AldiSuedScraper extends BaseScraper {
         unit_info: '1L Packung',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.aldi-sued.de/de/angebote.html',
       },
       {
@@ -36,8 +39,9 @@ class AldiSuedScraper extends BaseScraper {
         unit_info: '250g Stück',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.aldi-sued.de/de/angebote.html',
       },
       {
@@ -50,8 +54,9 @@ class AldiSuedScraper extends BaseScraper {
         unit_info: '10 Stück',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.aldi-sued.de/de/angebote.html',
       },
       {
@@ -64,8 +69,9 @@ class AldiSuedScraper extends BaseScraper {
         unit_info: '1kg',
         postal_code: location.postalCode,
         city: location.city,
-        valid_from: new Date().toISOString(),
-        valid_to: new Date(Date.now() + 6 * 86400000).toISOString(),
+        valid_from: promoDates.valid_from,
+        valid_to: promoDates.valid_to,
+        period_label: promoDates.period_label,
         source_url: 'https://www.aldi-sued.de/de/angebote.html',
       }
     ];
