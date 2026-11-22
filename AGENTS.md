@@ -78,7 +78,7 @@ Das Projekt ist ein **Einkaufs-Optimierer für den deutschen Lebensmittel- und D
 * `backend_tests/test_optimization_engine.js`: Prüft Single- vs. Multi-Store Algorithmus.
 * `backend_tests/test_clustering.js`: Prüft PostGIS Distanz- und Filial-Clustering.
 * Weitere: `test_catalog_integrity.js`, `test_phase2_preferences.js`, `test_phase3_offers_and_wallet.js`, `test_stufe_b_scraping_and_vault.js`.
-* Flutter: `app/test/` (`widget_test.dart`, `optimizer_service_test.dart`, `store_filters_test.dart`).
+* Flutter: `app/test/` (`widget_test.dart`, `optimizer_service_test.dart`, `store_filters_test.dart`, `wallet_service_test.dart`).
 
 ### 5. Sonstiges
 * `web_dashboard/index.html` – statisches Dashboard; `generator_seed_250.js` – erzeugt `app/assets/products_seed_250.json`.
@@ -188,7 +188,7 @@ Vor jedem Abschluss: Backend-Tests ausführen; bei Dart-Änderungen zusätzlich 
 1. Scraper liefern faktisch **statische Beispieldaten**; Live-Endpunkte (z. B. Lidl-Flyer) werden nur angefragt, aber nicht ausgewertet.
 2. ~~Carto-Key im Quellcode~~ – entfernt (nur noch `--dart-define`). Der alte Key steht noch in der Git-Historie → bei Carto rotieren und als Secret `CARTO_API_KEY` hinterlegen.
 3. Supabase ist im Standard nicht angebunden (Demo-Modus); Migrationen/Edge Functions sind nicht gegen eine echte Instanz verifiziert.
-4. Flutter-Tests: Smoke-Test, Optimizer-Service und Store-Filter abgedeckt; **Wallet-Service** noch ohne Dart-Tests.
+4. ~~Dart-Tests~~ – Smoke-Test, Optimizer-Service, Store-Filter und Wallet-Service (inkl. `WeeklyOffer`/`UserCoupon`-Parsing) abgedeckt. Hinweis: `WalletService` hält statischen Zustand, Tests in `wallet_service_test.dart` sind reihenfolgeabhängig.
 5. ~~Doppelte Datenhaltung, Boilerplate-README, `pubspec.lock`~~ – erledigt (`test_data/` entfernt, README neu, Lock-Datei bewusst eingecheckt).
 6. ~~`stores_screen.dart` aufteilen~~ – erledigt (364 statt 1617 Zeilen, visuell pixelgleich geprüft). Chip-Zahlen werden jetzt aus dem Datensatz berechnet. Offen: Android/iOS-Build noch nicht aktiv (nur Web/PWA).
 7. ~~Kein CI für Tests~~ – Workflow führt Backend-Tests + `flutter test` vor dem Deploy aus (`needs: test`). `flutter analyze` ist bewusst noch **nicht** im Gate (bestehende Warnungen), Flutter-Version ist nicht fixiert (`stable`).
