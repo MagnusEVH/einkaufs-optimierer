@@ -135,6 +135,18 @@ Reine Recherche-, Such- und Test-Läufe an Sub-Agents mit schnellem/günstigem M
 
 ---
 
+## 📓 Obsidian & Agent Skills
+
+* **Vault:** Das Repo-Wurzelverzeichnis kann direkt als Obsidian-Vault geöffnet werden. `.obsidian/` (lokaler Zustand) ist gitignored.
+* **Skills:** Die Skills aus [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (`obsidian-markdown`, `obsidian-bases`, `json-canvas`, `obsidian-cli`, `obsidian-headless`, `defuddle`, `knap`) sind so eingebunden:
+  * **Antigravity / andere Agenten:** vendored unter `.agents/skills/` (fester Commit, siehe `.agents/skills/README.md`). Nicht von Hand ändern.
+  * **Claude Code:** als Plugin über `.claude/settings.json` (`obsidian@obsidian-skills`). Beim ersten Öffnen bestätigen oder manuell `/plugin marketplace add obsidianmd/obsidian-skills` und `/plugin install obsidian@obsidian-skills`.
+* **Wann nutzen:** Obsidian-Syntax (Wikilinks `[[…]]`, Callouts, Embeds, `.base`, `.canvas`) nur in Notizen, die für Obsidian gedacht sind. `AGENTS.md`, `README.md` und `.agents/rules/` bleiben Standard-Markdown, damit sie auf GitHub und in allen Tools lesbar sind.
+* **CLI:** `obsidian …` braucht die laufende Desktop-App auf dem Rechner des Nutzers. In Cloud-Sessions gibt es sie nicht, dort Notizen direkt als Dateien bearbeiten.
+* **Kosten:** Notizen, Bases und Canvas pflegen ist eine Aufgabe für ein schnelles bzw. kostenloses Modell (siehe Modell-Strategie).
+
+---
+
 ## 🔧 Build-, Test- & Run-Befehle
 
 | Zweck | Befehl |

@@ -28,6 +28,10 @@ node_modules/
 scrapers/node_modules/
 npm-debug.log*
 
+# ── Obsidian (Vault-Zustand, lokal) ──
+.obsidian/
+.trash/
+
 # ── OS / Editor ──────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
