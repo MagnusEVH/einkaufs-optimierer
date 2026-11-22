@@ -2,7 +2,7 @@
 
 Dieser Leitfaden dient als verbindliche Orientierung für alle KI-Agenten (Claude Code, Antigravity/Gemini u. a.), um unnötige Datei-Scans zu vermeiden und Änderungen direkt zielgerichtet umzusetzen.
 
-**Single Source of Truth:** `AGENTS.md` gilt für alle Agenten. Die Antigravity-Regel [.agents/rules/plan_on_complex_prompts.md](.agents/rules/plan_on_complex_prompts.md) verweist hierher und darf ihr nicht widersprechen. Es gibt (noch) keine `GEMINI.md`/`CLAUDE.md`; falls ein Tool eine eigene Datei verlangt, nur auf `AGENTS.md` verweisen, keine Regeln duplizieren.
+**Single Source of Truth:** `AGENTS.md` gilt für alle Agenten. Die Antigravity-Regel [.agents/rules/plan_on_complex_prompts.md](.agents/rules/plan_on_complex_prompts.md) verweist hierher und darf ihr nicht widersprechen. `CLAUDE.md` importiert nur `AGENTS.md` und `brain/Home.md`. Verlangt ein weiteres Tool eine eigene Datei (z. B. `GEMINI.md`), dort ebenfalls nur verweisen, keine Regeln duplizieren.
 
 ---
 
@@ -17,6 +17,32 @@ Wenn ein Prompt **komplex** ist (definiert als: betrifft mehr als 1 Datei, erfor
    - **Geplante Schritte:** Nummerierte Stichpunkte der konkreten Änderungen.
    - **Offene Fragen / Risiken:** Falls Unklarheiten oder Seiteneffekte bestehen.
 3. Erst nach Vorlage des Plans (oder bei klarem Auftrag im selben Schritt geordnet nach Plan) die Dateien punktgenau editieren.
+
+---
+
+## 🧠 Zweites Gehirn (`brain/`) – Pflicht für jeden Auftrag
+
+`brain/` ist der Obsidian-Vault mit Projektwissen. Der Nutzer liest ihn lokal (Obsidian Git, Auto-Pull); Agenten in der Cloud und in Antigravity pflegen ihn. Ablauf und Sync: `brain/Wissen/Arbeitsablauf.md`.
+
+**Zu Beginn:**
+1. `brain/Home.md` lesen (Stand, offene Baustellen).
+2. Nur die zur Aufgabe passenden Notizen öffnen (Baustelle, Entscheidung, `Wissen/Stolperfallen.md`) – nicht den ganzen Vault.
+
+**Am Ende (vor dem Commit, im selben Branch):**
+1. Session-Notiz `brain/Sessions/JJJJ-MM-TT Thema.md` nach `brain/_Vorlagen/Session.md` anlegen: Erledigt, Offen, Gelernt, PR/Branch. Mehrere Aufträge am selben Tag zum selben Thema: bestehende Notiz ergänzen.
+2. Betroffene Baustelle aktualisieren (`status`: `offen` / `in Arbeit` / `erledigt`, `aktualisiert`, Nächste Schritte). Neue Baustelle → neue Notiz nach Vorlage.
+3. Grundsätzliche Entscheidungen als Notiz in `brain/Entscheidungen/` (Kontext, Entscheidung, Folgen); bestehende nie umschreiben, sondern `status: ersetzt` + Link auf die neue.
+4. Neue Fallen/Workarounds in `brain/Wissen/Stolperfallen.md`.
+5. `brain/Home.md` aktualisieren (Stand, offene Baustellen, letzte Session).
+
+**Regeln:**
+* Notizen knapp halten (Stichpunkte, Links statt Wiederholung). Pflege ist eine Aufgabe für ein günstiges Modell.
+* Obsidian-Markdown gemäß Skill `obsidian-markdown`: Properties (Frontmatter), `[[Wikilinks]]` zwischen Notizen, Callouts. Links auf Repo-Dateien außerhalb von `brain/` als normale relative Markdown-Links.
+* Dateinamen ohne Punkte außer der Endung (sonst brechen Wikilinks).
+* **Keine Secrets, Keys, Tokens oder persönlichen Daten** in Notizen – das Repo liegt auf GitHub.
+* Notizen des Nutzers nicht löschen oder umschreiben; nur ergänzen. Bei Widerspruch nachfragen.
+* `brain/Übersicht.base` zeigt Baustellen/Entscheidungen/Sessions über die Properties `type`, `status`, `prioritaet`, `modell`, `datum` – diese Namen beibehalten.
+* Reine Frage-Antwort ohne Änderungen am Repo braucht keine Session-Notiz.
 
 ---
 
@@ -105,7 +131,7 @@ Ziel: Kontingent schonen – einfache Aufgaben nicht mit teuren Reasoning-Modell
 | :--- | :--- |
 | **Starkes Reasoning-Modell** | Architektur- und Schema-/RLS-Entscheidungen · komplexes Debugging ohne klare Ursache · Optimizer-Algorithmus (`optimizer_service.dart`) · Live-Scraper-Parser (Flyer-/API-Auswertung) · Refactoring von `stores_screen.dart` · Supabase-Anbindung |
 | **Mittleres Modell** | Feature in 1–2 Dateien mit klarer Vorgabe · Bugfix mit bekannter Ursache · CI-/Workflow-Anpassungen |
-| **Schnelles / kostenloses Modell** | Unit-Tests schreiben · Doku/README/`AGENTS.md` pflegen · kleine UI-Anpassungen · Umbenennungen, Formatierung · JSON-Spiegelung `test_data/` ↔ `app/assets/` |
+| **Schnelles / kostenloses Modell** | Unit-Tests schreiben · Doku/README/`AGENTS.md` pflegen · `brain/`-Notizen pflegen · kleine UI-Anpassungen · Umbenennungen, Formatierung |
 
 Token sparen: Dateitabelle statt Repo-Scan, nur benötigte Zeilenbereiche lesen, lange Logs mit `tail` kürzen, Dateien nicht erneut lesen. Bei Zweifel mit dem günstigeren Modell starten und nur bei Scheitern eskalieren.
 
@@ -137,11 +163,11 @@ Reine Recherche-, Such- und Test-Läufe an Sub-Agents mit schnellem/günstigem M
 
 ## 📓 Obsidian & Agent Skills
 
-* **Vault:** Das Repo-Wurzelverzeichnis kann direkt als Obsidian-Vault geöffnet werden. `.obsidian/` (lokaler Zustand) ist gitignored.
+* **Vault:** Inhalte liegen in `brain/` (siehe „Zweites Gehirn“). Der Nutzer öffnet das Repo oder `brain/` als Vault; `.obsidian/` (lokaler Zustand) ist gitignored.
 * **Skills:** Die Skills aus [obsidianmd/obsidian-skills](https://github.com/obsidianmd/obsidian-skills) (`obsidian-markdown`, `obsidian-bases`, `json-canvas`, `obsidian-cli`, `obsidian-headless`, `defuddle`, `knap`) sind so eingebunden:
   * **Antigravity / andere Agenten:** vendored unter `.agents/skills/` (fester Commit, siehe `.agents/skills/README.md`). Nicht von Hand ändern.
   * **Claude Code:** als Plugin über `.claude/settings.json` (`obsidian@obsidian-skills`). Beim ersten Öffnen bestätigen oder manuell `/plugin marketplace add obsidianmd/obsidian-skills` und `/plugin install obsidian@obsidian-skills`.
-* **Wann nutzen:** Obsidian-Syntax (Wikilinks `[[…]]`, Callouts, Embeds, `.base`, `.canvas`) nur in Notizen, die für Obsidian gedacht sind. `AGENTS.md`, `README.md` und `.agents/rules/` bleiben Standard-Markdown, damit sie auf GitHub und in allen Tools lesbar sind.
+* **Wann nutzen:** Obsidian-Syntax (Wikilinks `[[…]]`, Callouts, Embeds, `.base`, `.canvas`) nur in `brain/`. `AGENTS.md`, `README.md` und `.agents/rules/` bleiben Standard-Markdown, damit sie auf GitHub und in allen Tools lesbar sind.
 * **CLI:** `obsidian …` braucht die laufende Desktop-App auf dem Rechner des Nutzers. In Cloud-Sessions gibt es sie nicht, dort Notizen direkt als Dateien bearbeiten.
 * **Kosten:** Notizen, Bases und Canvas pflegen ist eine Aufgabe für ein schnelles bzw. kostenloses Modell (siehe Modell-Strategie).
 
@@ -180,15 +206,6 @@ Vor jedem Abschluss: Backend-Tests ausführen; bei Dart-Änderungen zusätzlich 
 * **Testläufe & Fixtures:** Tests dürfen eingecheckte Dateien in `app/assets/` nicht überschreiben. Generieren Tests Daten, in einen temporären Ordner schreiben oder nach dem Lauf per `git checkout -- <datei>` zurücksetzen. Vor dem Commit `git status` prüfen.
 * **Secrets:** niemals im Quellcode oder Git. Nur per `--dart-define` bzw. `.env` (gitignored).
 
-## 📊 Projektstatus (Stand 2026-11-22)
+## 📊 Projektstatus
 
-**Umgesetzt:** Phase 1 (Schema, 250er-Katalog, Edge Functions, Optimizer, Flutter-App) · Phase 2 (Kategorie-Präferenzen, Eigenmarken-Regeln, Preismeldungen) · Phase 3 (Wochenangebote mit Gültigkeit, Wallet/Coupons, Analytics, Onboarding, Meine Apps, Developer Cockpit, Push-Engine) · Stufe B (RLP-Fokus Bingen/Oberwesel, 6 Ketten, Credential-Vault) · Karte mit CartoDB-Tiles · GitHub-Pages-Deploy. Alle 6 Backend-Test-Skripte laufen grün.
-
-**Baustellen / bekannte Lücken:**
-1. Scraper liefern faktisch **statische Beispieldaten**; Live-Endpunkte (z. B. Lidl-Flyer) werden nur angefragt, aber nicht ausgewertet.
-2. ~~Carto-Key im Quellcode~~ – entfernt (nur noch `--dart-define`). Der alte Key steht noch in der Git-Historie → bei Carto rotieren und als Secret `CARTO_API_KEY` hinterlegen.
-3. Supabase ist im Standard nicht angebunden (Demo-Modus); Migrationen/Edge Functions sind nicht gegen eine echte Instanz verifiziert.
-4. ~~Dart-Tests~~ – Smoke-Test, Optimizer-Service, Store-Filter und Wallet-Service (inkl. `WeeklyOffer`/`UserCoupon`-Parsing) abgedeckt. Hinweis: `WalletService` hält statischen Zustand, Tests in `wallet_service_test.dart` sind reihenfolgeabhängig.
-5. ~~Doppelte Datenhaltung, Boilerplate-README, `pubspec.lock`~~ – erledigt (`test_data/` entfernt, README neu, Lock-Datei bewusst eingecheckt).
-6. ~~`stores_screen.dart` aufteilen~~ – erledigt (364 statt 1617 Zeilen, visuell pixelgleich geprüft). Chip-Zahlen werden jetzt aus dem Datensatz berechnet. Offen: Android/iOS-Build noch nicht aktiv (nur Web/PWA).
-7. ~~Kein CI für Tests~~ – Workflow führt Backend-Tests + `flutter test` vor dem Deploy aus (`needs: test`). `flutter analyze` ist bewusst noch **nicht** im Gate (bestehende Warnungen), Flutter-Version ist nicht fixiert (`stable`).
+Der Projektstatus wird **nur** im zweiten Gehirn gepflegt, nicht mehr hier: `brain/Home.md` (Überblick) und `brain/Baustellen/` (je Baustelle eine Notiz mit `status`).
