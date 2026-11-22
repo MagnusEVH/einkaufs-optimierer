@@ -84,7 +84,12 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'app/build/web'
+          # Eindeutiger Name pro Versuch: Bei "Re-run" bleiben die Artefakte
+          # früherer Versuche erhalten, sonst bricht deploy-pages ab.
+          name: github-pages-${{ github.run_attempt }}
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
