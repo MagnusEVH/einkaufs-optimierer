@@ -31,7 +31,7 @@ Das Projekt ist ein **Einkaufs-Optimierer für den deutschen Lebensmittel- und D
 | :--- | :--- | :--- |
 | **Shopping List** | `app/lib/features/shopping_list/shopping_list_screen.dart`<br>`app/lib/features/shopping_list/shopping_list_controller.dart` | Einkaufsliste, Schnellauswahl aus Katalog, Mengenanpassung |
 | **Optimizer Engine UI** | `app/lib/features/optimizer/optimizer_screen.dart` | Ergebnisansicht für Single-Store vs. Split-Store (Multi-Shop-Optimierung) |
-| **Stores & Karte** | `app/lib/features/stores_map/stores_screen.dart` | Filialanzeige, Radius-Suche, PostGIS-Clustering-Darstellung |
+| **Stores & Karte** | `app/lib/features/stores_map/stores_screen.dart` (State, AppBar, Karte)<br>`stores_map/data/rlp_stores.dart` (45+ Filialen MZ-BIN/RH)<br>`stores_map/store_filters.dart`, `chain_style.dart`, `map_tile_style.dart`<br>`stores_map/widgets/` (Filterleiste, Marker, Detail-Sheet, Liste) | Filialanzeige, Landkreis-/Kategorie-Filter, Cluster-Darstellung |
 | **Wallet & Coupons** | `app/lib/features/wallet/wallet_screen.dart` | Treuekarten (Lidl Plus, Payback etc.), Coupon-Tresor, Ersparnisanzeige |
 | **Preismeldungen** | `app/lib/features/price_reports/price_report_screen.dart` | Community-Preismeldungen, Quittungs- und Bon-Upload |
 | **Settings** | `app/lib/features/settings/settings_screen.dart` | Store-Präferenzen, Umkreis-Filter, Transportmittel (Auto/Fahrrad/Fuß) |
@@ -78,7 +78,7 @@ Das Projekt ist ein **Einkaufs-Optimierer für den deutschen Lebensmittel- und D
 * `backend_tests/test_optimization_engine.js`: Prüft Single- vs. Multi-Store Algorithmus.
 * `backend_tests/test_clustering.js`: Prüft PostGIS Distanz- und Filial-Clustering.
 * Weitere: `test_catalog_integrity.js`, `test_phase2_preferences.js`, `test_phase3_offers_and_wallet.js`, `test_stufe_b_scraping_and_vault.js`.
-* Flutter: `app/test/widget_test.dart`.
+* Flutter: `app/test/` (`widget_test.dart`, `optimizer_service_test.dart`, `store_filters_test.dart`).
 
 ### 5. Sonstiges
 * `web_dashboard/index.html` – statisches Dashboard; `generator_seed_250.js` – erzeugt `app/assets/products_seed_250.json`.
@@ -188,7 +188,7 @@ Vor jedem Abschluss: Backend-Tests ausführen; bei Dart-Änderungen zusätzlich 
 1. Scraper liefern faktisch **statische Beispieldaten**; Live-Endpunkte (z. B. Lidl-Flyer) werden nur angefragt, aber nicht ausgewertet.
 2. ~~Carto-Key im Quellcode~~ – entfernt (nur noch `--dart-define`). Der alte Key steht noch in der Git-Historie → bei Carto rotieren und als Secret `CARTO_API_KEY` hinterlegen.
 3. Supabase ist im Standard nicht angebunden (Demo-Modus); Migrationen/Edge Functions sind nicht gegen eine echte Instanz verifiziert.
-4. Flutter-Tests: nur ein Widget-Test; keine Tests für Optimizer-Service/Wallet in Dart (Tests liegen nur als JS-Logik-Spiegel).
+4. Flutter-Tests: Smoke-Test, Optimizer-Service und Store-Filter abgedeckt; **Wallet-Service** noch ohne Dart-Tests.
 5. ~~Doppelte Datenhaltung, Boilerplate-README, `pubspec.lock`~~ – erledigt (`test_data/` entfernt, README neu, Lock-Datei bewusst eingecheckt).
-6. `stores_screen.dart` (~1600 Zeilen) ist ein Refactoring-Kandidat; Google-Maps/Android/iOS-Build noch nicht aktiv (nur Web/PWA).
+6. ~~`stores_screen.dart` aufteilen~~ – erledigt (364 statt 1617 Zeilen, visuell pixelgleich geprüft). Offen: Landkreis-Chip-Zahlen (14/16) sind hartcodiert und passen nicht zur Gesamtzahl; Listenansicht zeigt „Cluster null"; Android/iOS-Build noch nicht aktiv (nur Web/PWA).
 7. ~~Kein CI für Tests~~ – Workflow führt Backend-Tests + `flutter test` vor dem Deploy aus (`needs: test`). `flutter analyze` ist bewusst noch **nicht** im Gate (bestehende Warnungen), Flutter-Version ist nicht fixiert (`stable`).
