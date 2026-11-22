@@ -1,0 +1,10 @@
+{
+  "extraKnownMarketplaces": {
+    "obsidian-skills": {
+      "source": { "source": "github", "repo": "obsidianmd/obsidian-skills" }
+    }
+  },
+  "enabledPlugins": {
+    "obsidian@obsidian-skills": true
+  }
+}
