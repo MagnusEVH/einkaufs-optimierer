@@ -2,8 +2,8 @@
 // Unit tests for grocery basket optimization, route tradeoff, and item allocation
 
 const assert = require('assert');
-const catalog = require('../test_data/products_seed_250.json');
-const sampleStores = require('../test_data/sample_stores_germany.json');
+const catalog = require('../app/assets/products_seed_250.json');
+const sampleStores = require('../app/assets/sample_stores_germany.json');
 
 function haversineDistanceMeters(lat1, lon1, lat2, lon2) {
   const R = 6371000;

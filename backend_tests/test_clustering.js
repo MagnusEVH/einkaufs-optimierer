@@ -2,7 +2,7 @@
 // Unit tests for PostGIS-equivalent Haversine distance & 500m store clustering
 
 const assert = require('assert');
-const stores = require('../test_data/sample_stores_germany.json');
+const stores = require('../app/assets/sample_stores_germany.json');
 
 function haversineDistanceMeters(lat1, lon1, lat2, lon2) {
   const R = 6371000;

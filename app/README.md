@@ -1,17 +1,14 @@
-# einkaufs_optimierer
+# Einkaufs-Optimierer (Flutter-App)
 
-A new Flutter project.
+Flutter-Web/PWA-App für Lidl, Aldi Süd, Rewe, Netto, dm und Rossmann: Einkaufsliste, Preisvergleich (Single- vs. Split-Store), Karte, Wallet/Coupons und Wochenangebote. Ohne Supabase-Credentials läuft sie im Demo-Modus.
 
-## Getting Started
+## Entwickeln
 
-This project is a starting point for a Flutter application.
+```bash
+flutter pub get
+flutter run -d chrome --dart-define=CARTO_API_KEY=<key>   # Key optional, sonst OpenStreetMap
+flutter test
+```
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Daten liegen in `assets/` (einzige Quelle, wird auch von den Node-Tests in `../backend_tests/` gelesen).
+Architektur, Konventionen und Befehle: siehe [../AGENTS.md](../AGENTS.md).

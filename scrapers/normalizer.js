@@ -6,7 +6,7 @@ const path = require('path');
 
 class ProductNormalizer {
   constructor(catalogPath) {
-    const resolvedPath = catalogPath || path.join(__dirname, '../test_data/products_seed_250.json');
+    const resolvedPath = catalogPath || path.join(__dirname, '../app/assets/products_seed_250.json');
     const rawData = JSON.parse(fs.readFileSync(resolvedPath, 'utf8'));
     this.products = rawData.products || [];
     console.log(`[Normalizer] Loaded ${this.products.length} master products for catalog matching.`);
