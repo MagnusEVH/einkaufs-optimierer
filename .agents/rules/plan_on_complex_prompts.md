@@ -13,4 +13,6 @@ Bevor Code geschrieben oder Dateien geändert werden:
    - **Betroffene Dateien:** Liste aller Dateien mit exakten relativen Pfaden und Links (`[filename](file:///...)`).
    - **Geplante Schritte:** Schrittweise nummerierte Aufgaben.
    - **Rückfragen / Risiken:** Falls nötig kurz anmerken.
-2. **Effizienzregel einhalten:** Nicht das gesamte Projekt durchscannen, sondern die in [AGENTS.md](file:///e:/antigravity/Projekt/AGENTS.md) dokumentierten Dateipfade direkt ansteuern.
+2. **Effizienzregel einhalten:** Nicht das gesamte Projekt durchscannen, sondern die in [AGENTS.md](../../AGENTS.md) dokumentierten Dateipfade direkt ansteuern.
+
+3. **Gemeinsame Regeln:** Build-Befehle, Konventionen und Projektstatus stehen ausschließlich in [AGENTS.md](../../AGENTS.md) (gilt auch für Claude Code); hier nichts duplizieren.
