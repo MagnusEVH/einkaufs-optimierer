@@ -48,12 +48,9 @@ jobs:
           flutter pub get
           flutter test
 
-  build-and-deploy:
+  build:
     needs: test
     if: github.event_name != 'pull_request'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -88,6 +85,16 @@ jobs:
           # früherer Versuche erhalten, sonst bricht deploy-pages ab.
           name: github-pages-${{ github.run_attempt }}
 
+  # Eigener Job: Direkt nach dem Upload im selben Job findet deploy-pages
+  # das Artefakt manchmal noch nicht ("Found 0 artifact(s)").
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
