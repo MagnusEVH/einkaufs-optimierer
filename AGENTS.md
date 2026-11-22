@@ -95,6 +95,46 @@ Das Projekt ist ein **Einkaufs-Optimierer für den deutschen Lebensmittel- und D
 
 ---
 
+## 💸 Modell-Strategie & Kosteneffizienz
+
+Ziel: Kontingent schonen – einfache Aufgaben nicht mit teuren Reasoning-Modellen erledigen. Das Modell wählt der Nutzer im Tool (Claude Code: `/model`, Antigravity: Modell-Picker); Agenten empfehlen die passende Stufe, bevor sie größere Arbeit beginnen.
+
+### 1. Aufgaben-Zuordnung
+
+| Stufe | Aufgaben (Beispiele) |
+| :--- | :--- |
+| **Starkes Reasoning-Modell** | Architektur- und Schema-/RLS-Entscheidungen · komplexes Debugging ohne klare Ursache · Optimizer-Algorithmus (`optimizer_service.dart`) · Live-Scraper-Parser (Flyer-/API-Auswertung) · Refactoring von `stores_screen.dart` · Supabase-Anbindung |
+| **Mittleres Modell** | Feature in 1–2 Dateien mit klarer Vorgabe · Bugfix mit bekannter Ursache · CI-/Workflow-Anpassungen |
+| **Schnelles / kostenloses Modell** | Unit-Tests schreiben · Doku/README/`AGENTS.md` pflegen · kleine UI-Anpassungen · Umbenennungen, Formatierung · JSON-Spiegelung `test_data/` ↔ `app/assets/` |
+
+Token sparen: Dateitabelle statt Repo-Scan, nur benötigte Zeilenbereiche lesen, lange Logs mit `tail` kürzen, Dateien nicht erneut lesen. Bei Zweifel mit dem günstigeren Modell starten und nur bei Scheitern eskalieren.
+
+### 2. Günstige / kostenlose Modelle anbinden
+
+Keys gehören nie ins Repo (siehe Secrets-Regel); nur als Umgebungsvariablen in der Shell/IDE setzen. Details und Modellnamen ändern sich – im Zweifel die aktuelle Anbieter-Doku prüfen.
+
+* **OpenRouter (Cloud, teils kostenlos):** Modelle mit Suffix `:free` sind kostenlos, aber rate-limitiert und können wegfallen. Für Claude Code:
+  ```bash
+  export ANTHROPIC_BASE_URL="https://openrouter.ai/api"
+  export ANTHROPIC_AUTH_TOKEN="<OPENROUTER_API_KEY>"
+  export ANTHROPIC_API_KEY=""   # bewusst leer
+  ```
+  Modell dann per `/model` bzw. `ANTHROPIC_MODEL=<anbieter/modell:free>` wählen. Nicht jedes Modell beherrscht Tool-Aufrufe zuverlässig – für Agenten-Arbeit vorab an einer kleinen Aufgabe testen.
+* **Ollama (lokal, kostenlos):** Ollama starten, ein Modell mit Tool-Support ziehen (`ollama pull <modell>`) und Claude Code darauf zeigen lassen:
+  ```bash
+  export ANTHROPIC_BASE_URL="http://localhost:11434"
+  export ANTHROPIC_AUTH_TOKEN="ollama"
+  export ANTHROPIC_API_KEY=""
+  ```
+  Lokale Modelle brauchen genug RAM/VRAM und sind bei großen Refactorings schwächer – eher für Tests, Doku und Kleinkram.
+* **Antigravity:** Dort gilt der eingebaute Modell-Picker. Für einfache Aufgaben das schnellste/kleinste angebotene Modell wählen, für die „starken" Aufgaben oben das größte. Ob und wie sich dort eigene OpenRouter-/Ollama-Endpunkte hinterlegen lassen, hängt von der installierten Version ab (in den Antigravity-Einstellungen prüfen) – nicht annehmen.
+
+### 3. Sub-Agents (Claude Code)
+
+Reine Recherche-, Such- und Test-Läufe an Sub-Agents mit schnellem/günstigem Modell (z. B. Haiku, `model: haiku`) delegieren; Architektur, Entscheidungen und finale Edits bleiben beim Haupt-Agent. Sub-Agents nur starten, wenn die Aufgabe klar abgegrenzt ist – jeder Start kostet Kontext.
+
+---
+
 ## 🔧 Build-, Test- & Run-Befehle
 
 | Zweck | Befehl |
