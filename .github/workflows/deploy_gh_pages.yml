@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main, master ]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -15,7 +16,41 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Backend Tests
+        run: |
+          set -e
+          for t in backend_tests/*.js; do
+            echo "::group::$t"
+            node "$t"
+            echo "::endgroup::"
+          done
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Flutter Tests
+        run: |
+          cd app
+          flutter pub get
+          flutter test
+
   build-and-deploy:
+    needs: test
+    if: github.event_name != 'pull_request'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -39,7 +74,8 @@ jobs:
         run: |
           cd app
           REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
-          flutter build web --release --base-href "/${REPO_NAME}/"
+          flutter build web --release --base-href "/${REPO_NAME}/" \
+            --dart-define=CARTO_API_KEY=${{ secrets.CARTO_API_KEY }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
