@@ -13,7 +13,7 @@ const { ProductNormalizer } = require('./normalizer');
 
 /**
  * @param {{outputDirs?: string[]}} [options] Zielordner für live_scraped_offers_rlp.json.
- *   Standard: app/assets und test_data. Tests übergeben einen Temp-Ordner.
+ *   Standard: app/assets. Tests übergeben einen Temp-Ordner.
  */
 async function runScrapingPipeline({ outputDirs } = {}) {
   console.log('===============================================================');
@@ -73,10 +73,7 @@ async function runScrapingPipeline({ outputDirs } = {}) {
   console.log(`- Target Chains Covered: 6/6 (Lidl, ALDI SÜD, REWE, Netto, dm, Rossmann)`);
 
   // Write results to JSON artifacts
-  const targetDirs = outputDirs || [
-    path.join(__dirname, '../app/assets'),
-    path.join(__dirname, '../test_data'),
-  ];
+  const targetDirs = outputDirs || [path.join(__dirname, '../app/assets')];
 
   const exportPayload = {
     region: 'Rheinland-Pfalz',

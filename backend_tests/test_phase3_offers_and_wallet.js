@@ -5,8 +5,8 @@
 // - Coupon discount deductions (percentage, minimum spend thresholds, points multiplier)
 
 const assert = require('assert');
-const catalog = require('../test_data/products_seed_250.json');
-const sampleData = require('../test_data/sample_offers_and_wallet.json');
+const catalog = require('../app/assets/products_seed_250.json');
+const sampleData = require('../app/assets/sample_offers_and_wallet.json');
 
 const weeklyOffers = sampleData.weekly_offers;
 const loyaltyAccounts = sampleData.sample_loyalty_accounts;

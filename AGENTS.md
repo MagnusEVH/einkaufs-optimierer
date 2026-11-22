@@ -70,7 +70,7 @@ Das Projekt ist ein **Einkaufs-Optimierer für den deutschen Lebensmittel- und D
 | `scrapers/normalizer.js` | Mengeneinheiten-Harmonisierung (€/kg, €/l) |
 | `scrapers/vault_service.js` | Speicherung und Validierung von Coupon-Payloads |
 | `scrapers/base_scraper.js` | Basisklasse (`safeFetch`, Promo-Gültigkeitsdaten) |
-| `scrapers/run_rlp_scraping.js` | Master-Runner (Bingen 55411 / Oberwesel 55430), schreibt `app/assets/live_scraped_offers_rlp.json` **und** `test_data/…` |
+| `scrapers/run_rlp_scraping.js` | Master-Runner (Bingen 55411 / Oberwesel 55430), schreibt `app/assets/live_scraped_offers_rlp.json` |
 | `scrapers/price_quality_monitor.js` | Preisqualitäts-Check |
 
 ### 4. Tests (`backend_tests/`)
@@ -81,9 +81,9 @@ Das Projekt ist ein **Einkaufs-Optimierer für den deutschen Lebensmittel- und D
 * Flutter: `app/test/widget_test.dart`.
 
 ### 5. Sonstiges
-* `web_dashboard/index.html` – statisches Dashboard; `generator_seed_250.js` – erzeugt `test_data/products_seed_250.json`.
+* `web_dashboard/index.html` – statisches Dashboard; `generator_seed_250.js` – erzeugt `app/assets/products_seed_250.json`.
 * `.github/workflows/deploy_gh_pages.yml` – Flutter-Web-Build & Deploy auf GitHub Pages (Push auf `main`/`master`).
-* `test_data/` und `app/assets/` enthalten **gespiegelte** JSON-Dateien (Seed, Stores, Offers) – bei Änderung beide synchron halten.
+* `app/assets/` ist die **einzige** Quelle für JSON-Daten (Seed, Stores, Offers); Flutter und die Backend-Tests lesen dieselben Dateien. Es gibt kein `test_data/` mehr.
 
 ---
 
@@ -143,7 +143,7 @@ Reine Recherche-, Such- und Test-Läufe an Sub-Agents mit schnellem/günstigem M
 | Einzelnen Test | `node backend_tests/test_optimization_engine.js` |
 | Scraper-Pipeline (RLP) | `node scrapers/run_rlp_scraping.js` |
 | Scraper-Runner mit eigenem Ausgabeordner | `runScrapingPipeline({ outputDirs: [dir] })` (Tests nutzen `os.tmpdir()`) |
-| Seed neu erzeugen | `node generator_seed_250.js` (danach nach `app/assets/` spiegeln) |
+| Seed neu erzeugen | `node generator_seed_250.js` (schreibt nach `app/assets/`) |
 | Flutter-Deps | `cd app && flutter pub get` |
 | Flutter-Analyse / Tests | `cd app && flutter analyze && flutter test` |
 | Lokal starten (Web) | `cd app && flutter run -d chrome --dart-define=CARTO_API_KEY=<key>` |
@@ -165,7 +165,7 @@ Vor jedem Abschluss: Backend-Tests ausführen; bei Dart-Änderungen zusätzlich 
 * **Scraper:** je Kette ein Connector, erbt von `BaseScraper`; Live-Abruf via `safeFetch` mit Fallback auf kuratierte Daten; Einheiten nur über `normalizer.js`.
 * **Migrationen:** nur neue, fortlaufend nummerierte Dateien (`2026…_NNNNNN_name.sql`) anlegen; bestehende nie ändern. Neue Tabellen immer mit RLS.
 * **Flutter:** State via Riverpod, Material 3; ohne Supabase-Credentials läuft die App im Demo-Modus (`SupabaseService.isDemoMode`) – neue Features müssen offline/demo funktionieren.
-* **Testläufe & Fixtures:** Tests dürfen eingecheckte Dateien in `app/assets/` oder `test_data/` nicht überschreiben. Generieren Tests Daten, in einen temporären Ordner schreiben oder nach dem Lauf per `git checkout -- <datei>` zurücksetzen. Vor dem Commit `git status` prüfen.
+* **Testläufe & Fixtures:** Tests dürfen eingecheckte Dateien in `app/assets/` nicht überschreiben. Generieren Tests Daten, in einen temporären Ordner schreiben oder nach dem Lauf per `git checkout -- <datei>` zurücksetzen. Vor dem Commit `git status` prüfen.
 * **Secrets:** niemals im Quellcode oder Git. Nur per `--dart-define` bzw. `.env` (gitignored).
 
 ## 📊 Projektstatus (Stand 2026-11-22)
@@ -177,6 +177,6 @@ Vor jedem Abschluss: Backend-Tests ausführen; bei Dart-Änderungen zusätzlich 
 2. ~~Carto-Key im Quellcode~~ – entfernt (nur noch `--dart-define`). Der alte Key steht noch in der Git-Historie → bei Carto rotieren und als Secret `CARTO_API_KEY` hinterlegen.
 3. Supabase ist im Standard nicht angebunden (Demo-Modus); Migrationen/Edge Functions sind nicht gegen eine echte Instanz verifiziert.
 4. Flutter-Tests: nur ein Widget-Test; keine Tests für Optimizer-Service/Wallet in Dart (Tests liegen nur als JS-Logik-Spiegel).
-5. Doppelte Datenhaltung `test_data/` ↔ `app/assets/`; `app/README.md` ist noch Flutter-Boilerplate; `pubspec.lock` ist getrackt, obwohl in `.gitignore`.
+5. ~~Doppelte Datenhaltung, Boilerplate-README, `pubspec.lock`~~ – erledigt (`test_data/` entfernt, README neu, Lock-Datei bewusst eingecheckt).
 6. `stores_screen.dart` (~1600 Zeilen) ist ein Refactoring-Kandidat; Google-Maps/Android/iOS-Build noch nicht aktiv (nur Web/PWA).
 7. ~~Kein CI für Tests~~ – Workflow führt Backend-Tests + `flutter test` vor dem Deploy aus (`needs: test`). `flutter analyze` ist bewusst noch **nicht** im Gate (bestehende Warnungen), Flutter-Version ist nicht fixiert (`stable`).

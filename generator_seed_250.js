@@ -431,7 +431,7 @@ const jsonExport = {
   })
 };
 
-const jsonPath = path.join(__dirname, 'test_data', 'products_seed_250.json');
+const jsonPath = path.join(__dirname, 'app', 'assets', 'products_seed_250.json');
 fs.writeFileSync(jsonPath, JSON.stringify(jsonExport, null, 2), 'utf8');
 console.log(`Saved JSON dataset to ${jsonPath} (${finalProducts.length} products)`);
 

@@ -2,7 +2,7 @@
 // Verifies 250+ catalog items, pricing across all 3 chains (Lidl, Aldi, Rewe), and aliases
 
 const assert = require('assert');
-const catalog = require('../test_data/products_seed_250.json');
+const catalog = require('../app/assets/products_seed_250.json');
 
 console.log('=== TEST SUITE 3: CATALOG & SEED INTEGRITY ===\n');
 
