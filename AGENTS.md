@@ -118,6 +118,7 @@ Vor jedem Abschluss: Backend-Tests ausführen; bei Dart-Änderungen zusätzlich 
 * **Scraper:** je Kette ein Connector, erbt von `BaseScraper`; Live-Abruf via `safeFetch` mit Fallback auf kuratierte Daten; Einheiten nur über `normalizer.js`.
 * **Migrationen:** nur neue, fortlaufend nummerierte Dateien (`2026…_NNNNNN_name.sql`) anlegen; bestehende nie ändern. Neue Tabellen immer mit RLS.
 * **Flutter:** State via Riverpod, Material 3; ohne Supabase-Credentials läuft die App im Demo-Modus (`SupabaseService.isDemoMode`) – neue Features müssen offline/demo funktionieren.
+* **Testläufe & Fixtures:** Tests dürfen eingecheckte Dateien in `app/assets/` oder `test_data/` nicht überschreiben. Generieren Tests Daten, in einen temporären Ordner schreiben oder nach dem Lauf per `git checkout -- <datei>` zurücksetzen. Vor dem Commit `git status` prüfen.
 * **Secrets:** niemals im Quellcode oder Git. Nur per `--dart-define` bzw. `.env` (gitignored).
 
 ## 📊 Projektstatus (Stand 2026-11-22)
