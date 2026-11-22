@@ -15,4 +15,5 @@ Bevor Code geschrieben oder Dateien geändert werden:
    - **Rückfragen / Risiken:** Falls nötig kurz anmerken.
 2. **Effizienzregel einhalten:** Nicht das gesamte Projekt durchscannen, sondern die in [AGENTS.md](../../AGENTS.md) dokumentierten Dateipfade direkt ansteuern.
 
-3. **Gemeinsame Regeln:** Build-Befehle, Konventionen und Projektstatus stehen ausschließlich in [AGENTS.md](../../AGENTS.md) (gilt auch für Claude Code); hier nichts duplizieren.
+3. **Gemeinsame Regeln:** Build-Befehle und Konventionen stehen ausschließlich in [AGENTS.md](../../AGENTS.md), der Projektstatus in `brain/` (gilt auch für Claude Code); hier nichts duplizieren.
+4. **Zweites Gehirn:** Vor jeder Aufgabe `brain/Home.md` lesen und am Ende Session-Notiz, Baustellen-Status und `brain/Home.md` pflegen (Ablauf in [AGENTS.md](../../AGENTS.md), Abschnitt „Zweites Gehirn“).

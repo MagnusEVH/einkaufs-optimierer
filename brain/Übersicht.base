@@ -1,0 +1,52 @@
+# Funktioniert, egal ob der Vault das Repo oder nur brain/ ist.
+filters:
+  and:
+    - 'note.type.containsAny("baustelle", "entscheidung", "session")'
+    - not:
+        - 'file.path.contains("_Vorlagen")'
+
+properties:
+  note.status:
+    displayName: "Status"
+  note.prioritaet:
+    displayName: "Priorität"
+  note.modell:
+    displayName: "Modell"
+  note.aktualisiert:
+    displayName: "Aktualisiert"
+  note.datum:
+    displayName: "Datum"
+
+views:
+  - type: table
+    name: "Baustellen"
+    filters: 'note.type == "baustelle"'
+    groupBy:
+      property: status
+      direction: DESC
+    order:
+      - file.name
+      - status
+      - prioritaet
+      - modell
+      - aktualisiert
+  - type: table
+    name: "Entscheidungen"
+    filters: 'note.type == "entscheidung"'
+    sort:
+      - property: datum
+        direction: DESC
+    order:
+      - file.name
+      - status
+      - datum
+  - type: table
+    name: "Sessions"
+    filters: 'note.type == "session"'
+    sort:
+      - property: datum
+        direction: DESC
+    order:
+      - file.name
+      - datum
+      - agent
