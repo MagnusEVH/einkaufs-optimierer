@@ -102,6 +102,7 @@ Das Projekt ist ein **Einkaufs-Optimierer für den deutschen Lebensmittel- und D
 | Backend-Tests (Node, keine Dependencies/`package.json`) | `for t in backend_tests/*.js; do node "$t" || exit 1; done` |
 | Einzelnen Test | `node backend_tests/test_optimization_engine.js` |
 | Scraper-Pipeline (RLP) | `node scrapers/run_rlp_scraping.js` |
+| Scraper-Runner mit eigenem Ausgabeordner | `runScrapingPipeline({ outputDirs: [dir] })` (Tests nutzen `os.tmpdir()`) |
 | Seed neu erzeugen | `node generator_seed_250.js` (danach nach `app/assets/` spiegeln) |
 | Flutter-Deps | `cd app && flutter pub get` |
 | Flutter-Analyse / Tests | `cd app && flutter analyze && flutter test` |
@@ -109,6 +110,12 @@ Das Projekt ist ein **Einkaufs-Optimierer für den deutschen Lebensmittel- und D
 | Web-Release (wie CI) | `cd app && flutter build web --release --base-href "/<repo>/"` |
 
 Vor jedem Abschluss: Backend-Tests ausführen; bei Dart-Änderungen zusätzlich `flutter analyze` + `flutter test` (sofern Flutter installiert ist, sonst im Bericht vermerken).
+
+## 🔑 Konfiguration (Build-Variablen)
+
+| Variable | Pflicht | Verwendung |
+| :--- | :--- | :--- |
+| `CARTO_API_KEY` | optional | Carto-Basemap-Key, **nur** per `--dart-define=CARTO_API_KEY=<key>` (lokal) bzw. GitHub-Repository-Secret `CARTO_API_KEY` (CI). Ohne Key nutzt die Karte OpenStreetMap-Kacheln. Niemals im Quellcode, in `.env`-Dateien im Repo oder in Commits ablegen. Hinweis: Bei Flutter Web ist der Key im ausgelieferten Bundle sichtbar – bei Carto auf die Domain beschränken. |
 
 ## 📐 Konventionen
 
@@ -127,9 +134,9 @@ Vor jedem Abschluss: Backend-Tests ausführen; bei Dart-Änderungen zusätzlich 
 
 **Baustellen / bekannte Lücken:**
 1. Scraper liefern faktisch **statische Beispieldaten**; Live-Endpunkte (z. B. Lidl-Flyer) werden nur angefragt, aber nicht ausgewertet.
-2. `app_config.dart` enthält einen **base64-„obfuskierten" Carto-Key im Quellcode** (kein echter Schutz) → Key rotieren, Fallback entfernen.
+2. ~~Carto-Key im Quellcode~~ – entfernt (nur noch `--dart-define`). Der alte Key steht noch in der Git-Historie → bei Carto rotieren und als Secret `CARTO_API_KEY` hinterlegen.
 3. Supabase ist im Standard nicht angebunden (Demo-Modus); Migrationen/Edge Functions sind nicht gegen eine echte Instanz verifiziert.
 4. Flutter-Tests: nur ein Widget-Test; keine Tests für Optimizer-Service/Wallet in Dart (Tests liegen nur als JS-Logik-Spiegel).
 5. Doppelte Datenhaltung `test_data/` ↔ `app/assets/`; `app/README.md` ist noch Flutter-Boilerplate; `pubspec.lock` ist getrackt, obwohl in `.gitignore`.
 6. `stores_screen.dart` (~1600 Zeilen) ist ein Refactoring-Kandidat; Google-Maps/Android/iOS-Build noch nicht aktiv (nur Web/PWA).
-7. Kein CI für Tests (Workflow deployt nur).
+7. ~~Kein CI für Tests~~ – Workflow führt Backend-Tests + `flutter test` vor dem Deploy aus (`needs: test`). `flutter analyze` ist bewusst noch **nicht** im Gate (bestehende Warnungen), Flutter-Version ist nicht fixiert (`stable`).

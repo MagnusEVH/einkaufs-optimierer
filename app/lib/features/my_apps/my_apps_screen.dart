@@ -327,11 +327,10 @@ class _MyAppsScreenState extends State<MyAppsScreen> {
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF8E8E93), letterSpacing: 0.5),
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
+              Material(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                clipBehavior: Clip.antiAlias,
                 child: Column(
                   children: connectedApps.asMap().entries.map((entry) {
                     final isLast = entry.key == connectedApps.length - 1;
@@ -355,11 +354,10 @@ class _MyAppsScreenState extends State<MyAppsScreen> {
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF8E8E93), letterSpacing: 0.5),
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-              ),
+            Material(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              clipBehavior: Clip.antiAlias,
               child: Column(
                 children: availableApps.asMap().entries.map((entry) {
                   final isLast = entry.key == availableApps.length - 1;

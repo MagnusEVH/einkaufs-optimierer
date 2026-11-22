@@ -11,7 +11,11 @@ const { DmScraper } = require('./connectors/dm_scraper');
 const { RossmannScraper } = require('./connectors/rossmann_scraper');
 const { ProductNormalizer } = require('./normalizer');
 
-async function runScrapingPipeline() {
+/**
+ * @param {{outputDirs?: string[]}} [options] Zielordner für live_scraped_offers_rlp.json.
+ *   Standard: app/assets und test_data. Tests übergeben einen Temp-Ordner.
+ */
+async function runScrapingPipeline({ outputDirs } = {}) {
   console.log('===============================================================');
   console.log('🚀 STARTING RLP GROCERY & DRUGSTORE SCRAPER PIPELINE');
   console.log('📍 Regional Focus: Bingen am Rhein (55411) & Oberwesel (55430)');
@@ -69,8 +73,10 @@ async function runScrapingPipeline() {
   console.log(`- Target Chains Covered: 6/6 (Lidl, ALDI SÜD, REWE, Netto, dm, Rossmann)`);
 
   // Write results to JSON artifacts
-  const outputPathApp = path.join(__dirname, '../app/assets/live_scraped_offers_rlp.json');
-  const outputPathTest = path.join(__dirname, '../test_data/live_scraped_offers_rlp.json');
+  const targetDirs = outputDirs || [
+    path.join(__dirname, '../app/assets'),
+    path.join(__dirname, '../test_data'),
+  ];
 
   const exportPayload = {
     region: 'Rheinland-Pfalz',
@@ -81,9 +87,11 @@ async function runScrapingPipeline() {
     offers: matchedOffers,
   };
 
-  fs.writeFileSync(outputPathApp, JSON.stringify(exportPayload, null, 2), 'utf8');
-  fs.writeFileSync(outputPathTest, JSON.stringify(exportPayload, null, 2), 'utf8');
-  console.log(`💾 Live offers persisted to app/assets/live_scraped_offers_rlp.json`);
+  for (const dir of targetDirs) {
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'live_scraped_offers_rlp.json'), JSON.stringify(exportPayload, null, 2), 'utf8');
+  }
+  console.log(`💾 Live offers persisted to ${targetDirs.join(', ')}`);
 
   return exportPayload;
 }

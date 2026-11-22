@@ -4,6 +4,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { runScrapingPipeline } = require('../scrapers/run_rlp_scraping');
 const { ThirdPartyVaultService } = require('../scrapers/vault_service');
 
@@ -48,7 +49,8 @@ async function runStufeBTests() {
 
   // --- TEST 2: SCRAPER PIPELINE EXECUTION ---
   console.log('Test 2: Scraper Pipeline Execution for 6 Chains');
-  const pipelineResult = await runScrapingPipeline();
+  const tmpOut = fs.mkdtempSync(path.join(os.tmpdir(), 'rlp-offers-'));
+  const pipelineResult = await runScrapingPipeline({ outputDirs: [tmpOut] });
 
   assert(pipelineResult.total_offers > 0, 'Scraper must return offers');
   assert(pipelineResult.matched_count >= 15, 'At least 15 items should be matched to catalog');
