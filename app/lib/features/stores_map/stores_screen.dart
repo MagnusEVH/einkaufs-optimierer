@@ -244,7 +244,7 @@ class _StoresScreenState extends State<StoresScreen> {
                     DistrictFilterBar(
                       activeDistrict: _activeDistrict,
                       activeChainFilter: _activeChainFilter,
-                      totalStores: rlpStores.length,
+                      allStores: rlpStores,
                       onDistrictSelected: _onDistrictSelected,
                       onChainFilterSelected: _onChainFilterSelected,
                     ),

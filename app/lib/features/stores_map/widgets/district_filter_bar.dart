@@ -1,6 +1,7 @@
 // app/lib/features/stores_map/widgets/district_filter_bar.dart
 
 import 'package:flutter/material.dart';
+import '../../../core/models/store.dart';
 
 /// Chip-Leiste mit Landkreis- (Zeile 1) und Kategorie-Filter (Zeile 2).
 class DistrictFilterBar extends StatelessWidget {
@@ -8,14 +9,16 @@ class DistrictFilterBar extends StatelessWidget {
     super.key,
     required this.activeDistrict,
     required this.activeChainFilter,
-    required this.totalStores,
+    required this.allStores,
     required this.onDistrictSelected,
     required this.onChainFilterSelected,
   });
 
   final String activeDistrict;
   final String activeChainFilter;
-  final int totalStores;
+
+  /// Alle Filialen (ungefiltert) – daraus werden die Zahlen in den Chips berechnet.
+  final List<Store> allStores;
   final ValueChanged<String> onDistrictSelected;
   final ValueChanged<String> onChainFilterSelected;
 
@@ -40,9 +43,10 @@ class DistrictFilterBar extends StatelessWidget {
                       color: Color(0xFF475569)),
                 ),
                 const SizedBox(width: 8),
-                _districtChip('Alle', '$totalStores'),
-                _districtChip('Mainz-Bingen', '14'),
-                _districtChip('Rhein-Hunsrück', '16'),
+                _districtChip('Alle', '${allStores.length}'),
+                _districtChip('Mainz-Bingen', '${_countIn('Mainz-Bingen')}'),
+                _districtChip(
+                    'Rhein-Hunsrück', '${_countIn('Rhein-Hunsrück')}'),
               ],
             ),
           ),
@@ -65,6 +69,9 @@ class DistrictFilterBar extends StatelessWidget {
       ),
     );
   }
+
+  int _countIn(String district) =>
+      allStores.where((s) => s.district == district).length;
 
   Widget _districtChip(String districtName, String count) {
     final isSelected = activeDistrict == districtName;

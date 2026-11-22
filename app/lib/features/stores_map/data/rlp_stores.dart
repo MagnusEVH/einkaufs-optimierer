@@ -2,7 +2,7 @@
 
 import '../../../core/models/store.dart';
 
-// Vollständig verifizierter Datensatz (45 reale Supermärkte & Drogerien)
+// Vollständig verifizierter Datensatz (49 reale Supermärkte & Drogerien)
 // Mainz-Bingen & Rhein-Hunsrück-Kreis mit exakten Adressen & GPS-Koordinaten
 const List<Store> rlpStores = [
   // =========================================================================
@@ -343,7 +343,7 @@ const List<Store> rlpStores = [
   ),
 
   // =========================================================================
-  // RHEIN-HUNSRÜCK-KREIS (22 Stores)
+  // RHEIN-HUNSRÜCK-KREIS (26 Stores)
   // =========================================================================
 
   // ── Stromberg Cluster 20 (Gewerbegebiet Am Lindchen / Friedrichsheck < 500m) ──

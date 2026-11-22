@@ -31,7 +31,7 @@ Das Projekt ist ein **Einkaufs-Optimierer für den deutschen Lebensmittel- und D
 | :--- | :--- | :--- |
 | **Shopping List** | `app/lib/features/shopping_list/shopping_list_screen.dart`<br>`app/lib/features/shopping_list/shopping_list_controller.dart` | Einkaufsliste, Schnellauswahl aus Katalog, Mengenanpassung |
 | **Optimizer Engine UI** | `app/lib/features/optimizer/optimizer_screen.dart` | Ergebnisansicht für Single-Store vs. Split-Store (Multi-Shop-Optimierung) |
-| **Stores & Karte** | `app/lib/features/stores_map/stores_screen.dart` (State, AppBar, Karte)<br>`stores_map/data/rlp_stores.dart` (45+ Filialen MZ-BIN/RH)<br>`stores_map/store_filters.dart`, `chain_style.dart`, `map_tile_style.dart`<br>`stores_map/widgets/` (Filterleiste, Marker, Detail-Sheet, Liste) | Filialanzeige, Landkreis-/Kategorie-Filter, Cluster-Darstellung |
+| **Stores & Karte** | `app/lib/features/stores_map/stores_screen.dart` (State, AppBar, Karte)<br>`stores_map/data/rlp_stores.dart` (49 Filialen MZ-BIN/RH)<br>`stores_map/store_filters.dart`, `chain_style.dart`, `map_tile_style.dart`<br>`stores_map/widgets/` (Filterleiste, Marker, Detail-Sheet, Liste) | Filialanzeige, Landkreis-/Kategorie-Filter, Cluster-Darstellung |
 | **Wallet & Coupons** | `app/lib/features/wallet/wallet_screen.dart` | Treuekarten (Lidl Plus, Payback etc.), Coupon-Tresor, Ersparnisanzeige |
 | **Preismeldungen** | `app/lib/features/price_reports/price_report_screen.dart` | Community-Preismeldungen, Quittungs- und Bon-Upload |
 | **Settings** | `app/lib/features/settings/settings_screen.dart` | Store-Präferenzen, Umkreis-Filter, Transportmittel (Auto/Fahrrad/Fuß) |
@@ -190,5 +190,5 @@ Vor jedem Abschluss: Backend-Tests ausführen; bei Dart-Änderungen zusätzlich 
 3. Supabase ist im Standard nicht angebunden (Demo-Modus); Migrationen/Edge Functions sind nicht gegen eine echte Instanz verifiziert.
 4. Flutter-Tests: Smoke-Test, Optimizer-Service und Store-Filter abgedeckt; **Wallet-Service** noch ohne Dart-Tests.
 5. ~~Doppelte Datenhaltung, Boilerplate-README, `pubspec.lock`~~ – erledigt (`test_data/` entfernt, README neu, Lock-Datei bewusst eingecheckt).
-6. ~~`stores_screen.dart` aufteilen~~ – erledigt (364 statt 1617 Zeilen, visuell pixelgleich geprüft). Offen: Landkreis-Chip-Zahlen (14/16) sind hartcodiert und passen nicht zur Gesamtzahl; Listenansicht zeigt „Cluster null"; Android/iOS-Build noch nicht aktiv (nur Web/PWA).
+6. ~~`stores_screen.dart` aufteilen~~ – erledigt (364 statt 1617 Zeilen, visuell pixelgleich geprüft). Chip-Zahlen werden jetzt aus dem Datensatz berechnet. Offen: Android/iOS-Build noch nicht aktiv (nur Web/PWA).
 7. ~~Kein CI für Tests~~ – Workflow führt Backend-Tests + `flutter test` vor dem Deploy aus (`needs: test`). `flutter analyze` ist bewusst noch **nicht** im Gate (bestehende Warnungen), Flutter-Version ist nicht fixiert (`stable`).

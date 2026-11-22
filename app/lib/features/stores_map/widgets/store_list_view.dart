@@ -83,7 +83,7 @@ class StoreListView extends StatelessWidget {
                           ),
                           const Spacer(),
                           Text(
-                            'Cluster ${store.clusterNum}',
+                            'Cluster ${store.clusterNum ?? '-'}',
                             style: TextStyle(
                                 fontSize: 10, color: Colors.grey.shade600),
                           ),
