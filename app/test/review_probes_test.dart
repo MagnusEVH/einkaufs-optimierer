@@ -146,6 +146,26 @@ void main() {
     expect(name('2 kg kartoffeln'), contains('Speisekartoffeln'));
   });
 
+  test('V14: unsichere Zuordnung wird nicht automatisch vergeben, sondern erfragt', () {
+    // Wortende-Treffer ("wein" → "Schwein") nur als Vorschlag
+    expect(CatalogService.matchRawText('wein'), isNull);
+    expect(CatalogService.isUncertain('wein'), isTrue);
+    expect(CatalogService.matchCandidates('käse').candidates, isNotEmpty);
+    expect(CatalogService.matchRawText('käse'), isNull);
+    // Unbekanntes erfragen, Eindeutiges nicht
+    expect(CatalogService.isUncertain('Champagner Dom Pérignon'), isTrue);
+    expect(CatalogService.isUncertain('bananen'), isFalse);
+    // Marke zählt mit
+    expect(CatalogService.matchRawText('Somat Gold')?.name, startsWith('Somat Gold'));
+  });
+
+  test('V14: ausdrücklich gewähltes Produkt bleibt trotz Bio-Präferenz', () async {
+    final gurke = _byName('Gurke');
+    final item = ShoppingListItem(id: 'x', listId: 'l', rawText: gurke.name, matchedProduct: gurke);
+    final r = await _run([item], prefs: const UserPreferences(bioPreference: 'prefer_bio'));
+    expect(r.stops.first.items.first.itemName, 'Gurke');
+  });
+
   test('A10: unbekannte Artikel werden nicht geschätzt', () async {
     final r = await _run([_free('bananen'), _free('Champagner Dom Pérignon')]);
     expect(r.unpricedItems, contains('Champagner Dom Pérignon'));

@@ -105,14 +105,24 @@ class CatalogService {
     String brandPreference = 'prefer_private_label',
     String bioPreference = 'neutral',
   }) {
-    if (_cachedProducts.isEmpty) return null;
+    final match = matchCandidates(rawText);
+    if (match.level == MatchLevel.none || match.level == MatchLevel.compound) return null;
+    final candidates = match.candidates;
+    return _applyPreferences(candidates, brandPreference, bioPreference);
+  }
+
+  /// Kandidaten für einen Freitext samt Sicherheit der Zuordnung.
+  static CatalogMatch matchCandidates(String rawText) {
     final queryWords = tokenize(rawText);
-    if (queryWords.isEmpty) return null;
+    if (_cachedProducts.isEmpty || queryWords.isEmpty) {
+      return const CatalogMatch(MatchLevel.none, []);
+    }
     final query = queryWords.join(' ');
 
     var candidates = <Product>[];
 
     // 1. Exakter Alias oder Name
+    var level = MatchLevel.exact;
     for (final p in _cachedProducts) {
       if (tokenize(p.name).join(' ') == query ||
           p.aliases.any((a) => tokenize(a).join(' ') == query)) {
@@ -122,6 +132,7 @@ class CatalogService {
 
     // 2. Längster Alias als Wortfolge im Suchtext
     if (candidates.isEmpty) {
+      level = MatchLevel.alias;
       int best = 0;
       for (final p in _cachedProducts) {
         for (final a in p.aliases) {
@@ -136,22 +147,48 @@ class CatalogService {
       }
     }
 
-    // 3. Alle Suchwörter kommen als ganze Wörter im Produktnamen vor
+    // 3. Alle Suchwörter kommen als ganze Wörter in Name oder Marke vor
     if (candidates.isEmpty) {
+      level = MatchLevel.words;
       for (final p in _cachedProducts) {
-        final nameWords = tokenize(p.name).toSet();
-        if (queryWords.every(nameWords.contains)) candidates.add(p);
+        final words = tokenize('${p.name} ${p.brand ?? ''}').toSet();
+        if (queryWords.every(words.contains)) candidates.add(p);
       }
     }
 
-    if (candidates.isEmpty) return null;
+    // 4. Nur Vorschläge: Wortende eines zusammengesetzten Worts
+    //    ("saft" → "Orangensaft"). Wird nie automatisch zugeordnet,
+    //    weil das auch "wein" → "Schwein" träfe.
+    if (candidates.isEmpty) {
+      level = MatchLevel.compound;
+      for (final p in _cachedProducts) {
+        final words = tokenize(p.name);
+        final hit = queryWords.every((q) => q.length >= 3 && words.any((w) => w.length > q.length && w.endsWith(q)));
+        if (hit) candidates.add(p);
+      }
+    }
+
+    if (candidates.isEmpty) return const CatalogMatch(MatchLevel.none, []);
+    return CatalogMatch(level, candidates);
+  }
+
+  static String _bioCore(Product p) => (tokenize(p.name)..remove('bio')).join(' ');
+
+  /// Unsicher: kein Treffer, oder mehrere verschiedene Waren nur über Einzelwörter.
+  static bool isUncertain(String rawText) {
+    final m = matchCandidates(rawText);
+    if (m.level == MatchLevel.none || m.level == MatchLevel.compound) return true;
+    return m.level == MatchLevel.words && m.candidates.map(_bioCore).toSet().length > 1;
+  }
+
+  static Product _applyPreferences(List<Product> found, String brandPreference, String bioPreference) {
+    var candidates = [...found];
 
     // Bio-/Nicht-Bio-Varianten derselben Ware ergänzen ("Gurke" ↔ "Bio Gurke").
     if (bioPreference != 'neutral') {
-      String core(Product p) => (tokenize(p.name)..remove('bio')).join(' ');
-      final cores = candidates.map(core).toSet();
+      final cores = candidates.map(_bioCore).toSet();
       for (final p in _cachedProducts) {
-        if (!candidates.contains(p) && cores.contains(core(p))) candidates.add(p);
+        if (!candidates.contains(p) && cores.contains(_bioCore(p))) candidates.add(p);
       }
       final wantBio = bioPreference == 'prefer_bio';
       final filtered = candidates.where((p) => p.isBio == wantBio).toList();
@@ -176,4 +213,13 @@ class CatalogService {
       Product(id: '5', gtinBarcode: '400005', name: 'Toilettenpapier 3-lagig 8er', aliases: ['klopapier', 'toilettenpapier'], prices: {'lidl': 345, 'aldi_sued': 345, 'rewe': 365}),
     ];
   }
+}
+
+/// Sicherheit einer Zuordnung. [compound] liefert nur Vorschläge.
+enum MatchLevel { exact, alias, words, compound, none }
+
+class CatalogMatch {
+  final MatchLevel level;
+  final List<Product> candidates;
+  const CatalogMatch(this.level, this.candidates);
 }

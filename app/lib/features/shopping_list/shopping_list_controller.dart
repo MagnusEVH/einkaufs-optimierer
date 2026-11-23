@@ -85,6 +85,20 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     );
   }
 
+  /// Ordnet einem Artikel ausdrücklich ein Katalogprodukt zu (Rückfrage bei
+  /// unsicherer Freitext-Zuordnung). Der Name wird übernommen, damit der
+  /// Optimierer die Wahl nicht wieder überschreibt.
+  void assignProduct(String id, Product product) {
+    state = state.copyWith(
+      items: state.items.map((it) {
+        if (it.id != id) return it;
+        final updated = it.copyWith(rawText: product.name, matchedProduct: product);
+        SupabaseService.saveListItem(updated);
+        return updated;
+      }).toList(),
+    );
+  }
+
   void updateQuantity(String id, double delta) {
     state = state.copyWith(
       items: state.items.map((it) {
