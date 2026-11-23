@@ -17,3 +17,5 @@ tags: [wissen, stolperfalle]
 - **Angebotspreis über Katalogpreis** in `live_scraped_offers_rlp.json` (z. B. REWE Spaghetti) → Optimierer nimmt den niedrigeren Preis; Tests nur mit echten Rabatten.
 - **Optimierer ändert Freitext-Zuordnung**: `matchedProduct` wird mit Bio-/Marken-Präferenz neu ermittelt, Fallback ist das gespeicherte Produkt.
 - **`flutter_secure_storage` im Test** ohne Plugin → `PreferencesStorage` nutzt nur den Zwischenspeicher; vor Tests `clearMemoryCache()`.
+- **Git Bash und `--base-href`**: MSYS macht aus `/einkaufs-optimierer/` einen Windows-Pfad → `MSYS_NO_PATHCONV=1 flutter build web …`.
+- **Bookmarklet-Platzhalter** `__APP_URL__` steht auch im Kommentar → in `uebernehmen.html` `replaceAll` nutzen.

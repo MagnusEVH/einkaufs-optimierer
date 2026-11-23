@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/models/product.dart';
 import '../../core/services/catalog_service.dart';
+import '../../core/widgets/product_picker_sheet.dart';
 import '../optimizer/optimizer_screen.dart';
 import 'post_shopping_summary_dialog.dart';
 import 'shopping_list_controller.dart';
@@ -45,53 +46,11 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
   }
 
   /// Rückfrage: passende Katalogprodukte zur Auswahl anbieten.
-  void _showMatchPicker(String itemId, String rawText) {
-    final found = CatalogService.matchCandidates(rawText).candidates;
-    final options = found.isNotEmpty
-        ? found.take(8).toList()
-        : {
-            for (final word in CatalogService.tokenize(rawText))
-              ...CatalogService.getSuggestions(word, limit: 4),
-          }.take(8).toList();
-
-    showModalBottomSheet<void>(
-      context: context,
-      showDragHandle: true,
-      builder: (ctx) => SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Text(
-                'Welches Produkt meinst du mit „$rawText“?',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ),
-            if (options.isEmpty)
-              const ListTile(
-                leading: Icon(Icons.info_outline),
-                title: Text('Kein passendes Produkt im Katalog.'),
-                subtitle: Text('Der Artikel bleibt ohne Preis und zählt nicht in die Summe.'),
-              ),
-            ...options.map((p) => ListTile(
-                  leading: Icon(p.isBio ? Icons.eco_outlined : Icons.shopping_basket_outlined, color: Colors.teal),
-                  title: Text(p.name),
-                  subtitle: p.brand != null ? Text(p.brand!) : null,
-                  onTap: () {
-                    ref.read(shoppingListProvider.notifier).assignProduct(itemId, p);
-                    Navigator.pop(ctx);
-                  },
-                )),
-            ListTile(
-              leading: const Icon(Icons.close),
-              title: const Text('So lassen'),
-              onTap: () => Navigator.pop(ctx),
-            ),
-          ],
-        ),
-      ),
-    );
+  Future<void> _showMatchPicker(String itemId, String rawText) async {
+    final chosen = await showProductPicker(context, rawText);
+    if (chosen != null) {
+      ref.read(shoppingListProvider.notifier).assignProduct(itemId, chosen);
+    }
   }
 
   @override

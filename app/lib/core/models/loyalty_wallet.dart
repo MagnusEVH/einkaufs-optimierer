@@ -192,6 +192,8 @@ class WeeklyOffer {
   final String? unitInfo;
   /// Katalog-ID des Produkts, auf das sich das Angebot bezieht (null = unbekannt).
   final String? productId;
+  /// Herkunft, z. B. "übernommen von rewe.de am 24.11." (null = Beispieldaten).
+  final String? source;
 
   const WeeklyOffer({
     required this.id,
@@ -207,7 +209,25 @@ class WeeklyOffer {
     this.periodLabel,
     this.unitInfo,
     this.productId,
+    this.source,
   });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'chain': chain.name,
+        'product_name': productName,
+        'title': title,
+        'discount_price_cents': discountPriceCents,
+        'regular_price_cents': regularPriceCents,
+        'discount_percent': discountPercent,
+        'is_active': isActive,
+        'valid_from': validFrom?.toIso8601String(),
+        'valid_to': validTo?.toIso8601String(),
+        'period_label': periodLabel,
+        'unit_info': unitInfo,
+        'product_id': productId,
+        'source': source,
+      };
 
   double get discountPriceEuros => discountPriceCents / 100.0;
   double get regularPriceEuros => regularPriceCents / 100.0;
@@ -268,23 +288,7 @@ class WeeklyOffer {
       periodLabel: json['period_label']?.toString(),
       unitInfo: json['unit_info']?.toString(),
       productId: (json['product_id'] ?? json['matched_product_id'])?.toString(),
+      source: json['source']?.toString(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'chain': chain.name,
-      'product_name': productName,
-      'title': title,
-      'discount_price_cents': discountPriceCents,
-      'regular_price_cents': regularPriceCents,
-      'discount_percent': discountPercent,
-      'is_active': isActive,
-      'valid_from': validFrom?.toIso8601String(),
-      'valid_to': validTo?.toIso8601String(),
-      'period_label': periodLabel,
-      'unit_info': unitInfo,
-    };
   }
 }
