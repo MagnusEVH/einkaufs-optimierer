@@ -1,5 +1,6 @@
 // app/lib/features/profile/profile_screen.dart
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../core/models/user_preferences.dart';
 import '../../core/services/notification_service.dart';
@@ -64,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (ctx) => AlertDialog(
         title: const Text('Konto und Daten löschen?'),
         content: const Text(
-          'Gemäß Art. 17 DSGVO werden alle deine Einkaufslisten, Präferenzen, hochgeladenen Bons und persönlichen Daten unwiderruflich aus der Datenbank gelöscht.',
+          'In der Demo-Version werden keine Daten auf einem Server gespeichert. Mit einem echten Konto werden hier gemäß Art. 17 DSGVO alle deine Daten gelöscht.',
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Abbrechen')),
@@ -75,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               await SupabaseService.deleteUserAccount();
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Alle Nutzerdaten wurden erfolgreich gelöscht.')),
+                  const SnackBar(content: Text('Demo-Version: Es waren keine Daten auf einem Server gespeichert.')),
                 );
               }
             },
@@ -435,7 +436,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const ListTile(
                   leading: Icon(Icons.lock_outline, color: Colors.teal),
                   title: Text('App-Verknüpfungen'),
-                  subtitle: Text('Zugangsdaten werden verschlüsselt nur lokal auf deinem Gerät gespeichert.'),
+                  subtitle: Text('Demo: Verknüpfungen sind simuliert, es werden keine Zugangsdaten gespeichert.'),
                 ),
                 const Divider(),
                 ListTile(
@@ -450,7 +451,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           const SizedBox(height: 16),
 
-          // Developer & Administration Area
+          // Developer & Administration Area (nur im Debug-Build)
+          if (kDebugMode)
           Container(
             decoration: BoxDecoration(
               color: Colors.white,

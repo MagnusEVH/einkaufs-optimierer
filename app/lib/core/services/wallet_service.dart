@@ -17,7 +17,7 @@ class WalletService {
       description: 'Persönliche Coupons, Kassenbons & Lidl-Pay',
       integrationType: IntegrationType.oauthSessionToken,
       apiDocumentation:
-          'Lidl bietet keine offizielle Entwickler-API. Die Anbindung erfolgt über gesicherte Token-Sessions (lokaler Keystore). Alle Coupons werden im 6h-Takt synchronisiert.',
+          'Lidl bietet keine offizielle Entwickler-API. Diese Verknüpfung ist eine Demo mit Beispieldaten.',
       isConnected: true,
       syncStatus: SyncStatus.synced,
       importedCouponsCount: 4,
@@ -32,7 +32,7 @@ class WalletService {
       description: 'Punkte sammeln bei REWE, dm, Aral & 600+ Partnern',
       integrationType: IntegrationType.partnerRestSession,
       apiDocumentation:
-          'PAYBACK Partner REST-Schnittstelle. Token-Validierung und automatische Aktivierung von Mehrfach-Punkte-Coupons alle 12 Stunden.',
+          'Geplant: PAYBACK-Anbindung. Diese Verknüpfung ist eine Demo mit Beispieldaten.',
       isConnected: true,
       syncStatus: SyncStatus.synced,
       importedCouponsCount: 3,
@@ -92,7 +92,7 @@ class WalletService {
       description: 'Coupons, Produktscanner & PAYBACK-Integration',
       integrationType: IntegrationType.partnerRestSession,
       apiDocumentation:
-          'dm-Kundenkonto mit gekoppeltem PAYBACK-Konto. Synchronisiert alle dm-exklusiven App-Coupons.',
+          'Geplant: dm-Kundenkonto. Diese Verknüpfung ist eine Demo mit Beispieldaten.',
       isConnected: false,
       syncStatus: SyncStatus.disconnected,
       importedCouponsCount: 0,
@@ -285,11 +285,11 @@ class WalletService {
       importedCouponsCount: importedCoupons,
       pointsBalance: points,
       lastSyncedAt: DateTime.now(),
-      statusMessage: 'Erfolgreich synchronisiert',
+      statusMessage: 'Demo-Verknüpfung (simuliert)',
       importedDataSummary: [
         '$importedCoupons personalisierte Coupons importiert',
         'Punktestand: $points',
-        'Hardware-Keystore verschlüsselt',
+        'Beispieldaten, keine echte Verbindung',
       ],
     );
 

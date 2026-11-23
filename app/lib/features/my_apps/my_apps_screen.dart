@@ -27,7 +27,7 @@ class _MyAppsScreenState extends State<MyAppsScreen> {
       setState(() => _isRefreshing = false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Alle verknüpften Konten synchronisiert ✅'),
+          content: Text('Demo-Daten aktualisiert (keine echte Verbindung)'),
           behavior: SnackBarBehavior.floating,
           duration: Duration(seconds: 2),
         ),
@@ -380,7 +380,7 @@ class _MyAppsScreenState extends State<MyAppsScreen> {
                   Icon(Icons.lock_rounded, size: 13, color: Color(0xFF8E8E93)),
                   SizedBox(width: 6),
                   Text(
-                    'Tokens verschlüsselt in der iOS Secure Enclave gespeichert',
+                    'Demo: Verknüpfungen sind simuliert, es werden keine Zugangsdaten gespeichert',
                     style: TextStyle(fontSize: 11, color: Color(0xFF8E8E93)),
                   ),
                 ],
@@ -416,7 +416,7 @@ class _MyAppsScreenState extends State<MyAppsScreen> {
         children: [
           const SizedBox(height: 2),
           Text(
-            app.statusMessage ?? 'Synchronisiert',
+            app.statusMessage ?? 'Demo-Verknüpfung',
             style: const TextStyle(fontSize: 12.5, color: Color(0xFF34C759), fontWeight: FontWeight.w500),
           ),
           if (app.importedCouponsCount > 0 || app.pointsBalance > 0)

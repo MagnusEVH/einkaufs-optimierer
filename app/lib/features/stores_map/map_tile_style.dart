@@ -24,3 +24,15 @@ String tileUrlFor(TileStyle style) {
 String tileStyleLabel(TileStyle style) => style == TileStyle.voyager
     ? 'CartoDB Voyager'
     : (style == TileStyle.satellite ? 'Satellit' : 'OSM');
+
+/// Pflicht-Namensnennung für den gewählten Kachel-Anbieter.
+String tileAttributionFor(TileStyle style) {
+  switch (style) {
+    case TileStyle.voyager:
+      return '© OpenStreetMap-Mitwirkende, © CARTO';
+    case TileStyle.openStreetMap:
+      return '© OpenStreetMap-Mitwirkende';
+    case TileStyle.satellite:
+      return 'Tiles © Esri, Maxar, Earthstar Geographics';
+  }
+}

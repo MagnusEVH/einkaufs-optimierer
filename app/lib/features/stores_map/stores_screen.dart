@@ -307,6 +307,12 @@ class _StoresScreenState extends State<StoresScreen> {
               maxZoom: 19,
             ),
 
+            // Lizenzpflichtige Namensnennung (OSM, CARTO, Esri)
+            SimpleAttributionWidget(
+              source: Text(tileAttributionFor(_tileStyle)),
+              alignment: Alignment.bottomLeft,
+            ),
+
             // User Location Marker
             MarkerLayer(
               markers: [
