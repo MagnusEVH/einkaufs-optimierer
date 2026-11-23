@@ -9,8 +9,9 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 ## Aktueller Stand
 - `main` ist grün und live auf GitHub Pages (Deploy-Lauf #28).
 - App läuft im **Demo-Modus** (ohne Supabase).
-- Texte als Demo gekennzeichnet, Kartenlizenz-Hinweis da, Cockpit nur im Debug-Build (Branch `claude/phase0-ehrliche-texte`).
-- Letzte Session: [[2026-11-23 Ehrliche Texte und Kartenlizenz]]
+- Texte als Demo gekennzeichnet, Kartenlizenz-Hinweis da, Cockpit nur im Debug-Build (PR #11, gemergt).
+- Optimierer rechnet korrekt (Umkreis, Fahrtkosten, keine Pauschalpreise), Review-Sonden als Tests, Rückfrage bei Freitext, Liste und Einstellungen werden gespeichert (PR #12).
+- Letzte Session: [[2026-11-23 Rueckfrage und Speichern]]
 
 ## Offene Baustellen
 - [[Supabase-Anbindung]] – hoch, starkes Modell

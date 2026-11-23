@@ -120,12 +120,16 @@ class OptimizationResult {
   final OptimizationSummary summary;
   final List<RouteStop> stops;
   final Map<String, dynamic>? baselineSingleStore;
+  /// Artikel, für die auf der empfohlenen Route kein Preis bekannt ist.
+  /// Sie sind in keiner Summe enthalten.
+  final List<String> unpricedItems;
 
   const OptimizationResult({
     required this.recommendationMode,
     required this.summary,
     required this.stops,
     this.baselineSingleStore,
+    this.unpricedItems = const [],
   });
 
   bool get isMultiStore => recommendationMode == 'MULTI_STORE';
@@ -137,6 +141,7 @@ class OptimizationResult {
       summary: OptimizationSummary.fromJson(json['summary'] ?? {}),
       stops: rawStops.map((e) => RouteStop.fromJson(e as Map<String, dynamic>)).toList(),
       baselineSingleStore: json['baseline_single_store'] as Map<String, dynamic>?,
+      unpricedItems: (json['unpriced_items'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? const [],
     );
   }
 }

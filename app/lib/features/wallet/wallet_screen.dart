@@ -18,6 +18,7 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
   List<UserCoupon> _coupons = [];
   List<WeeklyOffer> _offers = [];
+  int _expiredCount = 0;
 
   @override
   void initState() {
@@ -27,10 +28,13 @@ class _WalletScreenState extends State<WalletScreen> {
 
   Future<void> _refresh() async {
     final offers = await WalletService.loadScrapedOffers();
+    final now = DateTime.now();
+    final valid = offers.where((o) => o.isValidAt(now)).toList();
     if (mounted) {
       setState(() {
         _coupons = WalletService.coupons;
-        _offers = offers;
+        _offers = valid;
+        _expiredCount = offers.length - valid.length;
       });
     }
   }
@@ -308,10 +312,28 @@ class _WalletScreenState extends State<WalletScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Aktuelle Prospekt-Angebote aus Bingen, Oberwesel & Umgebung.',
+            'Beispieldaten (Demo), keine echten Prospektpreise. Nur gültige Angebote werden angezeigt und im Optimierer berücksichtigt.',
             style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
           ),
+          if (_expiredCount > 0) ...[
+            const SizedBox(height: 4),
+            Text(
+              '$_expiredCount abgelaufene Angebote ausgeblendet.',
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade600, fontStyle: FontStyle.italic),
+            ),
+          ],
           const SizedBox(height: 10),
+          if (_offers.isEmpty)
+            Card(
+              elevation: 0,
+              color: Colors.grey.shade100,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              child: const ListTile(
+                leading: Icon(Icons.event_busy_outlined),
+                title: Text('Zurzeit keine gültigen Angebote'),
+                subtitle: Text('Die Beispiel-Angebote sind abgelaufen. Echte Daten folgen mit der Datenquelle (D1).'),
+              ),
+            ),
 
           ..._offers.map((off) {
             final chainColor = _getChainColor(off.chain);

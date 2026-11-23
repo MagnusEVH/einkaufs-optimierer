@@ -44,6 +44,56 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
     _focusNode.unfocus();
   }
 
+  /// Rückfrage: passende Katalogprodukte zur Auswahl anbieten.
+  void _showMatchPicker(String itemId, String rawText) {
+    final found = CatalogService.matchCandidates(rawText).candidates;
+    final options = found.isNotEmpty
+        ? found.take(8).toList()
+        : {
+            for (final word in CatalogService.tokenize(rawText))
+              ...CatalogService.getSuggestions(word, limit: 4),
+          }.take(8).toList();
+
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (ctx) => SafeArea(
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Text(
+                'Welches Produkt meinst du mit „$rawText“?',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+            if (options.isEmpty)
+              const ListTile(
+                leading: Icon(Icons.info_outline),
+                title: Text('Kein passendes Produkt im Katalog.'),
+                subtitle: Text('Der Artikel bleibt ohne Preis und zählt nicht in die Summe.'),
+              ),
+            ...options.map((p) => ListTile(
+                  leading: Icon(p.isBio ? Icons.eco_outlined : Icons.shopping_basket_outlined, color: Colors.teal),
+                  title: Text(p.name),
+                  subtitle: p.brand != null ? Text(p.brand!) : null,
+                  onTap: () {
+                    ref.read(shoppingListProvider.notifier).assignProduct(itemId, p);
+                    Navigator.pop(ctx);
+                  },
+                )),
+            ListTile(
+              leading: const Icon(Icons.close),
+              title: const Text('So lassen'),
+              onTap: () => Navigator.pop(ctx),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(shoppingListProvider);
@@ -296,6 +346,8 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                     itemBuilder: (context, index) {
                       final item = state.items[index];
                       final isMatched = item.matchedProduct != null;
+                      final explicit = isMatched && item.matchedProduct!.name == item.rawText;
+                      final needsCheck = !item.isChecked && !explicit && CatalogService.isUncertain(item.rawText);
 
                       return Dismissible(
                         key: Key(item.id),
@@ -345,7 +397,26 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                                           color: item.isChecked ? Colors.grey : null,
                                         ),
                                       ),
-                                      if (isMatched) ...[
+                                      if (needsCheck) ...[
+                                        const SizedBox(height: 4),
+                                        InkWell(
+                                          borderRadius: BorderRadius.circular(6),
+                                          onTap: () => _showMatchPicker(item.id, item.rawText),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                            decoration: BoxDecoration(
+                                              color: Colors.orange.shade50,
+                                              borderRadius: BorderRadius.circular(6),
+                                            ),
+                                            child: Text(
+                                              isMatched
+                                                  ? 'Unsicher: ${item.matchedProduct!.name} – tippen zum Prüfen'
+                                                  : 'Kein Katalog-Treffer – tippen zum Zuordnen',
+                                              style: TextStyle(fontSize: 11, color: Colors.orange.shade900, fontWeight: FontWeight.w600),
+                                            ),
+                                          ),
+                                        ),
+                                      ] else if (isMatched) ...[
                                         const SizedBox(height: 2),
                                         Row(
                                           children: [

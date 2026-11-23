@@ -3,8 +3,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/list_item.dart';
+import '../models/product.dart';
 import '../models/user_preferences.dart';
 import 'catalog_service.dart';
+import 'preferences_storage.dart';
 
 class SupabaseService {
   static SupabaseClient? _client;
@@ -98,12 +100,10 @@ class SupabaseService {
       final List<ShoppingListItem> items = [];
       for (final map in response) {
         final prodId = map['matched_product_id'] as String?;
-        final matched = prodId != null
-            ? CatalogService.products.firstWhere(
-                (p) => p.id == prodId,
-                orElse: () => CatalogService.matchRawText(map['raw_text'])!,
-              )
-            : CatalogService.matchRawText(map['raw_text']);
+        final byId = prodId == null
+            ? const <Product>[]
+            : CatalogService.products.where((p) => p.id == prodId);
+        final matched = byId.isNotEmpty ? byId.first : CatalogService.matchRawText(map['raw_text'] ?? '');
 
         items.add(ShoppingListItem.fromJson(map, matched: matched));
       }
@@ -139,7 +139,11 @@ class SupabaseService {
 
   /// Fetch user preferences
   static Future<UserPreferences> fetchPreferences() async {
-    if (_isDemoMode || _client == null) return const UserPreferences();
+    if (_isDemoMode || _client == null) {
+      // Demo-Modus: Einstellungen liegen lokal auf dem Gerät.
+      final local = await PreferencesStorage.loadUserPreferences();
+      return local != null ? UserPreferences.fromJson(local) : const UserPreferences();
+    }
 
     try {
       final res = await _client!
@@ -159,7 +163,10 @@ class SupabaseService {
 
   /// Save user preferences
   static Future<void> savePreferences(UserPreferences prefs) async {
-    if (_isDemoMode || _client == null) return;
+    if (_isDemoMode || _client == null) {
+      await PreferencesStorage.saveUserPreferences(prefs.toJson());
+      return;
+    }
     await _client!.from('user_preferences').upsert({
       'user_id': currentUserId,
       ...prefs.toJson(),

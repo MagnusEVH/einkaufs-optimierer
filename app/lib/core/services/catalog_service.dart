@@ -72,77 +72,135 @@ class CatalogService {
     return matches;
   }
 
-  /// Resolves raw text to the most suitable Product using exact, longest alias priority,
-  /// and user preferences (Brand vs Private Label, Bio).
+  /// Zerlegt Text in kleingeschriebene ganze Wörter (Umlaute bleiben erhalten).
+  static List<String> tokenize(String text) => text
+      .toLowerCase()
+      .split(RegExp(r'[^a-z0-9äöüß]+'))
+      .where((t) => t.isNotEmpty)
+      .toList();
+
+  /// true, wenn [phrase] als zusammenhängende Wortfolge in [words] vorkommt.
+  static bool _containsPhrase(List<String> words, List<String> phrase) {
+    if (phrase.isEmpty || phrase.length > words.length) return false;
+    for (int i = 0; i + phrase.length <= words.length; i++) {
+      var ok = true;
+      for (int k = 0; k < phrase.length; k++) {
+        if (words[i + k] != phrase[k]) {
+          ok = false;
+          break;
+        }
+      }
+      if (ok) return true;
+    }
+    return false;
+  }
+
+  /// Ordnet Freitext einem Katalogprodukt zu, nur über ganze Wörter
+  /// ("wein" trifft nicht "Schwein"). Reihenfolge: exakter Alias/Name,
+  /// längster Alias als Wortfolge, alle Suchwörter im Produktnamen.
+  /// Danach wirken Bio- und Marken-Präferenz (auch auf Bio-Varianten).
+  /// Gibt null zurück, wenn nichts sicher passt.
   static Product? matchRawText(
     String rawText, {
     String brandPreference = 'prefer_private_label',
     String bioPreference = 'neutral',
   }) {
-    if (_cachedProducts.isEmpty) return null;
-    final query = rawText.toLowerCase().trim();
+    final match = matchCandidates(rawText);
+    if (match.level == MatchLevel.none || match.level == MatchLevel.compound) return null;
+    final candidates = match.candidates;
+    return _applyPreferences(candidates, brandPreference, bioPreference);
+  }
 
-    final candidates = <Product>[];
+  /// Kandidaten für einen Freitext samt Sicherheit der Zuordnung.
+  static CatalogMatch matchCandidates(String rawText) {
+    final queryWords = tokenize(rawText);
+    if (_cachedProducts.isEmpty || queryWords.isEmpty) {
+      return const CatalogMatch(MatchLevel.none, []);
+    }
+    final query = queryWords.join(' ');
 
-    // 1. Exact alias
+    var candidates = <Product>[];
+
+    // 1. Exakter Alias oder Name
+    var level = MatchLevel.exact;
     for (final p in _cachedProducts) {
-      if (p.aliases.any((a) => a.toLowerCase() == query)) {
+      if (tokenize(p.name).join(' ') == query ||
+          p.aliases.any((a) => tokenize(a).join(' ') == query)) {
         candidates.add(p);
       }
     }
 
-    // 2. Exact product name
+    // 2. Längster Alias als Wortfolge im Suchtext
     if (candidates.isEmpty) {
-      for (final p in _cachedProducts) {
-        if (p.name.toLowerCase() == query) {
-          candidates.add(p);
-        }
-      }
-    }
-
-    // 3. Longest alias match
-    if (candidates.isEmpty) {
-      int maxAliasLen = 0;
-      Product? bestCandidate;
+      level = MatchLevel.alias;
+      int best = 0;
       for (final p in _cachedProducts) {
         for (final a in p.aliases) {
-          final lowerA = a.toLowerCase();
-          if (query.contains(lowerA) && lowerA.length > maxAliasLen) {
-            maxAliasLen = lowerA.length;
-            bestCandidate = p;
+          final aw = tokenize(a);
+          if (aw.length < best || !_containsPhrase(queryWords, aw)) continue;
+          if (aw.length > best) {
+            best = aw.length;
+            candidates = [];
           }
+          if (!candidates.contains(p)) candidates.add(p);
         }
       }
-      if (bestCandidate != null) candidates.add(bestCandidate);
     }
 
-    // 4. Substring in product name
+    // 3. Alle Suchwörter kommen als ganze Wörter in Name oder Marke vor
     if (candidates.isEmpty) {
+      level = MatchLevel.words;
       for (final p in _cachedProducts) {
-        if (p.name.toLowerCase().contains(query) || query.contains(p.name.toLowerCase())) {
-          candidates.add(p);
-        }
+        final words = tokenize('${p.name} ${p.brand ?? ''}').toSet();
+        if (queryWords.every(words.contains)) candidates.add(p);
       }
     }
 
-    if (candidates.isEmpty) return null;
+    // 4. Nur Vorschläge: Wortende eines zusammengesetzten Worts
+    //    ("saft" → "Orangensaft"). Wird nie automatisch zugeordnet,
+    //    weil das auch "wein" → "Schwein" träfe.
+    if (candidates.isEmpty) {
+      level = MatchLevel.compound;
+      for (final p in _cachedProducts) {
+        final words = tokenize(p.name);
+        final hit = queryWords.every((q) => q.length >= 3 && words.any((w) => w.length > q.length && w.endsWith(q)));
+        if (hit) candidates.add(p);
+      }
+    }
 
-    // Apply Brand Preference:
+    if (candidates.isEmpty) return const CatalogMatch(MatchLevel.none, []);
+    return CatalogMatch(level, candidates);
+  }
+
+  static String _bioCore(Product p) => (tokenize(p.name)..remove('bio')).join(' ');
+
+  /// Unsicher: kein Treffer, oder mehrere verschiedene Waren nur über Einzelwörter.
+  static bool isUncertain(String rawText) {
+    final m = matchCandidates(rawText);
+    if (m.level == MatchLevel.none || m.level == MatchLevel.compound) return true;
+    return m.level == MatchLevel.words && m.candidates.map(_bioCore).toSet().length > 1;
+  }
+
+  static Product _applyPreferences(List<Product> found, String brandPreference, String bioPreference) {
+    var candidates = [...found];
+
+    // Bio-/Nicht-Bio-Varianten derselben Ware ergänzen ("Gurke" ↔ "Bio Gurke").
+    if (bioPreference != 'neutral') {
+      final cores = candidates.map(_bioCore).toSet();
+      for (final p in _cachedProducts) {
+        if (!candidates.contains(p) && cores.contains(_bioCore(p))) candidates.add(p);
+      }
+      final wantBio = bioPreference == 'prefer_bio';
+      final filtered = candidates.where((p) => p.isBio == wantBio).toList();
+      if (filtered.isNotEmpty) candidates = filtered;
+    }
+
     if (brandPreference == 'reject_private_label') {
-      final brandOnly = candidates.firstWhere((p) => !p.isPrivateLabel, orElse: () => candidates.first);
-      return brandOnly;
+      return candidates.firstWhere((p) => !p.isPrivateLabel, orElse: () => candidates.first);
     }
     if (brandPreference == 'prefer_private_label') {
-      final plOnly = candidates.firstWhere((p) => p.isPrivateLabel, orElse: () => candidates.first);
-      return plOnly;
+      return candidates.firstWhere((p) => p.isPrivateLabel, orElse: () => candidates.first);
     }
-
-    // Apply Bio Preference:
-    if (bioPreference == 'prefer_bio') {
-      final bioOnly = candidates.firstWhere((p) => p.isBio, orElse: () => candidates.first);
-      return bioOnly;
-    }
-
     return candidates.first;
   }
 
@@ -155,4 +213,13 @@ class CatalogService {
       Product(id: '5', gtinBarcode: '400005', name: 'Toilettenpapier 3-lagig 8er', aliases: ['klopapier', 'toilettenpapier'], prices: {'lidl': 345, 'aldi_sued': 345, 'rewe': 365}),
     ];
   }
+}
+
+/// Sicherheit einer Zuordnung. [compound] liefert nur Vorschläge.
+enum MatchLevel { exact, alias, words, compound, none }
+
+class CatalogMatch {
+  final MatchLevel level;
+  final List<Product> candidates;
+  const CatalogMatch(this.level, this.candidates);
 }

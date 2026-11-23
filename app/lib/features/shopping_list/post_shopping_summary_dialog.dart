@@ -27,19 +27,29 @@ class PostShoppingSummarySheet extends StatelessWidget {
     int totalEstimatedCents = 0;
     int totalSavingsCents = 0;
 
-    for (final it in purchasedItems) {
-      final product = it.matchedProduct;
-      if (product != null && product.prices.isNotEmpty) {
-        final sortedPrices = product.prices.values.toList()..sort();
-        final bestPrice = sortedPrices.first;
-        final maxStorePrice = sortedPrices.last;
-        final qty = it.quantity;
-
-        totalEstimatedCents += (bestPrice * qty).round();
-        if (maxStorePrice > bestPrice) {
-          totalSavingsCents += ((maxStorePrice - bestPrice) * qty).round();
-        }
+    // Ersparnis ehrlich: günstigste Einzelkette, die alle Artikel führt,
+    // minus Bestpreis je Artikel (ohne Fahrtkosten). Nicht gegen den teuersten Fall.
+    final pricedItems = purchasedItems
+        .where((it) => it.matchedProduct != null && it.matchedProduct!.prices.isNotEmpty)
+        .toList();
+    final chainTotals = <String, int>{};
+    final chainsCoveringAll = <String>{};
+    for (final it in pricedItems) {
+      final prices = it.matchedProduct!.prices;
+      final bestPrice = prices.values.reduce((a, b) => a < b ? a : b);
+      totalEstimatedCents += (bestPrice * it.quantity).round();
+      prices.forEach((chain, price) {
+        chainTotals[chain] = (chainTotals[chain] ?? 0) + (price * it.quantity).round();
+      });
+    }
+    chainTotals.forEach((chain, _) {
+      if (pricedItems.every((it) => it.matchedProduct!.prices.containsKey(chain))) {
+        chainsCoveringAll.add(chain);
       }
+    });
+    if (chainsCoveringAll.isNotEmpty) {
+      final cheapestSingle = chainsCoveringAll.map((c) => chainTotals[c]!).reduce((a, b) => a < b ? a : b);
+      totalSavingsCents = cheapestSingle - totalEstimatedCents;
     }
 
     final totalItemsCount = purchasedItems.length + skippedItems.length;
@@ -148,7 +158,7 @@ class PostShoppingSummarySheet extends StatelessWidget {
                             Icon(Icons.local_offer_rounded, size: 18, color: Color(0xFF34C759)),
                             SizedBox(width: 6),
                             Text(
-                              'Nachweisbare Ersparnis',
+                              'Ersparnis ggü. Einzelmarkt',
                               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xFF34C759)),
                             ),
                           ],

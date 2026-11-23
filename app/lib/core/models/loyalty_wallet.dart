@@ -190,6 +190,8 @@ class WeeklyOffer {
   final DateTime? validTo;
   final String? periodLabel;
   final String? unitInfo;
+  /// Katalog-ID des Produkts, auf das sich das Angebot bezieht (null = unbekannt).
+  final String? productId;
 
   const WeeklyOffer({
     required this.id,
@@ -204,10 +206,19 @@ class WeeklyOffer {
     this.validTo,
     this.periodLabel,
     this.unitInfo,
+    this.productId,
   });
 
   double get discountPriceEuros => discountPriceCents / 100.0;
   double get regularPriceEuros => regularPriceCents / 100.0;
+
+  /// Aktiv und zum Zeitpunkt [now] im Gültigkeitszeitraum.
+  bool isValidAt(DateTime now) {
+    if (!isActive) return false;
+    if (validFrom != null && now.isBefore(validFrom!)) return false;
+    if (validTo != null && now.isAfter(validTo!)) return false;
+    return true;
+  }
 
   bool get isExpired {
     if (validTo == null) return false;
@@ -256,6 +267,7 @@ class WeeklyOffer {
       validTo: parseDate(json['valid_to'] ?? json['ends_at']),
       periodLabel: json['period_label']?.toString(),
       unitInfo: json['unit_info']?.toString(),
+      productId: (json['product_id'] ?? json['matched_product_id'])?.toString(),
     );
   }
 
