@@ -6,6 +6,7 @@ import '../models/list_item.dart';
 import '../models/product.dart';
 import '../models/user_preferences.dart';
 import 'catalog_service.dart';
+import 'preferences_storage.dart';
 
 class SupabaseService {
   static SupabaseClient? _client;
@@ -137,11 +138,12 @@ class SupabaseService {
   }
 
   /// Fetch user preferences
-  /// Im Demo-Modus gelten Einstellungen bis zum Neuladen der App.
-  static UserPreferences _demoPreferences = const UserPreferences();
-
   static Future<UserPreferences> fetchPreferences() async {
-    if (_isDemoMode || _client == null) return _demoPreferences;
+    if (_isDemoMode || _client == null) {
+      // Demo-Modus: Einstellungen liegen lokal auf dem Gerät.
+      final local = await PreferencesStorage.loadUserPreferences();
+      return local != null ? UserPreferences.fromJson(local) : const UserPreferences();
+    }
 
     try {
       final res = await _client!
@@ -162,7 +164,7 @@ class SupabaseService {
   /// Save user preferences
   static Future<void> savePreferences(UserPreferences prefs) async {
     if (_isDemoMode || _client == null) {
-      _demoPreferences = prefs;
+      await PreferencesStorage.saveUserPreferences(prefs.toJson());
       return;
     }
     await _client!.from('user_preferences').upsert({

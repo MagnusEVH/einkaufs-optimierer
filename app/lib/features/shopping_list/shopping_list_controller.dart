@@ -6,6 +6,7 @@ import '../../core/models/list_item.dart';
 import '../../core/models/product.dart';
 import '../../core/services/analytics_service.dart';
 import '../../core/services/catalog_service.dart';
+import '../../core/services/preferences_storage.dart';
 import '../../core/services/supabase_service.dart';
 
 class ShoppingListState {
@@ -45,8 +46,11 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     await CatalogService.loadCatalog();
 
     final remoteItems = await SupabaseService.fetchListItems(activeListId);
+    final localItems = remoteItems.isEmpty ? await _loadLocalItems() : null;
     if (remoteItems.isNotEmpty) {
       state = state.copyWith(items: remoteItems, isLoading: false);
+    } else if (localItems != null) {
+      state = state.copyWith(items: localItems, isLoading: false);
     } else {
       // Default initial sample basket for instant testability
       final initialBasket = [
@@ -59,6 +63,23 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
       ];
       state = state.copyWith(items: initialBasket, isLoading: false);
     }
+  }
+
+  /// Lokal gespeicherte Liste (Demo-Modus), oder null beim ersten Start.
+  Future<List<ShoppingListItem>?> _loadLocalItems() async {
+    final raw = await PreferencesStorage.loadShoppingList();
+    if (raw == null) return null;
+    return raw.map((m) {
+      final id = m['matched_product_id'] as String?;
+      final byId = id == null ? const <Product>[] : CatalogService.products.where((p) => p.id == id);
+      return ShoppingListItem.fromJson(m, matched: byId.isNotEmpty ? byId.first : null);
+    }).toList();
+  }
+
+  /// Setzt die Liste und speichert sie lokal, damit sie das Neuladen übersteht.
+  void _setItems(List<ShoppingListItem> items) {
+    state = state.copyWith(items: items);
+    PreferencesStorage.saveShoppingList(items.map((it) => it.toJson()).toList());
   }
 
   ShoppingListItem _createItem(String text, {double quantity = 1.0, Product? product}) {
@@ -76,7 +97,7 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   void addItem(String text, {Product? matchedProduct, double quantity = 1.0}) {
     if (text.trim().isEmpty) return;
     final item = _createItem(text.trim(), quantity: quantity, product: matchedProduct);
-    state = state.copyWith(items: [item, ...state.items]);
+    _setItems([item, ...state.items]);
     SupabaseService.saveListItem(item);
 
     AnalyticsService.trackShoppingListItemAdded(
@@ -89,8 +110,8 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   /// unsicherer Freitext-Zuordnung). Der Name wird übernommen, damit der
   /// Optimierer die Wahl nicht wieder überschreibt.
   void assignProduct(String id, Product product) {
-    state = state.copyWith(
-      items: state.items.map((it) {
+    _setItems(
+      state.items.map((it) {
         if (it.id != id) return it;
         final updated = it.copyWith(rawText: product.name, matchedProduct: product);
         SupabaseService.saveListItem(updated);
@@ -100,8 +121,8 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   }
 
   void updateQuantity(String id, double delta) {
-    state = state.copyWith(
-      items: state.items.map((it) {
+    _setItems(
+      state.items.map((it) {
         if (it.id == id) {
           final newQty = (it.quantity + delta).clamp(1.0, 99.0);
           final updated = it.copyWith(quantity: newQty);
@@ -114,8 +135,8 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   }
 
   void toggleChecked(String id) {
-    state = state.copyWith(
-      items: state.items.map((it) {
+    _setItems(
+      state.items.map((it) {
         if (it.id == id) {
           final newChecked = !it.isChecked;
           final updated = it.copyWith(isChecked: newChecked);
@@ -139,8 +160,8 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
       orElse: () => _createItem(''),
     );
 
-    state = state.copyWith(
-      items: state.items.where((it) => it.id != id).toList(),
+    _setItems(
+      state.items.where((it) => it.id != id).toList(),
     );
     SupabaseService.deleteListItem(id);
 
@@ -154,7 +175,7 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   }
 
   void clearList() {
-    state = state.copyWith(items: []);
+    _setItems([]);
   }
 }
 
