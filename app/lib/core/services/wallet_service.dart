@@ -246,6 +246,7 @@ class WalletService {
             'valid_to': map['valid_to'],
             'period_label': map['period_label'],
             'unit_info': map['unit_info'],
+            'product_id': map['matched_product_id'],
           });
         }).toList();
 

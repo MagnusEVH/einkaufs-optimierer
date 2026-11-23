@@ -72,77 +72,98 @@ class CatalogService {
     return matches;
   }
 
-  /// Resolves raw text to the most suitable Product using exact, longest alias priority,
-  /// and user preferences (Brand vs Private Label, Bio).
+  /// Zerlegt Text in kleingeschriebene ganze Wörter (Umlaute bleiben erhalten).
+  static List<String> tokenize(String text) => text
+      .toLowerCase()
+      .split(RegExp(r'[^a-z0-9äöüß]+'))
+      .where((t) => t.isNotEmpty)
+      .toList();
+
+  /// true, wenn [phrase] als zusammenhängende Wortfolge in [words] vorkommt.
+  static bool _containsPhrase(List<String> words, List<String> phrase) {
+    if (phrase.isEmpty || phrase.length > words.length) return false;
+    for (int i = 0; i + phrase.length <= words.length; i++) {
+      var ok = true;
+      for (int k = 0; k < phrase.length; k++) {
+        if (words[i + k] != phrase[k]) {
+          ok = false;
+          break;
+        }
+      }
+      if (ok) return true;
+    }
+    return false;
+  }
+
+  /// Ordnet Freitext einem Katalogprodukt zu, nur über ganze Wörter
+  /// ("wein" trifft nicht "Schwein"). Reihenfolge: exakter Alias/Name,
+  /// längster Alias als Wortfolge, alle Suchwörter im Produktnamen.
+  /// Danach wirken Bio- und Marken-Präferenz (auch auf Bio-Varianten).
+  /// Gibt null zurück, wenn nichts sicher passt.
   static Product? matchRawText(
     String rawText, {
     String brandPreference = 'prefer_private_label',
     String bioPreference = 'neutral',
   }) {
     if (_cachedProducts.isEmpty) return null;
-    final query = rawText.toLowerCase().trim();
+    final queryWords = tokenize(rawText);
+    if (queryWords.isEmpty) return null;
+    final query = queryWords.join(' ');
 
-    final candidates = <Product>[];
+    var candidates = <Product>[];
 
-    // 1. Exact alias
+    // 1. Exakter Alias oder Name
     for (final p in _cachedProducts) {
-      if (p.aliases.any((a) => a.toLowerCase() == query)) {
+      if (tokenize(p.name).join(' ') == query ||
+          p.aliases.any((a) => tokenize(a).join(' ') == query)) {
         candidates.add(p);
       }
     }
 
-    // 2. Exact product name
+    // 2. Längster Alias als Wortfolge im Suchtext
     if (candidates.isEmpty) {
-      for (final p in _cachedProducts) {
-        if (p.name.toLowerCase() == query) {
-          candidates.add(p);
-        }
-      }
-    }
-
-    // 3. Longest alias match
-    if (candidates.isEmpty) {
-      int maxAliasLen = 0;
-      Product? bestCandidate;
+      int best = 0;
       for (final p in _cachedProducts) {
         for (final a in p.aliases) {
-          final lowerA = a.toLowerCase();
-          if (query.contains(lowerA) && lowerA.length > maxAliasLen) {
-            maxAliasLen = lowerA.length;
-            bestCandidate = p;
+          final aw = tokenize(a);
+          if (aw.length < best || !_containsPhrase(queryWords, aw)) continue;
+          if (aw.length > best) {
+            best = aw.length;
+            candidates = [];
           }
+          if (!candidates.contains(p)) candidates.add(p);
         }
       }
-      if (bestCandidate != null) candidates.add(bestCandidate);
     }
 
-    // 4. Substring in product name
+    // 3. Alle Suchwörter kommen als ganze Wörter im Produktnamen vor
     if (candidates.isEmpty) {
       for (final p in _cachedProducts) {
-        if (p.name.toLowerCase().contains(query) || query.contains(p.name.toLowerCase())) {
-          candidates.add(p);
-        }
+        final nameWords = tokenize(p.name).toSet();
+        if (queryWords.every(nameWords.contains)) candidates.add(p);
       }
     }
 
     if (candidates.isEmpty) return null;
 
-    // Apply Brand Preference:
+    // Bio-/Nicht-Bio-Varianten derselben Ware ergänzen ("Gurke" ↔ "Bio Gurke").
+    if (bioPreference != 'neutral') {
+      String core(Product p) => (tokenize(p.name)..remove('bio')).join(' ');
+      final cores = candidates.map(core).toSet();
+      for (final p in _cachedProducts) {
+        if (!candidates.contains(p) && cores.contains(core(p))) candidates.add(p);
+      }
+      final wantBio = bioPreference == 'prefer_bio';
+      final filtered = candidates.where((p) => p.isBio == wantBio).toList();
+      if (filtered.isNotEmpty) candidates = filtered;
+    }
+
     if (brandPreference == 'reject_private_label') {
-      final brandOnly = candidates.firstWhere((p) => !p.isPrivateLabel, orElse: () => candidates.first);
-      return brandOnly;
+      return candidates.firstWhere((p) => !p.isPrivateLabel, orElse: () => candidates.first);
     }
     if (brandPreference == 'prefer_private_label') {
-      final plOnly = candidates.firstWhere((p) => p.isPrivateLabel, orElse: () => candidates.first);
-      return plOnly;
+      return candidates.firstWhere((p) => p.isPrivateLabel, orElse: () => candidates.first);
     }
-
-    // Apply Bio Preference:
-    if (bioPreference == 'prefer_bio') {
-      final bioOnly = candidates.firstWhere((p) => p.isBio, orElse: () => candidates.first);
-      return bioOnly;
-    }
-
     return candidates.first;
   }
 

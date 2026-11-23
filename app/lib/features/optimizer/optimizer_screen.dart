@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/models/optimization_result.dart';
 import '../../core/models/store.dart';
-import '../../core/models/user_preferences.dart';
 import '../../core/services/analytics_service.dart';
 import '../../core/services/location_service.dart';
 import '../../core/services/optimizer_service.dart';
+import '../../core/services/supabase_service.dart';
 import '../shopping_list/shopping_list_controller.dart';
 
 class OptimizerResultScreen extends ConsumerStatefulWidget {
@@ -43,10 +43,12 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
       final location = await LocationService.getCurrentLocation();
       _userLocation = location;
 
+      final preferences = await SupabaseService.fetchPreferences();
+
       final res = await OptimizerService.optimizeShoppingList(
         userLocation: location,
         items: items,
-        preferences: const UserPreferences(),
+        preferences: preferences,
         anchorStore: widget.startStore,
       );
 
@@ -169,6 +171,11 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
                         _buildComparisonCard(theme),
                         const SizedBox(height: 20),
 
+                        if (_result!.unpricedItems.isNotEmpty) ...[
+                          _buildUnpricedCard(),
+                          const SizedBox(height: 20),
+                        ],
+
                         // Section Title: Route Stops
                         Row(
                           children: [
@@ -196,6 +203,42 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
                         }),
                       ],
                     ),
+    );
+  }
+
+  /// Artikel ohne bekannten Preis: nicht in der Summe enthalten.
+  Widget _buildUnpricedCard() {
+    final names = _result!.unpricedItems;
+    return Card(
+      elevation: 0,
+      color: Colors.orange.shade50,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.help_outline_rounded, color: Colors.orange.shade800),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${names.length} Artikel ohne Preis',
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange.shade900),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Nicht in der Summe enthalten: ${names.join(', ')}',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade800),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
