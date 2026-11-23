@@ -16,3 +16,4 @@ tags: [wissen, stolperfalle]
 - **CRLF-Zeilenenden** in einigen Dart-Dateien → mehrzeilige Ersetzungen per Skript schlagen fehl, dort gezielt editieren.
 - **Angebotspreis über Katalogpreis** in `live_scraped_offers_rlp.json` (z. B. REWE Spaghetti) → Optimierer nimmt den niedrigeren Preis; Tests nur mit echten Rabatten.
 - **Optimierer ändert Freitext-Zuordnung**: `matchedProduct` wird mit Bio-/Marken-Präferenz neu ermittelt, Fallback ist das gespeicherte Produkt.
+- **`flutter_secure_storage` im Test** ohne Plugin → `PreferencesStorage` nutzt nur den Zwischenspeicher; vor Tests `clearMemoryCache()`.
