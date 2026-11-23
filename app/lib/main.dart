@@ -1,9 +1,11 @@
 // app/lib/main.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/services/analytics_service.dart';
 import 'core/services/catalog_service.dart';
+import 'core/services/offer_import_service.dart';
 import 'core/services/preferences_storage.dart';
 import 'core/services/supabase_service.dart';
 import 'features/my_apps/my_apps_screen.dart';
@@ -11,6 +13,7 @@ import 'features/onboarding/onboarding_screen.dart';
 import 'features/profile/profile_screen.dart';
 import 'features/shopping_list/shopping_list_screen.dart';
 import 'features/stores_map/stores_screen.dart';
+import 'features/wallet/import_offers_screen.dart';
 import 'features/wallet/wallet_screen.dart';
 
 void main() async {
@@ -21,6 +24,9 @@ void main() async {
 
   // Preload catalog
   await CatalogService.loadCatalog();
+
+  // Angebote vom Übernehmen-Knopf (#import=…), nach dem Katalog für die Zuordnung
+  OfferImportService.pending = OfferImportService.fromUri(Uri.base);
 
   // Check onboarding status
   final hasCompletedOnboarding = await PreferencesStorage.isOnboardingCompleted();
@@ -111,6 +117,23 @@ class MainNavigationShell extends StatefulWidget {
 
 class _MainNavigationShellState extends State<MainNavigationShell> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    final batch = OfferImportService.pending;
+    if (batch != null) {
+      OfferImportService.pending = null;
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        // Import-Daten aus der Adresse entfernen, damit Neuladen nicht erneut fragt
+        SystemNavigator.routeInformationUpdated(uri: Uri(path: '/'), replace: true);
+        final imported = await Navigator.of(context).push<int>(
+          MaterialPageRoute(builder: (_) => ImportOffersScreen(batch: batch)),
+        );
+        if (imported != null && imported > 0 && mounted) setState(() => _currentIndex = 3);
+      });
+    }
+  }
 
   final List<Widget> _screens = const [
     ShoppingListScreen(),

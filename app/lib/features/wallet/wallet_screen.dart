@@ -23,11 +23,19 @@ class _WalletScreenState extends State<WalletScreen> {
   @override
   void initState() {
     super.initState();
+    WalletService.offersRevision.addListener(_refresh);
     _refresh();
   }
 
+  @override
+  void dispose() {
+    WalletService.offersRevision.removeListener(_refresh);
+    super.dispose();
+  }
+
   Future<void> _refresh() async {
-    final offers = await WalletService.loadScrapedOffers();
+    await WalletService.loadScrapedOffers();
+    final offers = WalletService.weeklyOffers;
     final now = DateTime.now();
     final valid = offers.where((o) => o.isValidAt(now)).toList();
     if (mounted) {
@@ -312,7 +320,7 @@ class _WalletScreenState extends State<WalletScreen> {
           ),
           const SizedBox(height: 4),
           Text(
-            'Beispieldaten (Demo), keine echten Prospektpreise. Nur gültige Angebote werden angezeigt und im Optimierer berücksichtigt.',
+            'Beispieldaten und Angebote, die du mit dem Übernehmen-Knopf übernommen hast (Einrichtung: uebernehmen.html neben der App). Nur gültige Angebote werden angezeigt und im Optimierer berücksichtigt.',
             style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
           ),
           if (_expiredCount > 0) ...[
@@ -366,6 +374,10 @@ class _WalletScreenState extends State<WalletScreen> {
                     Text(
                       '${off.chain.displayName} • ${off.unitInfo ?? off.title}',
                       style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+                    ),
+                    Text(
+                      off.source ?? 'Beispieldaten',
+                      style: TextStyle(fontSize: 11, color: off.source != null ? Colors.teal.shade700 : Colors.grey.shade500),
                     ),
                     const SizedBox(height: 5),
                     Row(

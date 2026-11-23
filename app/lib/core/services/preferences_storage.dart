@@ -114,6 +114,23 @@ class PreferencesStorage {
   static Future<void> saveUserPreferences(Map<String, dynamic> prefs) =>
       _write(_keyUserPreferences, json.encode(prefs));
 
+  static const _keyImportedOffers = 'imported_offers_v1';
+
+  /// Vom Übernehmen-Knopf übernommene Angebote (JSON-Liste).
+  static Future<List<Map<String, dynamic>>> loadImportedOffers() async {
+    final raw = await _read(_keyImportedOffers);
+    if (raw == null) return [];
+    try {
+      return (json.decode(raw) as List<dynamic>).cast<Map<String, dynamic>>();
+    } catch (e) {
+      debugPrint('[PreferencesStorage] Invalid imported offers: $e');
+      return [];
+    }
+  }
+
+  static Future<void> saveImportedOffers(List<Map<String, dynamic>> offers) =>
+      _write(_keyImportedOffers, json.encode(offers));
+
   /// Nur für Tests: Zwischenspeicher leeren.
   @visibleForTesting
   static void clearMemoryCache() => _memoryCache.clear();

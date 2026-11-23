@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import '../models/loyalty_wallet.dart';
 import '../models/store.dart';
 import 'analytics_service.dart';
+import 'offer_import_service.dart';
 
 class WalletService {
   static List<AppIntegrationInfo> _integratedApps = [
@@ -217,6 +218,18 @@ class WalletService {
   static List<UserCoupon> get coupons => _coupons;
   static List<WeeklyOffer> get weeklyOffers => _weeklyOffers;
 
+  /// Übernimmt neue Angebote sofort in die laufende Sitzung (gleiche ID ersetzt).
+  static void addImportedOffers(List<WeeklyOffer> offers) {
+    final ids = offers.map((o) => o.id).toSet();
+    _weeklyOffers
+      ..removeWhere((o) => ids.contains(o.id))
+      ..addAll(offers);
+    offersRevision.value++;
+  }
+
+  /// Wird erhöht, wenn sich die Angebote ändern (Ansichten laden dann neu).
+  static final ValueNotifier<int> offersRevision = ValueNotifier<int>(0);
+
   /// Lädt tagesaktuelle, gescrapte Angebote mit Datumsbereich aus dem Asset-Store
   static Future<List<WeeklyOffer>> loadScrapedOffers({bool forceRefresh = false}) async {
     if (_offersLoaded && !forceRefresh && _weeklyOffers.length > 5) {
@@ -253,7 +266,8 @@ class WalletService {
         if (parsed.isNotEmpty) {
           _weeklyOffers
             ..clear()
-            ..addAll(parsed);
+            ..addAll(parsed)
+            ..addAll(await OfferImportService.loadImported());
           _offersLoaded = true;
           return _weeklyOffers;
         }
