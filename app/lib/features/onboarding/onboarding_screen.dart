@@ -27,7 +27,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       headline: 'Willkommen beim Einkaufs-Optimierer',
       subtitle: 'Spare bares Geld bei jedem Wocheneinkauf durch intelligenten Filial- und Preisvergleich.',
       bulletPoints: [
-        'Echte Live-Preise von Lidl, Aldi, Rewe, Netto & Drogerien',
+        'Preisvergleich für Lidl, Aldi, Rewe, Netto & Drogerien (Demo mit Beispielpreisen)',
         'Multi-Store-Optimierung: die günstigste Kombination deiner Produkte',
         'Transparent und werbefrei – keine fiktiven Schein-Rabatte',
       ],
@@ -47,10 +47,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       icon: Icons.wallet_rounded,
       iconColor: Color(0xFFAF52DE), // Apple System Purple
       headline: 'Deine Apps & Coupons gebündelt',
-      subtitle: 'Verbinde Lidl Plus, PAYBACK & Rossmann für automatische Punkte- und Coupon-Aktivierung.',
+      subtitle: 'Geplant: Lidl Plus, PAYBACK & Rossmann verbinden. In dieser Demo sind Coupons und Punkte Beispieldaten.',
       bulletPoints: [
-        'Coupons werden vollautomatisch beim besten Laden angerechnet',
-        'Volle Datensouveränität: Zugangsdaten bleiben verschlüsselt auf deinem iPhone',
+        'Geplant: Coupons automatisch beim besten Laden anrechnen',
+        'Demo: Die App-Verknüpfung ist noch simuliert, es werden keine Zugangsdaten abgefragt',
         'Jederzeit anpassbare Store- & Bio-Präferenzen',
       ],
     ),

@@ -9,7 +9,8 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 ## Aktueller Stand
 - `main` ist grün und live auf GitHub Pages (Deploy-Lauf #28).
 - App läuft im **Demo-Modus** (ohne Supabase).
-- Letzte Session: [[2026-11-22 Projektanalyse bis Zweites Gehirn]]
+- Texte als Demo gekennzeichnet, Kartenlizenz-Hinweis da, Cockpit nur im Debug-Build (Branch `claude/phase0-ehrliche-texte`).
+- Letzte Session: [[2026-11-23 Ehrliche Texte und Kartenlizenz]]
 
 ## Offene Baustellen
 - [[Supabase-Anbindung]] – hoch, starkes Modell

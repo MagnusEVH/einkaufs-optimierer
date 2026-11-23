@@ -59,7 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (ctx) => AlertDialog(
         title: const Text('Konto und Daten löschen?'),
         content: const Text(
-          'Gemäß Art. 17 DSGVO werden alle deine Einkaufslisten, Präferenzen, hochgeladenen Bons und persönlichen Daten unwiderruflich aus der Datenbank gelöscht.',
+          'In der Demo-Version werden keine Daten auf einem Server gespeichert. Mit einem echten Konto werden hier gemäß Art. 17 DSGVO alle deine Daten gelöscht.',
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Abbrechen')),
@@ -70,7 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               await SupabaseService.deleteUserAccount();
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Alle Nutzerdaten wurden erfolgreich gelöscht.')),
+                  const SnackBar(content: Text('Demo-Version: Es waren keine Daten auf einem Server gespeichert.')),
                 );
               }
             },

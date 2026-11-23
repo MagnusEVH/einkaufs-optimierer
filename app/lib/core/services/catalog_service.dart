@@ -12,26 +12,26 @@ class CatalogService {
 
   /// Liefert den Zeitpunkt der letzten Verifizierung für ein Produkt
   static String getFreshnessLabel(Product product) {
-    return 'Vor 2 Std. verifiziert';
+    return 'Beispieldaten, nicht geprüft';
   }
 
   /// Liefert die transparente Datenquelle für den Preis
   static String getPriceSource(String chain) {
     switch (chain.toLowerCase()) {
       case 'lidl':
-        return 'Lidl Prospekt-API (Mainz-Bingen)';
+        return 'Beispieldaten (Demo)';
       case 'rewe':
-        return 'REWE Markt-Abfrage Bingen';
+        return 'Beispieldaten (Demo)';
       case 'aldi_sued':
-        return 'ALDI SÜD Wochenaktion';
+        return 'Beispieldaten (Demo)';
       case 'netto':
-        return 'Netto Marken-Discount Online';
+        return 'Beispieldaten (Demo)';
       case 'rossmann':
-        return 'Rossmann Filial-Sortiment';
+        return 'Beispieldaten (Demo)';
       case 'dm':
-        return 'dm-Drogerie API';
+        return 'Beispieldaten (Demo)';
       default:
-        return 'Regionale Preisdatenbank';
+        return 'Beispieldaten (Demo)';
     }
   }
 
