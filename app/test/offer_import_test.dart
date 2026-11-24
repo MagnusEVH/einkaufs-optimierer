@@ -10,6 +10,7 @@ import 'package:einkaufs_optimierer/core/services/optimizer_service.dart';
 import 'package:einkaufs_optimierer/core/services/preferences_storage.dart';
 import 'package:einkaufs_optimierer/core/services/wallet_service.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 String _encode(Map<String, dynamic> payload) =>
     base64Url.encode(utf8.encode(json.encode(payload))).replaceAll('=', '');
@@ -40,7 +41,10 @@ void main() {
     await CatalogService.loadCatalog();
     await WalletService.loadScrapedOffers(forceRefresh: true);
   });
-  setUp(PreferencesStorage.clearMemoryCache);
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+    PreferencesStorage.simulateReload();
+  });
 
   test('gültige Daten werden gelesen und dem Katalog zugeordnet', () {
     final batch = OfferImportService.fromUri(_uri(_payload()))!;

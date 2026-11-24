@@ -1,89 +1,75 @@
 // app/lib/core/services/preferences_storage.dart
+//
+// Lokale App-Daten (Liste, Einstellungen, übernommene Angebote, Flags).
+// Liegen in SharedPreferences (im Browser: localStorage), unverschlüsselt.
+// Hier liegen keine Geheimnisse, daher braucht es keine Verschlüsselung.
+//
+// Früher lag alles in flutter_secure_storage. Dessen Web-Variante erzeugt den
+// Schlüssel ohne Sperre: Laufen beim ersten Start mehrere Schreibvorgänge
+// gleichzeitig, gewinnt ein Schlüssel und die übrigen Werte sind danach nicht
+// mehr lesbar. Folge: Liste weg nach dem Neuladen. Alte Werte werden beim
+// ersten Lesen einmalig übernommen, soweit sie noch lesbar sind.
 
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesStorage {
-  static const _storage = FlutterSecureStorage();
-  static final Map<String, String> _memoryCache = {};
+  static const _legacy = FlutterSecureStorage();
+  static Future<SharedPreferences>? _prefs;
+
+  static Future<SharedPreferences> get _store => _prefs ??= SharedPreferences.getInstance();
 
   static const _keyOnboardingDone = 'has_completed_onboarding_v1';
   static const _keyAdminUnlocked = 'is_admin_mode_unlocked';
   static const _keyShoppingList = 'shopping_list_v1';
   static const _keyUserPreferences = 'user_preferences_v1';
-
-  /// Check whether the first-run onboarding wizard has been completed
-  static Future<bool> isOnboardingCompleted() async {
-    if (_memoryCache.containsKey(_keyOnboardingDone)) {
-      return _memoryCache[_keyOnboardingDone] == 'true';
-    }
-    try {
-      final value = await _storage.read(key: _keyOnboardingDone);
-      _memoryCache[_keyOnboardingDone] = value ?? 'false';
-      return value == 'true';
-    } catch (e) {
-      debugPrint('[PreferencesStorage] Error reading onboarding flag: $e');
-      return _memoryCache[_keyOnboardingDone] == 'true';
-    }
-  }
-
-  /// Mark onboarding wizard as completed
-  static Future<void> setOnboardingCompleted(bool completed) async {
-    final strVal = completed ? 'true' : 'false';
-    _memoryCache[_keyOnboardingDone] = strVal;
-    try {
-      await _storage.write(key: _keyOnboardingDone, value: strVal);
-    } catch (e) {
-      debugPrint('[PreferencesStorage] Error writing onboarding flag: $e');
-    }
-  }
-
-  /// Check whether admin developer dashboard is unlocked
-  static Future<bool> isAdminUnlocked() async {
-    if (_memoryCache.containsKey(_keyAdminUnlocked)) {
-      return _memoryCache[_keyAdminUnlocked] == 'true';
-    }
-    try {
-      final value = await _storage.read(key: _keyAdminUnlocked);
-      return value == 'true';
-    } catch (e) {
-      return true; // Default accessible in developer builds
-    }
-  }
-
-  static Future<void> setAdminUnlocked(bool unlocked) async {
-    final strVal = unlocked ? 'true' : 'false';
-    _memoryCache[_keyAdminUnlocked] = strVal;
-    try {
-      await _storage.write(key: _keyAdminUnlocked, value: strVal);
-    } catch (e) {
-      debugPrint('[PreferencesStorage] Error writing admin flag: $e');
-    }
-  }
-
-  // --- Lokale Daten (Demo-Modus, V16) ---
+  static const _keyImportedOffers = 'imported_offers_v1';
 
   static Future<String?> _read(String key) async {
-    if (_memoryCache.containsKey(key)) return _memoryCache[key];
     try {
-      final value = await _storage.read(key: key);
-      if (value != null) _memoryCache[key] = value;
-      return value;
+      final prefs = await _store;
+      final value = prefs.getString(key);
+      if (value != null) return value;
+      // Einmalige Übernahme aus dem alten Speicher
+      final old = await _readLegacy(key);
+      if (old != null) await prefs.setString(key, old);
+      return old;
     } catch (e) {
       debugPrint('[PreferencesStorage] Error reading $key: $e');
       return null;
     }
   }
 
-  static Future<void> _write(String key, String value) async {
-    _memoryCache[key] = value;
+  static Future<String?> _readLegacy(String key) async {
     try {
-      await _storage.write(key: key, value: value);
+      return await _legacy.read(key: key);
+    } catch (_) {
+      return null; // nicht vorhanden, Plugin fehlt oder Wert unlesbar
+    }
+  }
+
+  static Future<void> _write(String key, String value) async {
+    try {
+      await (await _store).setString(key, value);
     } catch (e) {
       debugPrint('[PreferencesStorage] Error writing $key: $e');
     }
   }
+
+  /// Check whether the first-run onboarding wizard has been completed
+  static Future<bool> isOnboardingCompleted() async => await _read(_keyOnboardingDone) == 'true';
+
+  /// Mark onboarding wizard as completed
+  static Future<void> setOnboardingCompleted(bool completed) =>
+      _write(_keyOnboardingDone, completed ? 'true' : 'false');
+
+  /// Check whether admin developer dashboard is unlocked
+  static Future<bool> isAdminUnlocked() async => await _read(_keyAdminUnlocked) == 'true';
+
+  static Future<void> setAdminUnlocked(bool unlocked) =>
+      _write(_keyAdminUnlocked, unlocked ? 'true' : 'false');
 
   /// Gespeicherte Einkaufsliste als JSON-Liste, oder null, wenn noch nie gespeichert.
   static Future<List<Map<String, dynamic>>?> loadShoppingList() async {
@@ -114,8 +100,6 @@ class PreferencesStorage {
   static Future<void> saveUserPreferences(Map<String, dynamic> prefs) =>
       _write(_keyUserPreferences, json.encode(prefs));
 
-  static const _keyImportedOffers = 'imported_offers_v1';
-
   /// Vom Übernehmen-Knopf übernommene Angebote (JSON-Liste).
   static Future<List<Map<String, dynamic>>> loadImportedOffers() async {
     final raw = await _read(_keyImportedOffers);
@@ -131,8 +115,8 @@ class PreferencesStorage {
   static Future<void> saveImportedOffers(List<Map<String, dynamic>> offers) =>
       _write(_keyImportedOffers, json.encode(offers));
 
-  /// Nur für Tests: Zwischenspeicher leeren.
+  /// Nur für Tests: simuliert ein Neuladen der Seite (Speicher bleibt erhalten).
+  /// Leeren Speicher vorher mit `SharedPreferences.setMockInitialValues({})` setzen.
   @visibleForTesting
-  static void clearMemoryCache() => _memoryCache.clear();
+  static void simulateReload() => _prefs = null;
 }
-
