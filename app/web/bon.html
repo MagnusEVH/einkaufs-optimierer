@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kassenbon scannen – Einkaufs-Optimierer</title>
+  <style>
+    :root { color-scheme: light; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; max-width: 720px; margin: 24px auto; padding: 0 16px 80px; color: #0f172a; line-height: 1.5; background: #f8fafc; }
+    h1 { font-size: 1.4rem; margin-bottom: 4px; }
+    .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px; margin: 14px 0; }
+    .step { font-weight: 700; color: #065f46; margin-bottom: 6px; }
+    .btn { display: inline-block; padding: 11px 16px; background: #059669; color: #fff; border: 0; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; }
+    .btn.secondary { background: #e2e8f0; color: #0f172a; }
+    .btn:disabled { opacity: .5; cursor: default; }
+    textarea { width: 100%; min-height: 180px; font-family: ui-monospace, Consolas, monospace; font-size: .9rem; border: 1px solid #cbd5e1; border-radius: 10px; padding: 8px; box-sizing: border-box; }
+    select, input[type=date] { font-size: 1rem; padding: 6px 8px; border-radius: 8px; border: 1px solid #cbd5e1; }
+    table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    td, th { padding: 6px 4px; border-bottom: 1px solid #f1f5f9; text-align: left; vertical-align: top; }
+    td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .muted { color: #64748b; font-size: .88rem; }
+    .warn { color: #b45309; font-weight: 600; }
+    .ok { color: #047857; font-weight: 600; }
+    progress { width: 100%; }
+    img.preview { max-width: 100%; max-height: 320px; border-radius: 10px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Kassenbon scannen</h1>
+  <p class="muted">Die Texterkennung läuft hier im Browser. Das Foto verlässt dein Gerät nicht; geladen werden nur das Erkennungsprogramm und die deutschen Sprachdaten.</p>
+
+  <div class="card">
+    <div class="step">1. Foto vom Bon</div>
+    <input type="file" id="file" accept="image/*" capture="environment">
+    <p class="muted">Tipp: Bon glatt hinlegen, gerade von oben, gutes Licht, nur den Bon im Bild.</p>
+    <img id="preview" class="preview" alt="" hidden>
+    <div id="ocrBox" hidden>
+      <p id="ocrStatus" class="muted">Lade Texterkennung …</p>
+      <progress id="ocrProgress" max="1" value="0"></progress>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="step">2. Text prüfen</div>
+    <p class="muted">Hier steht der erkannte Text. Fehler kannst du direkt korrigieren, oder du fügst den Text selbst ein.</p>
+    <textarea id="text" placeholder="KINDER COUNTRY 9ER   1,99 B&#10;JA! H-MILCH 1,5%     1,98 B&#10;  2 Stk x 0,99&#10;SUMME EUR 3,97"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="step">3. Erkannte Artikel</div>
+    <p>
+      <label>Kette
+        <select id="chain">
+          <option value="">bitte wählen</option>
+          <option value="rewe">REWE</option>
+          <option value="lidl">Lidl</option>
+          <option value="aldi_sued">ALDI SÜD</option>
+          <option value="aldi_nord">ALDI Nord</option>
+          <option value="netto">Netto</option>
+          <option value="dm">dm</option>
+          <option value="rossmann">Rossmann</option>
+        </select>
+      </label>
+      &nbsp;
+      <label>Einkauf am <input type="date" id="date"></label>
+    </p>
+    <p id="check" class="muted"></p>
+    <table>
+      <thead><tr><th>Artikel</th><th class="num">Preis je Stück/kg</th></tr></thead>
+      <tbody id="rows"><tr><td colspan="2" class="muted">Noch kein Text.</td></tr></tbody>
+    </table>
+    <p style="margin-top:14px">
+      <button class="btn" id="send" disabled>In App übernehmen</button>
+      <a class="btn secondary" href="./">Zurück zur App</a>
+    </p>
+    <p class="muted">In der App ordnest du die Zeilen Produkten zu. Die App merkt sich jede Zuordnung, beim nächsten Bon geht es dann von selbst.</p>
+  </div>
+
+  <script src="bon/parse.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      // Fest auf eine Version gepinnt; die Sprachdaten lädt tesseract.js selbst.
+      var TESSERACT_URL = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+      var $ = function (id) { return document.getElementById(id); };
+      var parsed = null;
+
+      function euro(c) { return (c / 100).toFixed(2).replace('.', ',') + ' €'; }
+      function esc(s) { return String(s).replace(/[&<>"]/g, function (ch) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]; }); }
+
+      function loadTesseract() {
+        if (window.Tesseract) return Promise.resolve(window.Tesseract);
+        return new Promise(function (resolve, reject) {
+          var s = document.createElement('script');
+          s.src = TESSERACT_URL;
+          s.crossOrigin = 'anonymous';
+          s.onload = function () { resolve(window.Tesseract); };
+          s.onerror = function () { reject(new Error('Texterkennung konnte nicht geladen werden (offline?)')); };
+          document.head.appendChild(s);
+        });
+      }
+
+      // Graustufen und auf max. 2000 px Breite: schneller und meist genauer
+      function prepare(file) {
+        return new Promise(function (resolve) {
+          var img = new Image();
+          img.onload = function () {
+            var scale = Math.min(1, 2000 / img.width);
+            var c = document.createElement('canvas');
+            c.width = Math.round(img.width * scale);
+            c.height = Math.round(img.height * scale);
+            var ctx = c.getContext('2d');
+            ctx.filter = 'grayscale(1) contrast(1.4)';
+            ctx.drawImage(img, 0, 0, c.width, c.height);
+            resolve(c);
+          };
+          img.src = URL.createObjectURL(file);
+        });
+      }
+
+      function render() {
+        parsed = BonParser.parseReceipt($('text').value);
+        if (parsed.chain && !$('chain').dataset.touched) $('chain').value = parsed.chain;
+        if (!$('date').dataset.touched) $('date').value = parsed.date;
+        var rows = parsed.items.map(function (it) {
+          return '<tr><td>' + esc(it.title) + (it.unit_info ? '<br><span class="muted">' + esc(it.unit_info) + '</span>' : '') +
+            '</td><td class="num">' + euro(it.price_cents) + '</td></tr>';
+        });
+        $('rows').innerHTML = rows.length ? rows.join('') : '<tr><td colspan="2" class="muted">Keine Artikelzeilen erkannt.</td></tr>';
+        var check = '';
+        if (parsed.items.length) {
+          check = parsed.items.length + ' Artikel. ';
+          if (parsed.total_cents !== null) {
+            var diff = parsed.total_cents - parsed.items_sum_cents;
+            check += diff === 0 ? '<span class="ok">Summe passt.</span>'
+              : '<span class="warn">Summe auf dem Bon ' + euro(parsed.total_cents) + ', Artikel ergeben ' + euro(parsed.items_sum_cents) +
+                ' (Differenz ' + euro(diff) + ', z. B. Pfand oder ein Lesefehler).</span>';
+          }
+          if (parsed.date_guessed) check += ' <span class="warn">Kein Datum gefunden, bitte eintragen.</span>';
+        }
+        $('check').innerHTML = check;
+        $('send').disabled = !(parsed.items.length && $('chain').value && $('date').value);
+      }
+
+      $('file').addEventListener('change', async function () {
+        var file = this.files && this.files[0];
+        if (!file) return;
+        $('preview').src = URL.createObjectURL(file);
+        $('preview').hidden = false;
+        $('ocrBox').hidden = false;
+        $('ocrStatus').textContent = 'Lade Texterkennung …';
+        $('ocrProgress').value = 0;
+        try {
+          var T = await loadTesseract();
+          var canvas = await prepare(file);
+          var worker = await T.createWorker('deu', 1, {
+            logger: function (m) {
+              if (m.status === 'recognizing text') {
+                $('ocrStatus').textContent = 'Lese Text …';
+                $('ocrProgress').value = m.progress;
+              } else {
+                $('ocrStatus').textContent = 'Vorbereitung: ' + m.status;
+              }
+            }
+          });
+          await worker.setParameters({ preserve_interword_spaces: '1' });
+          var res = await worker.recognize(canvas);
+          await worker.terminate();
+          $('text').value = res.data.text;
+          $('ocrStatus').textContent = 'Fertig. Bitte Text und Artikel prüfen.';
+          $('ocrProgress').value = 1;
+          render();
+        } catch (e) {
+          $('ocrStatus').textContent = 'Fehler: ' + e.message + '. Du kannst den Text auch selbst einfügen.';
+        }
+      });
+
+      $('text').addEventListener('input', render);
+      $('chain').addEventListener('change', function () { this.dataset.touched = '1'; render(); });
+      $('date').addEventListener('change', function () { this.dataset.touched = '1'; render(); });
+
+      function toBase64Url(str) {
+        var bytes = new TextEncoder().encode(str);
+        var bin = '';
+        for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+        return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      }
+
+      $('send').addEventListener('click', function () {
+        if (!parsed) return;
+        var day = $('date').value;
+        var payload = {
+          v: 1,
+          kind: 'receipt',
+          chain: $('chain').value,
+          source_url: 'kassenbon',
+          captured_at: new Date().toISOString(),
+          valid_from: day,
+          valid_to: day,
+          valid_guessed: parsed.date_guessed && !$('date').dataset.touched,
+          offers: parsed.items.map(function (it) {
+            return { title: it.title, price_cents: it.price_cents, unit_info: it.unit_info };
+          })
+        };
+        // Daten gehen nur im Adressteil nach # an die App, nicht an einen Server
+        location.href = new URL('./', location.href).href + '#import=' + toBase64Url(JSON.stringify(payload));
+      });
+    })();
+  </script>
+</body>
+</html>

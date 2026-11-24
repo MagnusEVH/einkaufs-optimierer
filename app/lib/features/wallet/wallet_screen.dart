@@ -6,7 +6,9 @@
 import 'package:flutter/material.dart';
 import '../../core/models/loyalty_wallet.dart';
 import '../../core/models/store.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../core/services/wallet_service.dart';
+import 'weekly_round_card.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
@@ -247,6 +249,18 @@ class _WalletScreenState extends State<WalletScreen> {
                   style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 13),
                 ),
               ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          const WeeklyRoundCard(),
+          const SizedBox(height: 8),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.receipt_long_rounded, color: Colors.teal),
+              title: const Text('Kassenbon scannen', style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: const Text('Foto vom Bon: echte Preise deiner Filiale. Die Texterkennung läuft im Browser, das Bild bleibt auf dem Gerät.'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => launchUrl(Uri.base.resolve('bon.html'), webOnlyWindowName: '_self'),
             ),
           ),
           const SizedBox(height: 20),

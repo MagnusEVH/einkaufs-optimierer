@@ -19,3 +19,6 @@ tags: [wissen, stolperfalle]
 - **`flutter_secure_storage` im Web** verliert Daten, wenn beim ersten Start parallel geschrieben wird (Schlüssel ohne Sperre) → App-Daten liegen in `shared_preferences`. Im Test `SharedPreferences.setMockInitialValues({})` + `PreferencesStorage.simulateReload()`.
 - **Git Bash und `--base-href`**: MSYS macht aus `/einkaufs-optimierer/` einen Windows-Pfad → `MSYS_NO_PATHCONV=1 flutter build web …`.
 - **Bookmarklet-Platzhalter** `__APP_URL__` steht auch im Kommentar → in `uebernehmen.html` `replaceAll` nutzen.
+- **Gespeicherte Händlerseiten in Headless-Chrome** hängen bei `--dump-dom`, weil Bilder und CSS von den (bot-geschützten) Händler-Servern nachgeladen werden → externe URLs vor dem Test entfernen. Echte Händlerseiten nie ins Repo, nur nachgebaute Fixtures.
+- **CRLF in `extract.js` und Dart-Dateien**: Skript-Ersetzungen vorher auf 
+ normalisieren und danach zurückwandeln.

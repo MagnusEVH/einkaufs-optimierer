@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:einkaufs_optimierer/core/models/store.dart';
 import 'package:einkaufs_optimierer/core/services/catalog_service.dart';
+import 'package:einkaufs_optimierer/core/services/observed_price_service.dart';
 import 'package:einkaufs_optimierer/core/services/offer_import_service.dart';
 import 'package:einkaufs_optimierer/core/services/optimizer_service.dart';
 import 'package:einkaufs_optimierer/core/services/preferences_storage.dart';
@@ -97,5 +98,87 @@ void main() {
     // Nach Ablauf wieder Normalpreis
     expect(OptimizerService.unitPrice(butter, SupermarketChain.rewe, DateTime.utc(2026, 12, 2)),
         butter.getPriceForChain('rewe'));
+  });
+
+  test('neuer Import ersetzt falsche Preise derselben Kette und Woche', () async {
+    final wrong = OfferImportService.fromUri(_uri(_payload(offers: [
+      {'title': 'Kerrygold Irische Butter 250g', 'price_cents': 265}, // Streichpreis erwischt
+    ])))!;
+    await OfferImportService.saveOffers(wrong);
+    final right = OfferImportService.fromUri(_uri(_payload()))!;
+    final kept = await OfferImportService.saveOffers(right);
+    expect(kept.map((o) => o.discountPriceCents), [199], reason: 'alter Fehlpreis ist weg');
+
+    // Andere Kette bleibt unberührt
+    final lidl = OfferImportService.fromUri(_uri(_payload(chain: 'lidl')))!;
+    final all = await OfferImportService.saveOffers(lidl);
+    expect(all.map((o) => o.chain).toSet(), {SupermarketChain.rewe, SupermarketChain.lidl});
+
+    final log = await OfferImportService.loadLog();
+    expect(log['rewe']?['count'], 1);
+    expect(log.containsKey('lidl'), isTrue);
+  });
+
+  test('Warnung bei unplausiblem Angebot', () {
+    final batch = OfferImportService.fromUri(_uri(_payload(offers: [
+      {'title': 'Kerrygold Irische Butter 250g', 'price_cents': 299, 'original_price_cents': 265},
+      {'title': 'Kerrygold Irische Butter 250g', 'price_cents': 199, 'original_price_cents': 265},
+    ])))!;
+    expect(batch.candidates.first.warning(SupermarketChain.rewe), isNotNull);
+    expect(batch.candidates.last.warning(SupermarketChain.rewe), isNull);
+  });
+
+  test('gemerkte Zuordnung greift beim nächsten Import', () async {
+    final skyr = CatalogService.products.firstWhere((p) => p.name.startsWith('Skyr Natur'));
+    final first = OfferImportService.fromUri(_uri(_payload(offers: [
+      {'title': 'MILBONA SKYR NAT. 450G', 'price_cents': 149},
+    ])))!;
+    first.candidates.single
+      ..product = skyr
+      ..selected = true;
+    await OfferImportService.saveOffers(first);
+
+    PreferencesStorage.simulateReload();
+    await OfferImportService.loadMappings();
+    final second = OfferImportService.fromUri(_uri(_payload(offers: [
+      {'title': 'Milbona Skyr nat. 450g', 'price_cents': 139},
+    ])))!;
+    expect(second.candidates.single.product?.id, skyr.id);
+    expect(second.candidates.single.selected, isTrue);
+  });
+
+  test('Bonpreis ersetzt den Beispielpreis im Optimierer', () async {
+    final butter = CatalogService.products.firstWhere((p) => p.name == 'Kerrygold Irische Butter 250g');
+    final receipt = {
+      ..._payload(offers: [
+        {'title': 'KERRYGOLD BUTTER', 'price_cents': 289},
+      ]),
+      'kind': 'receipt',
+      'source_url': 'kassenbon',
+      'valid_from': '2026-11-24',
+      'valid_to': '2026-11-24',
+    };
+    final batch = OfferImportService.fromUri(_uri(receipt))!;
+    expect(batch.isReceipt, isTrue);
+    expect(batch.host, 'Kassenbon');
+    batch.candidates.single
+      ..product = butter
+      ..selected = true;
+    expect(await OfferImportService.saveReceipt(batch), 1);
+
+    final day = DateTime(2026, 11, 26);
+    // Bonpreis statt Katalogpreis (Angebote dieser Woche sind hier keine gespeichert)
+    WalletService.setImportedOffers(const []);
+    expect(ObservedPriceService.latest(butter.id, SupermarketChain.rewe, day)?.priceCents, 289);
+    expect(OptimizerService.unitPrice(butter, SupermarketChain.rewe, day), 289);
+    // Andere Kette: weiter Katalogpreis
+    expect(OptimizerService.unitPrice(butter, SupermarketChain.lidl, day), butter.getPriceForChain('lidl'));
+    // Nach 60 Tagen zählt der Bon nicht mehr
+    expect(OptimizerService.unitPrice(butter, SupermarketChain.rewe, DateTime(2027, 2, 1)), butter.getPriceForChain('rewe'));
+
+    // Übersteht ein Neuladen
+    PreferencesStorage.simulateReload();
+    await ObservedPriceService.load();
+    expect(ObservedPriceService.latest(butter.id, SupermarketChain.rewe, day)?.priceCents, 289);
   });
 }

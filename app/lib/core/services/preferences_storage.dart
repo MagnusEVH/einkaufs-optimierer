@@ -115,6 +115,20 @@ class PreferencesStorage {
   static Future<void> saveImportedOffers(List<Map<String, dynamic>> offers) =>
       _write(_keyImportedOffers, json.encode(offers));
 
+  /// Beliebiger JSON-Wert unter [key] (Bonpreise, Zuordnungen, Import-Protokoll).
+  static Future<dynamic> loadJson(String key) async {
+    final raw = await _read(key);
+    if (raw == null) return null;
+    try {
+      return json.decode(raw);
+    } catch (e) {
+      debugPrint("[PreferencesStorage] Invalid JSON in $key: $e");
+      return null;
+    }
+  }
+
+  static Future<void> saveJson(String key, Object value) => _write(key, json.encode(value));
+
   /// Nur für Tests: simuliert ein Neuladen der Seite (Speicher bleibt erhalten).
   /// Leeren Speicher vorher mit `SharedPreferences.setMockInitialValues({})` setzen.
   @visibleForTesting
