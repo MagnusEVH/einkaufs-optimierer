@@ -11,9 +11,10 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 - App läuft im **Demo-Modus** (ohne Supabase).
 - Texte als Demo gekennzeichnet, Kartenlizenz-Hinweis da, Cockpit nur im Debug-Build (PR #11, gemergt).
 - Optimierer rechnet korrekt (Umkreis, Fahrtkosten, keine Pauschalpreise), Review-Sonden als Tests, Rückfrage bei Freitext, Liste und Einstellungen werden gespeichert (PR #12, gemergt).
-- Echte Angebote per Übernehmen-Knopf (`uebernehmen.html`, PR #13, gemergt). Praxistest: erkennt etwa die Hälfte, Preise teils falsch.
-- Speichern im Browser repariert (`shared_preferences` statt `flutter_secure_storage`), Branch `claude/speichern-reparieren`.
-- Letzte Session: [[2026-11-24 Speichern repariert]]
+- Echte Angebote per Übernehmen-Knopf (`uebernehmen.html`): REWE mit eigener Regel (444/444 richtig), andere Ketten allgemein und ungeprüft. Neuer Import ersetzt alte Fehler.
+- Speichern im Browser repariert (PR #14, gemergt).
+- Wochenrunde im Angebote-Tab, Bon-Scan (`bon.html`, Texterkennung im Browser), Bonpreise ersetzen Katalogpreise. Branch `claude/wochenrunde-bonscan`.
+- Letzte Session: [[2026-11-24 Wochenrunde und Bon-Scan]]
 
 ## Offene Baustellen
 - [[Supabase-Anbindung]] – hoch, starkes Modell

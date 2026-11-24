@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/services/analytics_service.dart';
 import 'core/services/catalog_service.dart';
+import 'core/services/observed_price_service.dart';
 import 'core/services/offer_import_service.dart';
 import 'core/services/preferences_storage.dart';
 import 'core/services/supabase_service.dart';
@@ -24,6 +25,10 @@ void main() async {
 
   // Preload catalog
   await CatalogService.loadCatalog();
+
+  // Echte Bonpreise und gemerkte Zuordnungen
+  await ObservedPriceService.load();
+  await OfferImportService.loadMappings();
 
   // Angebote vom Übernehmen-Knopf (#import=…), nach dem Katalog für die Zuordnung
   OfferImportService.pending = OfferImportService.fromUri(Uri.base);
@@ -130,7 +135,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
         final imported = await Navigator.of(context).push<int>(
           MaterialPageRoute(builder: (_) => ImportOffersScreen(batch: batch)),
         );
-        if (imported != null && imported > 0 && mounted) setState(() => _currentIndex = 3);
+        if (imported != null && imported > 0 && mounted) setState(() => _currentIndex = batch.isReceipt ? 0 : 3);
       });
     }
   }

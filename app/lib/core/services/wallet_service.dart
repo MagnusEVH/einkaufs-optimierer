@@ -227,6 +227,14 @@ class WalletService {
     offersRevision.value++;
   }
 
+  /// Ersetzt alle übernommenen Angebote durch den gespeicherten Stand.
+  static void setImportedOffers(List<WeeklyOffer> imported) {
+    _weeklyOffers
+      ..removeWhere((o) => o.id.startsWith('imp-'))
+      ..addAll(imported);
+    offersRevision.value++;
+  }
+
   /// Wird erhöht, wenn sich die Angebote ändern (Ansichten laden dann neu).
   static final ValueNotifier<int> offersRevision = ValueNotifier<int>(0);
 

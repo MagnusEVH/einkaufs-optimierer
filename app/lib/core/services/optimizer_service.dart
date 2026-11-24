@@ -11,6 +11,7 @@ import '../models/store.dart';
 import '../models/user_preferences.dart';
 import 'catalog_service.dart';
 import 'location_service.dart';
+import 'observed_price_service.dart';
 import 'supabase_service.dart';
 import 'wallet_service.dart';
 
@@ -105,11 +106,12 @@ class OptimizerService {
   }
 
   /// Stückpreis eines Produkts in einer Kette inkl. gültiger Angebote, oder
-  /// null, wenn die Kette keinen Preis dafür hat. Angebote greifen nur bei
-  /// exakter Produkt-ID und im Gültigkeitszeitraum.
+  /// null, wenn die Kette keinen Preis dafür hat. Ein echter Bonpreis ersetzt
+  /// den Katalogpreis. Angebote greifen nur bei exakter Produkt-ID und im
+  /// Gültigkeitszeitraum.
   static int? unitPrice(Product? prod, SupermarketChain chain, DateTime now) {
     if (prod == null) return null;
-    int? price = prod.getPriceForChain(chain.name);
+    int? price = ObservedPriceService.latest(prod.id, chain, now)?.priceCents ?? prod.getPriceForChain(chain.name);
     for (final offer in WalletService.weeklyOffers) {
       if (offer.chain != chain || offer.productId != prod.id) continue;
       if (!offer.isValidAt(now) || offer.discountPriceCents <= 0) continue;

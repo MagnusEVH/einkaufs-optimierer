@@ -41,14 +41,21 @@ class _ImportOffersScreenState extends State<ImportOffersScreen> {
 
   Future<void> _save() async {
     setState(() => _saving = true);
-    final offers = OfferImportService.toOffers(batch);
-    await OfferImportService.saveImported(offers);
-    WalletService.addImportedOffers(offers);
+    int count;
+    String message;
+    if (batch.isReceipt) {
+      count = await OfferImportService.saveReceipt(batch);
+      message = '$count Bonpreise von ${batch.chain.displayName} gespeichert';
+    } else {
+      // Ersetzt frühere Übernahmen derselben Kette und Woche (korrigiert alte Fehler)
+      final kept = await OfferImportService.saveOffers(batch);
+      WalletService.setImportedOffers(kept);
+      count = batch.candidates.where((c) => c.selected).length;
+      message = '$count Angebote von ${batch.host} übernommen';
+    }
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('${offers.length} Angebote von ${batch.host} übernommen')),
-    );
-    Navigator.pop(context, offers.length);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    Navigator.pop(context, count);
   }
 
   @override
@@ -57,7 +64,7 @@ class _ImportOffersScreenState extends State<ImportOffersScreen> {
     final matched = batch.candidates.where((c) => c.product != null).length;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Angebote übernehmen')),
+      appBar: AppBar(title: Text(batch.isReceipt ? 'Kassenbon übernehmen' : 'Angebote übernehmen')),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
         children: [
@@ -71,13 +78,17 @@ class _ImportOffersScreenState extends State<ImportOffersScreen> {
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   const SizedBox(height: 4),
                   Text(
-                    'Gültig ${_date(batch.validFrom)} – ${_date(batch.validTo)}'
-                    '${batch.validGuessed ? ' (kein Datum auf der Seite gefunden, geschätzt)' : ''}',
+                    batch.isReceipt
+                        ? 'Einkauf vom ${_date(batch.validFrom)}${batch.validGuessed ? ' (kein Datum auf dem Bon gefunden, heute angenommen)' : ''}'
+                        : 'Gültig ${_date(batch.validFrom)} – ${_date(batch.validTo)}'
+                            '${batch.validGuessed ? ' (kein Datum auf der Seite gefunden, geschätzt)' : ''}',
                   ),
                   const SizedBox(height: 4),
                   Text(
                     '${batch.candidates.length} erkannt, $matched dem Katalog zugeordnet. '
-                    'Nur zugeordnete Angebote fließen in die Optimierung ein. '
+                    '${batch.isReceipt ? 'Zugeordnete Bonpreise ersetzen 60 Tage lang den Beispielpreis dieser Kette. ' : 'Nur zugeordnete Angebote fließen in die Optimierung ein. '
+                        'Frühere Übernahmen von ${batch.chain.displayName} für diesen Zeitraum werden ersetzt. '}'
+                    'Deine Zuordnungen merkt sich die App für das nächste Mal. '
                     'Die Daten bleiben auf diesem Gerät.',
                     style: TextStyle(fontSize: 12.5, color: Colors.grey.shade700),
                   ),
@@ -107,6 +118,12 @@ class _ImportOffersScreenState extends State<ImportOffersScreen> {
                         '${c.originalPriceCents != null ? ' statt ${_euro(c.originalPriceCents!)}' : ''}'
                         '${c.unitInfo != null ? ' · ${c.unitInfo}' : ''}',
                       ),
+                      if (!batch.isReceipt && c.warning(batch.chain) != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2),
+                          child: Text('⚠ ${c.warning(batch.chain)}',
+                              style: TextStyle(fontSize: 12.5, color: Colors.red.shade700, fontWeight: FontWeight.w600)),
+                        ),
                       const SizedBox(height: 4),
                       InkWell(
                         onTap: () => _pick(c),
@@ -130,7 +147,7 @@ class _ImportOffersScreenState extends State<ImportOffersScreen> {
           padding: const EdgeInsets.all(16),
           child: FilledButton.icon(
             icon: const Icon(Icons.download_done_rounded),
-            label: Text('$selected Angebote übernehmen'),
+            label: Text(batch.isReceipt ? '$selected Bonpreise übernehmen' : '$selected Angebote übernehmen'),
             onPressed: _saving || selected == 0 ? null : _save,
           ),
         ),
