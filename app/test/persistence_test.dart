@@ -1,14 +1,16 @@
 // V16: Einkaufsliste und Einstellungen überstehen einen Neustart (Demo-Modus).
-// Im Test gibt es kein Secure-Storage-Plugin; PreferencesStorage nutzt dann
-// seinen Zwischenspeicher. Geprüft wird der Weg Controller → Speicher → Controller.
+// Gespeichert wird über SharedPreferences (im Test der Mock-Speicher). Jeder
+// Ladevorgang simuliert ein Neuladen, damit kein Zwischenspeicher hilft.
 
 import 'package:einkaufs_optimierer/core/models/user_preferences.dart';
 import 'package:einkaufs_optimierer/core/services/preferences_storage.dart';
 import 'package:einkaufs_optimierer/core/services/supabase_service.dart';
 import 'package:einkaufs_optimierer/features/shopping_list/shopping_list_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<ShoppingListController> _loaded() async {
+  PreferencesStorage.simulateReload();
   final c = ShoppingListController();
   await c.loadInitialItems();
   return c;
@@ -16,7 +18,10 @@ Future<ShoppingListController> _loaded() async {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  setUp(PreferencesStorage.clearMemoryCache);
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+    PreferencesStorage.simulateReload();
+  });
 
   test('erster Start zeigt den Beispielkorb', () async {
     final c = await _loaded();
@@ -52,5 +57,21 @@ void main() {
     expect(prefs.bioPreference, 'prefer_bio');
     expect(prefs.maxStops, 1);
     expect(prefs.preferredChains, ['lidl']);
+  });
+
+  test('gleichzeitige erste Schreibvorgänge gehen nicht verloren', () async {
+    // So ging die Liste im Browser verloren: Onboarding, Einstellungen und
+    // Liste wurden beim ersten Start parallel geschrieben.
+    await Future.wait([
+      PreferencesStorage.setOnboardingCompleted(true),
+      PreferencesStorage.saveUserPreferences({'max_stops': 2}),
+      PreferencesStorage.saveShoppingList([{'raw_text': 'milch'}]),
+      PreferencesStorage.saveImportedOffers([{'id': 'imp-1'}]),
+    ]);
+    PreferencesStorage.simulateReload();
+    expect(await PreferencesStorage.isOnboardingCompleted(), isTrue);
+    expect((await PreferencesStorage.loadUserPreferences())?['max_stops'], 2);
+    expect((await PreferencesStorage.loadShoppingList())?.single['raw_text'], 'milch');
+    expect((await PreferencesStorage.loadImportedOffers()).single['id'], 'imp-1');
   });
 }
