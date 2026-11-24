@@ -16,6 +16,6 @@ tags: [wissen, stolperfalle]
 - **CRLF-Zeilenenden** in einigen Dart-Dateien → mehrzeilige Ersetzungen per Skript schlagen fehl, dort gezielt editieren.
 - **Angebotspreis über Katalogpreis** in `live_scraped_offers_rlp.json` (z. B. REWE Spaghetti) → Optimierer nimmt den niedrigeren Preis; Tests nur mit echten Rabatten.
 - **Optimierer ändert Freitext-Zuordnung**: `matchedProduct` wird mit Bio-/Marken-Präferenz neu ermittelt, Fallback ist das gespeicherte Produkt.
-- **`flutter_secure_storage` im Test** ohne Plugin → `PreferencesStorage` nutzt nur den Zwischenspeicher; vor Tests `clearMemoryCache()`.
+- **`flutter_secure_storage` im Web** verliert Daten, wenn beim ersten Start parallel geschrieben wird (Schlüssel ohne Sperre) → App-Daten liegen in `shared_preferences`. Im Test `SharedPreferences.setMockInitialValues({})` + `PreferencesStorage.simulateReload()`.
 - **Git Bash und `--base-href`**: MSYS macht aus `/einkaufs-optimierer/` einen Windows-Pfad → `MSYS_NO_PATHCONV=1 flutter build web …`.
 - **Bookmarklet-Platzhalter** `__APP_URL__` steht auch im Kommentar → in `uebernehmen.html` `replaceAll` nutzen.
