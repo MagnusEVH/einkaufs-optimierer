@@ -15,8 +15,9 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 - Speichern im Browser repariert (PR #14, gemergt).
 - Wochenrunde im Angebote-Tab, Bon-Scan (`bon.html`, Texterkennung im Browser), Bonpreise ersetzen Katalogpreise (PR #15, gemergt).
 - Benutzerreise neu: Liste mit Icons, Planung mit Vorschlägen, Einkaufsmodus, Meine Märkte, Meine Apps mit App öffnen und Guthaben-Scan. PR #16, gemergt.
-- Feinschliff: WebAssembly, Cache-Worker, ein Onboarding-Bildschirm, Guthaben-Scan direkt in der App. Branch `claude/feinschliff`.
-- Letzte Session: [[2026-11-25 Feinschliff]]
+- Feinschliff: WebAssembly, Cache-Worker, ein Onboarding-Bildschirm, Guthaben-Scan direkt in der App. PR #17, gemergt.
+- Design-Pass nach unslop: warme Neutrale, ruhige Schrift, Abschluss als Kassenbon. Branch `claude/unslop`.
+- Letzte Session: [[2026-11-25 Unslop Design-Pass]]
 
 ## Offene Baustellen
 - [[Supabase-Anbindung]] – hoch, starkes Modell

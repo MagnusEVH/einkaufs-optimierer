@@ -190,7 +190,7 @@ class _TripItemRow extends StatelessWidget {
     final done = item.status == TripItemStatus.done;
     final missing = item.status == TripItemStatus.missing;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpace.l, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpace.l, vertical: AppSpace.xs),
       child: Material(
         color: done ? AppColors.surfaceAlt : AppColors.surface,
         borderRadius: AppRadius.medium,
@@ -216,7 +216,7 @@ class _TripItemRow extends StatelessWidget {
                     '${item.quantity > 1 ? '${item.quantity.toInt()}× ' : ''}${item.name}',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       color: done ? AppColors.inkSubtle : AppColors.ink,
                       decoration: done ? TextDecoration.lineThrough : null,
                     ),
@@ -247,18 +247,17 @@ class _CheckoutHint extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(AppSpace.l, AppSpace.l, AppSpace.l, 0),
       child: Container(
         padding: const EdgeInsets.all(AppSpace.l),
-        decoration: BoxDecoration(color: AppColors.infoSoft, borderRadius: AppRadius.large),
+        decoration: BoxDecoration(color: AppColors.surface, borderRadius: AppRadius.large, border: Border.all(color: AppColors.line)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           const Row(children: [
-            Icon(Icons.point_of_sale_rounded, color: AppColors.info),
+            Icon(Icons.point_of_sale_outlined, size: 20, color: AppColors.inkMuted),
             SizedBox(width: AppSpace.s),
-            Text('Vor der Kasse', style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.info)),
+            Text('Vor der Kasse', style: AppText.bodyStrong),
           ]),
           const SizedBox(height: AppSpace.s),
           Text(program.checkoutHint!, style: const TextStyle(color: AppColors.ink)),
           const SizedBox(height: AppSpace.m),
           FilledButton.icon(
-            style: FilledButton.styleFrom(backgroundColor: AppColors.info),
             icon: const Icon(Icons.open_in_new_rounded),
             label: Text('${program.appName} öffnen'),
             onPressed: () => AppLinks.openProgramApp(program),

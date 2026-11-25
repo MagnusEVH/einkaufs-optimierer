@@ -40,31 +40,31 @@ class OnboardingScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Spacer(),
-                  const Text('🛒', style: TextStyle(fontSize: 56), textAlign: TextAlign.center),
-                  const SizedBox(height: AppSpace.l),
                   const Text(
-                    'Günstiger einkaufen,\nohne zu suchen',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 26, height: 1.2, fontWeight: FontWeight.w800, color: AppColors.ink),
+                    'Einkaufs-Optimierer',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppColors.primary),
                   ),
-                  const SizedBox(height: AppSpace.s),
+                  const SizedBox(height: AppSpace.m),
                   const Text(
-                    'Die App vergleicht deine Märkte in der Nähe und sagt dir, wo du was kaufst.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 15, color: AppColors.inkMuted),
+                    'Deine Einkaufsliste, aufgeteilt auf die günstigsten Märkte in deiner Nähe',
+                    style: TextStyle(fontSize: 28, height: 1.15, fontWeight: FontWeight.w500, color: AppColors.ink),
                   ),
-                  const SizedBox(height: AppSpace.xl),
-                  const _Step(icon: '📝', title: 'Liste schreiben', text: 'Tippe, was du brauchst.'),
-                  const _Step(icon: '🗺️', title: 'Einkauf planen', text: 'Günstigste Route über deine Märkte.'),
-                  const _Step(icon: '✅', title: 'Einkaufen und Bon scannen', text: 'Im Laden abhaken, danach lernt die App echte Preise.'),
+                  const SizedBox(height: AppSpace.m),
+                  const Text(
+                    'Die App vergleicht deine Märkte und sagt dir, wo du was kaufst.',
+                    style: TextStyle(fontSize: 15, height: 1.4, color: AppColors.inkMuted),
+                  ),
+                  const SizedBox(height: AppSpace.xxxl),
+                  const _Step(number: 1, title: 'Liste schreiben', text: 'Tippe, was du brauchst'),
+                  const _Step(number: 2, title: 'Einkauf planen', text: 'Günstigste Route über deine Märkte'),
+                  const _Step(number: 3, title: 'Einkaufen und Bon scannen', text: 'Im Laden abhaken, danach lernt die App echte Preise'),
                   const Spacer(flex: 2),
                   const Text(
                     'Preise sind teils Beispieldaten, bis du Angebote übernimmst oder Bons scannst.',
-                    textAlign: TextAlign.center,
                     style: AppText.tiny,
                   ),
                   const SizedBox(height: AppSpace.m),
-                  FilledButton(onPressed: () => _start(context), child: const Text('Los geht’s')),
+                  FilledButton(onPressed: () => _start(context), child: const Text('Liste anlegen')),
                 ],
               ),
             ),
@@ -75,25 +75,23 @@ class OnboardingScreen extends StatelessWidget {
   }
 }
 
+/// Ein Schritt als Zeile mit Nummer, wie auf einem Einkaufszettel.
 class _Step extends StatelessWidget {
-  final String icon;
+  final int number;
   final String title;
   final String text;
-  const _Step({required this.icon, required this.title, required this.text});
+  const _Step({required this.number, required this.title, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpace.s),
-      child: Row(children: [
-        Container(
-          width: 48,
-          height: 48,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(color: AppColors.primaryFaint, borderRadius: AppRadius.medium),
-          child: Text(icon, style: const TextStyle(fontSize: 24)),
+      padding: const EdgeInsets.symmetric(vertical: AppSpace.m),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        SizedBox(
+          width: 24,
+          child: Text('$number', style: AppText.bodyStrong.copyWith(color: AppColors.inkSubtle, fontFeatures: AppText.tab)),
         ),
-        const SizedBox(width: AppSpace.m),
+        const SizedBox(width: AppSpace.s),
         Expanded(
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(title, style: AppText.bodyStrong),

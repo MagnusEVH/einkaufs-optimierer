@@ -133,14 +133,14 @@ class _StoresScreenState extends State<StoresScreen> {
                 const Text(
                   'Karte',
                   style: TextStyle(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                       fontSize: 20,
                       color: AppColors.ink),
                 ),
                 const SizedBox(width: 8),
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
                     color: AppColors.primarySoft,
                     borderRadius: BorderRadius.circular(6),
@@ -148,18 +148,18 @@ class _StoresScreenState extends State<StoresScreen> {
                   child: Text(
                     tileStyleLabel(_tileStyle),
                     style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
                         color: AppColors.primaryDark),
                   ),
                 ),
               ],
             ),
             Text(
-              '${filtered.length} Filialen • Echte Straßenkarten',
-              style: TextStyle(
+              '${filtered.length} Filialen · Echte Straßenkarten',
+              style: const TextStyle(
                   fontSize: 12,
-                  color: Colors.grey.shade600,
+                  color: AppColors.inkSubtle,
                   fontWeight: FontWeight.w500),
             ),
           ],
@@ -167,12 +167,12 @@ class _StoresScreenState extends State<StoresScreen> {
         actions: [
           IconButton(
             tooltip: 'Meine Märkte',
-            icon: const Icon(Icons.tune_rounded, color: Color(0xFF334155)),
+            icon: const Icon(Icons.tune_rounded, color: AppColors.inkMuted),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MyStoresScreen())),
           ),
           // Kartenstil-Wähler (Voyager, OpenStreetMap, Satellit)
           PopupMenuButton<TileStyle>(
-            icon: const Icon(Icons.layers_outlined, color: Color(0xFF334155)),
+            icon: const Icon(Icons.layers_outlined, color: AppColors.inkMuted),
             tooltip: 'Kartenansicht wechseln',
             onSelected: (style) => setState(() => _tileStyle = style),
             itemBuilder: (ctx) => [
@@ -180,7 +180,7 @@ class _StoresScreenState extends State<StoresScreen> {
                 value: TileStyle.voyager,
                 child: Row(
                   children: [
-                    Icon(Icons.map_rounded, size: 18, color: AppColors.primary),
+                    Icon(Icons.map_outlined, size: 18, color: AppColors.inkMuted),
                     SizedBox(width: 10),
                     Text('CartoDB Voyager (Empfohlen)'),
                   ],
@@ -191,7 +191,7 @@ class _StoresScreenState extends State<StoresScreen> {
                 child: Row(
                   children: [
                     Icon(Icons.streetview_rounded,
-                        size: 18, color: Color(0xFF2563EB)),
+                        size: 18, color: AppColors.inkMuted),
                     SizedBox(width: 10),
                     Text('OpenStreetMap Classic'),
                   ],
@@ -202,7 +202,7 @@ class _StoresScreenState extends State<StoresScreen> {
                 child: Row(
                   children: [
                     Icon(Icons.satellite_alt_rounded,
-                        size: 18, color: Color(0xFFD97706)),
+                        size: 18, color: AppColors.inkMuted),
                     SizedBox(width: 10),
                     Text('Satellit / Luftbild'),
                   ],

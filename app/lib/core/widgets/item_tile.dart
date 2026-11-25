@@ -49,7 +49,7 @@ class ItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bg = done ? AppColors.surfaceAlt : (needsCheck ? AppColors.warningSoft : AppColors.surface);
-    final border = needsCheck ? const Color(0xFFFED7AA) : AppColors.line;
+    final border = needsCheck ? AppColors.warningLine : AppColors.line;
     return Semantics(
       button: true,
       label: '$name${quantity > 1 ? ', ${quantity.toInt()} Stück' : ''}${needsCheck ? ', bitte prüfen' : ''}${done ? ', erledigt' : ''}',
@@ -62,7 +62,7 @@ class ItemTile extends StatelessWidget {
           onLongPress: onLongPress,
           child: Container(
             decoration: BoxDecoration(borderRadius: AppRadius.medium, border: Border.all(color: border)),
-            padding: const EdgeInsets.fromLTRB(6, 10, 6, 8),
+            padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
             child: Stack(
               clipBehavior: Clip.none,
               alignment: Alignment.center,
@@ -80,16 +80,16 @@ class ItemTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     textAlign: wide ? TextAlign.start : TextAlign.center,
                     style: TextStyle(
-                      fontSize: wide ? 14 : 12.5,
+                      fontSize: wide ? 14 : 13,
                       height: 1.2,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       color: done ? AppColors.inkSubtle : AppColors.ink,
                       decoration: done ? TextDecoration.lineThrough : null,
                     ),
                   );
                   if (wide) {
                     return Row(children: [
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 4),
                       iconText,
                       const SizedBox(width: 12),
                       Expanded(child: label),
@@ -98,7 +98,7 @@ class ItemTile extends StatelessWidget {
                   }
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [iconText, const SizedBox(height: 6), label],
+                    children: [iconText, const SizedBox(height: 8), label],
                   );
                 }),
                 if (quantity > 1)
@@ -106,9 +106,9 @@ class ItemTile extends StatelessWidget {
                     top: -4,
                     right: -2,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-                      decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(10)),
-                      child: Text('${quantity.toInt()}×', style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w800)),
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(color: AppColors.ink, borderRadius: BorderRadius.circular(8)),
+                      child: Text('${quantity.toInt()}×', style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500, fontFeatures: AppText.tab)),
                     ),
                   ),
                 if (needsCheck)

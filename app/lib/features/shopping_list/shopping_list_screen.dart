@@ -128,7 +128,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                       current.matchedProduct == null
                           ? 'Für diesen Text kennt die App kein Produkt. Ohne Zuordnung hat er keinen Preis.'
                           : 'Unsicher: Gemeint ist vielleicht „${current.matchedProduct!.name}“. Bitte prüfen.',
-                      style: const TextStyle(color: AppColors.warning, fontWeight: FontWeight.w600),
+                      style: const TextStyle(color: AppColors.warning, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ],
@@ -246,7 +246,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                 _buildItems(check),
               ],
               for (final catId in order) ...[
-                SliverToBoxAdapter(child: SectionHeader('${ItemIcons.byId(catId).icon}  ${ItemIcons.byId(catId).name}')),
+                SliverToBoxAdapter(child: SectionHeader(ItemIcons.byId(catId).name)),
                 _buildItems(groups[catId]!),
               ],
               const SliverToBoxAdapter(child: SizedBox(height: AppSpace.xl)),
@@ -325,7 +325,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                     ListTile(
                       dense: true,
                       leading: ItemIconBox(ItemIcons.iconFor(prod.name, product: prod), size: 36),
-                      title: Text(prod.name, style: const TextStyle(fontWeight: FontWeight.w600)),
+                      title: Text(prod.name, style: const TextStyle(fontWeight: FontWeight.w500)),
                       subtitle: Text(prod.isBio ? 'Bio' : (prod.brand ?? 'Eigenmarke'), style: AppText.tiny),
                       trailing: const Icon(Icons.add_rounded, color: AppColors.primary),
                       onTap: () => _submitItem(prod),
@@ -425,14 +425,14 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                 title: Text(
                   it.rawText,
                   style: TextStyle(
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                     decoration: it.isChecked ? TextDecoration.lineThrough : null,
                     color: it.isChecked ? AppColors.inkSubtle : AppColors.ink,
                   ),
                 ),
                 subtitle: needsCheck
                     ? Text(it.matchedProduct == null ? 'Kein Katalog-Treffer, tippen' : 'Unsicher, tippen zum Prüfen',
-                        style: const TextStyle(color: AppColors.warning, fontSize: 12, fontWeight: FontWeight.w600))
+                        style: const TextStyle(color: AppColors.warning, fontSize: 12, fontWeight: FontWeight.w500))
                     : null,
                 trailing: Row(mainAxisSize: MainAxisSize.min, children: [
                   IconButton(
@@ -482,14 +482,14 @@ class _TripBanner extends StatelessWidget {
               const SizedBox(width: AppSpace.m),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Text('Einkauf läuft', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
+                  const Text('Einkauf läuft', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
                   Text(
                     '${trip.doneCount} von ${trip.totalCount} im Wagen${stop != null ? ' · ${stop.name}' : ''}',
                     style: const TextStyle(color: Colors.white70, fontSize: 13),
                   ),
                 ]),
               ),
-              const Text('Fortsetzen', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+              const Text('Fortsetzen', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
               const Icon(Icons.chevron_right, color: Colors.white),
             ]),
           ),
@@ -556,13 +556,13 @@ class _OfferStatusBar extends StatelessWidget {
                             : '${_short(c)} –',
                         style: TextStyle(
                           fontSize: 12,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           color: latest.containsKey(c) ? AppColors.primaryDark : AppColors.inkSubtle,
                         ),
                       ),
                   ]),
                 ),
-                Text(missing == 0 ? 'aktuell' : 'Wochenrunde', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.primary)),
+                Text(missing == 0 ? 'aktuell' : 'Wochenrunde', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.primary)),
                 const Icon(Icons.chevron_right, size: 18, color: AppColors.primary),
               ]),
             ),

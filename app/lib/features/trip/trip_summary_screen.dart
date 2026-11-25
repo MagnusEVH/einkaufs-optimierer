@@ -9,6 +9,7 @@ import '../../core/services/app_links.dart';
 import '../../core/services/loyalty_service.dart';
 import '../../core/theme/app_theme.dart';
 import 'trip_controller.dart';
+import '../../core/widgets/item_tile.dart';
 import 'trip_screen.dart';
 
 class TripSummaryScreen extends ConsumerWidget {
@@ -18,7 +19,7 @@ class TripSummaryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final trip = ref.watch(tripProvider);
     if (trip == null) {
-      return Scaffold(appBar: AppBar(title: const Text('Abschluss')), body: const Center(child: Text('Kein Einkauf offen.')));
+      return Scaffold(appBar: AppBar(title: const Text('Abschluss')), body: const Center(child: Text('Kein Einkauf offen')));
     }
     final open = trip.allItems.where((i) => i.status != TripItemStatus.done).toList();
     final hasProgram = trip.stops.any((s) => LoyaltyService.forChain(s.chain) != null);
@@ -34,32 +35,18 @@ class TripSummaryScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(AppSpace.l),
         children: [
-          Container(
-            padding: const EdgeInsets.all(AppSpace.xl),
-            decoration: BoxDecoration(color: AppColors.primaryDark, borderRadius: AppRadius.large),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text('Im Wagen', style: TextStyle(color: Colors.white70, fontWeight: FontWeight.w600)),
-              const SizedBox(height: AppSpace.xs),
-              Text('${trip.doneCount} von ${trip.totalCount} Artikeln',
-                  style: const TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.w800)),
-              const SizedBox(height: AppSpace.s),
-              Text('laut Plan ${euro(trip.doneCents)}', style: const TextStyle(color: Colors.white, fontSize: 15)),
-              if (trip.plannedSavingsCents > 0)
-                Text('geplante Ersparnis ${euro(trip.plannedSavingsCents)} gegenüber einem Markt',
-                    style: const TextStyle(color: Color(0xFFA7F3D0), fontSize: 13, fontWeight: FontWeight.w600)),
-            ]),
-          ),
+          _Receipt(trip: trip),
           if (open.isNotEmpty) ...[
             const SizedBox(height: AppSpace.xl),
-            Text('BLEIBT AUF DER LISTE (${open.length})', style: AppText.section),
+            Text('Bleibt auf der Liste (${open.length})', style: AppText.section),
             const SizedBox(height: AppSpace.s),
             Card(
               child: Column(children: [
                 for (final it in open)
                   ListTile(
-                    leading: Text(it.icon, style: const TextStyle(fontSize: 26)),
-                    title: Text(it.name),
-                    subtitle: Text(it.status == TripItemStatus.missing ? 'nicht da' : 'nicht abgehakt', style: AppText.tiny),
+                    leading: ItemIconBox(it.icon, size: 36),
+                    title: Text(it.name, style: AppText.body),
+                    trailing: Text(it.status == TripItemStatus.missing ? 'nicht da' : 'nicht abgehakt', style: AppText.tiny),
                   ),
               ]),
             ),
@@ -74,7 +61,7 @@ class TripSummaryScreen extends ConsumerWidget {
             decoration: BoxDecoration(color: AppColors.surface, borderRadius: AppRadius.large, border: Border.all(color: AppColors.line)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
               const Row(children: [
-                Icon(Icons.receipt_long_rounded, color: AppColors.primary),
+                Icon(Icons.receipt_long_outlined, size: 20, color: AppColors.inkMuted),
                 SizedBox(width: AppSpace.s),
                 Text('Kassenbon scannen', style: AppText.bodyStrong),
               ]),
@@ -104,4 +91,101 @@ class TripSummaryScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// Der eine reiche Moment der App: der Abschluss als Kassenbon.
+/// Papierfläche, gezackte Unterkante, Beträge rechtsbündig in Tabellenziffern.
+class _Receipt extends StatelessWidget {
+  final ShoppingTrip trip;
+  const _Receipt({required this.trip});
+
+  @override
+  Widget build(BuildContext context) {
+    final d = trip.startedAt;
+    final date = '${d.day.toString().padLeft(2, '0')}.${d.month.toString().padLeft(2, '0')}.${d.year}';
+    final stores = trip.stops.map((s) => s.name).join(' · ');
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        boxShadow: [BoxShadow(color: Color(0x0F000000), blurRadius: 24, offset: Offset(0, 8))],
+      ),
+      child: ClipPath(
+        clipper: const _ZigzagClipper(),
+        child: Container(
+          color: const Color(0xFFFFFEFB),
+          padding: const EdgeInsets.fromLTRB(AppSpace.xxl, AppSpace.xxl, AppSpace.xxl, AppSpace.xxxl),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Text('Einkauf vom $date', style: AppText.small.copyWith(fontFeatures: AppText.tab)),
+            if (stores.isNotEmpty) ...[
+              const SizedBox(height: AppSpace.xs),
+              Text(stores, style: AppText.tiny),
+            ],
+            const SizedBox(height: AppSpace.l),
+            _row('Im Wagen', '${trip.doneCount} von ${trip.totalCount}'),
+            _row('Laut Plan', euro(trip.doneCents)),
+            const SizedBox(height: AppSpace.s),
+            const _DashedLine(),
+            const SizedBox(height: AppSpace.m),
+            if (trip.plannedSavingsCents > 0) ...[
+              Row(crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic, children: [
+                const Expanded(child: Text('Gespart', style: AppText.bodyStrong)),
+                Text(euro(trip.plannedSavingsCents), style: AppText.figure.copyWith(color: AppColors.primary)),
+              ]),
+              const SizedBox(height: AppSpace.xs),
+              const Text('geplant, gegenüber dem günstigsten einzelnen Markt', style: AppText.tiny, textAlign: TextAlign.right),
+            ] else
+              const Text('Keine Ersparnis gegenüber einem einzelnen Markt geplant', style: AppText.small),
+          ]),
+        ),
+      ),
+    );
+  }
+
+  Widget _row(String label, String value) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpace.xs),
+        child: Row(children: [
+          Expanded(child: Text(label, style: AppText.body)),
+          Text(value, style: AppText.price),
+        ]),
+      );
+}
+
+class _DashedLine extends StatelessWidget {
+  const _DashedLine();
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, c) {
+      final n = (c.maxWidth / 8).floor();
+      return Row(
+        children: List.generate(n, (_) => Container(width: 4, height: 1, margin: const EdgeInsets.only(right: 4), color: AppColors.lineStrong)),
+      );
+    });
+  }
+}
+
+/// Gezackte Abrisskante unten wie bei einem Bon.
+class _ZigzagClipper extends CustomClipper<Path> {
+  const _ZigzagClipper();
+
+  @override
+  Path getClip(Size size) {
+    const tooth = 8.0;
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width, size.height - tooth);
+    final count = (size.width / (tooth * 2)).ceil();
+    final step = size.width / count;
+    for (var i = count; i > 0; i--) {
+      final x = i * step;
+      path
+        ..lineTo(x - step / 2, size.height)
+        ..lineTo(x - step, size.height - tooth);
+    }
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }

@@ -25,12 +25,12 @@ class MyAppsScreen extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(AppSpace.m),
-              decoration: BoxDecoration(color: AppColors.infoSoft, borderRadius: AppRadius.medium),
+              decoration: BoxDecoration(color: AppColors.surfaceAlt, borderRadius: AppRadius.medium),
               child: const Text(
                 'Tippe „App öffnen“, um an der Kasse den Code der Händler-App zu zeigen. '
                 'Punkte und Guthaben liest die App per Scan: Screenshot der Guthaben-Seite oder Kassenbon. '
                 'Es gibt keinen Login und keine Verbindung zu den Händlern.',
-                style: TextStyle(fontSize: 13, color: AppColors.ink),
+                style: TextStyle(fontSize: 13, height: 1.35, color: AppColors.ink),
               ),
             ),
             const SizedBox(height: AppSpace.m),
@@ -66,7 +66,7 @@ class _ProgramCard extends StatelessWidget {
             CircleAvatar(
               radius: 20,
               backgroundColor: _color,
-              child: Text(program.name.substring(0, 1), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
+              child: Text(program.name.substring(0, 1), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
             ),
             const SizedBox(width: AppSpace.m),
             Expanded(

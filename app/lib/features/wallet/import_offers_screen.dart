@@ -76,7 +76,7 @@ class _ImportOffersScreenState extends State<ImportOffersScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('${batch.chain.displayName} · ${batch.host}',
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                   const SizedBox(height: 4),
                   Text(
                     batch.isReceipt
@@ -91,7 +91,7 @@ class _ImportOffersScreenState extends State<ImportOffersScreen> {
                         'Frühere Übernahmen von ${batch.chain.displayName} für diesen Zeitraum werden ersetzt. '}'
                     'Deine Zuordnungen merkt sich die App für das nächste Mal. '
                     'Die Daten bleiben auf diesem Gerät.',
-                    style: TextStyle(fontSize: 12.5, color: Colors.grey.shade700),
+                    style: const TextStyle(fontSize: 13, color: AppColors.inkMuted),
                   ),
                 ],
               ),
@@ -110,7 +110,7 @@ class _ImportOffersScreenState extends State<ImportOffersScreen> {
                   value: c.selected,
                   onChanged: (v) => setState(() => c.selected = v ?? false),
                   controlAffinity: ListTileControlAffinity.leading,
-                  title: Text(c.title, style: const TextStyle(fontWeight: FontWeight.w600)),
+                  title: Text(c.title, style: const TextStyle(fontWeight: FontWeight.w500)),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -123,7 +123,7 @@ class _ImportOffersScreenState extends State<ImportOffersScreen> {
                         Padding(
                           padding: const EdgeInsets.only(top: 2),
                           child: Text('⚠ ${c.warning(batch.chain)}',
-                              style: TextStyle(fontSize: 12.5, color: Colors.red.shade700, fontWeight: FontWeight.w600)),
+                              style: const TextStyle(fontSize: 13, color: AppColors.danger, fontWeight: FontWeight.w500)),
                         ),
                       const SizedBox(height: 4),
                       InkWell(
@@ -131,8 +131,8 @@ class _ImportOffersScreenState extends State<ImportOffersScreen> {
                         child: Text(
                           c.product != null ? '→ ${c.product!.name} (ändern)' : '→ Kein Katalogprodukt – tippen zum Zuordnen',
                           style: TextStyle(
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
                             color: c.product != null ? AppColors.primaryDark : Colors.orange.shade800,
                           ),
                         ),

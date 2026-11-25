@@ -102,7 +102,7 @@ List<Marker> buildStoreMarkers({
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 8.5,
-                          fontWeight: FontWeight.w900),
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                   const SizedBox(width: 3),
@@ -110,9 +110,9 @@ List<Marker> buildStoreMarkers({
                     store.city ?? '',
                     style: TextStyle(
                       fontSize: 8.5,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                       color:
-                          isSelected ? Colors.white : const Color(0xFF1E293B),
+                          isSelected ? Colors.white : AppColors.ink,
                     ),
                   ),
                 ],

@@ -65,7 +65,7 @@ class _WeeklyRoundCardState extends State<WeeklyRoundCard> {
   /// Status einer Kette: aktuell (Angebote noch gültig), veraltet oder offen.
   (String, Color) _status(SupermarketChain chain) {
     final e = _log[chain.name];
-    if (e == null) return ('noch nie übernommen', Colors.grey.shade600);
+    if (e == null) return ('noch nie übernommen', AppColors.inkSubtle);
     final at = DateTime.tryParse(e['at']?.toString() ?? '');
     final validTo = DateTime.tryParse(e['valid_to']?.toString() ?? '');
     final count = e['count'] ?? 0;
@@ -85,7 +85,7 @@ class _WeeklyRoundCardState extends State<WeeklyRoundCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 14, 8, 8),
+        padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -94,20 +94,20 @@ class _WeeklyRoundCardState extends State<WeeklyRoundCard> {
                 const Icon(Icons.route_rounded, color: AppColors.primary),
                 const SizedBox(width: 8),
                 const Expanded(
-                  child: Text('Wochenrunde', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  child: Text('Wochenrunde', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: Text('$_done / ${weeklyRound.length} aktuell',
-                      style: TextStyle(fontWeight: FontWeight.w600, color: Colors.grey.shade700)),
+                      style: const TextStyle(fontWeight: FontWeight.w500, color: AppColors.inkMuted)),
                 ),
               ],
             ),
             const SizedBox(height: 4),
-            Text(
+            const Text(
               'Seite öffnen, ganz nach unten scrollen, Übernehmen-Knopf in der Lesezeichenleiste drücken. '
               'Ein neuer Import ersetzt den alten derselben Kette.',
-              style: TextStyle(fontSize: 12.5, color: Colors.grey.shade700),
+              style: TextStyle(fontSize: 13, color: AppColors.inkMuted),
             ),
             const SizedBox(height: 4),
             ...weeklyRound.map((s) {
@@ -117,9 +117,9 @@ class _WeeklyRoundCardState extends State<WeeklyRoundCard> {
                 contentPadding: EdgeInsets.zero,
                 title: Text(
                   s.chain.displayName + (s.verified ? '' : ' · Erkennung ungeprüft'),
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  style: const TextStyle(fontWeight: FontWeight.w500),
                 ),
-                subtitle: Text('$text\n${s.hint}', style: TextStyle(color: color, fontSize: 12.5)),
+                subtitle: Text('$text\n${s.hint}', style: TextStyle(color: color, fontSize: 13)),
                 isThreeLine: true,
                 trailing: TextButton.icon(
                   icon: const Icon(Icons.open_in_new, size: 18),

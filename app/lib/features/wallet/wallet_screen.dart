@@ -50,24 +50,6 @@ class _WalletScreenState extends State<WalletScreen> {
     }
   }
 
-  Color _getChainColor(SupermarketChain chain) {
-    switch (chain) {
-      case SupermarketChain.lidl:
-        return const Color(0xFF0050AA);
-      case SupermarketChain.aldi_nord:
-      case SupermarketChain.aldi_sued:
-        return const Color(0xFF001A9C);
-      case SupermarketChain.netto:
-        return const Color(0xFFE2A800);
-      case SupermarketChain.rewe:
-        return const Color(0xFFCC071E);
-      case SupermarketChain.dm:
-        return const Color(0xFF2F2482);
-      case SupermarketChain.rossmann:
-        return const Color(0xFFC8102E);
-    }
-  }
-
   void _showAddCouponDialog() {
     SupermarketChain selectedChain = SupermarketChain.rewe;
     final titleController = TextEditingController();
@@ -91,7 +73,7 @@ class _WalletScreenState extends State<WalletScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Coupon manuell hinzufügen', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text('Coupon manuell hinzufügen', style: AppText.title),
               const SizedBox(height: 16),
               DropdownButtonFormField<SupermarketChain>(
                 value: selectedChain,
@@ -172,7 +154,7 @@ class _WalletScreenState extends State<WalletScreen> {
                     Navigator.pop(ctx);
                     _refresh();
                   },
-                  child: const Text('Coupon speichern', style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: const Text('Coupon speichern', style: TextStyle(fontWeight: FontWeight.w600)),
                 ),
               ),
             ],
@@ -184,12 +166,11 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final activeCoupons = _coupons.where((c) => c.isActive).length;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Angebote & Coupons', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Angebote & Coupons'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add_card),
@@ -201,64 +182,38 @@ class _WalletScreenState extends State<WalletScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Hero Banner: Deals Overview
+          // Überblick: nur Zahlen, ruhige Fläche
           Container(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.all(AppSpace.xxl),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.primaryDark, AppColors.primary],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primary.withOpacity(0.3),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+              color: AppColors.surface,
+              borderRadius: AppRadius.large,
+              border: Border.all(color: AppColors.line),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
-                  children: [
-                    Icon(Icons.local_offer_rounded, color: Colors.white, size: 24),
-                    SizedBox(width: 8),
-                    Text('AKTIVE ANGEBOTE', style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 12)),
-                  ],
-                ),
-                const SizedBox(height: 12),
+                const Text('Aktive Angebote', style: AppText.small),
+                const SizedBox(height: AppSpace.xs),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
                   children: [
-                    Text(
-                      '$activeCoupons Coupons',
-                      style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      '+ ${_offers.length} Wochenangebote',
-                      style: TextStyle(color: Colors.white.withOpacity(0.85), fontSize: 16),
-                    ),
+                    Text('$activeCoupons Coupons', style: AppText.figure),
+                    const SizedBox(width: AppSpace.s),
+                    Text('und ${_offers.length} Wochenangebote', style: AppText.small.copyWith(fontFeatures: AppText.tab)),
                   ],
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Alle aktiven Coupons fließen automatisch in die Routen-Optimierung ein.',
-                  style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 13),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpace.l),
           const WeeklyRoundCard(),
           const SizedBox(height: 8),
           Card(
             child: ListTile(
-              leading: const Icon(Icons.receipt_long_rounded, color: AppColors.primary),
-              title: const Text('Kassenbon scannen', style: TextStyle(fontWeight: FontWeight.bold)),
+              leading: const Icon(Icons.receipt_long_outlined, color: AppColors.inkMuted),
+              title: const Text('Kassenbon scannen', style: AppText.bodyStrong),
               subtitle: const Text('Foto vom Bon: echte Preise deiner Filiale. Die Texterkennung läuft im Browser, das Bild bleibt auf dem Gerät.'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => launchUrl(Uri.base.resolve('bon.html'), webOnlyWindowName: '_self'),
@@ -272,9 +227,9 @@ class _WalletScreenState extends State<WalletScreen> {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.local_offer, color: AppColors.primary),
+                  const Icon(Icons.local_offer_outlined, size: 20, color: AppColors.inkMuted),
                   const SizedBox(width: 8),
-                  Text('Aktive Coupons ($activeCoupons)', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  Text('Aktive Coupons ($activeCoupons)', style: AppText.title.copyWith(fontSize: 17)),
                 ],
               ),
               TextButton.icon(
@@ -285,32 +240,31 @@ class _WalletScreenState extends State<WalletScreen> {
             ],
           ),
           const SizedBox(height: 4),
-          Text(
+          const Text(
             'Manuell hinzugefügt oder über „Meine Apps" importiert.',
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+            style: TextStyle(fontSize: 12, color: AppColors.inkSubtle),
           ),
           const SizedBox(height: 10),
 
           ..._coupons.map((coup) {
-            final chainColor = _getChainColor(coup.chain);
             return Card(
               elevation: 0,
               margin: const EdgeInsets.symmetric(vertical: 4),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-                side: BorderSide(color: coup.isActive ? AppColors.primary : theme.dividerColor.withOpacity(0.1)),
+                borderRadius: AppRadius.medium,
+                side: const BorderSide(color: AppColors.line),
               ),
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: chainColor.withOpacity(0.1),
+                  backgroundColor: AppColors.surfaceAlt,
                   child: Text(
-                    coup.discountType == 'percent' ? '${coup.discountValue.toInt()}%' : '€',
-                    style: TextStyle(color: chainColor, fontWeight: FontWeight.bold, fontSize: 13),
+                    coup.discountType == 'percent' ? '${coup.discountValue.toInt()} %' : '€',
+                    style: const TextStyle(color: AppColors.ink, fontWeight: FontWeight.w500, fontSize: 13, fontFeatures: AppText.tab),
                   ),
                 ),
-                title: Text(coup.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(coup.title, style: AppText.bodyStrong),
                 subtitle: Text(
-                  '${coup.chain.displayName}${coup.minSpendCents > 0 ? " • Ab ${(coup.minSpendCents / 100).toStringAsFixed(2)} €" : ""}',
+                  '${coup.chain.displayName}${coup.minSpendCents > 0 ? " · ab ${euro(coup.minSpendCents)}" : ""}',
                 ),
                 trailing: Switch(
                   value: coup.isActive,
@@ -328,29 +282,29 @@ class _WalletScreenState extends State<WalletScreen> {
           // ── Weekly Promotional Offers ──
           Row(
             children: [
-              const Icon(Icons.campaign, color: AppColors.primary),
+              const Icon(Icons.campaign_outlined, size: 20, color: AppColors.inkMuted),
               const SizedBox(width: 8),
-              Text('Wöchentliche Angebote', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+              Text('Wöchentliche Angebote', style: AppText.title.copyWith(fontSize: 17)),
             ],
           ),
           const SizedBox(height: 4),
-          Text(
+          const Text(
             'Beispieldaten und Angebote, die du mit dem Übernehmen-Knopf übernommen hast (Einrichtung: uebernehmen.html neben der App). Nur gültige Angebote werden angezeigt und im Optimierer berücksichtigt.',
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+            style: TextStyle(fontSize: 12, color: AppColors.inkSubtle),
           ),
           if (_expiredCount > 0) ...[
             const SizedBox(height: 4),
             Text(
-              '$_expiredCount abgelaufene Angebote ausgeblendet.',
-              style: TextStyle(fontSize: 12, color: Colors.grey.shade600, fontStyle: FontStyle.italic),
+              '$_expiredCount abgelaufene Angebote ausgeblendet',
+              style: const TextStyle(fontSize: 12, color: AppColors.inkSubtle),
             ),
           ],
           const SizedBox(height: 10),
           if (_offers.isEmpty)
             Card(
               elevation: 0,
-              color: Colors.grey.shade100,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              color: AppColors.surfaceAlt,
+              shape: RoundedRectangleBorder(borderRadius: AppRadius.medium),
               child: const ListTile(
                 leading: Icon(Icons.event_busy_outlined),
                 title: Text('Zurzeit keine gültigen Angebote'),
@@ -359,72 +313,69 @@ class _WalletScreenState extends State<WalletScreen> {
             ),
 
           ..._offers.map((off) {
-            final chainColor = _getChainColor(off.chain);
             return Card(
               elevation: 0,
               margin: const EdgeInsets.symmetric(vertical: 4),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-                side: BorderSide(color: theme.dividerColor.withValues(alpha: 0.1)),
+                borderRadius: AppRadius.medium,
+                side: const BorderSide(color: AppColors.line),
               ),
               child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                contentPadding: const EdgeInsets.symmetric(horizontal: AppSpace.l, vertical: AppSpace.s),
                 leading: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: chainColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: chainColor.withValues(alpha: 0.4)),
+                    color: AppColors.surfaceAlt,
+                    borderRadius: AppRadius.small,
                   ),
                   child: Text(
-                    '-${off.discountPercent}%',
-                    style: TextStyle(color: chainColor, fontWeight: FontWeight.bold, fontSize: 12),
+                    '−${off.discountPercent} %',
+                    style: const TextStyle(color: AppColors.ink, fontWeight: FontWeight.w500, fontSize: 12, fontFeatures: AppText.tab),
                   ),
                 ),
-                title: Text(off.productName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                title: Text(off.productName, style: AppText.bodyStrong),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 2),
                     Text(
-                      '${off.chain.displayName} • ${off.unitInfo ?? off.title}',
-                      style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+                      '${off.chain.displayName} · ${off.unitInfo ?? off.title}',
+                      style: AppText.small,
                     ),
                     Text(
                       off.source ?? 'Beispieldaten',
-                      style: TextStyle(fontSize: 11, color: off.source != null ? AppColors.primaryDark : Colors.grey.shade500),
+                      style: AppText.tiny,
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: AppSpace.xs),
                     Row(
                       children: [
                         Icon(
-                          Icons.calendar_today_rounded,
-                          size: 11,
-                          color: off.isExpired ? Colors.red : AppColors.primary,
+                          Icons.event_outlined,
+                          size: 14,
+                          color: off.isExpired ? AppColors.danger : AppColors.inkSubtle,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           off.displayValidity,
                           style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: off.isExpired ? Colors.red : AppColors.primary,
+                            fontSize: 12,
+                            color: off.isExpired ? AppColors.danger : AppColors.inkMuted,
                           ),
                         ),
                         if (off.daysRemaining != null && off.daysRemaining! <= 3 && !off.isExpired) ...[
-                          const SizedBox(width: 6),
+                          const SizedBox(width: AppSpace.s),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: AppColors.warning.withValues(alpha: 0.15),
+                              color: AppColors.warningSoft,
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
                               off.daysRemaining == 0 ? 'Heute letztmals' : 'Noch ${off.daysRemaining} Tage',
                               style: const TextStyle(
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFD97706),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.warning,
                               ),
                             ),
                           ),
@@ -438,16 +389,12 @@ class _WalletScreenState extends State<WalletScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '${off.discountPriceEuros.toStringAsFixed(2)} €',
-                      style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold, fontSize: 15),
+                      euro((off.discountPriceEuros * 100).round()),
+                      style: AppText.price,
                     ),
                     Text(
-                      'statt ${off.regularPriceEuros.toStringAsFixed(2)} €',
-                      style: TextStyle(
-                        color: Colors.grey.shade500,
-                        fontSize: 11,
-                        decoration: TextDecoration.lineThrough,
-                      ),
+                      'statt ${euro((off.regularPriceEuros * 100).round())}',
+                      style: AppText.tiny.copyWith(fontFeatures: AppText.tab, decoration: TextDecoration.lineThrough),
                     ),
                   ],
                 ),
