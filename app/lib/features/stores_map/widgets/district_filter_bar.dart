@@ -27,7 +27,7 @@ class DistrictFilterBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.fromLTRB(12, 6, 12, 8),
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -40,7 +40,7 @@ class DistrictFilterBar extends StatelessWidget {
                   'Landkreis:',
                   style: TextStyle(
                       fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                       color: AppColors.inkMuted),
                 ),
                 const SizedBox(width: 8),
@@ -78,14 +78,14 @@ class DistrictFilterBar extends StatelessWidget {
     final isSelected = activeDistrict == districtName;
 
     return Padding(
-      padding: const EdgeInsets.only(right: 6),
+      padding: const EdgeInsets.only(right: 8),
       child: ChoiceChip(
         selected: isSelected,
         label: Text('$districtName ($count)'),
         labelStyle: TextStyle(
-          fontSize: 11,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-          color: isSelected ? Colors.white : const Color(0xFF1E293B),
+          fontSize: 12,
+          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+          color: isSelected ? Colors.white : AppColors.ink,
         ),
         selectedColor: AppColors.ink,
         backgroundColor: AppColors.surfaceAlt,
@@ -102,13 +102,13 @@ class DistrictFilterBar extends StatelessWidget {
     final isSelected = activeChainFilter == filterName;
 
     return Padding(
-      padding: const EdgeInsets.only(right: 6),
+      padding: const EdgeInsets.only(right: 8),
       child: FilterChip(
         selected: isSelected,
         label: Text(filterName),
         labelStyle: TextStyle(
-          fontSize: 11,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+          fontSize: 12,
+          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
           color: isSelected ? Colors.white : AppColors.inkMuted,
         ),
         selectedColor: AppColors.primary,
@@ -116,7 +116,7 @@ class DistrictFilterBar extends StatelessWidget {
         checkmarkColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         side: BorderSide(
-          color: isSelected ? AppColors.primary : Colors.grey.shade300,
+          color: isSelected ? AppColors.primary : AppColors.lineStrong,
         ),
         onSelected: (_) => onChainFilterSelected(filterName),
       ),

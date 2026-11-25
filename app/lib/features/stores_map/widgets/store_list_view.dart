@@ -21,7 +21,7 @@ class StoreListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       itemCount: stores.length,
       itemBuilder: (ctx, index) {
         final store = stores[index];
@@ -30,7 +30,7 @@ class StoreListView extends StatelessWidget {
 
         return Card(
           elevation: 0,
-          margin: const EdgeInsets.symmetric(vertical: 5),
+          margin: const EdgeInsets.symmetric(vertical: 4),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
             side: BorderSide(
@@ -40,7 +40,7 @@ class StoreListView extends StatelessWidget {
               width: isSelected ? 2 : 1,
             ),
           ),
-          color: isSelected ? const Color(0xFFECFDF5) : Colors.white,
+          color: isSelected ? AppColors.primaryFaint : Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Row(
@@ -64,13 +64,13 @@ class StoreListView extends StatelessWidget {
                       Text(
                         store.name,
                         style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 13),
+                            fontWeight: FontWeight.w600, fontSize: 13),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         store.address,
-                        style: TextStyle(
-                            fontSize: 11, color: Colors.grey.shade600),
+                        style: const TextStyle(
+                            fontSize: 12, color: AppColors.inkSubtle),
                       ),
                       const SizedBox(height: 4),
                       Row(
@@ -78,15 +78,15 @@ class StoreListView extends StatelessWidget {
                           Text(
                             store.displayOpeningHours,
                             style: const TextStyle(
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF166534)),
+                                fontSize: 12.5,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primary),
                           ),
                           const Spacer(),
                           Text(
                             'Cluster ${store.clusterNum ?? '-'}',
-                            style: TextStyle(
-                                fontSize: 10, color: Colors.grey.shade600),
+                            style: const TextStyle(
+                                fontSize: 12, color: AppColors.inkSubtle),
                           ),
                         ],
                       ),

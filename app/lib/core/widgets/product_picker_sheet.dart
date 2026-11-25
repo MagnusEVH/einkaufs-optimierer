@@ -31,7 +31,7 @@ Future<Product?> showProductPicker(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
             child: Text(
               'Welches Produkt meinst du mit „$rawText“?',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
             ),
           ),
           if (options.isEmpty)

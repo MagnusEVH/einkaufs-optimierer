@@ -87,7 +87,7 @@ class _MyStoresScreenState extends State<MyStoresScreen> {
                       SwitchListTile(
                         value: MyStoresService.isActive(s.id),
                         onChanged: (v) => MyStoresService.setActive(s.id, v),
-                        title: Text(s.name, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                        title: Text(s.name, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
                         subtitle: Text(
                           '${s.address}${_km(s) != null ? ' · ${_km(s)!.toStringAsFixed(1).replaceAll('.', ',')} km' : ''}',
                           style: AppText.tiny,

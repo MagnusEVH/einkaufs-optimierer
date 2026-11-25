@@ -178,7 +178,7 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
                       _InfoBox(icon: Icons.flag_rounded, text: 'Start im Markt ${widget.startStore!.name}'),
                       const SizedBox(height: AppSpace.m),
                     ],
-                    const Text('VORSCHLÄGE', style: AppText.section),
+                    const Text('Vorschläge', style: AppText.section),
                     const SizedBox(height: AppSpace.s),
                     for (final o in _Option.values)
                       if (_results[o] != null)
@@ -207,7 +207,7 @@ class _OptimizerResultScreenState extends ConsumerState<OptimizerResultScreen> {
                         ),
                         const SizedBox(height: AppSpace.m),
                       ],
-                      Text('ROUTE · ${_km(res.summary.totalRouteDistanceMeters)}', style: AppText.section),
+                      Text('Route · ${_km(res.summary.totalRouteDistanceMeters)}', style: AppText.section),
                       const SizedBox(height: AppSpace.s),
                       for (var i = 0; i < res.stops.length; i++) ...[
                         _StopCard(stop: res.stops[i]),
@@ -293,7 +293,7 @@ class _OptionCard extends StatelessWidget {
           padding: const EdgeInsets.all(AppSpace.l),
           decoration: BoxDecoration(
             borderRadius: AppRadius.large,
-            border: Border.all(color: selected ? AppColors.primary : AppColors.line, width: selected ? 2 : 1),
+            border: Border.all(color: selected ? AppColors.primary : AppColors.line),
           ),
           child: Row(children: [
             Icon(selected ? Icons.radio_button_checked : Icons.radio_button_off, color: selected ? AppColors.primary : AppColors.inkSubtle),
@@ -305,7 +305,7 @@ class _OptionCard extends StatelessWidget {
                 Text('$chains · ${_km(s.totalRouteDistanceMeters)}', style: AppText.small),
                 if (note != null) ...[
                   const SizedBox(height: 2),
-                  Text(note, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.primaryDark)),
+                  Text(note, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.primaryDark)),
                 ],
               ]),
             ),
@@ -332,7 +332,7 @@ class _StopCard extends StatelessWidget {
             CircleAvatar(
               radius: 14,
               backgroundColor: color,
-              child: Text('${stop.stopIndex}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+              child: Text('${stop.stopIndex}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 13)),
             ),
             const SizedBox(width: AppSpace.m),
             Expanded(
@@ -346,7 +346,7 @@ class _StopCard extends StatelessWidget {
           const Divider(height: AppSpace.xl),
           for (final it in stop.items)
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3),
+              padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(children: [
                 ItemIconBox(_icon(it), size: 30),
                 const SizedBox(width: AppSpace.s),
@@ -397,12 +397,12 @@ class _InfoBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(AppSpace.m),
-      decoration: BoxDecoration(color: warning ? AppColors.warningSoft : AppColors.infoSoft, borderRadius: AppRadius.medium),
+      decoration: BoxDecoration(color: warning ? AppColors.warningSoft : AppColors.surfaceAlt, borderRadius: AppRadius.medium),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Icon(icon, size: 20, color: warning ? AppColors.warning : AppColors.info),
+        Icon(icon, size: 20, color: warning ? AppColors.warning : AppColors.inkMuted),
         const SizedBox(width: AppSpace.s),
         Expanded(
-          child: Text(text, style: TextStyle(fontSize: 13, color: warning ? AppColors.warning : AppColors.info, fontWeight: FontWeight.w600)),
+          child: Text(text, style: TextStyle(fontSize: 13, height: 1.35, color: warning ? AppColors.warning : AppColors.ink)),
         ),
       ]),
     );
@@ -483,9 +483,9 @@ class _StorePickerSheetState extends State<_StorePickerSheet> {
       secondary: CircleAvatar(
         radius: 16,
         backgroundColor: chainColorFor(s.chain),
-        child: Text(pos >= 0 ? '${pos + 1}' : '', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Text(pos >= 0 ? '${pos + 1}' : '', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
       ),
-      title: Text(s.name, style: const TextStyle(fontWeight: FontWeight.w600)),
+      title: Text(s.name, style: const TextStyle(fontWeight: FontWeight.w500)),
       subtitle: Text('${s.address} · ${_km(km)}', style: AppText.tiny),
     );
   }

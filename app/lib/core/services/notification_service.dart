@@ -110,7 +110,7 @@ class NotificationService {
       await sendIntelligentNotification(
         triggerType: 'sunday_list_reminder',
         title: 'Wocheneinkauf planen? 📝',
-        body: 'Die neuen Prospekte von Lidl, Rewe & Aldi für Bingen sind da. Spare bis zu 25%!',
+        body: 'Die neuen Prospekte von Lidl, Rewe & Aldi für Bingen sind da',
       );
     }
   }

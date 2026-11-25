@@ -28,7 +28,7 @@ class SelectedStoreSheet extends StatelessWidget {
     final driveMinutes = math.max(1, (distanceMeters / 400).ceil());
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(14, 0, 14, 16),
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -75,7 +75,7 @@ class SelectedStoreSheet extends StatelessWidget {
                     Text(
                       store.name,
                       style: const TextStyle(
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w600,
                           fontSize: 16,
                           color: AppColors.ink),
                       maxLines: 1,
@@ -85,7 +85,7 @@ class SelectedStoreSheet extends StatelessWidget {
                     Text(
                       store.address,
                       style:
-                          TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                          const TextStyle(fontSize: 12, color: AppColors.inkSubtle),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -105,32 +105,32 @@ class SelectedStoreSheet extends StatelessWidget {
 
           // Opening Hours Pill (prominent)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFFF0FDF4),
+              color: AppColors.primaryFaint,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                  color: const Color(0xFF86EFAC).withValues(alpha: 0.6)),
+                  color: AppColors.primarySoft.withValues(alpha: 0.6)),
             ),
             child: Row(
               children: [
                 const Icon(Icons.access_time_filled_rounded,
-                    size: 15, color: Color(0xFF15803D)),
+                    size: 15, color: AppColors.primary),
                 const SizedBox(width: 6),
                 const Text(
                   'Geöffnet',
                   style: TextStyle(
                       fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF15803D)),
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary),
                 ),
                 const SizedBox(width: 6),
                 Text(
                   '•  ${store.displayOpeningHours}',
                   style: const TextStyle(
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF166534)),
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.primary),
                 ),
               ],
             ),
@@ -154,9 +154,9 @@ class SelectedStoreSheet extends StatelessWidget {
                     Text(
                       '~$walkMinutes Min.',
                       style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF334155)),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.inkMuted),
                     ),
                   ],
                 ),
@@ -176,9 +176,9 @@ class SelectedStoreSheet extends StatelessWidget {
                     Text(
                       '~$driveMinutes Min.',
                       style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF334155)),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.inkMuted),
                     ),
                   ],
                 ),
@@ -193,8 +193,8 @@ class SelectedStoreSheet extends StatelessWidget {
                 child: Text(
                   'Cluster ${store.clusterNum ?? '-'}',
                   style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
                       color: AppColors.primaryDark),
                 ),
               ),
@@ -210,7 +210,7 @@ class SelectedStoreSheet extends StatelessWidget {
               dense: true,
               value: MyStoresService.isActive(store.id),
               onChanged: (v) => MyStoresService.setActive(store.id, v),
-              title: const Text('In meinen Märkten', style: TextStyle(fontWeight: FontWeight.w600)),
+              title: const Text('In meinen Märkten', style: TextStyle(fontWeight: FontWeight.w500)),
               subtitle: const Text('Aus = die Planung nutzt diesen Markt nicht'),
             ),
           ),
