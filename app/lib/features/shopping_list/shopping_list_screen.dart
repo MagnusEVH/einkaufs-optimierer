@@ -359,29 +359,42 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
     if (_tiles) {
       return SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: AppSpace.l),
-        sliver: SliverGrid(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 120,
-            mainAxisSpacing: AppSpace.s,
-            crossAxisSpacing: AppSpace.s,
-            childAspectRatio: 0.95,
-          ),
-          delegate: SliverChildBuilderDelegate(
-            (context, i) {
-              final it = list[i];
-              return ItemTile(
-                key: ValueKey(it.id),
-                icon: itemIcon(it),
-                name: it.rawText,
-                quantity: it.quantity,
-                needsCheck: itemNeedsCheck(it),
-                done: it.isChecked,
-                onTap: () => _openItem(it),
+        // Reihen statt starrem Raster: Eine nicht volle Reihe wird auf die ganze
+        // Breite gestreckt (breite Kacheln), so wirkt jede Warengruppe vollständig.
+        sliver: SliverLayoutBuilder(builder: (context, constraints) {
+          final cols = (constraints.crossAxisExtent / 112).floor().clamp(3, 6);
+          final tileSize = (constraints.crossAxisExtent - (cols - 1) * AppSpace.s) / cols;
+          final rows = <List<ShoppingListItem>>[
+            for (var i = 0; i < list.length; i += cols) list.sublist(i, i + cols > list.length ? list.length : i + cols),
+          ];
+          return SliverList.separated(
+            itemCount: rows.length,
+            separatorBuilder: (_, __) => const SizedBox(height: AppSpace.s),
+            itemBuilder: (context, r) {
+              final row = rows[r];
+              final full = row.length == cols;
+              return SizedBox(
+                height: full ? tileSize / 0.95 : 68,
+                child: Row(children: [
+                  for (var k = 0; k < row.length; k++) ...[
+                    if (k > 0) const SizedBox(width: AppSpace.s),
+                    Expanded(
+                      child: ItemTile(
+                        key: ValueKey(row[k].id),
+                        icon: itemIcon(row[k]),
+                        name: row[k].rawText,
+                        quantity: row[k].quantity,
+                        needsCheck: itemNeedsCheck(row[k]),
+                        done: row[k].isChecked,
+                        onTap: () => _openItem(row[k]),
+                      ),
+                    ),
+                  ],
+                ]),
               );
             },
-            childCount: list.length,
-          ),
-        ),
+          );
+        }),
       );
     }
     return SliverPadding(

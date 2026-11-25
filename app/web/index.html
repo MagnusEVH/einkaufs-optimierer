@@ -82,6 +82,17 @@
     });
   </script>
 
+  <script>
+    // Eigener Cache für schnelle Starts vom Home-Bildschirm (siehe sw.js)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () {});
+      });
+    }
+  </script>
+  <!-- Guthaben-Scan in der App (klein; die Texterkennung lädt erst bei Bedarf) -->
+  <script src="konto/parse.js" defer></script>
+  <script src="konto/scan.js" defer></script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

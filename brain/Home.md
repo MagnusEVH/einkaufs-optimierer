@@ -14,8 +14,9 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 - Echte Angebote per Übernehmen-Knopf (`uebernehmen.html`): REWE mit eigener Regel (444/444 richtig), andere Ketten allgemein und ungeprüft. Neuer Import ersetzt alte Fehler.
 - Speichern im Browser repariert (PR #14, gemergt).
 - Wochenrunde im Angebote-Tab, Bon-Scan (`bon.html`, Texterkennung im Browser), Bonpreise ersetzen Katalogpreise (PR #15, gemergt).
-- Benutzerreise neu: Liste mit Icons, Planung mit Vorschlägen, Einkaufsmodus, Meine Märkte, Meine Apps mit App öffnen und Guthaben-Scan. Branch `claude/benutzerreise`.
-- Letzte Session: [[2026-11-25 Benutzerreise]]
+- Benutzerreise neu: Liste mit Icons, Planung mit Vorschlägen, Einkaufsmodus, Meine Märkte, Meine Apps mit App öffnen und Guthaben-Scan. PR #16, gemergt.
+- Feinschliff: WebAssembly, Cache-Worker, ein Onboarding-Bildschirm, Guthaben-Scan direkt in der App. Branch `claude/feinschliff`.
+- Letzte Session: [[2026-11-25 Feinschliff]]
 
 ## Offene Baustellen
 - [[Supabase-Anbindung]] – hoch, starkes Modell

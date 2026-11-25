@@ -7,16 +7,15 @@
 // Früher lag alles in flutter_secure_storage. Dessen Web-Variante erzeugt den
 // Schlüssel ohne Sperre: Laufen beim ersten Start mehrere Schreibvorgänge
 // gleichzeitig, gewinnt ein Schlüssel und die übrigen Werte sind danach nicht
-// mehr lesbar. Folge: Liste weg nach dem Neuladen. Alte Werte werden beim
-// ersten Lesen einmalig übernommen, soweit sie noch lesbar sind.
+// mehr lesbar. Folge: Liste weg nach dem Neuladen. Die einmalige Übernahme
+// alter Werte (24.11.2026) ist entfernt: Das Paket verhinderte den
+// WebAssembly-Build, und alle Geräte haben inzwischen umgestellt.
 
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesStorage {
-  static const _legacy = FlutterSecureStorage();
   static Future<SharedPreferences>? _prefs;
 
   static Future<SharedPreferences> get _store => _prefs ??= SharedPreferences.getInstance();
@@ -30,23 +29,10 @@ class PreferencesStorage {
   static Future<String?> _read(String key) async {
     try {
       final prefs = await _store;
-      final value = prefs.getString(key);
-      if (value != null) return value;
-      // Einmalige Übernahme aus dem alten Speicher
-      final old = await _readLegacy(key);
-      if (old != null) await prefs.setString(key, old);
-      return old;
+      return prefs.getString(key);
     } catch (e) {
       debugPrint('[PreferencesStorage] Error reading $key: $e');
       return null;
-    }
-  }
-
-  static Future<String?> _readLegacy(String key) async {
-    try {
-      return await _legacy.read(key: key);
-    } catch (_) {
-      return null; // nicht vorhanden, Plugin fehlt oder Wert unlesbar
     }
   }
 

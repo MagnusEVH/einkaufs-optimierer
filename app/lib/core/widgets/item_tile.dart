@@ -65,27 +65,42 @@ class ItemTile extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(6, 10, 6, 8),
             child: Stack(
               clipBehavior: Clip.none,
+              alignment: Alignment.center,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Opacity(opacity: done ? 0.4 : 1, child: Text(icon, style: const TextStyle(fontSize: 34, height: 1.15))),
-                    const SizedBox(height: 6),
-                    Text(
-                      name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        height: 1.2,
-                        fontWeight: FontWeight.w600,
-                        color: done ? AppColors.inkSubtle : AppColors.ink,
-                        decoration: done ? TextDecoration.lineThrough : null,
-                      ),
+                // Breite Kachel (Reihe nicht voll): Icon links, Name rechts
+                LayoutBuilder(builder: (context, c) {
+                  final wide = c.maxWidth > 150;
+                  final iconText = Opacity(
+                    opacity: done ? 0.4 : 1,
+                    child: Text(icon, style: TextStyle(fontSize: wide ? 30 : 34, height: 1.15)),
+                  );
+                  final label = Text(
+                    name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: wide ? TextAlign.start : TextAlign.center,
+                    style: TextStyle(
+                      fontSize: wide ? 14 : 12.5,
+                      height: 1.2,
+                      fontWeight: FontWeight.w600,
+                      color: done ? AppColors.inkSubtle : AppColors.ink,
+                      decoration: done ? TextDecoration.lineThrough : null,
                     ),
-                  ],
-                ),
+                  );
+                  if (wide) {
+                    return Row(children: [
+                      const SizedBox(width: 6),
+                      iconText,
+                      const SizedBox(width: 12),
+                      Expanded(child: label),
+                      if (quantity > 1) const SizedBox(width: 28),
+                    ]);
+                  }
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [iconText, const SizedBox(height: 6), label],
+                  );
+                }),
                 if (quantity > 1)
                   Positioned(
                     top: -4,

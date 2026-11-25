@@ -8,7 +8,6 @@
 // App-Links: Universal Links laut apple-app-site-association der Händler
 // (Stand 25.11.2026), sonst App-Store-Seite (Nummern per iTunes-Lookup geprüft).
 
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import '../models/store.dart';
 import 'preferences_storage.dart';
@@ -101,7 +100,7 @@ class CheckoutRecord {
       );
 }
 
-/// Ergebnis eines Screenshot-Scans aus konto.html (`#import=`, kind = balance).
+/// Ergebnis eines Screenshot-Scans (BalanceScanner).
 class BalanceImport {
   final String programId;
   final int? valueCents;
@@ -216,8 +215,6 @@ class LoyaltyService {
   static Map<String, CheckoutRecord> _checkouts = {};
   static final ValueNotifier<int> revision = ValueNotifier<int>(0);
 
-  /// Noch nicht gespeicherter Screenshot-Scan aus der Start-URL.
-  static BalanceImport? pending;
 
   static LoyaltyBalance? balance(String programId) => _balances[programId];
   static CheckoutRecord? lastCheckout(String programId) => _checkouts[programId];
@@ -281,31 +278,9 @@ class LoyaltyService {
     return record;
   }
 
-  /// Liest `#import=…` mit kind = balance (Screenshot-Scan aus konto.html).
-  static BalanceImport? fromUri(Uri uri) {
-    final fragment = uri.fragment;
-    if (!fragment.startsWith('import=')) return null;
-    try {
-      final text = utf8.decode(base64Url.decode(base64Url.normalize(fragment.substring('import='.length))));
-      final data = json.decode(text) as Map<String, dynamic>;
-      if (data['v'] != 1 || data['kind'] != 'balance') return null;
-      final id = data['program']?.toString() ?? '';
-      if (byId(id) == null) return null;
-      final cents = (data['value_cents'] as num?)?.toInt();
-      final points = (data['points'] as num?)?.toInt();
-      if (cents == null && points == null) return null;
-      if ((cents != null && (cents < 0 || cents > 1000000)) || (points != null && (points < 0 || points > 100000000))) return null;
-      return BalanceImport(programId: id, valueCents: cents, points: points);
-    } catch (e) {
-      debugPrint('[Loyalty] Ungültige Scan-Daten: $e');
-      return null;
-    }
-  }
-
   @visibleForTesting
   static void reset() {
     _balances = {};
     _checkouts = {};
-    pending = null;
   }
 }

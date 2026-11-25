@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/app_navigation.dart';
 import 'core/services/analytics_service.dart';
+import 'core/services/app_links.dart';
 import 'core/services/loyalty_service.dart';
 import 'core/services/my_stores_service.dart';
 import 'core/services/catalog_service.dart';
@@ -12,6 +13,7 @@ import 'core/services/observed_price_service.dart';
 import 'core/services/offer_import_service.dart';
 import 'core/services/preferences_storage.dart';
 import 'core/services/supabase_service.dart';
+import 'features/my_apps/balance_scan_flow.dart';
 import 'features/my_apps/my_apps_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'features/profile/profile_screen.dart';
@@ -24,22 +26,18 @@ import './core/theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Supabase (with fallback to dev demo mode)
-  await SupabaseService.initialize();
-
-  // Preload catalog
-  await CatalogService.loadCatalog();
-
-  // Echte Bonpreise und gemerkte Zuordnungen
-  await ObservedPriceService.load();
-  await OfferImportService.loadMappings();
-  await MyStoresService.load();
-  await LoyaltyService.load();
+  // Alles Unabhängige parallel laden, damit der Start schneller geht
+  await Future.wait([
+    SupabaseService.initialize(), // mit Rückfall auf den Demo-Modus
+    CatalogService.loadCatalog(),
+    ObservedPriceService.load(), // echte Bonpreise
+    OfferImportService.loadMappings(), // gemerkte Zuordnungen
+    MyStoresService.load(),
+    LoyaltyService.load(),
+  ]);
 
   // Angebote vom Übernehmen-Knopf (#import=…), nach dem Katalog für die Zuordnung
   OfferImportService.pending = OfferImportService.fromUri(Uri.base);
-  // Guthaben-Scan aus konto.html (#import=…, kind = balance)
-  LoyaltyService.pending = LoyaltyService.fromUri(Uri.base);
 
   // Check onboarding status
   final hasCompletedOnboarding = await PreferencesStorage.isOnboardingCompleted();
@@ -87,8 +85,25 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
     if (mounted) setState(() {});
   }
 
+  late final AppLifecycleListener _lifecycle;
+
+  /// Zurück aus einer Händler-App: Guthaben-Scan anbieten (Screenshot schon gemacht?).
+  void _onResume() {
+    final last = AppLinks.lastOpened;
+    if (last == null || DateTime.now().difference(last.at) > const Duration(minutes: 15)) return;
+    AppLinks.lastOpened = null;
+    final program = LoyaltyService.byId(last.programId);
+    if (program == null || program.balanceKind == null || !mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 10),
+      content: Text('Zurück von ${program.appName}. Screenshot vom Stand gemacht?'),
+      action: SnackBarAction(label: 'Scannen', onPressed: () => scanBalanceFlow(context, program)),
+    ));
+  }
+
   @override
   void dispose() {
+    _lifecycle.dispose();
     AppTab.current.removeListener(_onTabChanged);
     super.dispose();
   }
@@ -97,19 +112,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
   void initState() {
     super.initState();
     AppTab.current.addListener(_onTabChanged);
-    final balance = LoyaltyService.pending;
-    if (balance != null) {
-      LoyaltyService.pending = null;
-      AppTab.current.value = AppTab.apps;
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        SystemNavigator.routeInformationUpdated(uri: Uri(path: '/'), replace: true);
-        await LoyaltyService.saveBalance(balance);
-        if (!mounted) return;
-        final p = LoyaltyService.byId(balance.programId)!;
-        final value = balance.valueCents != null ? euro(balance.valueCents!) : '${balance.points} Punkte';
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${p.name}: Stand $value übernommen')));
-      });
-    }
+    _lifecycle = AppLifecycleListener(onResume: _onResume);
     final batch = OfferImportService.pending;
     if (batch != null) {
       OfferImportService.pending = null;
@@ -132,12 +135,20 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
     ProfileScreen(),
   ];
 
+  /// Tabs werden erst beim ersten Öffnen gebaut (Karte mit Kacheln und
+  /// Standortabfrage nicht schon beim App-Start), danach bleiben sie erhalten.
+  final Set<int> _visited = {};
+
   @override
   Widget build(BuildContext context) {
+    _visited.add(_currentIndex);
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: _screens,
+        children: [
+          for (var i = 0; i < _screens.length; i++)
+            _visited.contains(i) ? _screens[i] : const SizedBox.shrink(),
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,

@@ -1,310 +1,106 @@
 // app/lib/features/onboarding/onboarding_screen.dart
-// Strict adherence to Apple Human Interface Guidelines:
-// - San Francisco hierarchy & spacious white margins
-// - Clean subtle glyphs & soft rounded container cards
-// - Smooth swipe physics with iOS-style pill pagination
+//
+// Ein einziger Willkommensbildschirm statt Seiten zum Durchwischen:
+// die drei Schritte der App auf einen Blick, ein Knopf, fertig.
 
 import 'package:flutter/material.dart';
 import '../../core/services/analytics_service.dart';
 import '../../core/services/preferences_storage.dart';
-import '../../main.dart';
 import '../../core/theme/app_theme.dart';
+import '../../main.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
-  @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
-}
-
-class _OnboardingScreenState extends State<OnboardingScreen> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
-
-  final List<OnboardingSlideData> _slides = const [
-    OnboardingSlideData(
-      icon: Icons.savings_rounded,
-      iconColor: AppColors.primary, // Apple System Blue
-      headline: 'Willkommen beim Einkaufs-Optimierer',
-      subtitle: 'Spare bares Geld bei jedem Wocheneinkauf durch intelligenten Filial- und Preisvergleich.',
-      bulletPoints: [
-        'Preisvergleich für Lidl, Aldi, Rewe, Netto & Drogerien (Demo mit Beispielpreisen)',
-        'Multi-Store-Optimierung: die günstigste Kombination deiner Produkte',
-        'Transparent und werbefrei – keine fiktiven Schein-Rabatte',
-      ],
-    ),
-    OnboardingSlideData(
-      icon: Icons.map_rounded,
-      iconColor: AppColors.primary, // Apple System Green
-      headline: 'Smarte Routen & Filial-Cluster',
-      subtitle: 'Kaufe in benachbarten Läden ein, ohne zusätzliche Fahrzeit oder Spritkosten zu verschwenden.',
-      bulletPoints: [
-        'Cluster-Erkennung: Läden im 200m–500m Umkreis zu Fuß verbinden',
-        'PostGIS-Umkreissuche für Mainz-Bingen & Rhein-Hunsrück',
-        'Kein nerviges Umherfahren – nur echte Netto-Ersparnis zählt',
-      ],
-    ),
-    OnboardingSlideData(
-      icon: Icons.wallet_rounded,
-      iconColor: Color(0xFFAF52DE), // Apple System Purple
-      headline: 'Deine Apps & Coupons gebündelt',
-      subtitle: 'Geplant: Lidl Plus, PAYBACK & Rossmann verbinden. In dieser Demo sind Coupons und Punkte Beispieldaten.',
-      bulletPoints: [
-        'Geplant: Coupons automatisch beim besten Laden anrechnen',
-        'Demo: Die App-Verknüpfung ist noch simuliert, es werden keine Zugangsdaten abgefragt',
-        'Jederzeit anpassbare Store- & Bio-Präferenzen',
-      ],
-    ),
-  ];
-
-  @override
-  void initState() {
-    super.initState();
+  Future<void> _start(BuildContext context) async {
     AnalyticsService.trackOnboardingStep(0, skipped: false);
-  }
-
-  void _finishOnboarding({bool skipped = false}) async {
-    AnalyticsService.trackOnboardingStep(_currentPage, skipped: skipped);
     await PreferencesStorage.setOnboardingCompleted(true);
-
-    if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const MainNavigationShell(),
-          transitionsBuilder: (_, animation, __, child) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-          transitionDuration: const Duration(milliseconds: 300),
-        ),
-      );
-    }
+    if (!context.mounted) return;
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (_, __, ___) => const MainNavigationShell(),
+        transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),
+        transitionDuration: const Duration(milliseconds: 250),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.surfaceAlt, // Apple System Grouped Background
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: TextButton(
-              onPressed: () => _finishOnboarding(skipped: true),
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.inkSubtle, // Apple Label Secondary
-                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              child: const Text('Überspringen'),
-            ),
-          ),
-        ],
-      ),
+      backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: _slides.length,
-                onPageChanged: (index) {
-                  setState(() => _currentPage = index);
-                  AnalyticsService.trackOnboardingStep(index, skipped: false);
-                },
-                itemBuilder: (context, index) {
-                  final slide = _slides[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 16),
-                        // Soft Apple Icon Container
-                        Container(
-                          width: 88,
-                          height: 88,
-                          decoration: BoxDecoration(
-                            color: slide.iconColor.withValues(alpha: 0.12),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            slide.icon,
-                            size: 46,
-                            color: slide.iconColor,
-                          ),
-                        ),
-                        const SizedBox(height: 28),
-
-                        // Large Title (Apple HIG)
-                        Text(
-                          slide.headline,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 27,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: -0.5,
-                            color: AppColors.ink,
-                            height: 1.25,
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-
-                        // Subheadline
-                        Text(
-                          slide.subtitle,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.inkSubtle,
-                            height: 1.4,
-                          ),
-                        ),
-                        const SizedBox(height: 28),
-
-                        // Apple Grouped Inset List
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.03),
-                                blurRadius: 10,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: slide.bulletPoints.asMap().entries.map((entry) {
-                              final isLast = entry.key == slide.bulletPoints.length - 1;
-                              return Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 2),
-                                          child: Icon(
-                                            Icons.check_circle_rounded,
-                                            size: 20,
-                                            color: slide.iconColor,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Expanded(
-                                          child: Text(
-                                            entry.value,
-                                            style: const TextStyle(
-                                              fontSize: 14.5,
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xFF2C2C2E),
-                                              height: 1.35,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  if (!isLast)
-                                    const Divider(
-                                      height: 1,
-                                      indent: 48,
-                                      endIndent: 16,
-                                      color: AppColors.line,
-                                    ),
-                                ],
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            // Bottom Controls (Pill Indicators & CTA Button)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 8, 24, 20),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 480),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpace.xl, AppSpace.xl, AppSpace.xl, AppSpace.l),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // iOS Pill Page Indicator
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(_slides.length, (index) {
-                      final isActive = index == _currentPage;
-                      return AnimatedContainer(
-                        duration: const Duration(milliseconds: 250),
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: isActive ? 22 : 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: isActive ? AppColors.primary : const Color(0xFFD1D1D6),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      );
-                    }),
+                  const Spacer(),
+                  const Text('🛒', style: TextStyle(fontSize: 56), textAlign: TextAlign.center),
+                  const SizedBox(height: AppSpace.l),
+                  const Text(
+                    'Günstiger einkaufen,\nohne zu suchen',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 26, height: 1.2, fontWeight: FontWeight.w800, color: AppColors.ink),
                   ),
-                  const SizedBox(height: 22),
-
-                  // Apple Filled Primary Action Button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 52,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_currentPage < _slides.length - 1) {
-                          _pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                        } else {
-                          _finishOnboarding(skipped: false);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary, // Apple Accent
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        textStyle: const TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -0.2,
-                        ),
-                      ),
-                      child: Text(_currentPage == _slides.length - 1 ? 'Jetzt starten' : 'Weiter'),
-                    ),
+                  const SizedBox(height: AppSpace.s),
+                  const Text(
+                    'Die App vergleicht deine Märkte in der Nähe und sagt dir, wo du was kaufst.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 15, color: AppColors.inkMuted),
                   ),
+                  const SizedBox(height: AppSpace.xl),
+                  const _Step(icon: '📝', title: 'Liste schreiben', text: 'Tippe, was du brauchst.'),
+                  const _Step(icon: '🗺️', title: 'Einkauf planen', text: 'Günstigste Route über deine Märkte.'),
+                  const _Step(icon: '✅', title: 'Einkaufen und Bon scannen', text: 'Im Laden abhaken, danach lernt die App echte Preise.'),
+                  const Spacer(flex: 2),
+                  const Text(
+                    'Preise sind teils Beispieldaten, bis du Angebote übernimmst oder Bons scannst.',
+                    textAlign: TextAlign.center,
+                    style: AppText.tiny,
+                  ),
+                  const SizedBox(height: AppSpace.m),
+                  FilledButton(onPressed: () => _start(context), child: const Text('Los geht’s')),
                 ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
 
-class OnboardingSlideData {
-  final IconData icon;
-  final Color iconColor;
-  final String headline;
-  final String subtitle;
-  final List<String> bulletPoints;
+class _Step extends StatelessWidget {
+  final String icon;
+  final String title;
+  final String text;
+  const _Step({required this.icon, required this.title, required this.text});
 
-  const OnboardingSlideData({
-    required this.icon,
-    required this.iconColor,
-    required this.headline,
-    required this.subtitle,
-    required this.bulletPoints,
-  });
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSpace.s),
+      child: Row(children: [
+        Container(
+          width: 48,
+          height: 48,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(color: AppColors.primaryFaint, borderRadius: AppRadius.medium),
+          child: Text(icon, style: const TextStyle(fontSize: 24)),
+        ),
+        const SizedBox(width: AppSpace.m),
+        Expanded(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(title, style: AppText.bodyStrong),
+            Text(text, style: AppText.small),
+          ]),
+        ),
+      ]),
+    );
+  }
 }
