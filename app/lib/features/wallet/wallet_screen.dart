@@ -258,8 +258,8 @@ class _WalletScreenState extends State<WalletScreen> {
           Card(
             child: ListTile(
               leading: const Icon(Icons.receipt_long_rounded, color: AppColors.primary),
-              title: const Text('Kassenbon scannen', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: const Text('Foto vom Bon: echte Preise deiner Filiale. Die Texterkennung läuft im Browser, das Bild bleibt auf dem Gerät.'),
+              title: const Text('Kassenbon einlesen', style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: const Text('Papierbon fotografieren oder eBon aus der REWE-App (PDF) wählen: echte Preise deiner Filiale. Alles bleibt auf dem Gerät.'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => launchUrl(Uri.base.resolve('bon.html'), webOnlyWindowName: '_self'),
             ),

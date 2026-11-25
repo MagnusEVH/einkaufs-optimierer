@@ -27,3 +27,4 @@ tags: [wissen, stolperfalle]
 - **Regex-Backslashes in Node-Einzeilern/Heredocs** gingen beim Einfügen verloren → Regex-Blöcke als Datei schreiben und einfügen, danach Parser-Tests laufen lassen.
 - **WebAssembly-Build** bricht bei Paketen mit `dart:html`/`package:js` ab (z. B. `flutter_secure_storage` 9) → `flutter build web --wasm` nach neuen Paketen prüfen.
 - **Service Worker** liegt in `app/web/sw.js`; Cache-Name `eo-v1` bei Änderungen an der Cache-Strategie hochzählen. `web/flutter_bootstrap.js` ist eine eigene Vorlage (ohne Flutters Service Worker).
+- **Backslashes in Shell-Heredocs** gehen über das Agenten-Werkzeug verloren (Regex, `\n` in JS) → Skripte mit Regex als Datei schreiben (Write) und dann mit `node datei.js` ausführen.
