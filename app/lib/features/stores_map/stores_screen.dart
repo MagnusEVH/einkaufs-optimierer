@@ -9,11 +9,13 @@ import '../../core/config/app_config.dart';
 import '../optimizer/optimizer_screen.dart';
 import 'data/rlp_stores.dart';
 import 'map_tile_style.dart';
+import 'my_stores_screen.dart';
 import 'store_filters.dart';
 import 'widgets/district_filter_bar.dart';
 import 'widgets/selected_store_sheet.dart';
 import 'widgets/store_list_view.dart';
 import 'widgets/store_markers.dart';
+import '../../core/theme/app_theme.dart';
 
 class StoresScreen extends StatefulWidget {
   const StoresScreen({super.key});
@@ -119,7 +121,7 @@ class _StoresScreenState extends State<StoresScreen> {
     final filtered = _filteredStores;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -133,14 +135,14 @@ class _StoresScreenState extends State<StoresScreen> {
                   style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 20,
-                      color: Color(0xFF0F172A)),
+                      color: AppColors.ink),
                 ),
                 const SizedBox(width: 8),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFD1FAE5),
+                    color: AppColors.primarySoft,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -148,7 +150,7 @@ class _StoresScreenState extends State<StoresScreen> {
                     style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF065F46)),
+                        color: AppColors.primaryDark),
                   ),
                 ),
               ],
@@ -163,6 +165,11 @@ class _StoresScreenState extends State<StoresScreen> {
           ],
         ),
         actions: [
+          IconButton(
+            tooltip: 'Meine Märkte',
+            icon: const Icon(Icons.tune_rounded, color: Color(0xFF334155)),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MyStoresScreen())),
+          ),
           // Kartenstil-Wähler (Voyager, OpenStreetMap, Satellit)
           PopupMenuButton<TileStyle>(
             icon: const Icon(Icons.layers_outlined, color: Color(0xFF334155)),
@@ -173,7 +180,7 @@ class _StoresScreenState extends State<StoresScreen> {
                 value: TileStyle.voyager,
                 child: Row(
                   children: [
-                    Icon(Icons.map_rounded, size: 18, color: Color(0xFF059669)),
+                    Icon(Icons.map_rounded, size: 18, color: AppColors.primary),
                     SizedBox(width: 10),
                     Text('CartoDB Voyager (Empfohlen)'),
                   ],
@@ -225,7 +232,7 @@ class _StoresScreenState extends State<StoresScreen> {
                 setState(() => _isMapView = set.first);
               },
               style: SegmentedButton.styleFrom(
-                selectedBackgroundColor: const Color(0xFF059669),
+                selectedBackgroundColor: AppColors.primary,
                 selectedForegroundColor: Colors.white,
                 visualDensity: VisualDensity.compact,
               ),
@@ -235,7 +242,7 @@ class _StoresScreenState extends State<StoresScreen> {
       ),
       body: _isLoading
           ? const Center(
-              child: CircularProgressIndicator(color: Color(0xFF059669)))
+              child: CircularProgressIndicator(color: AppColors.primary))
           : Stack(
               children: [
                 Column(
@@ -343,7 +350,7 @@ class _StoresScreenState extends State<StoresScreen> {
               FloatingActionButton.small(
                 heroTag: 'map_zoom_in_tile',
                 backgroundColor: Colors.white,
-                foregroundColor: const Color(0xFF0F172A),
+                foregroundColor: AppColors.ink,
                 elevation: 3,
                 tooltip: 'Heranzoomen',
                 onPressed: _zoomIn,
@@ -353,7 +360,7 @@ class _StoresScreenState extends State<StoresScreen> {
               FloatingActionButton.small(
                 heroTag: 'map_zoom_out_tile',
                 backgroundColor: Colors.white,
-                foregroundColor: const Color(0xFF0F172A),
+                foregroundColor: AppColors.ink,
                 elevation: 3,
                 tooltip: 'Herauszoomen',
                 onPressed: _zoomOut,
@@ -362,7 +369,7 @@ class _StoresScreenState extends State<StoresScreen> {
               const SizedBox(height: 8),
               FloatingActionButton.small(
                 heroTag: 'map_recenter_tile',
-                backgroundColor: const Color(0xFF059669),
+                backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
                 elevation: 4,
                 tooltip: 'Mein Standort zentrieren',

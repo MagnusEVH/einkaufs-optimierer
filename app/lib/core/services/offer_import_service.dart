@@ -13,6 +13,7 @@ import '../models/loyalty_wallet.dart';
 import '../models/product.dart';
 import '../models/store.dart';
 import 'catalog_service.dart';
+import 'loyalty_service.dart';
 import 'observed_price_service.dart';
 import 'preferences_storage.dart';
 
@@ -62,6 +63,8 @@ class ImportBatch {
   final List<ImportCandidate> candidates;
   /// true = Kassenbon (Normalpreise einer Filiale), false = Angebotsseite.
   final bool isReceipt;
+  /// Treue-Teil des Bons (bon.html: detected, program, earned_cents …), sonst null.
+  final Map<String, dynamic>? loyalty;
 
   const ImportBatch({
     required this.chain,
@@ -72,6 +75,7 @@ class ImportBatch {
     required this.validGuessed,
     required this.candidates,
     this.isReceipt = false,
+    this.loyalty,
   });
 
   String get host => isReceipt ? 'Kassenbon' : Uri.tryParse(sourceUrl)?.host.replaceFirst('www.', '') ?? chain.displayName;
@@ -145,6 +149,7 @@ class OfferImportService {
             ))
         .toList();
     await ObservedPriceService.add(prices);
+    await LoyaltyService.recordFromReceipt(batch.chain, d, batch.loyalty);
     await learnMappings(batch);
     await _writeLog(batch, prices.length);
     return prices.length;
@@ -209,6 +214,7 @@ class OfferImportService {
         validGuessed: data['valid_guessed'] == true,
         candidates: candidates,
         isReceipt: isReceipt,
+        loyalty: isReceipt && data['loyalty'] is Map ? (data['loyalty'] as Map).cast<String, dynamic>() : null,
       );
     } catch (e) {
       debugPrint('[OfferImport] Ungültige Importdaten: $e');

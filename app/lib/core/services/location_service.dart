@@ -27,7 +27,18 @@ class LocationService {
 
   /// Requests foreground location only when the user explicitly triggers
   /// store search or route optimization (Strict DSGVO compliance).
-  static Future<UserLocation> getCurrentLocation() async {
+  ///
+  /// Spätestens nach 12 Sekunden gilt der Standard-Standort, damit eine
+  /// unbeantwortete Standort-Frage des Browsers die Planung nicht blockiert.
+  static Future<UserLocation> getCurrentLocation() => _locate().timeout(
+        const Duration(seconds: 12),
+        onTimeout: () {
+          debugPrint('Location request timed out, using fallback.');
+          return fallbackLocation;
+        },
+      );
+
+  static Future<UserLocation> _locate() async {
     try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {

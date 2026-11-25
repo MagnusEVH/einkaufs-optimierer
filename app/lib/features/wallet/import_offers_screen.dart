@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../../core/services/offer_import_service.dart';
 import '../../core/services/wallet_service.dart';
 import '../../core/widgets/product_picker_sheet.dart';
+import '../../core/theme/app_theme.dart';
 
 class ImportOffersScreen extends StatefulWidget {
   final ImportBatch batch;
@@ -132,7 +133,7 @@ class _ImportOffersScreenState extends State<ImportOffersScreen> {
                           style: TextStyle(
                             fontSize: 12.5,
                             fontWeight: FontWeight.w600,
-                            color: c.product != null ? Colors.teal.shade700 : Colors.orange.shade800,
+                            color: c.product != null ? AppColors.primaryDark : Colors.orange.shade800,
                           ),
                         ),
                       ),

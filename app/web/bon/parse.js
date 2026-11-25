@@ -83,6 +83,53 @@
       .trim();
   }
 
+  // Treue-Apps: Zeilen, die zeigen, dass an der Kasse eine App/Karte gescannt wurde
+  var LOYALTY_RE = /(rewe\s*bonus|bonus-?guthaben|\bbonus\b|payback|punkte|°\s*p\b|lidl\s*plus|deutschlandcard|kundenkarte)/i;
+  var REDEEM_RE = /(eingel(ö|o|oe)st|einl(ö|o|oe)sung|verrechnet|abgezogen)/i;
+  var EARN_RE = /(gesammelt|gutgeschrieben|erhalten|sammelst|erhältst|erhaltst|\+\s*\d)/i;
+  var BALANCE_RE = /((neues|aktuelles|dein|ihr)\s*(bonus-?)?guthaben|guthaben\s*(neu|aktuell|gesamt)|kontostand|punktestand)/i;
+  var POINTS_WORD_RE = /punkte|°\s*p\b/i;
+  var PROGRAM_BY_CHAIN = { rewe: 'rewe', lidl: 'lidl_plus', dm: 'dm', rossmann: 'rossmann', netto: 'netto' };
+
+  function amountIn(l) {
+    var m = /(-?\d{1,4}[.,]\d{2})/.exec(l);
+    return m ? Math.abs(cents(m[1])) : null;
+  }
+
+  function pointsIn(l) {
+    var m = /(\d{1,3}(?:\.\d{3})+|\d+)\s*(?:°\s*p\b|payback-?\s*punkte|punkte|pkt)/i.exec(l);
+    return m ? parseInt(m[1].replace(/\./g, ''), 10) : null;
+  }
+
+  /** Bonus-/Punktezeilen eines Bons auswerten. */
+  function parseLoyalty(lines, chain) {
+    var out = { detected: false, program: null, lines: [] };
+    for (var i = 0; i < lines.length; i++) {
+      var l = lines[i];
+      var inBlock = out.detected && (EARN_RE.test(l) || REDEEM_RE.test(l) || BALANCE_RE.test(l));
+      if (!LOYALTY_RE.test(l) && !inBlock) continue;
+      out.detected = true;
+      out.lines.push(l);
+      if (/payback/i.test(l) || (l.indexOf('°') >= 0 && POINTS_WORD_RE.test(l))) out.program = 'payback';
+      var amount = amountIn(l);
+      // Betrag steht oft in der Folgezeile
+      if (amount === null && i + 1 < lines.length && !LOYALTY_RE.test(lines[i + 1])) amount = amountIn(lines[i + 1]);
+      var pts = pointsIn(l);
+      if (BALANCE_RE.test(l)) {
+        if (POINTS_WORD_RE.test(l) && pts !== null) out.balance_points = pts;
+        else if (amount !== null) out.balance_cents = amount;
+      } else if (REDEEM_RE.test(l)) {
+        if (amount !== null) out.redeemed_cents = (out.redeemed_cents || 0) + amount;
+      } else if (pts !== null) {
+        out.points = (out.points || 0) + pts;
+      } else if (EARN_RE.test(l) && amount !== null) {
+        out.earned_cents = (out.earned_cents || 0) + amount;
+      }
+    }
+    if (!out.program && chain) out.program = PROGRAM_BY_CHAIN[chain] || null;
+    return out;
+  }
+
   function parseReceipt(text, nowIso) {
     var raw = fixDigits(String(text || '').replace(/\r/g, ''));
     var lines = raw.split('\n').map(function (l) { return l.replace(/\s+/g, ' ').trim(); }).filter(Boolean);
@@ -164,8 +211,10 @@
 
     var sum = items.reduce(function (a, it) { return a + it.line_cents; }, 0);
     var date = detectDate(raw);
+    var chain = detectChain(raw);
     return {
-      chain: detectChain(raw),
+      chain: chain,
+      loyalty: parseLoyalty(lines, chain),
       date: date || (nowIso || new Date().toISOString()).slice(0, 10),
       date_guessed: !date,
       items: items.filter(function (it) { return it.price_cents > 0; }),
@@ -174,7 +223,7 @@
     };
   }
 
-  var api = { parseReceipt: parseReceipt, detectChain: detectChain, detectDate: detectDate };
+  var api = { parseReceipt: parseReceipt, parseLoyalty: parseLoyalty, detectChain: detectChain, detectDate: detectDate };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.BonParser = api;
 })(this);

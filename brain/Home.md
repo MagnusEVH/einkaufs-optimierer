@@ -1,6 +1,6 @@
 ---
 type: home
-aktualisiert: 2026-11-24
+aktualisiert: 2026-11-25
 ---
 # 🧠 Einkaufs-Optimierer – Zweites Gehirn
 
@@ -13,8 +13,9 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 - Optimierer rechnet korrekt (Umkreis, Fahrtkosten, keine Pauschalpreise), Review-Sonden als Tests, Rückfrage bei Freitext, Liste und Einstellungen werden gespeichert (PR #12, gemergt).
 - Echte Angebote per Übernehmen-Knopf (`uebernehmen.html`): REWE mit eigener Regel (444/444 richtig), andere Ketten allgemein und ungeprüft. Neuer Import ersetzt alte Fehler.
 - Speichern im Browser repariert (PR #14, gemergt).
-- Wochenrunde im Angebote-Tab, Bon-Scan (`bon.html`, Texterkennung im Browser), Bonpreise ersetzen Katalogpreise. Branch `claude/wochenrunde-bonscan`.
-- Letzte Session: [[2026-11-24 Wochenrunde und Bon-Scan]]
+- Wochenrunde im Angebote-Tab, Bon-Scan (`bon.html`, Texterkennung im Browser), Bonpreise ersetzen Katalogpreise (PR #15, gemergt).
+- Benutzerreise neu: Liste mit Icons, Planung mit Vorschlägen, Einkaufsmodus, Meine Märkte, Meine Apps mit App öffnen und Guthaben-Scan. Branch `claude/benutzerreise`.
+- Letzte Session: [[2026-11-25 Benutzerreise]]
 
 ## Offene Baustellen
 - [[Supabase-Anbindung]] – hoch, starkes Modell

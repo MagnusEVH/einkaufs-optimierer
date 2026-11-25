@@ -3,6 +3,9 @@
 import 'store.dart';
 
 class AllocatedItem {
+  /// ID des Listeneintrags (für Abhaken im Einkaufsmodus), lokal immer gesetzt.
+  final String? listItemId;
+  final String? productId;
   final String itemName;
   final String rawText;
   final String? brand;
@@ -11,6 +14,8 @@ class AllocatedItem {
   final int totalPriceCents;
 
   const AllocatedItem({
+    this.listItemId,
+    this.productId,
     required this.itemName,
     required this.rawText,
     this.brand,
@@ -21,6 +26,8 @@ class AllocatedItem {
 
   factory AllocatedItem.fromJson(Map<String, dynamic> json) {
     return AllocatedItem(
+      listItemId: json['list_item_id'],
+      productId: json['product_id'],
       itemName: json['item_name'] ?? '',
       rawText: json['raw_text'] ?? '',
       brand: json['brand'],
@@ -87,8 +94,11 @@ class OptimizationSummary {
   final int netSavingsCents;
   final int totalRouteDistanceMeters;
   final int totalStops;
+  /// Fahrtkosten der gewählten Route (für faire Vergleiche zwischen Vorschlägen).
+  final int totalTravelCents;
 
   const OptimizationSummary({
+    this.totalTravelCents = 0,
     required this.totalBasketPriceCents,
     required this.grossSavingsCents,
     required this.travelPenaltyCents,
@@ -105,6 +115,7 @@ class OptimizationSummary {
       netSavingsCents: json['net_savings_cents'] ?? 0,
       totalRouteDistanceMeters: json['total_route_distance_meters'] ?? 0,
       totalStops: json['total_stops'] ?? 1,
+      totalTravelCents: json['total_travel_cents'] ?? 0,
     );
   }
 

@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../core/models/store.dart';
 import '../chain_style.dart';
+import '../../../core/theme/app_theme.dart';
 
 /// Blauer Punkt für den Standort des Nutzers.
 class UserLocationMarker extends StatelessWidget {
@@ -70,7 +71,7 @@ List<Marker> buildStoreMarkers({
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF0F172A) : Colors.white,
+                color: isSelected ? AppColors.ink : Colors.white,
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
@@ -82,7 +83,7 @@ List<Marker> buildStoreMarkers({
                 ],
                 border: Border.all(
                   color:
-                      isSelected ? const Color(0xFF10B981) : Colors.transparent,
+                      isSelected ? AppColors.primary : Colors.transparent,
                   width: 1.5,
                 ),
               ),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../services/catalog_service.dart';
+import '../theme/app_theme.dart';
 
 /// Rückfrage: passende Katalogprodukte zu einem Freitext zur Auswahl anbieten.
 /// Liefert das gewählte Produkt oder null ("So lassen").
@@ -40,7 +41,7 @@ Future<Product?> showProductPicker(
               subtitle: Text(emptyHint),
             ),
           ...options.map((p) => ListTile(
-                leading: Icon(p.isBio ? Icons.eco_outlined : Icons.shopping_basket_outlined, color: Colors.teal),
+                leading: Icon(p.isBio ? Icons.eco_outlined : Icons.shopping_basket_outlined, color: AppColors.primary),
                 title: Text(p.name),
                 subtitle: p.brand != null ? Text(p.brand!) : null,
                 onTap: () => Navigator.pop(ctx, p),

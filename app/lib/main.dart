@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/app_navigation.dart';
 import 'core/services/analytics_service.dart';
+import 'core/services/loyalty_service.dart';
+import 'core/services/my_stores_service.dart';
 import 'core/services/catalog_service.dart';
 import 'core/services/observed_price_service.dart';
 import 'core/services/offer_import_service.dart';
@@ -16,6 +19,7 @@ import 'features/shopping_list/shopping_list_screen.dart';
 import 'features/stores_map/stores_screen.dart';
 import 'features/wallet/import_offers_screen.dart';
 import 'features/wallet/wallet_screen.dart';
+import './core/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,9 +33,13 @@ void main() async {
   // Echte Bonpreise und gemerkte Zuordnungen
   await ObservedPriceService.load();
   await OfferImportService.loadMappings();
+  await MyStoresService.load();
+  await LoyaltyService.load();
 
   // Angebote vom Übernehmen-Knopf (#import=…), nach dem Katalog für die Zuordnung
   OfferImportService.pending = OfferImportService.fromUri(Uri.base);
+  // Guthaben-Scan aus konto.html (#import=…, kind = balance)
+  LoyaltyService.pending = LoyaltyService.fromUri(Uri.base);
 
   // Check onboarding status
   final hasCompletedOnboarding = await PreferencesStorage.isOnboardingCompleted();
@@ -59,55 +67,7 @@ class EinkaufsOptimiererApp extends StatelessWidget {
     return MaterialApp(
       title: 'Einkaufs-Optimierer',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF059669),
-          primary: const Color(0xFF059669),
-          secondary: const Color(0xFF10B981),
-          surface: Colors.white,
-          brightness: Brightness.light,
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
-          foregroundColor: Color(0xFF0F172A),
-          elevation: 0,
-          centerTitle: false,
-          titleTextStyle: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: Color(0xFF0F172A),
-          ),
-        ),
-        cardTheme: CardThemeData(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-            side: BorderSide(color: Colors.black.withValues(alpha: 0.07)),
-          ),
-          color: Colors.white,
-        ),
-        navigationBarTheme: NavigationBarThemeData(
-          backgroundColor: Colors.white,
-          elevation: 8,
-          indicatorColor: const Color(0xFFD1FAE5),
-          labelTextStyle: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.selected)) {
-              return const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF065F46),
-              );
-            }
-            return TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey.shade600,
-            );
-          }),
-        ),
-      ),
+      theme: buildAppTheme(),
       home: showOnboarding ? const OnboardingScreen() : const MainNavigationShell(),
     );
   }
@@ -121,11 +81,35 @@ class MainNavigationShell extends StatefulWidget {
 }
 
 class _MainNavigationShellState extends State<MainNavigationShell> {
-  int _currentIndex = 0;
+  int get _currentIndex => AppTab.current.value;
+
+  void _onTabChanged() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    AppTab.current.removeListener(_onTabChanged);
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
+    AppTab.current.addListener(_onTabChanged);
+    final balance = LoyaltyService.pending;
+    if (balance != null) {
+      LoyaltyService.pending = null;
+      AppTab.current.value = AppTab.apps;
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        SystemNavigator.routeInformationUpdated(uri: Uri(path: '/'), replace: true);
+        await LoyaltyService.saveBalance(balance);
+        if (!mounted) return;
+        final p = LoyaltyService.byId(balance.programId)!;
+        final value = balance.valueCents != null ? euro(balance.valueCents!) : '${balance.points} Punkte';
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${p.name}: Stand $value übernommen')));
+      });
+    }
     final batch = OfferImportService.pending;
     if (batch != null) {
       OfferImportService.pending = null;
@@ -135,7 +119,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
         final imported = await Navigator.of(context).push<int>(
           MaterialPageRoute(builder: (_) => ImportOffersScreen(batch: batch)),
         );
-        if (imported != null && imported > 0 && mounted) setState(() => _currentIndex = batch.isReceipt ? 0 : 3);
+        if (imported != null && imported > 0 && mounted) AppTab.current.value = batch.isReceipt ? AppTab.apps : AppTab.offers;
       });
     }
   }
@@ -158,7 +142,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (idx) {
-          setState(() => _currentIndex = idx);
+          AppTab.current.value = idx;
           const tabNames = ['Einkaufsliste', 'Karte', 'Meine Apps', 'Angebote', 'Profil'];
           if (idx < tabNames.length) {
             AnalyticsService.trackScreenView(tabNames[idx]);
@@ -167,27 +151,27 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.format_list_bulleted_outlined),
-            selectedIcon: Icon(Icons.format_list_bulleted, color: Color(0xFF059669)),
-            label: 'Einkaufsliste',
+            selectedIcon: Icon(Icons.format_list_bulleted, color: AppColors.primary),
+            label: 'Liste',
           ),
           NavigationDestination(
             icon: Icon(Icons.map_outlined),
-            selectedIcon: Icon(Icons.map, color: Color(0xFF059669)),
+            selectedIcon: Icon(Icons.map, color: AppColors.primary),
             label: 'Karte',
           ),
           NavigationDestination(
             icon: Icon(Icons.apps_outlined),
-            selectedIcon: Icon(Icons.apps, color: Color(0xFF059669)),
+            selectedIcon: Icon(Icons.apps, color: AppColors.primary),
             label: 'Meine Apps',
           ),
           NavigationDestination(
             icon: Icon(Icons.local_offer_outlined),
-            selectedIcon: Icon(Icons.local_offer, color: Color(0xFF059669)),
+            selectedIcon: Icon(Icons.local_offer, color: AppColors.primary),
             label: 'Angebote',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outlined),
-            selectedIcon: Icon(Icons.person, color: Color(0xFF059669)),
+            selectedIcon: Icon(Icons.person, color: AppColors.primary),
             label: 'Profil',
           ),
         ],

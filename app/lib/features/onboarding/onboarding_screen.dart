@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../../core/services/analytics_service.dart';
 import '../../core/services/preferences_storage.dart';
 import '../../main.dart';
+import '../../core/theme/app_theme.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -23,7 +24,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<OnboardingSlideData> _slides = const [
     OnboardingSlideData(
       icon: Icons.savings_rounded,
-      iconColor: Color(0xFF007AFF), // Apple System Blue
+      iconColor: AppColors.primary, // Apple System Blue
       headline: 'Willkommen beim Einkaufs-Optimierer',
       subtitle: 'Spare bares Geld bei jedem Wocheneinkauf durch intelligenten Filial- und Preisvergleich.',
       bulletPoints: [
@@ -34,7 +35,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ),
     OnboardingSlideData(
       icon: Icons.map_rounded,
-      iconColor: Color(0xFF34C759), // Apple System Green
+      iconColor: AppColors.primary, // Apple System Green
       headline: 'Smarte Routen & Filial-Cluster',
       subtitle: 'Kaufe in benachbarten Läden ein, ohne zusätzliche Fahrzeit oder Spritkosten zu verschwenden.',
       bulletPoints: [
@@ -83,7 +84,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F7), // Apple System Grouped Background
+      backgroundColor: AppColors.surfaceAlt, // Apple System Grouped Background
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -93,7 +94,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: TextButton(
               onPressed: () => _finishOnboarding(skipped: true),
               style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFF8E8E93), // Apple Label Secondary
+                foregroundColor: AppColors.inkSubtle, // Apple Label Secondary
                 textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               child: const Text('Überspringen'),
@@ -144,7 +145,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             fontSize: 27,
                             fontWeight: FontWeight.w700,
                             letterSpacing: -0.5,
-                            color: Color(0xFF1C1C1E),
+                            color: AppColors.ink,
                             height: 1.25,
                           ),
                         ),
@@ -156,7 +157,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 16,
-                            color: Color(0xFF8E8E93),
+                            color: AppColors.inkSubtle,
                             height: 1.4,
                           ),
                         ),
@@ -213,7 +214,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                       height: 1,
                                       indent: 48,
                                       endIndent: 16,
-                                      color: Color(0xFFE5E5EA),
+                                      color: AppColors.line,
                                     ),
                                 ],
                               );
@@ -243,7 +244,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         width: isActive ? 22 : 8,
                         height: 8,
                         decoration: BoxDecoration(
-                          color: isActive ? const Color(0xFF007AFF) : const Color(0xFFD1D1D6),
+                          color: isActive ? AppColors.primary : const Color(0xFFD1D1D6),
                           borderRadius: BorderRadius.circular(4),
                         ),
                       );
@@ -267,7 +268,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF007AFF), // Apple Accent
+                        backgroundColor: AppColors.primary, // Apple Accent
                         foregroundColor: Colors.white,
                         elevation: 0,
                         shape: RoundedRectangleBorder(

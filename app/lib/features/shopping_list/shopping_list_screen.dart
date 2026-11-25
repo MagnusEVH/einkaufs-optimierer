@@ -1,13 +1,38 @@
 // app/lib/features/shopping_list/shopping_list_screen.dart
+//
+// Liste bauen: Artikel als Kacheln mit Icon (Vorbild: Bring!) oder als Liste,
+// gruppiert nach Warengruppe. Unsichere Artikel oben unter "Bitte prüfen".
+// Abgehakt wird erst im Einkaufsmodus (TripScreen).
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/app_navigation.dart';
+import '../../core/models/list_item.dart';
 import '../../core/models/product.dart';
+import '../../core/models/store.dart';
 import '../../core/services/catalog_service.dart';
+import '../../core/services/item_icons.dart';
+import '../../core/services/preferences_storage.dart';
+import '../../core/services/wallet_service.dart';
+import '../../core/theme/app_theme.dart';
+import '../../core/widgets/item_tile.dart';
 import '../../core/widgets/product_picker_sheet.dart';
 import '../optimizer/optimizer_screen.dart';
-import 'post_shopping_summary_dialog.dart';
+import '../trip/trip_controller.dart';
+import '../trip/trip_screen.dart';
 import 'shopping_list_controller.dart';
+
+/// Unsicher zugeordneter Freitext, den der Nutzer prüfen sollte.
+bool itemNeedsCheck(ShoppingListItem item) {
+  final matched = item.matchedProduct;
+  final explicit = matched != null && matched.name == item.rawText;
+  if (item.isChecked || explicit) return false;
+  // Text gehört klar zu einer anderen Warengruppe als das Produkt (z. B. "saft" → Thunfisch)
+  if (matched != null && ItemIcons.contradicts(item.rawText, matched)) return true;
+  return CatalogService.isUncertain(item.rawText);
+}
+
+String itemIcon(ShoppingListItem item) => ItemIcons.iconFor(item.rawText, product: item.matchedProduct);
 
 class ShoppingListScreen extends ConsumerStatefulWidget {
   const ShoppingListScreen({super.key});
@@ -17,461 +42,520 @@ class ShoppingListScreen extends ConsumerStatefulWidget {
 }
 
 class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
+  static const _keyViewMode = 'list_view_tiles_v1';
+
   final TextEditingController _inputController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   List<Product> _suggestions = [];
+  bool _tiles = true;
+
+  @override
+  void initState() {
+    super.initState();
+    PreferencesStorage.loadJson(_keyViewMode).then((v) {
+      if (v is bool && mounted) setState(() => _tiles = v);
+    });
+  }
+
+  @override
+  void dispose() {
+    _inputController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _toggleView() {
+    setState(() => _tiles = !_tiles);
+    PreferencesStorage.saveJson(_keyViewMode, _tiles);
+  }
 
   void _onSearchChanged(String query) {
-    if (query.trim().isEmpty) {
-      setState(() => _suggestions = []);
-      return;
-    }
-    final results = CatalogService.getSuggestions(query, limit: 4);
-    setState(() => _suggestions = results);
+    setState(() => _suggestions = query.trim().isEmpty ? [] : CatalogService.getSuggestions(query, limit: 5));
   }
 
   void _submitItem([Product? selectedProduct]) {
     final text = _inputController.text.trim();
     if (text.isEmpty && selectedProduct == null) return;
-
-    final itemTitle = selectedProduct?.name ?? text;
-    ref.read(shoppingListProvider.notifier).addItem(
-          itemTitle,
-          matchedProduct: selectedProduct,
-        );
-
+    ref.read(shoppingListProvider.notifier).addItem(selectedProduct?.name ?? text, matchedProduct: selectedProduct);
     _inputController.clear();
     setState(() => _suggestions = []);
-    _focusNode.unfocus();
+    _focusNode.requestFocus(); // Schnell mehrere Artikel nacheinander eingeben
   }
 
-  /// Rückfrage: passende Katalogprodukte zur Auswahl anbieten.
-  Future<void> _showMatchPicker(String itemId, String rawText) async {
-    final chosen = await showProductPicker(context, rawText);
-    if (chosen != null) {
-      ref.read(shoppingListProvider.notifier).assignProduct(itemId, chosen);
-    }
+  Future<void> _showMatchPicker(ShoppingListItem item) async {
+    final chosen = await showProductPicker(context, item.rawText);
+    if (chosen != null) ref.read(shoppingListProvider.notifier).assignProduct(item.id, chosen);
+  }
+
+  void _openItem(ShoppingListItem item) {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => Consumer(builder: (ctx, ref, _) {
+        final current = ref.watch(shoppingListProvider).items.where((i) => i.id == item.id).firstOrNull;
+        if (current == null) return const SizedBox(height: 120);
+        final ctrl = ref.read(shoppingListProvider.notifier);
+        final needsCheck = itemNeedsCheck(current);
+        final cat = ItemIcons.categoryFor(current.rawText, product: current.matchedProduct);
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(AppSpace.l, 0, AppSpace.l, AppSpace.l),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(children: [
+                  ItemIconBox(itemIcon(current), size: 56),
+                  const SizedBox(width: AppSpace.m),
+                  Expanded(
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text(current.rawText, style: AppText.title.copyWith(fontSize: 18)),
+                      const SizedBox(height: 2),
+                      Text(
+                        current.matchedProduct == null
+                            ? 'Kein Katalog-Treffer · ${cat.name}'
+                            : '${current.matchedProduct!.brand ?? 'Eigenmarke'} · ${cat.name}',
+                        style: AppText.small,
+                      ),
+                    ]),
+                  ),
+                ]),
+                if (needsCheck) ...[
+                  const SizedBox(height: AppSpace.m),
+                  Container(
+                    padding: const EdgeInsets.all(AppSpace.m),
+                    decoration: BoxDecoration(color: AppColors.warningSoft, borderRadius: AppRadius.medium),
+                    child: Text(
+                      current.matchedProduct == null
+                          ? 'Für diesen Text kennt die App kein Produkt. Ohne Zuordnung hat er keinen Preis.'
+                          : 'Unsicher: Gemeint ist vielleicht „${current.matchedProduct!.name}“. Bitte prüfen.',
+                      style: const TextStyle(color: AppColors.warning, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+                const SizedBox(height: AppSpace.l),
+                Row(children: [
+                  const Expanded(child: Text('Menge', style: AppText.bodyStrong)),
+                  IconButton.outlined(
+                    tooltip: 'Weniger',
+                    icon: const Icon(Icons.remove),
+                    onPressed: current.quantity > 1 ? () => ctrl.updateQuantity(current.id, -1) : null,
+                  ),
+                  SizedBox(width: 48, child: Text('${current.quantity.toInt()}', textAlign: TextAlign.center, style: AppText.title)),
+                  IconButton.filled(tooltip: 'Mehr', icon: const Icon(Icons.add), onPressed: () => ctrl.updateQuantity(current.id, 1)),
+                ]),
+                const SizedBox(height: AppSpace.m),
+                OutlinedButton.icon(
+                  icon: const Icon(Icons.manage_search_rounded),
+                  label: Text(current.matchedProduct == null ? 'Produkt zuordnen' : 'Anderes Produkt wählen'),
+                  onPressed: () => _showMatchPicker(current),
+                ),
+                if (current.isChecked) ...[
+                  const SizedBox(height: AppSpace.s),
+                  OutlinedButton.icon(
+                    icon: const Icon(Icons.undo_rounded),
+                    label: const Text('Wieder offen'),
+                    onPressed: () => ctrl.toggleChecked(current.id),
+                  ),
+                ],
+                const SizedBox(height: AppSpace.s),
+                TextButton.icon(
+                  style: TextButton.styleFrom(foregroundColor: AppColors.danger),
+                  icon: const Icon(Icons.delete_outline_rounded),
+                  label: const Text('Von der Liste entfernen'),
+                  onPressed: () {
+                    ctrl.removeItem(current.id);
+                    Navigator.pop(ctx);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      }),
+    );
+  }
+
+  void _confirmClear() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Liste leeren?'),
+        content: const Text('Alle Artikel werden von der Liste entfernt.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Abbrechen')),
+          FilledButton(
+            onPressed: () {
+              ref.read(shoppingListProvider.notifier).clearList();
+              Navigator.pop(ctx);
+            },
+            child: const Text('Leeren'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(shoppingListProvider);
-    final theme = Theme.of(context);
+    final trip = ref.watch(tripProvider);
+    final items = state.items;
+    final check = items.where(itemNeedsCheck).toList();
+    final rest = items.where((i) => !itemNeedsCheck(i)).toList();
+
+    // Nach Warengruppe gruppieren, Standard-Reihenfolge
+    final groups = <String, List<ShoppingListItem>>{};
+    for (final it in rest) {
+      groups.putIfAbsent(ItemIcons.categoryFor(it.rawText, product: it.matchedProduct).id, () => []).add(it);
+    }
+    final order = ItemIcons.defaultOrder.where(groups.containsKey).toList();
+    final withoutPrice = items.where((i) => i.matchedProduct == null && !i.isChecked).length;
+    final openCount = items.where((i) => !i.isChecked).length;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
-          children: [
-            Icon(Icons.shopping_bag_outlined, color: Colors.teal),
-            SizedBox(width: 8),
-            Text('Einkaufs-Optimierer', style: TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        ),
+        title: const Text('Einkaufsliste'),
         actions: [
-          if (state.items.any((it) => it.isChecked))
-            TextButton.icon(
-              icon: const Icon(Icons.check_circle_outline_rounded, color: Color(0xFF007AFF), size: 20),
-              label: const Text(
-                'Fertig',
-                style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xFF007AFF), fontSize: 15),
-              ),
-              onPressed: () {
-                final purchased = state.items.where((it) => it.isChecked).toList();
-                final skipped = state.items.where((it) => !it.isChecked).toList();
-
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  backgroundColor: Colors.transparent,
-                  builder: (_) => PostShoppingSummarySheet(
-                    purchasedItems: purchased,
-                    skippedItems: skipped,
-                    onFinishAndClear: () {
-                      for (final p in purchased) {
-                        ref.read(shoppingListProvider.notifier).removeItem(p.id);
-                      }
-                    },
-                  ),
-                );
-              },
-            ),
           IconButton(
-            icon: const Icon(Icons.delete_sweep_outlined),
+            tooltip: _tiles ? 'Als Liste anzeigen' : 'Als Kacheln anzeigen',
+            icon: Icon(_tiles ? Icons.view_list_rounded : Icons.grid_view_rounded),
+            onPressed: _toggleView,
+          ),
+          IconButton(
             tooltip: 'Liste leeren',
-            onPressed: state.items.isEmpty
-                ? null
-                : () {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                        title: const Text('Liste leeren?'),
-                        content: const Text('Möchtest du alle Artikel von der Liste entfernen?'),
-                        actions: [
-                          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Abbrechen')),
-                          FilledButton(
-                            onPressed: () {
-                              ref.read(shoppingListProvider.notifier).clearList();
-                              Navigator.pop(ctx);
-                            },
-                            child: const Text('Leeren'),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+            icon: const Icon(Icons.delete_sweep_outlined),
+            onPressed: items.isEmpty ? null : _confirmClear,
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Input Header Bar
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(bottom: BorderSide(color: Colors.black.withValues(alpha: 0.06))),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: _inputController,
-                  focusNode: _focusNode,
-                  onChanged: _onSearchChanged,
-                  onSubmitted: (_) => _submitItem(),
-                  decoration: InputDecoration(
-                    hintText: 'Artikel hinzufügen (z. B. Skyr, Bio Eier, ja!...)',
-                    prefixIcon: const Icon(Icons.search_rounded, color: Color(0xFF059669)),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.add_circle, color: Color(0xFF059669)),
-                      onPressed: () => _submitItem(),
-                    ),
-                    filled: true,
-                    fillColor: const Color(0xFFF1F5F9),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  ),
+      body: GestureDetector(
+        onTap: () => _focusNode.unfocus(),
+        child: CustomScrollView(
+          slivers: [
+            if (trip != null) SliverToBoxAdapter(child: _TripBanner(trip: trip)),
+            SliverToBoxAdapter(child: _buildInput()),
+            const SliverToBoxAdapter(child: _OfferStatusBar()),
+            if (items.isEmpty)
+              SliverFillRemaining(hasScrollBody: false, child: _buildEmpty())
+            else ...[
+              if (check.isNotEmpty) ...[
+                SliverToBoxAdapter(
+                  child: SectionHeader('Bitte prüfen (${check.length})',
+                      trailing: const Text('antippen', style: TextStyle(fontSize: 12, color: AppColors.warning))),
                 ),
-
-                // Quick Add Chips
-                const SizedBox(height: 10),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      const Text(
-                        'Schnellwahl:',
-                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF64748B)),
-                      ),
-                      const SizedBox(width: 8),
-                      ...['Skyr Natur', 'Vollmilch', 'Markenbutter', 'Bananen', 'Toilettenpapier', 'Haferflocken'].map((quickItem) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 6),
-                          child: ActionChip(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            label: Text(
-                              '+ $quickItem',
-                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF065F46)),
-                            ),
-                            backgroundColor: const Color(0xFFD1FAE5),
-                            side: BorderSide.none,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            onPressed: () {
-                              ref.read(shoppingListProvider.notifier).addItem(quickItem);
-                            },
-                          ),
-                        );
-                      }),
-                    ],
-                  ),
-                ),
-
-                // Autocomplete Suggestions
-                if (_suggestions.isNotEmpty)
-                  Container(
-                    margin: const EdgeInsets.only(top: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                      boxShadow: [
-                        BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 10, offset: const Offset(0, 4)),
-                      ],
-                      border: Border.all(color: Colors.black.withValues(alpha: 0.06)),
-                    ),
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _suggestions.length,
-                      separatorBuilder: (_, __) => const Divider(height: 1),
-                      itemBuilder: (context, index) {
-                        final prod = _suggestions[index];
-                        return ListTile(
-                          dense: true,
-                          leading: const Icon(Icons.shopping_basket_outlined, color: Color(0xFF059669), size: 20),
-                          title: Text(prod.name, style: const TextStyle(fontWeight: FontWeight.w600)),
-                          subtitle: Text(
-                            prod.isBio ? 'Bio-Produkt' : (prod.brand ?? 'Eigenmarke'),
-                            style: TextStyle(fontSize: 12, color: prod.isBio ? Colors.green.shade700 : Colors.grey),
-                          ),
-                          trailing: const Icon(Icons.arrow_forward_ios, size: 14),
-                          onTap: () => _submitItem(prod),
-                        );
-                      },
-                    ),
-                  ),
+                _buildItems(check),
               ],
-            ),
-          ),
-
-          // Live In-Store Shopping Progress
-          if (state.items.isNotEmpty) ...[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${state.items.where((it) => it.isChecked).length} von ${state.items.length} eingekauft',
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF64748B)),
-                      ),
-                      Text(
-                        '${(state.items.where((it) => it.isChecked).length / state.items.length * 100).round()}%',
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF007AFF)),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: LinearProgressIndicator(
-                      value: state.items.where((it) => it.isChecked).length / state.items.length,
-                      backgroundColor: const Color(0xFFE2E8F0),
-                      color: const Color(0xFF007AFF),
-                      minHeight: 6,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+              for (final catId in order) ...[
+                SliverToBoxAdapter(child: SectionHeader('${ItemIcons.byId(catId).icon}  ${ItemIcons.byId(catId).name}')),
+                _buildItems(groups[catId]!),
+              ],
+              const SliverToBoxAdapter(child: SizedBox(height: AppSpace.xl)),
+            ],
           ],
-
-          // Items Count Banner
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${state.items.length} Artikel auf der Liste',
-                  style: const TextStyle(color: Color(0xFF475569), fontWeight: FontWeight.w600, fontSize: 13),
-                ),
-                const SizedBox(width: 8),
-                const Flexible(
-                  child: Text(
-                    '6 Ketten aktiv (Lidl, Aldi, Rewe, Netto, dm, Rossmann)',
-                    style: TextStyle(color: Color(0xFF059669), fontWeight: FontWeight.bold, fontSize: 11),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.end,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Shopping List Items
-          Expanded(
-            child: state.items.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.shopping_cart_outlined, size: 64, color: Colors.grey.shade400),
-                        const SizedBox(height: 12),
-                        const Text('Deine Einkaufsliste ist leer.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                        const SizedBox(height: 4),
-                        Text('Gib oben einen Artikel ein, um zu beginnen.', style: TextStyle(color: Colors.grey.shade600)),
-                      ],
-                    ),
-                  )
-                : ListView.builder(
-                    itemCount: state.items.length,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    itemBuilder: (context, index) {
-                      final item = state.items[index];
-                      final isMatched = item.matchedProduct != null;
-                      final explicit = isMatched && item.matchedProduct!.name == item.rawText;
-                      final needsCheck = !item.isChecked && !explicit && CatalogService.isUncertain(item.rawText);
-
-                      return Dismissible(
-                        key: Key(item.id),
-                        direction: DismissDirection.endToStart,
-                        background: Container(
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 20),
-                          decoration: BoxDecoration(
-                            color: Colors.red.shade400,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: const Icon(Icons.delete, color: Colors.white),
-                        ),
-                        onDismissed: (_) {
-                          ref.read(shoppingListProvider.notifier).removeItem(item.id);
-                        },
-                        child: Card(
-                          elevation: 0,
-                          margin: const EdgeInsets.symmetric(vertical: 4),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            side: BorderSide(color: theme.dividerColor.withOpacity(0.1)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                  value: item.isChecked,
-                                  activeColor: Colors.teal,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                                  onChanged: (_) {
-                                    ref.read(shoppingListProvider.notifier).toggleChecked(item.id);
-                                  },
-                                ),
-                                const SizedBox(width: 4),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        item.rawText,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          decoration: item.isChecked ? TextDecoration.lineThrough : null,
-                                          color: item.isChecked ? Colors.grey : null,
-                                        ),
-                                      ),
-                                      if (needsCheck) ...[
-                                        const SizedBox(height: 4),
-                                        InkWell(
-                                          borderRadius: BorderRadius.circular(6),
-                                          onTap: () => _showMatchPicker(item.id, item.rawText),
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                            decoration: BoxDecoration(
-                                              color: Colors.orange.shade50,
-                                              borderRadius: BorderRadius.circular(6),
-                                            ),
-                                            child: Text(
-                                              isMatched
-                                                  ? 'Unsicher: ${item.matchedProduct!.name} – tippen zum Prüfen'
-                                                  : 'Kein Katalog-Treffer – tippen zum Zuordnen',
-                                              style: TextStyle(fontSize: 11, color: Colors.orange.shade900, fontWeight: FontWeight.w600),
-                                            ),
-                                          ),
-                                        ),
-                                      ] else if (isMatched) ...[
-                                        const SizedBox(height: 2),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                              decoration: BoxDecoration(
-                                                color: Colors.teal.shade50,
-                                                borderRadius: BorderRadius.circular(6),
-                                              ),
-                                              child: Text(
-                                                item.matchedProduct!.isBio
-                                                    ? '🌱 Bio'
-                                                    : (item.matchedProduct!.brand ?? 'Basis'),
-                                                style: TextStyle(fontSize: 11, color: Colors.teal.shade800, fontWeight: FontWeight.bold),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 6),
-                                            Text(
-                                              'Katalog-Treffer',
-                                              style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                                // Quantity Stepper
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.remove_circle_outline, size: 20),
-                                      color: Colors.grey.shade600,
-                                      onPressed: () {
-                                        ref.read(shoppingListProvider.notifier).updateQuantity(item.id, -1);
-                                      },
-                                    ),
-                                    Text(
-                                      '${item.quantity.toInt()}x',
-                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.add_circle_outline, size: 20),
-                                      color: Colors.teal,
-                                      onPressed: () {
-                                        ref.read(shoppingListProvider.notifier).updateQuantity(item.id, 1);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-          ),
-        ],
+        ),
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, -4)),
-            ],
-            border: Border(top: BorderSide(color: Colors.black.withValues(alpha: 0.06))),
+          padding: const EdgeInsets.fromLTRB(AppSpace.l, AppSpace.m, AppSpace.l, AppSpace.m),
+          decoration: const BoxDecoration(
+            color: AppColors.surface,
+            border: Border(top: BorderSide(color: AppColors.line)),
           ),
-          child: FilledButton.icon(
-            icon: const Icon(Icons.bolt_rounded, size: 22),
-            label: Text(
-              'Günstigste Route berechnen (${state.items.length} Artikel)',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFF059669),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              elevation: 2,
-            ),
-            onPressed: state.items.isEmpty
-                ? null
-                : () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const OptimizerResultScreen(),
-                      ),
-                    );
-                  },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (items.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpace.s),
+                  child: Text(
+                    '$openCount Artikel'
+                    '${withoutPrice > 0 ? ' · $withoutPrice ohne Preis' : ''}'
+                    '${check.isNotEmpty ? ' · ${check.length} prüfen' : ''}',
+                    style: AppText.small,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              FilledButton.icon(
+                icon: const Icon(Icons.route_rounded),
+                label: Text(trip != null ? 'Neu planen' : 'Einkauf planen'),
+                onPressed: openCount == 0
+                    ? null
+                    : () => Navigator.push(context, MaterialPageRoute(builder: (_) => const OptimizerResultScreen())),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildInput() {
+    return Container(
+      color: AppColors.surface,
+      padding: const EdgeInsets.fromLTRB(AppSpace.l, AppSpace.s, AppSpace.l, AppSpace.m),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextField(
+            controller: _inputController,
+            focusNode: _focusNode,
+            onChanged: _onSearchChanged,
+            onSubmitted: (_) => _submitItem(),
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+              hintText: 'Was brauchst du? (z. B. Gurke, Milch, Skyr)',
+              prefixIcon: const Icon(Icons.add_rounded, color: AppColors.primary),
+              suffixIcon: _inputController.text.isEmpty
+                  ? null
+                  : IconButton(tooltip: 'Hinzufügen', icon: const Icon(Icons.check_circle, color: AppColors.primary), onPressed: () => _submitItem()),
+            ),
+          ),
+          if (_suggestions.isNotEmpty)
+            Container(
+              margin: const EdgeInsets.only(top: AppSpace.s),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: AppRadius.medium,
+                border: Border.all(color: AppColors.line),
+              ),
+              child: Column(
+                children: [
+                  for (final prod in _suggestions)
+                    ListTile(
+                      dense: true,
+                      leading: ItemIconBox(ItemIcons.iconFor(prod.name, product: prod), size: 36),
+                      title: Text(prod.name, style: const TextStyle(fontWeight: FontWeight.w600)),
+                      subtitle: Text(prod.isBio ? 'Bio' : (prod.brand ?? 'Eigenmarke'), style: AppText.tiny),
+                      trailing: const Icon(Icons.add_rounded, color: AppColors.primary),
+                      onTap: () => _submitItem(prod),
+                    ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmpty() {
+    return const Padding(
+      padding: EdgeInsets.all(AppSpace.xl),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('🛒', style: TextStyle(fontSize: 56)),
+          SizedBox(height: AppSpace.m),
+          Text('Deine Liste ist leer', style: AppText.title),
+          SizedBox(height: AppSpace.xs),
+          Text('Tippe oben, was du brauchst. Die App sucht danach die günstigste Route.',
+              style: AppText.small, textAlign: TextAlign.center),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildItems(List<ShoppingListItem> list) {
+    if (_tiles) {
+      return SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpace.l),
+        sliver: SliverGrid(
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 120,
+            mainAxisSpacing: AppSpace.s,
+            crossAxisSpacing: AppSpace.s,
+            childAspectRatio: 0.95,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (context, i) {
+              final it = list[i];
+              return ItemTile(
+                key: ValueKey(it.id),
+                icon: itemIcon(it),
+                name: it.rawText,
+                quantity: it.quantity,
+                needsCheck: itemNeedsCheck(it),
+                done: it.isChecked,
+                onTap: () => _openItem(it),
+              );
+            },
+            childCount: list.length,
+          ),
+        ),
+      );
+    }
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpace.l),
+      sliver: SliverList.separated(
+        itemCount: list.length,
+        separatorBuilder: (_, __) => const SizedBox(height: AppSpace.xs),
+        itemBuilder: (context, i) {
+          final it = list[i];
+          final needsCheck = itemNeedsCheck(it);
+          final ctrl = ref.read(shoppingListProvider.notifier);
+          return Dismissible(
+            key: ValueKey(it.id),
+            direction: DismissDirection.endToStart,
+            background: Container(
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: AppSpace.l),
+              decoration: BoxDecoration(color: AppColors.danger, borderRadius: AppRadius.medium),
+              child: const Icon(Icons.delete, color: Colors.white),
+            ),
+            onDismissed: (_) => ctrl.removeItem(it.id),
+            child: Material(
+              color: needsCheck ? AppColors.warningSoft : AppColors.surface,
+              borderRadius: AppRadius.medium,
+              child: ListTile(
+                shape: RoundedRectangleBorder(borderRadius: AppRadius.medium, side: const BorderSide(color: AppColors.line)),
+                leading: ItemIconBox(itemIcon(it), size: 40, dimmed: it.isChecked),
+                title: Text(
+                  it.rawText,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    decoration: it.isChecked ? TextDecoration.lineThrough : null,
+                    color: it.isChecked ? AppColors.inkSubtle : AppColors.ink,
+                  ),
+                ),
+                subtitle: needsCheck
+                    ? Text(it.matchedProduct == null ? 'Kein Katalog-Treffer, tippen' : 'Unsicher, tippen zum Prüfen',
+                        style: const TextStyle(color: AppColors.warning, fontSize: 12, fontWeight: FontWeight.w600))
+                    : null,
+                trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+                  IconButton(
+                    tooltip: 'Weniger',
+                    icon: const Icon(Icons.remove_circle_outline, size: 22),
+                    color: AppColors.inkSubtle,
+                    onPressed: it.quantity > 1 ? () => ctrl.updateQuantity(it.id, -1) : null,
+                  ),
+                  Text('${it.quantity.toInt()}', style: AppText.bodyStrong),
+                  IconButton(
+                    tooltip: 'Mehr',
+                    icon: const Icon(Icons.add_circle_outline, size: 22),
+                    color: AppColors.primary,
+                    onPressed: () => ctrl.updateQuantity(it.id, 1),
+                  ),
+                ]),
+                onTap: () => _openItem(it),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// Hinweis auf einen laufenden Einkauf.
+class _TripBanner extends StatelessWidget {
+  final ShoppingTrip trip;
+  const _TripBanner({required this.trip});
+
+  @override
+  Widget build(BuildContext context) {
+    final stop = trip.stops.isEmpty ? null : trip.stops[trip.currentStop.clamp(0, trip.stops.length - 1)];
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(AppSpace.l, AppSpace.s, AppSpace.l, 0),
+      child: Material(
+        color: AppColors.primaryDark,
+        borderRadius: AppRadius.medium,
+        child: InkWell(
+          borderRadius: AppRadius.medium,
+          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TripScreen())),
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpace.m),
+            child: Row(children: [
+              const Icon(Icons.shopping_cart_checkout_rounded, color: Colors.white),
+              const SizedBox(width: AppSpace.m),
+              Expanded(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Text('Einkauf läuft', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
+                  Text(
+                    '${trip.doneCount} von ${trip.totalCount} im Wagen${stop != null ? ' · ${stop.name}' : ''}',
+                    style: const TextStyle(color: Colors.white70, fontSize: 13),
+                  ),
+                ]),
+              ),
+              const Text('Fortsetzen', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+              const Icon(Icons.chevron_right, color: Colors.white),
+            ]),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Wie aktuell sind die Angebote je Kette? Tippen öffnet die Wochenrunde.
+class _OfferStatusBar extends StatelessWidget {
+  const _OfferStatusBar();
+
+  static const _chains = [
+    SupermarketChain.rewe,
+    SupermarketChain.lidl,
+    SupermarketChain.aldi_sued,
+    SupermarketChain.netto,
+    SupermarketChain.dm,
+    SupermarketChain.rossmann,
+  ];
+
+  static String _short(SupermarketChain c) => switch (c) {
+        SupermarketChain.aldi_sued => 'ALDI',
+        SupermarketChain.aldi_nord => 'ALDI Nord',
+        SupermarketChain.dm => 'dm',
+        _ => c.displayName,
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<int>(
+      valueListenable: WalletService.offersRevision,
+      builder: (context, _, __) {
+        final now = DateTime.now();
+        final latest = <SupermarketChain, DateTime>{};
+        for (final o in WalletService.weeklyOffers) {
+          if (!o.id.startsWith('imp-') || !o.isValidAt(now) || o.validTo == null) continue;
+          final cur = latest[o.chain];
+          if (cur == null || o.validTo!.isAfter(cur)) latest[o.chain] = o.validTo!;
+        }
+        final missing = _chains.where((c) => !latest.containsKey(c)).length;
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(AppSpace.l, AppSpace.m, AppSpace.l, 0),
+          child: InkWell(
+            borderRadius: AppRadius.medium,
+            onTap: () => AppTab.current.value = AppTab.offers,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpace.m, vertical: AppSpace.s),
+              decoration: BoxDecoration(
+                color: missing == 0 ? AppColors.primaryFaint : AppColors.surface,
+                borderRadius: AppRadius.medium,
+                border: Border.all(color: AppColors.line),
+              ),
+              child: Row(children: [
+                const Icon(Icons.local_offer_outlined, size: 18, color: AppColors.inkMuted),
+                const SizedBox(width: AppSpace.s),
+                Expanded(
+                  child: Wrap(spacing: AppSpace.s, runSpacing: 2, children: [
+                    for (final c in _chains)
+                      Text(
+                        latest.containsKey(c)
+                            ? '${_short(c)} ✓ ${latest[c]!.day}.${latest[c]!.month}.'
+                            : '${_short(c)} –',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: latest.containsKey(c) ? AppColors.primaryDark : AppColors.inkSubtle,
+                        ),
+                      ),
+                  ]),
+                ),
+                Text(missing == 0 ? 'aktuell' : 'Wochenrunde', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.primary)),
+                const Icon(Icons.chevron_right, size: 18, color: AppColors.primary),
+              ]),
+            ),
+          ),
+        );
+      },
     );
   }
 }

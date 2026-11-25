@@ -22,3 +22,6 @@ tags: [wissen, stolperfalle]
 - **Gespeicherte Händlerseiten in Headless-Chrome** hängen bei `--dump-dom`, weil Bilder und CSS von den (bot-geschützten) Händler-Servern nachgeladen werden → externe URLs vor dem Test entfernen. Echte Händlerseiten nie ins Repo, nur nachgebaute Fixtures.
 - **CRLF in `extract.js` und Dart-Dateien**: Skript-Ersetzungen vorher auf 
  normalisieren und danach zurückwandeln.
+- **Standortabfrage im Browser** kann ewig auf die Freigabe warten → `LocationService.getCurrentLocation` hat 12 s Zeitgrenze. Widget-Tests deshalb am Ende `tester.pump(Duration(seconds: 13))`.
+- **Nur `#…` ändern lädt Flutter nicht neu** → Import-Links (`#import=`) beim Testen von einer anderen Seite aus öffnen.
+- **Regex-Backslashes in Node-Einzeilern/Heredocs** gingen beim Einfügen verloren → Regex-Blöcke als Datei schreiben und einfügen, danach Parser-Tests laufen lassen.

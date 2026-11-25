@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/models/store.dart';
 import '../chain_style.dart';
+import '../../../core/theme/app_theme.dart';
 
 /// Listenansicht der gefilterten Filialen.
 class StoreListView extends StatelessWidget {
@@ -34,7 +35,7 @@ class StoreListView extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
             side: BorderSide(
               color: isSelected
-                  ? const Color(0xFF059669)
+                  ? AppColors.primary
                   : Colors.black.withValues(alpha: 0.08),
               width: isSelected ? 2 : 1,
             ),
@@ -94,8 +95,8 @@ class StoreListView extends StatelessWidget {
                 ),
                 IconButton.filledTonal(
                   style: IconButton.styleFrom(
-                    backgroundColor: const Color(0xFFD1FAE5),
-                    foregroundColor: const Color(0xFF065F46),
+                    backgroundColor: AppColors.primarySoft,
+                    foregroundColor: AppColors.primaryDark,
                   ),
                   tooltip: 'Von hier ausplanen',
                   icon: const Icon(Icons.arrow_forward_rounded, size: 18),

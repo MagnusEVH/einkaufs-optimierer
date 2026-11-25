@@ -34,5 +34,6 @@ void main() {
     expect(find.byType(ImportOffersScreen), findsOneWidget);
     expect(find.text('1 Angebote übernehmen'), findsOneWidget);
     expect(OfferImportService.pending, isNull, reason: 'nur einmal anzeigen');
+    await tester.pump(const Duration(seconds: 13)); // Standort-Zeitgrenze ablaufen lassen
   });
 }
