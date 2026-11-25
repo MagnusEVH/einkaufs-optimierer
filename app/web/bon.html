@@ -136,6 +136,8 @@
               : '<span class="warn">Summe auf dem Bon ' + euro(parsed.total_cents) + ', Artikel ergeben ' + euro(parsed.items_sum_cents) +
                 ' (Differenz ' + euro(diff) + ', z. B. Pfand oder ein Lesefehler).</span>';
           }
+          if (parsed.loyalty && parsed.loyalty.detected) check += ' <span class="ok">Bonus/Punkte erkannt: ' + esc(parsed.loyalty.lines.slice(0, 3).join(' · ')) + '</span>';
+          else check += ' <span class="muted">Keine Bonus- oder Punktezeile gefunden.</span>';
           if (parsed.date_guessed) check += ' <span class="warn">Kein Datum gefunden, bitte eintragen.</span>';
         }
         $('check').innerHTML = check;
@@ -198,6 +200,15 @@
           valid_from: day,
           valid_to: day,
           valid_guessed: parsed.date_guessed && !$('date').dataset.touched,
+          loyalty: parsed.loyalty && parsed.loyalty.detected ? {
+            detected: true,
+            program: parsed.loyalty.program,
+            earned_cents: parsed.loyalty.earned_cents,
+            redeemed_cents: parsed.loyalty.redeemed_cents,
+            balance_cents: parsed.loyalty.balance_cents,
+            points: parsed.loyalty.points,
+            balance_points: parsed.loyalty.balance_points
+          } : { detected: false },
           offers: parsed.items.map(function (it) {
             return { title: it.title, price_cents: it.price_cents, unit_info: it.unit_info };
           })

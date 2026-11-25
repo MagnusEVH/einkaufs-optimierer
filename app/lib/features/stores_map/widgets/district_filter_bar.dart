@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import '../../../core/models/store.dart';
+import '../../../core/theme/app_theme.dart';
 
 /// Chip-Leiste mit Landkreis- (Zeile 1) und Kategorie-Filter (Zeile 2).
 class DistrictFilterBar extends StatelessWidget {
@@ -40,7 +41,7 @@ class DistrictFilterBar extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF475569)),
+                      color: AppColors.inkMuted),
                 ),
                 const SizedBox(width: 8),
                 _districtChip('Alle', '${allStores.length}'),
@@ -86,11 +87,11 @@ class DistrictFilterBar extends StatelessWidget {
           fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
           color: isSelected ? Colors.white : const Color(0xFF1E293B),
         ),
-        selectedColor: const Color(0xFF0F172A),
-        backgroundColor: const Color(0xFFF1F5F9),
+        selectedColor: AppColors.ink,
+        backgroundColor: AppColors.surfaceAlt,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         side: BorderSide(
-          color: isSelected ? const Color(0xFF0F172A) : Colors.transparent,
+          color: isSelected ? AppColors.ink : Colors.transparent,
         ),
         onSelected: (_) => onDistrictSelected(districtName),
       ),
@@ -108,14 +109,14 @@ class DistrictFilterBar extends StatelessWidget {
         labelStyle: TextStyle(
           fontSize: 11,
           fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-          color: isSelected ? Colors.white : const Color(0xFF475569),
+          color: isSelected ? Colors.white : AppColors.inkMuted,
         ),
-        selectedColor: const Color(0xFF059669),
+        selectedColor: AppColors.primary,
         backgroundColor: Colors.white,
         checkmarkColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         side: BorderSide(
-          color: isSelected ? const Color(0xFF059669) : Colors.grey.shade300,
+          color: isSelected ? AppColors.primary : Colors.grey.shade300,
         ),
         onSelected: (_) => onChainFilterSelected(filterName),
       ),

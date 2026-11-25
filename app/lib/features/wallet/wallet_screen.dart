@@ -9,6 +9,7 @@ import '../../core/models/store.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/services/wallet_service.dart';
 import 'weekly_round_card.dart';
+import '../../core/theme/app_theme.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
@@ -151,7 +152,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 width: double.infinity,
                 height: 48,
                 child: FilledButton(
-                  style: FilledButton.styleFrom(backgroundColor: Colors.teal),
+                  style: FilledButton.styleFrom(backgroundColor: AppColors.primary),
                   onPressed: () {
                     final title = titleController.text.trim();
                     if (title.isEmpty) return;
@@ -205,14 +206,14 @@ class _WalletScreenState extends State<WalletScreen> {
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFF065F46), Color(0xFF059669)],
+                colors: [AppColors.primaryDark, AppColors.primary],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF059669).withOpacity(0.3),
+                  color: AppColors.primary.withOpacity(0.3),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -256,7 +257,7 @@ class _WalletScreenState extends State<WalletScreen> {
           const SizedBox(height: 8),
           Card(
             child: ListTile(
-              leading: const Icon(Icons.receipt_long_rounded, color: Colors.teal),
+              leading: const Icon(Icons.receipt_long_rounded, color: AppColors.primary),
               title: const Text('Kassenbon scannen', style: TextStyle(fontWeight: FontWeight.bold)),
               subtitle: const Text('Foto vom Bon: echte Preise deiner Filiale. Die Texterkennung läuft im Browser, das Bild bleibt auf dem Gerät.'),
               trailing: const Icon(Icons.chevron_right),
@@ -271,7 +272,7 @@ class _WalletScreenState extends State<WalletScreen> {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.local_offer, color: Colors.teal),
+                  const Icon(Icons.local_offer, color: AppColors.primary),
                   const SizedBox(width: 8),
                   Text('Aktive Coupons ($activeCoupons)', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                 ],
@@ -297,7 +298,7 @@ class _WalletScreenState extends State<WalletScreen> {
               margin: const EdgeInsets.symmetric(vertical: 4),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
-                side: BorderSide(color: coup.isActive ? Colors.teal.shade300 : theme.dividerColor.withOpacity(0.1)),
+                side: BorderSide(color: coup.isActive ? AppColors.primary : theme.dividerColor.withOpacity(0.1)),
               ),
               child: ListTile(
                 leading: CircleAvatar(
@@ -313,7 +314,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 ),
                 trailing: Switch(
                   value: coup.isActive,
-                  activeColor: Colors.teal,
+                  activeColor: AppColors.primary,
                   onChanged: (_) {
                     WalletService.toggleCoupon(coup.id);
                     _refresh();
@@ -327,7 +328,7 @@ class _WalletScreenState extends State<WalletScreen> {
           // ── Weekly Promotional Offers ──
           Row(
             children: [
-              const Icon(Icons.campaign, color: Color(0xFF059669)),
+              const Icon(Icons.campaign, color: AppColors.primary),
               const SizedBox(width: 8),
               Text('Wöchentliche Angebote', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
             ],
@@ -391,7 +392,7 @@ class _WalletScreenState extends State<WalletScreen> {
                     ),
                     Text(
                       off.source ?? 'Beispieldaten',
-                      style: TextStyle(fontSize: 11, color: off.source != null ? Colors.teal.shade700 : Colors.grey.shade500),
+                      style: TextStyle(fontSize: 11, color: off.source != null ? AppColors.primaryDark : Colors.grey.shade500),
                     ),
                     const SizedBox(height: 5),
                     Row(
@@ -399,7 +400,7 @@ class _WalletScreenState extends State<WalletScreen> {
                         Icon(
                           Icons.calendar_today_rounded,
                           size: 11,
-                          color: off.isExpired ? Colors.red : const Color(0xFF007AFF),
+                          color: off.isExpired ? Colors.red : AppColors.primary,
                         ),
                         const SizedBox(width: 4),
                         Text(
@@ -407,7 +408,7 @@ class _WalletScreenState extends State<WalletScreen> {
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
-                            color: off.isExpired ? Colors.red : const Color(0xFF007AFF),
+                            color: off.isExpired ? Colors.red : AppColors.primary,
                           ),
                         ),
                         if (off.daysRemaining != null && off.daysRemaining! <= 3 && !off.isExpired) ...[
@@ -415,7 +416,7 @@ class _WalletScreenState extends State<WalletScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFFF9500).withValues(alpha: 0.15),
+                              color: AppColors.warning.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
@@ -438,7 +439,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   children: [
                     Text(
                       '${off.discountPriceEuros.toStringAsFixed(2)} €',
-                      style: const TextStyle(color: Color(0xFF34C759), fontWeight: FontWeight.bold, fontSize: 15),
+                      style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     Text(
                       'statt ${off.regularPriceEuros.toStringAsFixed(2)} €',

@@ -174,6 +174,15 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     }
   }
 
+  /// Entfernt mehrere Artikel auf einmal (Abschluss eines Einkaufs).
+  void removeItems(Set<String> ids) {
+    if (ids.isEmpty) return;
+    _setItems(state.items.where((it) => !ids.contains(it.id)).toList());
+    for (final id in ids) {
+      SupabaseService.deleteListItem(id);
+    }
+  }
+
   void clearList() {
     _setItems([]);
   }

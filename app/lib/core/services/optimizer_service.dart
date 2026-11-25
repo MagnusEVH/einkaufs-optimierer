@@ -11,6 +11,7 @@ import '../models/store.dart';
 import '../models/user_preferences.dart';
 import 'catalog_service.dart';
 import 'location_service.dart';
+import 'my_stores_service.dart';
 import 'observed_price_service.dart';
 import 'supabase_service.dart';
 import 'wallet_service.dart';
@@ -43,6 +44,8 @@ class OptimizerService {
     required UserPreferences preferences,
     List<Store>? availableStores,
     Store? anchorStore,
+    List<Store>? fixedRoute,
+    Set<String>? excludedStoreIds,
     DateTime? now,
   }) async {
     if (items.isEmpty) {
@@ -53,8 +56,8 @@ class OptimizerService {
       throw Exception('Alle Artikel sind bereits abgehakt.');
     }
 
-    // Try Remote Edge Function if Supabase is active
-    if (!SupabaseService.isDemoMode && SupabaseService.client != null) {
+    // Try Remote Edge Function if Supabase is active (nur ohne eigene Marktwahl)
+    if (fixedRoute == null && !SupabaseService.isDemoMode && SupabaseService.client != null) {
       try {
         final payload = {
           'user_location': {
@@ -89,6 +92,8 @@ class OptimizerService {
       preferences: preferences,
       stores: availableStores ?? rlpStores,
       anchorStore: anchorStore,
+      fixedRoute: fixedRoute,
+      excludedStoreIds: excludedStoreIds ?? MyStoresService.disabledStoreIds,
       now: now ?? DateTime.now(),
     );
   }
@@ -128,9 +133,11 @@ class OptimizerService {
     required UserPreferences preferences,
     required List<Store> stores,
     Store? anchorStore,
+    Set<String> excludedStoreIds = const {},
   }) {
     final allowed = preferences.preferredChains.map((c) => c.toLowerCase()).toSet();
     final result = stores.where((s) {
+      if (excludedStoreIds.contains(s.id)) return false;
       if (allowed.isNotEmpty && !allowed.contains(s.chain.name)) return false;
       final d = haversineMeters(userLocation.latitude, userLocation.longitude, s.latitude, s.longitude);
       return d <= preferences.searchRadiusMeters;
@@ -160,6 +167,8 @@ class OptimizerService {
     required UserPreferences preferences,
     required List<Store> stores,
     Store? anchorStore,
+    List<Store>? fixedRoute,
+    Set<String> excludedStoreIds = const {},
     required DateTime now,
   }) {
     final open = items.where((it) => !it.isChecked).toList();
@@ -172,7 +181,13 @@ class OptimizerService {
       preferences: preferences,
       stores: stores,
       anchorStore: anchorStore,
+      excludedStoreIds: excludedStoreIds,
     );
+    // Selbst gewählte Märkte gehören immer dazu, auch außerhalb des Umkreises.
+    final fixed = fixedRoute ?? const <Store>[];
+    for (final s in fixed) {
+      if (!candidates.any((c) => c.id == s.id)) candidates.add(s);
+    }
     if (candidates.isEmpty) {
       throw Exception(
         'Keine passende Filiale im Umkreis von ${(preferences.searchRadiusMeters / 1000).toStringAsFixed(1)} km. '
@@ -200,6 +215,7 @@ class OptimizerService {
         if (p != null) prices[s.id] = p;
       }
       return _ResolvedItem(
+        listItemId: it.id,
         rawText: it.rawText,
         product: prod,
         quantity: it.quantity,
@@ -241,11 +257,23 @@ class OptimizerService {
     }
 
     // 3. Zweiter Stopp nur, wenn er mehr Artikel abdeckt oder spürbar günstiger ist.
-    final useMulti = bestMulti != null &&
-        (bestMulti.coveredCount > bestSingle.coveredCount ||
-            (bestMulti.coveredCount == bestSingle.coveredCount &&
-                bestSingle.totalCostCents - bestMulti.totalCostCents > minMultiStopBenefitCents));
-    final chosen = useMulti ? bestMulti : bestSingle;
+    final bool useMulti;
+    final _Plan chosen;
+    if (fixed.isNotEmpty) {
+      // Eigene Wahl: Artikel auf genau diese Märkte verteilen, leere Stopps entfallen.
+      final full = _evaluate(fixed, resolved, userLocation, preferences);
+      final used = fixed.where((s) => full.allocations[s.id]!.isNotEmpty).toList();
+      chosen = used.isEmpty || used.length == fixed.length
+          ? full
+          : _evaluate(used, resolved, userLocation, preferences);
+      useMulti = chosen.stores.length > 1;
+    } else {
+      useMulti = bestMulti != null &&
+          (bestMulti.coveredCount > bestSingle.coveredCount ||
+              (bestMulti.coveredCount == bestSingle.coveredCount &&
+                  bestSingle.totalCostCents - bestMulti.totalCostCents > minMultiStopBenefitCents));
+      chosen = useMulti ? bestMulti : bestSingle;
+    }
     final comparable = chosen.coveredCount == bestSingle.coveredCount;
 
     final stops = <RouteStop>[];
@@ -267,8 +295,9 @@ class OptimizerService {
       ));
     }
 
-    final grossSavings = useMulti && comparable ? bestSingle.basketCents - chosen.basketCents : 0;
-    final extraTravel = useMulti && comparable ? chosen.travelCents - bestSingle.travelCents : 0;
+    final differs = !identical(chosen, bestSingle);
+    final grossSavings = differs && comparable ? bestSingle.basketCents - chosen.basketCents : 0;
+    final extraTravel = differs && comparable ? chosen.travelCents - bestSingle.travelCents : 0;
 
     return OptimizationResult(
       recommendationMode: useMulti ? 'MULTI_STORE' : 'SINGLE_STORE',
@@ -279,6 +308,7 @@ class OptimizerService {
         netSavingsCents: grossSavings - extraTravel,
         totalRouteDistanceMeters: chosen.distanceMeters.round(),
         totalStops: stops.length,
+        totalTravelCents: chosen.travelCents,
       ),
       stops: stops,
       baselineSingleStore: {
@@ -334,6 +364,8 @@ class OptimizerService {
       }
       final total = (bestPrice * it.quantity).round();
       allocations[bestStore.id]!.add(AllocatedItem(
+        listItemId: it.listItemId,
+        productId: it.product?.id,
         itemName: it.product?.name ?? it.rawText,
         rawText: it.rawText,
         brand: it.product?.brand,
@@ -369,6 +401,7 @@ class OptimizerService {
 }
 
 class _ResolvedItem {
+  final String listItemId;
   final String rawText;
   final Product? product;
   final double quantity;
@@ -376,6 +409,7 @@ class _ResolvedItem {
   final Map<String, int> pricesByStore;
 
   const _ResolvedItem({
+    required this.listItemId,
     required this.rawText,
     required this.product,
     required this.quantity,

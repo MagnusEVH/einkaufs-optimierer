@@ -6,7 +6,10 @@ import '../../core/models/user_preferences.dart';
 import '../../core/services/notification_service.dart';
 import '../../core/services/supabase_service.dart';
 import '../admin/admin_dashboard_screen.dart';
-import '../price_reports/price_report_screen.dart';
+import '../../core/app_navigation.dart';
+import '../../core/services/app_links.dart';
+import '../stores_map/my_stores_screen.dart';
+import '../../core/theme/app_theme.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -103,13 +106,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           Row(
             children: [
-              const Icon(Icons.flash_on_rounded, color: Color(0xFF059669)),
+              const Icon(Icons.flash_on_rounded, color: AppColors.primary),
               const SizedBox(width: 8),
               Text(
                 'Schnellzugriff',
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xFF0F172A),
+                  color: AppColors.ink,
                 ),
               ),
             ],
@@ -120,46 +123,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(
                 child: _buildQuickActionCard(
                   icon: Icons.receipt_long_rounded,
-                  label: 'Bon melden',
-                  color: Colors.teal,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const PriceReportScreen()),
-                    );
-                  },
+                  label: 'Bon scannen',
+                  color: AppColors.primary,
+                  onTap: AppLinks.openReceiptScan,
                 ),
               ),
               const SizedBox(width: 10),
               Expanded(
                 child: _buildQuickActionCard(
-                  icon: Icons.history_rounded,
-                  label: 'Einkaufshistorie',
-                  color: Colors.indigo,
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Einkaufshistorie wird in einem kommenden Update freigeschaltet.'),
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                  },
+                  icon: Icons.storefront_rounded,
+                  label: 'Meine Märkte',
+                  color: AppColors.primaryDark,
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MyStoresScreen())),
                 ),
               ),
               const SizedBox(width: 10),
               Expanded(
                 child: _buildQuickActionCard(
-                  icon: Icons.bar_chart_rounded,
-                  label: 'Sparstatistik',
-                  color: Colors.amber.shade800,
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Sparstatistik wird in einem kommenden Update freigeschaltet.'),
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                  },
+                  icon: Icons.qr_code_2_rounded,
+                  label: 'Meine Apps',
+                  color: AppColors.info,
+                  onTap: () => AppTab.current.value = AppTab.apps,
                 ),
               ),
             ],
@@ -171,11 +155,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           Row(
             children: [
-              const Icon(Icons.store_mall_directory, color: Colors.teal),
+              const Icon(Icons.store_mall_directory, color: AppColors.primary),
               const SizedBox(width: 8),
               Text(
                 'Kategorie-Lieblingsläden',
-                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.teal.shade900),
+                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold, color: AppColors.primaryDark),
               ),
             ],
           ),
@@ -229,11 +213,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           Row(
             children: [
-              const Icon(Icons.branding_watermark, color: Colors.teal),
+              const Icon(Icons.branding_watermark, color: AppColors.primary),
               const SizedBox(width: 8),
               Text(
                 'Marken & Eigenmarken-Regel',
-                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.teal.shade900),
+                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold, color: AppColors.primaryDark),
               ),
             ],
           ),
@@ -251,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   subtitle: const Text('Wählt ja!, Milbona, Milsani & Co.'),
                   value: 'prefer_private_label',
                   groupValue: _brandPreference,
-                  activeColor: Colors.teal,
+                  activeColor: AppColors.primary,
                   onChanged: (val) {
                     if (val != null) {
                       setState(() => _brandPreference = val);
@@ -265,7 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   subtitle: const Text('Wählt bevorzugt Hersteller-Marken (Barilla, Kerrygold, Ferrero)'),
                   value: 'reject_private_label',
                   groupValue: _brandPreference,
-                  activeColor: Colors.teal,
+                  activeColor: AppColors.primary,
                   onChanged: (val) {
                     if (val != null) {
                       setState(() => _brandPreference = val);
@@ -279,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   subtitle: const Text('Das absolut billigste Angebot gewinnt'),
                   value: 'neutral',
                   groupValue: _brandPreference,
-                  activeColor: Colors.teal,
+                  activeColor: AppColors.primary,
                   onChanged: (val) {
                     if (val != null) {
                       setState(() => _brandPreference = val);
@@ -292,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   title: const Text('Bio-Produkte bevorzugen'),
                   subtitle: const Text('Wählt nach Möglichkeit Bio-Artikel aus'),
                   value: _preferBio,
-                  activeColor: Colors.teal,
+                  activeColor: AppColors.primary,
                   onChanged: (val) {
                     setState(() => _preferBio = val);
                     _savePreferences();
@@ -308,11 +292,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           Row(
             children: [
-              const Icon(Icons.alt_route, color: Colors.teal),
+              const Icon(Icons.alt_route, color: AppColors.primary),
               const SizedBox(width: 8),
               Text(
                 'Routen-Abwägung & Stopps',
-                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.teal.shade900),
+                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold, color: AppColors.primaryDark),
               ),
             ],
           ),
@@ -334,7 +318,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   min: 0.0,
                   max: 100.0,
                   divisions: 20,
-                  activeColor: Colors.teal,
+                  activeColor: AppColors.primary,
                   label: '${(_costPerKm / 100.0).toStringAsFixed(2)} €/km',
                   onChanged: (val) {
                     setState(() => _costPerKm = val);
@@ -368,11 +352,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           Row(
             children: [
-              const Icon(Icons.notifications_active_outlined, color: Colors.teal),
+              const Icon(Icons.notifications_active_outlined, color: AppColors.primary),
               const SizedBox(width: 8),
               Text(
                 'Benachrichtigungen (Intelligent)',
-                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.teal.shade900),
+                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold, color: AppColors.primaryDark),
               ),
             ],
           ),
@@ -390,7 +374,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                   title: const Text('Erinnerungen & Spartipps', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5)),
                   subtitle: const Text('Dezente Hinweise zu Wochenangeboten & ablaufenden Coupons (max. 1 / Tag).', style: TextStyle(fontSize: 12)),
-                  activeColor: const Color(0xFF007AFF),
+                  activeColor: AppColors.primary,
                 ),
                 const Divider(height: 1),
                 SwitchListTile.adaptive(
@@ -401,7 +385,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                   title: const Text('Ruhezeiten beachten (21:00 – 08:00)', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.5)),
                   subtitle: const Text('Keinerlei Töne oder Nachrichten in den Abend- und Nachtstunden.', style: TextStyle(fontSize: 12)),
-                  activeColor: const Color(0xFF007AFF),
+                  activeColor: AppColors.primary,
                 ),
               ],
             ),
@@ -413,11 +397,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           Row(
             children: [
-              const Icon(Icons.security, color: Colors.teal),
+              const Icon(Icons.security, color: AppColors.primary),
               const SizedBox(width: 8),
               Text(
                 'Datenschutz & DSGVO (Art. 17)',
-                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.teal.shade900),
+                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold, color: AppColors.primaryDark),
               ),
             ],
           ),
@@ -428,13 +412,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               children: [
                 const ListTile(
-                  leading: Icon(Icons.location_on_outlined, color: Colors.teal),
+                  leading: Icon(Icons.location_on_outlined, color: AppColors.primary),
                   title: Text('Standortdaten'),
                   subtitle: Text('GPS-Koordinaten werden nur flüchtig während aktiver Nutzung abgefragt.'),
                 ),
                 const Divider(),
                 const ListTile(
-                  leading: Icon(Icons.lock_outline, color: Colors.teal),
+                  leading: Icon(Icons.lock_outline, color: AppColors.primary),
                   title: Text('App-Verknüpfungen'),
                   subtitle: Text('Demo: Verknüpfungen sind simuliert, es werden keine Zugangsdaten gespeichert.'),
                 ),
@@ -457,16 +441,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFF007AFF).withValues(alpha: 0.3)),
+              border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
             ),
             child: ListTile(
               leading: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF007AFF).withValues(alpha: 0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.analytics_rounded, color: Color(0xFF007AFF)),
+                child: const Icon(Icons.analytics_rounded, color: AppColors.primary),
               ),
               title: const Text(
                 'Entwickler-Cockpit & Analytics',
@@ -476,7 +460,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 'Nutzungsstatistiken, DAU/MAU, Live-Events & Fehlerprotokoll',
                 style: TextStyle(fontSize: 12),
               ),
-              trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Color(0xFF8E8E93)),
+              trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: AppColors.inkSubtle),
               onTap: () {
                 Navigator.push(
                   context,

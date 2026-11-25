@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../core/models/store.dart';
 import '../../core/services/offer_import_service.dart';
 import '../../core/services/wallet_service.dart';
+import '../../core/theme/app_theme.dart';
 
 class WeeklyRoundStop {
   final SupermarketChain chain;
@@ -70,7 +71,7 @@ class _WeeklyRoundCardState extends State<WeeklyRoundCard> {
     final count = e['count'] ?? 0;
     final when = at != null ? 'am ${_date(at)}' : '';
     if (validTo != null && validTo.isAfter(DateTime.now())) {
-      return ('$count Angebote $when, gültig bis ${_date(validTo)}', Colors.teal.shade700);
+      return ('$count Angebote $when, gültig bis ${_date(validTo)}', AppColors.primaryDark);
     }
     return ('abgelaufen, zuletzt $when', Colors.orange.shade800);
   }
@@ -90,7 +91,7 @@ class _WeeklyRoundCardState extends State<WeeklyRoundCard> {
           children: [
             Row(
               children: [
-                const Icon(Icons.route_rounded, color: Colors.teal),
+                const Icon(Icons.route_rounded, color: AppColors.primary),
                 const SizedBox(width: 8),
                 const Expanded(
                   child: Text('Wochenrunde', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),

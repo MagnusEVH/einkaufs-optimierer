@@ -3,7 +3,9 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../../core/models/store.dart';
+import '../../../core/services/my_stores_service.dart';
 import '../chain_style.dart';
+import '../../../core/theme/app_theme.dart';
 
 /// Karte am unteren Rand mit Öffnungszeiten, Wegzeiten und „Von hier ausplanen".
 class SelectedStoreSheet extends StatelessWidget {
@@ -75,7 +77,7 @@ class SelectedStoreSheet extends StatelessWidget {
                       style: const TextStyle(
                           fontWeight: FontWeight.w800,
                           fontSize: 16,
-                          color: Color(0xFF0F172A)),
+                          color: AppColors.ink),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -93,7 +95,7 @@ class SelectedStoreSheet extends StatelessWidget {
               IconButton(
                 visualDensity: VisualDensity.compact,
                 icon: const Icon(Icons.close_rounded,
-                    size: 20, color: Color(0xFF64748B)),
+                    size: 20, color: AppColors.inkSubtle),
                 tooltip: 'Schließen',
                 onPressed: onClose,
               ),
@@ -141,13 +143,13 @@ class SelectedStoreSheet extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF1F5F9),
+                  color: AppColors.surfaceAlt,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   children: [
                     const Icon(Icons.directions_walk_rounded,
-                        size: 14, color: Color(0xFF475569)),
+                        size: 14, color: AppColors.inkMuted),
                     const SizedBox(width: 4),
                     Text(
                       '~$walkMinutes Min.',
@@ -163,13 +165,13 @@ class SelectedStoreSheet extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF1F5F9),
+                  color: AppColors.surfaceAlt,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   children: [
                     const Icon(Icons.directions_car_rounded,
-                        size: 14, color: Color(0xFF475569)),
+                        size: 14, color: AppColors.inkMuted),
                     const SizedBox(width: 4),
                     Text(
                       '~$driveMinutes Min.',
@@ -185,7 +187,7 @@ class SelectedStoreSheet extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFD1FAE5),
+                  color: AppColors.primarySoft,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -193,30 +195,33 @@ class SelectedStoreSheet extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF065F46)),
+                      color: AppColors.primaryDark),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 6),
+
+          // Meine Märkte: Filiale für die Planung an- oder abschalten
+          ValueListenableBuilder<int>(
+            valueListenable: MyStoresService.revision,
+            builder: (context, _, __) => SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+              value: MyStoresService.isActive(store.id),
+              onChanged: (v) => MyStoresService.setActive(store.id, v),
+              title: const Text('In meinen Märkten', style: TextStyle(fontWeight: FontWeight.w600)),
+              subtitle: const Text('Aus = die Planung nutzt diesen Markt nicht'),
+            ),
+          ),
+          const SizedBox(height: 6),
 
           // Primary Action Button: "Von diesem Laden ausplanen"
           SizedBox(
             width: double.infinity,
-            height: 48,
             child: FilledButton.icon(
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF059669),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14)),
-                elevation: 2,
-              ),
               icon: const Icon(Icons.alt_route_rounded, size: 20),
-              label: const Text(
-                'Von diesem Laden ausplanen 🚀',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
+              label: const Text('Einkauf hier beginnen'),
               onPressed: () => onPlanFromStore(store),
             ),
           ),

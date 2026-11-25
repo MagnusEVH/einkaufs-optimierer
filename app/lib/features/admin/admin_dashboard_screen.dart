@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../core/models/analytics_event.dart';
 import '../../core/services/analytics_service.dart';
+import '../../core/theme/app_theme.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -63,7 +64,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F7), // Apple System Grouped Background
+      backgroundColor: AppColors.surfaceAlt, // Apple System Grouped Background
       appBar: AppBar(
         title: const Text(
           'Entwickler-Cockpit',
@@ -71,14 +72,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             fontWeight: FontWeight.w700,
             fontSize: 20,
             letterSpacing: -0.4,
-            color: Color(0xFF1C1C1E),
+            color: AppColors.ink,
           ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded, color: Color(0xFF007AFF)),
+            icon: const Icon(Icons.refresh_rounded, color: AppColors.primary),
             onPressed: _loadDashboardData,
             tooltip: 'Aktualisieren',
           ),
@@ -146,7 +147,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           children: [
             const Text(
               'Zeitraum:',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF8E8E93)),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.inkSubtle),
             ),
             CupertinoSlidingSegmentedControl<int>(
               groupValue: _selectedTimeframeDays,
@@ -175,7 +176,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 value: '${_clickStats.totalScreenViews}',
                 subtitle: 'Seitenaufrufe gesamt',
                 icon: Icons.visibility_rounded,
-                color: const Color(0xFF007AFF),
+                color: AppColors.primary,
               ),
             ),
             const SizedBox(width: 12),
@@ -185,7 +186,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 value: '${_clickStats.totalButtonClicks}',
                 subtitle: 'Interaktionen & Taps',
                 icon: Icons.touch_app_rounded,
-                color: const Color(0xFF34C759),
+                color: AppColors.primary,
               ),
             ),
           ],
@@ -210,7 +211,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 value: '${(_kpis.avgSessionSeconds / 60).toStringAsFixed(1)} min',
                 subtitle: 'Verweildauer in App',
                 icon: Icons.timer_rounded,
-                color: const Color(0xFFFF9500),
+                color: AppColors.warning,
               ),
             ),
           ],
@@ -229,11 +230,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             children: [
               const Row(
                 children: [
-                  Icon(Icons.bar_chart_rounded, size: 20, color: Color(0xFF007AFF)),
+                  Icon(Icons.bar_chart_rounded, size: 20, color: AppColors.primary),
                   SizedBox(width: 8),
                   Text(
                     'Aufrufe nach Bereich (Screen Views)',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Color(0xFF1C1C1E)),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.ink),
                   ),
                 ],
               ),
@@ -252,7 +253,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         children: [
                           Text(entry.key, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600, color: Color(0xFF2C2C2E))),
                           Text('${entry.value} Aufrufe (${(ratio * 100).round()}%)',
-                              style: const TextStyle(fontSize: 12.5, color: Color(0xFF8E8E93))),
+                              style: const TextStyle(fontSize: 12.5, color: AppColors.inkSubtle)),
                         ],
                       ),
                       const SizedBox(height: 6),
@@ -260,8 +261,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         borderRadius: BorderRadius.circular(4),
                         child: LinearProgressIndicator(
                           value: ratio,
-                          backgroundColor: const Color(0xFFE5E5EA),
-                          color: const Color(0xFF007AFF),
+                          backgroundColor: AppColors.line,
+                          color: AppColors.primary,
                           minHeight: 8,
                         ),
                       ),
@@ -286,11 +287,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             children: [
               const Row(
                 children: [
-                  Icon(Icons.ads_click_rounded, size: 20, color: Color(0xFF34C759)),
+                  Icon(Icons.ads_click_rounded, size: 20, color: AppColors.primary),
                   SizedBox(width: 8),
                   Text(
                     'Klick-Häufigkeit nach Funktion',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Color(0xFF1C1C1E)),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.ink),
                   ),
                 ],
               ),
@@ -301,16 +302,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(entry.key, style: const TextStyle(fontSize: 13.5, color: Color(0xFF3A3A3C))),
+                      Text(entry.key, style: const TextStyle(fontSize: 13.5, color: AppColors.inkMuted)),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF34C759).withValues(alpha: 0.1),
+                          color: AppColors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           '${entry.value} Klicks',
-                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xFF34C759)),
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.primary),
                         ),
                       ),
                     ],
@@ -353,7 +354,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: Color(0xFF8E8E93)),
+                style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.inkSubtle),
               ),
               Container(
                 padding: const EdgeInsets.all(6),
@@ -372,13 +373,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               fontSize: 22,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.5,
-              color: Color(0xFF1C1C1E),
+              color: AppColors.ink,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             subtitle,
-            style: const TextStyle(fontSize: 11, color: Color(0xFF8E8E93)),
+            style: const TextStyle(fontSize: 11, color: AppColors.inkSubtle),
           ),
         ],
       ),
@@ -405,8 +406,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           child: ExpansionTile(
             shape: const Border(),
             leading: CircleAvatar(
-              backgroundColor: const Color(0xFF007AFF).withValues(alpha: 0.12),
-              child: const Icon(Icons.person_rounded, color: Color(0xFF007AFF)),
+              backgroundColor: AppColors.primary.withValues(alpha: 0.12),
+              child: const Icon(Icons.person_rounded, color: AppColors.primary),
             ),
             title: Text(
               user.pseudonym,
@@ -414,7 +415,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             ),
             subtitle: Text(
               'Aktiv: $lastActiveStr • ${user.totalClicks} Klicks • ${user.sessionCount} Sitzungen',
-              style: const TextStyle(fontSize: 12, color: Color(0xFF8E8E93)),
+              style: const TextStyle(fontSize: 12, color: AppColors.inkSubtle),
             ),
             children: [
               Padding(
@@ -435,7 +436,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     const SizedBox(height: 14),
                     const Text(
                       'Chronologischer Klickstream & Aktionen:',
-                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Color(0xFF1C1C1E)),
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.ink),
                     ),
                     const SizedBox(height: 8),
                     ...user.recentActivity.map((act) {
@@ -444,12 +445,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(Icons.circle, size: 8, color: Color(0xFF007AFF)),
+                            const Icon(Icons.circle, size: 8, color: AppColors.primary),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 '${DateFormat('HH:mm').format(act.createdAt)}: ${act.eventName} (${act.category})',
-                                style: const TextStyle(fontSize: 12, color: Color(0xFF3A3A3C)),
+                                style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
                               ),
                             ),
                           ],
@@ -469,8 +470,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   Widget _buildUserMiniStat(String label, String value) {
     return Column(
       children: [
-        Text(value, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: Color(0xFF1C1C1E))),
-        Text(label, style: const TextStyle(fontSize: 11, color: Color(0xFF8E8E93))),
+        Text(value, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: AppColors.ink)),
+        Text(label, style: const TextStyle(fontSize: 11, color: AppColors.inkSubtle)),
       ],
     );
   }
@@ -521,12 +522,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFF1C1C1E),
+                            color: AppColors.ink,
                           ),
                         ),
                         Text(
                           timeStr,
-                          style: const TextStyle(fontSize: 11, color: Color(0xFF8E8E93)),
+                          style: const TextStyle(fontSize: 11, color: AppColors.inkSubtle),
                         ),
                       ],
                     ),
@@ -544,7 +545,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF2F2F7),
+                          color: AppColors.surfaceAlt,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -552,7 +553,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           style: const TextStyle(
                             fontSize: 11,
                             fontFamily: 'monospace',
-                            color: Color(0xFF3A3A3C),
+                            color: AppColors.inkMuted,
                           ),
                         ),
                       ),
@@ -570,19 +571,19 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   Color _getCategoryColor(String category) {
     switch (category) {
       case 'shopping_list':
-        return const Color(0xFF34C759);
+        return AppColors.primary;
       case 'routing':
-        return const Color(0xFF007AFF);
+        return AppColors.primary;
       case 'wallet':
-        return const Color(0xFFFF9500);
+        return AppColors.warning;
       case 'onboarding':
         return const Color(0xFFAF52DE);
       case 'navigation':
         return const Color(0xFF5856D6);
       case 'interaction':
-        return const Color(0xFF34C759);
+        return AppColors.primary;
       default:
-        return const Color(0xFF8E8E93);
+        return AppColors.inkSubtle;
     }
   }
 
@@ -617,7 +618,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           subtitle: 'Freitag & Samstag 16:00 – 19:00 Uhr',
           description:
               '68% aller Einkaufslisten und 74% aller Klicks auf „Route optimieren“ finden vor dem Wochenende statt. Empfohlene Push-Erinnerung für Wochenangebote freitags um 14:30 Uhr.',
-          color: const Color(0xFFFF9500),
+          color: AppColors.warning,
         ),
         const SizedBox(height: 12),
         _buildInsightCard(
@@ -625,7 +626,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           subtitle: 'Einkaufsliste ➔ Artikel hinzufügen ➔ Route optimieren',
           description:
               'Die Konversionsrate von der Listen-Erstellung bis zum Routen-Abschluss liegt bei starken 82%. Nutzer schätzen besonders die Cluster-Erkennung unter 500m.',
-          color: const Color(0xFF007AFF),
+          color: AppColors.primary,
         ),
         const SizedBox(height: 12),
         _buildInsightCard(
@@ -633,7 +634,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           subtitle: 'Split-Route Abbruchrate bei > 3 Stopps',
           description:
               'Nutzer brechen ab, wenn mehr als 2 Läden vorgeschlagen werden. Die 2-Filialen-Grenze mit < 500m Abstand maximiert die Abschlussquote auf 91%.',
-          color: const Color(0xFF34C759),
+          color: AppColors.primary,
         ),
       ],
     );
@@ -655,13 +656,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Color(0xFF1C1C1E))),
+          Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.ink)),
           const SizedBox(height: 4),
           Text(subtitle, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: color)),
           const SizedBox(height: 8),
           Text(
             description,
-            style: const TextStyle(fontSize: 13.5, color: Color(0xFF3A3A3C), height: 1.4),
+            style: const TextStyle(fontSize: 13.5, color: AppColors.inkMuted, height: 1.4),
           ),
         ],
       ),
@@ -686,7 +687,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isOpen ? const Color(0xFFFF3B30).withValues(alpha: 0.4) : const Color(0xFFE5E5EA),
+              color: isOpen ? AppColors.danger.withValues(alpha: 0.4) : AppColors.line,
             ),
           ),
           child: Column(
@@ -699,8 +700,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: isOpen
-                          ? const Color(0xFFFF3B30).withValues(alpha: 0.1)
-                          : const Color(0xFF34C759).withValues(alpha: 0.1),
+                          ? AppColors.danger.withValues(alpha: 0.1)
+                          : AppColors.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
@@ -708,25 +709,25 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: isOpen ? const Color(0xFFFF3B30) : const Color(0xFF34C759),
+                        color: isOpen ? AppColors.danger : AppColors.primary,
                       ),
                     ),
                   ),
                   Text(
                     err['category'] as String? ?? 'General',
-                    style: const TextStyle(fontSize: 12, color: Color(0xFF8E8E93)),
+                    style: const TextStyle(fontSize: 12, color: AppColors.inkSubtle),
                   ),
                 ],
               ),
               const SizedBox(height: 10),
               Text(
                 err['title'] as String? ?? '',
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Color(0xFF1C1C1E)),
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.ink),
               ),
               const SizedBox(height: 4),
               Text(
                 err['description'] as String? ?? '',
-                style: const TextStyle(fontSize: 13, color: Color(0xFF3A3A3C)),
+                style: const TextStyle(fontSize: 13, color: AppColors.inkMuted),
               ),
             ],
           ),
