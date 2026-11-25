@@ -1,7 +1,7 @@
 // app/lib/features/trip/trip_summary_screen.dart
 //
 // Abschluss eines Einkaufs: was im Wagen ist, was offen bleibt, geplante Ersparnis.
-// Danach Kassenbon scannen: echte Preise und Treue-Punkte per Texterkennung.
+// Danach Kassenbon einlesen (Foto oder eBon-PDF): echte Preise und Treue-Guthaben.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,19 +63,19 @@ class TripSummaryScreen extends ConsumerWidget {
               const Row(children: [
                 Icon(Icons.receipt_long_outlined, size: 20, color: AppColors.inkMuted),
                 SizedBox(width: AppSpace.s),
-                Text('Kassenbon scannen', style: AppText.bodyStrong),
+                Text('Kassenbon einlesen', style: AppText.bodyStrong),
               ]),
               const SizedBox(height: AppSpace.s),
               Text(
                 hasProgram
-                    ? 'Foto vom Bon: echte Preise deiner Filiale und, falls auf dem Bon gedruckt, Punkte und Guthaben der Treue-App.'
-                    : 'Foto vom Bon: echte Preise deiner Filiale für den nächsten Einkauf.',
+                    ? 'Papierbon fotografieren oder eBon aus der REWE-App wählen: echte Preise deiner Filiale und, falls dort vermerkt, Punkte und Guthaben der Treue-App.'
+                    : 'Papierbon fotografieren oder eBon wählen: echte Preise deiner Filiale für den nächsten Einkauf.',
                 style: AppText.small,
               ),
               const SizedBox(height: AppSpace.m),
               FilledButton.icon(
                 icon: const Icon(Icons.photo_camera_outlined),
-                label: const Text('Abschließen und Bon scannen'),
+                label: const Text('Abschließen und Bon einlesen'),
                 onPressed: () => finish(scan: true),
               ),
             ]),

@@ -84,10 +84,14 @@
   }
 
   // Treue-Apps: Zeilen, die zeigen, dass an der Kasse eine App/Karte gescannt wurde
-  var LOYALTY_RE = /(rewe\s*bonus|bonus-?guthaben|\bbonus\b|payback|punkte|°\s*p\b|lidl\s*plus|deutschlandcard|kundenkarte)/i;
-  var REDEEM_RE = /(eingel(ö|o|oe)st|einl(ö|o|oe)sung|verrechnet|abgezogen)/i;
+  // REWE-eBon (Stand 2025/26): "Mit diesem Einkauf hast du 0,83 EUR" / "REWE Bonus-Guthaben gesammelt:",
+  // "Aktuelles Bonus-Guthaben: 7,66 EUR"; ältere eBons: "Eingesetztes REWE Guthaben", "Neues REWE Guthaben"
+  var LOYALTY_RE = /(rewe\s*bonus|rewe\s+guthaben|bonus-?guthaben|\bbonus\b|payback|punkte|°\s*p\b|lidl\s*plus|deutschlandcard|kundenkarte)/i;
+  var REDEEM_RE = /(eingel(ö|o|oe)st|einl(ö|o|oe)sung|eingesetzt|verrechnet|abgezogen)/i;
   var EARN_RE = /(gesammelt|gutgeschrieben|erhalten|sammelst|erhältst|erhaltst|\+\s*\d)/i;
-  var BALANCE_RE = /((neues|aktuelles|dein|ihr)\s*(bonus-?)?guthaben|guthaben\s*(neu|aktuell|gesamt)|kontostand|punktestand)/i;
+  var BALANCE_RE = /((neues|aktuelles|dein|ihr)\s+(rewe\s+)?(bonus-?)?guthaben|guthaben\s*(neu|aktuell|gesamt)|kontostand|punktestand)/i;
+  // Vorzeile nennt den Betrag ("Mit diesem Einkauf hast du 0,83 EUR")
+  var EARN_LEAD_RE = /(einkauf|hast du|erhältst du|erhaltst du)/i;
   var POINTS_WORD_RE = /punkte|°\s*p\b/i;
   var PROGRAM_BY_CHAIN = { rewe: 'rewe', lidl: 'lidl_plus', dm: 'dm', rossmann: 'rossmann', netto: 'netto' };
 
@@ -112,7 +116,8 @@
       out.lines.push(l);
       if (/payback/i.test(l) || (l.indexOf('°') >= 0 && POINTS_WORD_RE.test(l))) out.program = 'payback';
       var amount = amountIn(l);
-      // Betrag steht oft in der Folgezeile
+      // Betrag steht in der Vorzeile ("… hast du 0,83 EUR" / "… gesammelt:") oder in der Folgezeile
+      if (amount === null && EARN_RE.test(l) && i > 0 && EARN_LEAD_RE.test(lines[i - 1])) amount = amountIn(lines[i - 1]);
       if (amount === null && i + 1 < lines.length && !LOYALTY_RE.test(lines[i + 1])) amount = amountIn(lines[i + 1]);
       var pts = pointsIn(l);
       if (BALANCE_RE.test(l)) {

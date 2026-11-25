@@ -26,3 +26,9 @@ Folgt auf [[2026-11-25 Benutzerreise]] (PR #16, gemergt). Branch `claude/feinsch
 ## Gelernt
 - `dart.library.js_interop` für bedingte Importe (Tests laufen ohne Browser).
 - `window.eoScanBalance` im Browser mit einem Canvas-Bild testbar (1,4 s).
+
+## Nachtrag: REWE-eBon
+- Mit REWE-App an der Kasse gibt es keinen Papierbon, sondern einen eBon (PDF) in der App unter „Meine Einkäufe“.
+- `bon.html` liest jetzt auch PDFs (pdf.js 3.11.174 vom CDN, gepinnt): echter Text, keine Texterkennung. Weg: eBon teilen → „In Dateien sichern“ → in `bon.html` „eBon aus der REWE-App“ wählen.
+- Bon-Leser erkennt die REWE-Bonus-Zeilen des eBons („Mit diesem Einkauf hast du … EUR / REWE Bonus-Guthaben gesammelt“, „Aktuelles Bonus-Guthaben“) und das ältere Format („Eingesetztes/Neues REWE Guthaben“). Test: `backend_tests/test_ebon_parse.js`. Format nach dem MIT-lizenzierten Projekt e-kotov/rewe-ebon-parser (nur Format übernommen, kein Code).
+- Im Browser mit einem selbst erzeugten eBon-PDF geprüft: Artikel, Summe, Bonus, Kette, Datum erkannt, Übernahme in die App klappt.

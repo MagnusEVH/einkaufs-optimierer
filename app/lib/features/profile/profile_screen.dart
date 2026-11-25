@@ -119,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(
                 child: _buildQuickActionCard(
                   icon: Icons.receipt_long_rounded,
-                  label: 'Bon scannen',
+                  label: 'Bon einlesen',
                   color: AppColors.inkMuted,
                   onTap: AppLinks.openReceiptScan,
                 ),
