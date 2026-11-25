@@ -1,6 +1,5 @@
 // Phase 2b (V46): Icons, Meine Märkte, eigene Marktwahl, Einkaufsmodus, Treue-Apps.
 
-import 'dart:convert';
 
 import 'package:einkaufs_optimierer/core/models/list_item.dart';
 import 'package:einkaufs_optimierer/core/models/product.dart';
@@ -204,17 +203,6 @@ void main() {
   });
 
   group('Treue-Apps per Scan', () {
-    Uri importUri(Map<String, dynamic> payload) =>
-        Uri.parse('https://example.org/#import=${base64Url.encode(utf8.encode(json.encode(payload))).replaceAll('=', '')}');
-
-    test('Screenshot-Scan wird gelesen, Unsinn verworfen', () {
-      final ok = LoyaltyService.fromUri(importUri({'v': 1, 'kind': 'balance', 'program': 'rewe', 'value_cents': 1234}));
-      expect(ok?.valueCents, 1234);
-      expect(LoyaltyService.fromUri(importUri({'v': 1, 'kind': 'balance', 'program': 'unbekannt', 'value_cents': 1})), isNull);
-      expect(LoyaltyService.fromUri(importUri({'v': 1, 'kind': 'balance', 'program': 'payback'})), isNull);
-      expect(LoyaltyService.fromUri(importUri({'v': 1, 'kind': 'receipt', 'chain': 'rewe'})), isNull);
-    });
-
     test('Bon mit Bonuszeilen: gescannt, Guthaben übernommen', () async {
       final rec = await LoyaltyService.recordFromReceipt(SupermarketChain.rewe, DateTime(2026, 11, 24), {
         'detected': true,

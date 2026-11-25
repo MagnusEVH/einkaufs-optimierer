@@ -3,7 +3,8 @@
 // Icon und Warengruppe für jeden Listenartikel (Vorbild: Bring!).
 // Reihenfolge der Regeln zählt: zusammengesetzte Wörter zuerst
 // ("Kartoffelchips" ist Snack, nicht Gemüse; "Butterkeks" ist Keks).
-// Icons sind System-Emoji: auf dem iPhone die Apple-Emoji, keine Lizenzfrage.
+// Icons sind Emoji. Flutter Web zeichnet sie mit der Schrift Noto Color Emoji
+// (Google, SIL Open Font License), geladen von fonts.gstatic.com und per sw.js gecacht.
 
 import '../models/product.dart';
 

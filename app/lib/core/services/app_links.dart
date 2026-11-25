@@ -1,6 +1,6 @@
 // app/lib/core/services/app_links.dart
 //
-// Öffnet fremde Apps, Navigation und die Scan-Seiten (bon.html, konto.html).
+// Öffnet fremde Apps, Navigation und den Kassenbon-Scan (bon.html).
 
 import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,8 +22,14 @@ class AppLinks {
     return Uri.parse(p.appStoreUrl);
   }
 
-  static Future<bool> openProgramApp(LoyaltyProgram p) =>
-      launchUrl(programAppUri(p), mode: LaunchMode.externalApplication, webOnlyWindowName: '_blank');
+  /// Zuletzt geöffnete Händler-App, damit die App beim Zurückkommen den
+  /// Guthaben-Scan anbieten kann.
+  static ({String programId, DateTime at})? lastOpened;
+
+  static Future<bool> openProgramApp(LoyaltyProgram p) {
+    lastOpened = (programId: p.id, at: DateTime.now());
+    return launchUrl(programAppUri(p), mode: LaunchMode.externalApplication, webOnlyWindowName: '_blank');
+  }
 
   /// Navigation zum Markt: auf dem iPhone Apple Karten, sonst Google Maps.
   static Uri navigationUri(double lat, double lng) => _isIos
@@ -35,8 +41,4 @@ class AppLinks {
 
   /// Kassenbon-Scan (Texterkennung im Browser), kommt per #import zurück.
   static Future<bool> openReceiptScan() => launchUrl(Uri.base.resolve('bon.html'), webOnlyWindowName: '_self');
-
-  /// Screenshot der Guthaben-Seite scannen.
-  static Future<bool> openBalanceScan(String programId) =>
-      launchUrl(Uri.base.resolve('konto.html?program=$programId'), webOnlyWindowName: '_self');
 }
