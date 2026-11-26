@@ -305,7 +305,7 @@ class _OptionCard extends StatelessWidget {
                 Text('$chains · ${_km(s.totalRouteDistanceMeters)}', style: AppText.small),
                 if (note != null) ...[
                   const SizedBox(height: 2),
-                  Text(note, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.primaryDark)),
+                  Text(note, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: note.contains('teurer') || note.contains('ohne Preis') ? AppColors.inkMuted : AppColors.primaryDark)),
                 ],
               ]),
             ),
@@ -332,7 +332,7 @@ class _StopCard extends StatelessWidget {
             CircleAvatar(
               radius: 14,
               backgroundColor: color,
-              child: Text('${stop.stopIndex}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 13)),
+              child: Text('${stop.stopIndex}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 13)),
             ),
             const SizedBox(width: AppSpace.m),
             Expanded(
@@ -341,7 +341,7 @@ class _StopCard extends StatelessWidget {
                 Text(stop.address, style: AppText.tiny),
               ]),
             ),
-            Text(euro(stop.stopSubtotalCents), style: AppText.price.copyWith(color: color)),
+            Text(euro(stop.stopSubtotalCents), style: AppText.price),
           ]),
           const Divider(height: AppSpace.xl),
           for (final it in stop.items)

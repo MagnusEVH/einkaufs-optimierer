@@ -105,10 +105,9 @@ class ItemTile extends StatelessWidget {
                   Positioned(
                     top: -4,
                     right: -2,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(color: AppColors.ink, borderRadius: BorderRadius.circular(8)),
-                      child: Text('${quantity.toInt()}×', style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500, fontFeatures: AppText.tab)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                      child: Text('${quantity.toInt()}×', style: const TextStyle(color: AppColors.inkMuted, fontSize: 13, fontWeight: FontWeight.w500, fontFeatures: AppText.tab)),
                     ),
                   ),
                 if (needsCheck)

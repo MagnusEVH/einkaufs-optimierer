@@ -57,7 +57,7 @@ class OnboardingScreen extends StatelessWidget {
                   const SizedBox(height: AppSpace.xxxl),
                   const _Step(number: 1, title: 'Liste schreiben', text: 'Tippe, was du brauchst'),
                   const _Step(number: 2, title: 'Einkauf planen', text: 'Günstigste Route über deine Märkte'),
-                  const _Step(number: 3, title: 'Einkaufen und Bon scannen', text: 'Im Laden abhaken, danach lernt die App echte Preise'),
+                  const _Step(number: 3, title: 'Einkaufen und Bon einlesen', text: 'Im Laden abhaken, danach lernt die App echte Preise'),
                   const Spacer(flex: 2),
                   const Text(
                     'Preise sind teils Beispieldaten, bis du Angebote übernimmst oder Bons scannst.',

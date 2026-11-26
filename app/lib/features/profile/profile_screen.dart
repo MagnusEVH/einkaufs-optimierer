@@ -105,9 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           const Row(
             children: [
-              Icon(Icons.flash_on_rounded, size: 20, color: AppColors.inkMuted),
-              SizedBox(width: 8),
-              Text(
+                            Text(
                 'Schnellzugriff',
                 style: AppText.bodyStrong,
               ),
@@ -151,9 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           const Row(
             children: [
-              Icon(Icons.store_mall_directory, size: 20, color: AppColors.inkMuted),
-              SizedBox(width: 8),
-              Text(
+                            Text(
                 'Kategorie-Lieblingsläden',
                 style: AppText.bodyStrong,
               ),
@@ -209,9 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           const Row(
             children: [
-              Icon(Icons.branding_watermark, size: 20, color: AppColors.inkMuted),
-              SizedBox(width: 8),
-              Text(
+                            Text(
                 'Marken & Eigenmarken-Regel',
                 style: AppText.bodyStrong,
               ),
@@ -227,8 +221,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               children: [
                 RadioListTile<String>(
-                  title: const Text('Eigenmarken bevorzugen (Günstigster Preis)'),
-                  subtitle: const Text('Wählt ja!, Milbona, Milsani & Co.'),
+                  title: const Text('Eigenmarken bevorzugen'),
+                  subtitle: const Text('ja!, Milbona, Milsani und Co.'),
                   value: 'prefer_private_label',
                   groupValue: _brandPreference,
                   activeColor: AppColors.primary,
@@ -241,8 +235,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const Divider(height: 1),
                 RadioListTile<String>(
-                  title: const Text('Eigenmarken ablehnen (Nur Markenartikel)'),
-                  subtitle: const Text('Wählt bevorzugt Hersteller-Marken (Barilla, Kerrygold, Ferrero)'),
+                  title: const Text('Markenartikel bevorzugen'),
+                  subtitle: const Text('Barilla, Kerrygold, Ferrero und Co.'),
                   value: 'reject_private_label',
                   groupValue: _brandPreference,
                   activeColor: AppColors.primary,
@@ -255,8 +249,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const Divider(height: 1),
                 RadioListTile<String>(
-                  title: const Text('Neutral / Rein nach Preis'),
-                  subtitle: const Text('Das absolut billigste Angebot gewinnt'),
+                  title: const Text('Nur nach Preis'),
+                  subtitle: const Text('Das günstigste Angebot gewinnt, egal welche Marke'),
                   value: 'neutral',
                   groupValue: _brandPreference,
                   activeColor: AppColors.primary,
@@ -288,9 +282,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           const Row(
             children: [
-              Icon(Icons.alt_route, size: 20, color: AppColors.inkMuted),
-              SizedBox(width: 8),
-              Text(
+                            Text(
                 'Routen-Abwägung & Stopps',
                 style: AppText.bodyStrong,
               ),
@@ -348,9 +340,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           const Row(
             children: [
-              Icon(Icons.notifications_active_outlined, size: 20, color: AppColors.inkMuted),
-              SizedBox(width: 8),
-              Text(
+                            Text(
                 'Benachrichtigungen (Intelligent)',
                 style: AppText.bodyStrong,
               ),
@@ -393,9 +383,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ───────────────────────────────────────────────
           const Row(
             children: [
-              Icon(Icons.security, size: 20, color: AppColors.inkMuted),
-              SizedBox(width: 8),
-              Text(
+                            Text(
                 'Datenschutz & DSGVO (Art. 17)',
                 style: AppText.bodyStrong,
               ),
