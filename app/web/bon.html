@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kassenbon scannen – Einkaufs-Optimierer</title>
+  <title>Kassenbon einlesen – Einkaufs-Optimierer</title>
   <style>
     :root { color-scheme: light; }
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; max-width: 720px; margin: 24px auto; padding: 0 16px 80px; color: #1f1b16; line-height: 1.5; background: #f8f6f2; }
@@ -15,6 +15,7 @@
     .btn:focus-visible { outline: 2px solid #047857; outline-offset: 2px; }
     .btn.secondary { background: #fff; color: #1f1b16; box-shadow: inset 0 0 0 1px rgba(31,27,22,.15); }
     .btn.secondary:hover { background: #f2efe9; }
+    .btn.pick { display: block; text-align: center; }
     .btn:disabled { opacity: .5; cursor: default; }
     textarea { width: 100%; min-height: 180px; font-family: ui-monospace, Consolas, monospace; font-size: .9rem; border: 1px solid rgba(31,27,22,.15); border-radius: 8px; padding: 8px; box-sizing: border-box; }
     select, input[type=date] { font-size: 1rem; padding: 8px; border-radius: 8px; border: 1px solid rgba(31,27,22,.15); }
@@ -29,12 +30,14 @@
   </style>
 </head>
 <body>
-  <h1>Kassenbon scannen</h1>
-  <p class="muted">Die Texterkennung läuft hier im Browser. Das Foto verlässt dein Gerät nicht; geladen werden nur das Erkennungsprogramm und die deutschen Sprachdaten.</p>
+  <h1>Kassenbon einlesen</h1>
+  <p class="muted">Alles läuft hier im Browser. Bon und Foto verlassen dein Gerät nicht; geladen werden nur die Lese-Programme, vom Dienst jsDelivr (der dabei wie jede Webseite deine IP-Adresse sieht).</p>
 
   <div class="card">
-    <div class="step">1 · Foto vom Bon</div>
-    <input type="file" id="file" accept="image/*" capture="environment">
+    <div class="step">1 · Bon wählen</div>
+    <p><label class="btn pick">eBon aus der REWE-App (PDF)<input type="file" id="pdf" accept="application/pdf,.pdf,image/*" hidden></label></p>
+    <p class="muted">In der REWE-App unter „Meine Einkäufe“ den eBon öffnen, teilen und „In Dateien sichern“. Hier dann die Datei wählen. Ein Screenshot des eBons geht auch.</p>
+    <p><label class="btn secondary pick">Papierbon fotografieren<input type="file" id="file" accept="image/*" capture="environment" hidden></label></p>
     <p class="muted">Tipp: Bon glatt hinlegen, gerade von oben, gutes Licht, nur den Bon im Bild.</p>
     <img id="preview" class="preview" alt="" hidden>
     <div id="ocrBox" hidden>
@@ -147,9 +150,77 @@
         $('send').disabled = !(parsed.items.length && $('chain').value && $('date').value);
       }
 
-      $('file').addEventListener('change', async function () {
+      // eBon-PDF: echter Text, keine Texterkennung nötig (pdf.js, fest gepinnt)
+      var PDFJS_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+      var PDFJS_WORKER_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+
+      function loadPdfJs() {
+        if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+        return new Promise(function (resolve, reject) {
+          var s = document.createElement('script');
+          s.src = PDFJS_URL;
+          s.crossOrigin = 'anonymous';
+          s.onload = function () {
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
+            resolve(window.pdfjsLib);
+          };
+          s.onerror = function () { reject(new Error('PDF-Leser konnte nicht geladen werden (offline?)')); };
+          document.head.appendChild(s);
+        });
+      }
+
+      // Textstücke einer Seite zu Zeilen zusammensetzen (gleiche Höhe = gleiche Zeile)
+      function pageLines(content) {
+        var rows = [];
+        content.items.forEach(function (it) {
+          if (!it.str || !it.str.trim()) return;
+          var y = it.transform[5], x = it.transform[4];
+          var row = rows.find(function (r) { return Math.abs(r.y - y) < 2.5; });
+          if (!row) { row = { y: y, parts: [] }; rows.push(row); }
+          row.parts.push({ x: x, s: it.str });
+        });
+        rows.sort(function (a, b) { return b.y - a.y; });
+        return rows.map(function (r) {
+          r.parts.sort(function (a, b) { return a.x - b.x; });
+          return r.parts.map(function (p) { return p.s.trim(); }).join(' ');
+        });
+      }
+
+      async function readPdf(file) {
+        $('ocrBox').hidden = false;
+        $('preview').hidden = true;
+        $('ocrStatus').textContent = 'Lese eBon …';
+        $('ocrProgress').value = 0;
+        try {
+          var lib = await loadPdfJs();
+          var doc = await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false }).promise;
+          var lines = [];
+          for (var p = 1; p <= doc.numPages; p++) {
+            var page = await doc.getPage(p);
+            lines = lines.concat(pageLines(await page.getTextContent()));
+            $('ocrProgress').value = p / doc.numPages;
+          }
+          $('text').value = lines.join('\n');
+          $('ocrStatus').textContent = lines.length ? 'Fertig. Bitte Artikel prüfen.' : 'Im PDF steht kein Text. Ist es ein eBon?';
+          render();
+        } catch (e) {
+          $('ocrStatus').textContent = 'Fehler: ' + e.message;
+        }
+      }
+
+      $('pdf').addEventListener('change', function () {
         var file = this.files && this.files[0];
         if (!file) return;
+        if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) readPdf(file);
+        else readImage(file);
+      });
+
+      $('file').addEventListener('change', function () {
+        var file = this.files && this.files[0];
+        if (file) readImage(file);
+      });
+
+      async function readImage(file) {
         $('preview').src = URL.createObjectURL(file);
         $('preview').hidden = false;
         $('ocrBox').hidden = false;
@@ -178,7 +249,7 @@
         } catch (e) {
           $('ocrStatus').textContent = 'Fehler: ' + e.message + '. Du kannst den Text auch selbst einfügen.';
         }
-      });
+      }
 
       $('text').addEventListener('input', render);
       $('chain').addEventListener('change', function () { this.dataset.touched = '1'; render(); });

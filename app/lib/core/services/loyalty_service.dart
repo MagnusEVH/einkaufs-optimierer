@@ -118,7 +118,7 @@ class LoyaltyService {
       appName: 'REWE',
       chains: [SupermarketChain.rewe],
       benefit: 'Bonus-Guthaben sammeln und an der Kasse einlösen',
-      checkoutHint: 'REWE-App öffnen, Guthaben wählen und den QR-Code vor dem Bezahlen scannen lassen.',
+      checkoutHint: 'REWE-App öffnen, Guthaben wählen und den QR-Code vor dem Bezahlen scannen lassen. Der eBon kommt danach in die REWE-App.',
       appLink: 'https://www.rewe.de/bonus/einloesen',
       appStoreId: '714121079',
       androidPackage: 'de.rewe.app.mobile',

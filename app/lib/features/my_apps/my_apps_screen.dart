@@ -155,7 +155,7 @@ class _ScreenshotHelp extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            'Am einfachsten: Kassenbon scannen. Steht dort eine Bonus- oder Punktezeile, '
+            'Am einfachsten: Kassenbon einlesen, bei REWE den eBon aus der App (PDF). Steht dort eine Bonus- oder Punktezeile, '
             'übernimmt die App den Stand ohne weiteren Schritt.\n\n'
             'Ohne Bon: In der Händler-App einen Screenshot machen (iPhone: Seitentaste und Lauter-Taste), '
             'zurück in diese App, „Stand scannen“ tippen und den Screenshot wählen. Fertig.\n'
