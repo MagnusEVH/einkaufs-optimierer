@@ -107,11 +107,9 @@ await test('Anonyme Konten werden abgelehnt', async () => {
   await fails(`insert into auth.users (email, is_anonymous) values (null, true)`, [], /Anonyme/, 'anonym');
 });
 
-await test('Nur Admins legen weitere Haushalte an', async () => {
-  await as(magnus);
-  await fails(`select public.create_household('Eltern')`, [], /admins only/, 'ohne Admin');
+await test('Jedes Konto legt weitere Haushalte an', async () => {
   await asSuper();
-  await db.query(`insert into public.app_admins (user_id) values ($1)`, [magnus]);
+  await db.query(`insert into public.app_admins (user_id) values ($1)`, [magnus]); // für admin_stats
   await as(magnus);
   elternHome = (await one(`select public.create_household('Eltern') as id`)).id;
   const hs = await q(`select name from public.households order by name`);
@@ -352,6 +350,47 @@ await test('Admin-Statistik nur für Admins, nur Zahlen', async () => {
   assert.equal(s.shared_households, 2);
   assert.ok(s.db_bytes > 0);
   assert.ok(!JSON.stringify(s).includes('Milch'), 'keine Produktnamen');
+});
+
+await test('Gruppen für alle: Mama legt eigene Gruppe an, Einladung als Mit-Owner', async () => {
+  await as(mama);
+  const kegel = (await one(`select public.create_household('Kegelclub') as id`)).id;
+  await as(magnus);
+  await fails(`select public.create_invitation($1, 1, 'owner')`, [kegel], /only owners/, 'fremde Gruppe');
+  await as(mama);
+  const code = (await one(`select public.create_invitation($1, 1, 'owner') as code`, [kegel])).code;
+  await as(magnus);
+  assert.equal((await one(`select public.accept_invitation($1) as id`, [code])).id, kegel);
+  assert.equal((await one(`select role from public.household_members where household_id = $1 and user_id = $2`, [kegel, magnus])).role, 'owner');
+  // Gleichberechtigt: Magnus kann jetzt selbst einladen und umbenennen
+  assert.match((await one(`select public.create_invitation($1) as code`, [kegel])).code, CODE_RE);
+  assert.equal((await db.query(`update public.households set name = 'Kegelclub Bingen' where id = $1`, [kegel])).affectedRows, 1);
+  await as(mama);
+  await db.query(`select public.leave_household($1)`, [kegel]);
+  await as(magnus);
+  await db.query(`select public.leave_household($1)`, [kegel]);
+  await asSuper();
+  assert.equal((await q(`select * from public.households where id = $1`, [kegel])).length, 0);
+});
+
+await test('Rollen: nur Owner ändern sie, der letzte Owner bleibt Owner', async () => {
+  await as(mama);
+  await fails(`select public.set_member_role($1, $2, 'owner')`, [elternHome, mama], /only owners/, 'Mitglied befördert sich');
+  await as(magnus);
+  await fails(`select public.set_member_role($1, $2, 'member')`, [elternHome, magnus], /last owner/, 'letzter Owner');
+  await db.query(`select public.set_member_role($1, $2, 'owner')`, [elternHome, mama]);
+  await as(mama);
+  await db.query(`select public.set_member_role($1, $2, 'member')`, [elternHome, mama]);
+  assert.equal((await one(`select role from public.household_members where household_id = $1 and user_id = $2`, [elternHome, mama])).role, 'member');
+});
+
+await test('Höchstens 20 Mitgliedschaften pro Konto', async () => {
+  await as(fremder);
+  const ids = [];
+  const have = Number((await one(`select count(*) as n from public.household_members where user_id = $1`, [fremder])).n);
+  for (let i = have; i < 20; i++) ids.push((await one(`select public.create_household($1) as id`, [`G${i}`])).id);
+  await fails(`select public.create_household('Zu viel')`, [], /too many households/, '21.');
+  for (const id of ids) await db.query(`select public.leave_household($1)`, [id]);
 });
 
 // --- Austritt und Löschen ---------------------------------------------------------
