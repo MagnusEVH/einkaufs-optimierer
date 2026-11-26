@@ -145,6 +145,16 @@ class CatalogService {
           if (!candidates.contains(p)) candidates.add(p);
         }
       }
+      // Gleich lange Aliase ("KERRYGOLD BUTTER": "kerrygold" und "butter"):
+      // es gewinnt, wessen Name und Marke mehr Suchwörter enthalten.
+      if (candidates.length > 1) {
+        int cover(Product p) {
+          final words = tokenize('${p.name} ${p.brand ?? ''}').toSet();
+          return queryWords.where(words.contains).length;
+        }
+        final top = candidates.map(cover).reduce((a, b) => a > b ? a : b);
+        candidates = candidates.where((p) => cover(p) == top).toList();
+      }
     }
 
     // 3. Alle Suchwörter kommen als ganze Wörter in Name oder Marke vor
