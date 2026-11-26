@@ -1,9 +1,9 @@
 ---
 type: baustelle
-status: offen
+status: in Arbeit
 prioritaet: hoch
 modell: stark
-aktualisiert: 2026-11-22
+aktualisiert: 2026-11-26
 tags: [baustelle]
 ---
 # Supabase-Anbindung
@@ -11,7 +11,10 @@ tags: [baustelle]
 App läuft ohne Supabase im Demo-Modus. Secrets `SUPABASE_URL` und `SUPABASE_ANON_KEY` (Publishable Key) sind in GitHub angelegt, werden aber noch nicht genutzt.
 
 ## Nächste Schritte
-- [ ] Plan vorlegen (Migrationen gegen echtes Projekt prüfen, RLS, Edge Functions)
+- [x] Plan vorlegen – 2026-11-26 (Stufen 0–7, liegt privat beim Nutzer)
+- [x] Neue Basis-Migration Konten/Haushalte mit RLS-Tests (PGlite) – 2026-11-26
+- [ ] Stufe 0 beim Nutzer: Region, SMTP, Registrierung, alte Edge Functions
+- [ ] Migration ins Projekt einspielen
 - [ ] Workflow: Secrets per `--dart-define` an den Build geben
 - [ ] `main.dart`: `SupabaseService.initialize(url, anonKey)`
 - [ ] Demo-Modus als Fallback behalten

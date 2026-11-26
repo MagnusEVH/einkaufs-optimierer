@@ -36,6 +36,12 @@ jobs:
             echo "::endgroup::"
           done
 
+      - name: RLS-Tests (Supabase-Migrationen in PGlite)
+        working-directory: supabase/tests
+        run: |
+          npm ci --no-audit --no-fund
+          npm test
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
