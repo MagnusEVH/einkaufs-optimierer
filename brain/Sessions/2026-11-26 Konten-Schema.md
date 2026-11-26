@@ -2,7 +2,7 @@
 type: session
 datum: 2026-11-26
 agent: Claude Code (Opus 5.5)
-prs: []
+prs: [24]
 tags: [session]
 ---
 # 2026-11-26 – Konten-Schema (Stufe 1)
