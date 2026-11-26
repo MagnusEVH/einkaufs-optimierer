@@ -21,14 +21,15 @@ class WeeklyRoundStop {
   const WeeklyRoundStop(this.chain, this.url, {this.verified = false, this.hint = ''});
 }
 
-/// Reihenfolge der Runde. Nur REWE ist bisher an einer echten Seite geprüft.
+/// Reihenfolge der Runde. REWE und dm sind an echten Seiten geprüft.
 const weeklyRound = [
   WeeklyRoundStop(SupermarketChain.rewe, 'https://www.rewe.de/angebote/',
       verified: true, hint: 'Markt wählen, ganz nach unten scrollen'),
   WeeklyRoundStop(SupermarketChain.lidl, 'https://www.lidl.de/', hint: 'Angebote der Woche öffnen'),
   WeeklyRoundStop(SupermarketChain.aldi_sued, 'https://www.aldi-sued.de/', hint: 'Angebote öffnen'),
   WeeklyRoundStop(SupermarketChain.netto, 'https://www.netto-online.de/', hint: 'Filiale wählen, Angebote öffnen'),
-  WeeklyRoundStop(SupermarketChain.dm, 'https://www.dm.de/', hint: 'Angebote öffnen'),
+  WeeklyRoundStop(SupermarketChain.dm, 'https://www.dm.de/',
+      verified: true, hint: 'Eine Produktliste öffnen, z. B. „Neu“ oder eine Kategorie'),
   WeeklyRoundStop(SupermarketChain.rossmann, 'https://www.rossmann.de/', hint: 'Angebote öffnen'),
 ];
 
