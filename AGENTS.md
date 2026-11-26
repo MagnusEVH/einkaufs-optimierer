@@ -69,17 +69,13 @@ Das Projekt ist ein **Einkaufs-Optimierer für den deutschen Lebensmittel- und D
 | **App Entry** | `app/lib/main.dart` | Theme, ProviderScope, NavigationBar mit 5 Tabs (Einkaufsliste, Karte, Meine Apps, Angebote, Profil) |
 
 ### 2. Backend & Datenbank (`supabase/`)
-*PostgreSQL mit PostGIS-Erweiterung, Row Level Security (RLS) und RPC-Funktionen.*
+*PostgreSQL bei Supabase, Row Level Security (RLS) und RPC-Funktionen. PostGIS erst wieder, wenn Filialen auf den Server ziehen.*
 
 | Ordner / Datei | Zweck |
 | :--- | :--- |
-| `supabase/migrations/20261018000001_initial_schema.sql` | Grundtabellen (`stores`, `products`, `prices`, PostGIS-Geometrien) |
-| `supabase/migrations/20261018000002_rls_and_functions.sql` | RPC-Funktionen (z. B. Umkreissuche `get_stores_in_radius`) & RLS |
-| `supabase/migrations/20261018000003_seed_catalog_250.sql` | 250 Basis-Produkte mit EANs und Kategorien |
-| `supabase/migrations/20261018000005_phase2_preferences_and_reports.sql` | Tabellen für Preis-Reports und Nutzer-Präferenzen |
-| `supabase/migrations/20261018000004_seed_test_stores.sql` | Test-Filialen |
-| `supabase/migrations/20261018000006_phase3_offers_and_wallet.sql` | Angebote, Treuekarten & aktivierte Coupons |
-| `supabase/migrations/20261018000007_phase3_analytics_and_history.sql` | Analytics & Einkaufshistorie |
+| `supabase/migrations/20261126000001_konten_haushalte.sql` | Konten, Haushalte, Mitglieder, Einladungen (nur Hash), gemeinsame Einkaufsliste, Admin-Statistik. Registrierung nur mit Einladungscode oder Allowlist, Haushalt erst nach E-Mail-Bestätigung. Alles mit RLS |
+| `supabase/tests/` | RLS-Tests mit PGlite (Postgres in Node, ohne Docker): `cd supabase/tests && npm ci && npm test`. `supabase_shim.sql` baut `auth`, Rollen und Standardrechte von Supabase nach |
+| `supabase/archiv/` | Alte Migrationen (nicht installierbar, Rechte-Lücken). Nicht mehr anwenden, nur als Nachschlagewerk |
 | `supabase/functions/{optimize-route,import-catalog,places-proxy}/index.ts` | Edge Functions (Deno/TypeScript) |
 
 ### 3. Scrapers & Normalizer (`scrapers/`)
@@ -178,6 +174,7 @@ Reine Recherche-, Such- und Test-Läufe an Sub-Agents mit schnellem/günstigem M
 | Zweck | Befehl |
 | :--- | :--- |
 | Backend-Tests (Node, keine Dependencies/`package.json`) | `for t in backend_tests/*.js; do node "$t" || exit 1; done` |
+| RLS-Tests (Supabase) | `cd supabase/tests && npm ci && npm test` |
 | Einzelnen Test | `node backend_tests/test_optimization_engine.js` |
 | Scraper-Pipeline (RLP) | `node scrapers/run_rlp_scraping.js` |
 | Scraper-Runner mit eigenem Ausgabeordner | `runScrapingPipeline({ outputDirs: [dir] })` (Tests nutzen `os.tmpdir()`) |
@@ -201,7 +198,7 @@ Vor jedem Abschluss: Backend-Tests ausführen; bei Dart-Änderungen zusätzlich 
 * **Geld:** Preise intern als Integer-Cent (`price_cents`), Umrechnung nur in der Anzeige.
 * **Ketten-IDs:** klein geschrieben (`lidl`, `aldi_sued`, `rewe`, `netto`, `dm`, `rossmann`).
 * **Scraper:** je Kette ein Connector, erbt von `BaseScraper`; Live-Abruf via `safeFetch` mit Fallback auf kuratierte Daten; Einheiten nur über `normalizer.js`.
-* **Migrationen:** nur neue, fortlaufend nummerierte Dateien (`2026…_NNNNNN_name.sql`) anlegen; bestehende nie ändern. Neue Tabellen immer mit RLS.
+* **Migrationen:** nur neue, fortlaufend nummerierte Dateien (`2026…_NNNNNN_name.sql`) anlegen; bestehende nie ändern (Ausnahme: solange nichts live eingespielt ist). Nur additiv, sonst `min_app_version()` erhöhen. Neue Tabellen immer mit RLS **und** Negativtest in `supabase/tests/rls.test.mjs`.
 * **Flutter:** State via Riverpod, Material 3; ohne Supabase-Credentials läuft die App im Demo-Modus (`SupabaseService.isDemoMode`) – neue Features müssen offline/demo funktionieren.
 * **Testläufe & Fixtures:** Tests dürfen eingecheckte Dateien in `app/assets/` nicht überschreiben. Generieren Tests Daten, in einen temporären Ordner schreiben oder nach dem Lauf per `git checkout -- <datei>` zurücksetzen. Vor dem Commit `git status` prüfen.
 * **Secrets:** niemals im Quellcode oder Git. Nur per `--dart-define` bzw. `.env` (gitignored).
