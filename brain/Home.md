@@ -17,11 +17,12 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 - Benutzerreise neu: Liste mit Icons, Planung mit Vorschlägen, Einkaufsmodus, Meine Märkte, Meine Apps mit App öffnen und Guthaben-Scan. PR #16, gemergt.
 - Feinschliff: WebAssembly, Cache-Worker, ein Onboarding-Bildschirm, Guthaben-Scan direkt in der App. PR #17, gemergt.
 - Design-Pass nach unslop: warme Neutrale, ruhige Schrift, Abschluss als Kassenbon. PR #18, gemergt.
-- REWE-eBon (PDF) einlesen: Nachtrag zu #17 in PR #20. dm-Regel für den Übernehmen-Knopf: Branch `claude/dm-knopf`.
-- Letzte Session: [[2026-11-26 dm-Regel und eBon-Nachtrag]]
+- REWE-eBon (PDF) einlesen (PR #20/#24), dm-Regel für den Übernehmen-Knopf (PR #21/#25), Kerrygold-Zuordnung (PR #22), Unslop-Polish nach Screenshot-Audit (PR #23), alle gemergt.
+- Konten und Haushalte: neues Supabase-Schema mit 24 RLS-Tests (PGlite in der CI), noch nicht eingespielt. PR #26.
+- Letzte Session: [[2026-11-26 Konten-Schema]]
 
 ## Offene Baustellen
-- [[Supabase-Anbindung]] – hoch, starkes Modell
+- [[Supabase-Anbindung]] – hoch, in Arbeit (Schema fertig, Einspielen wartet auf Dashboard-Einstellungen)
 - [[Carto-Key-Rotation]] – hoch, Aufgabe für den Nutzer
 - [[Live-Scraper]] – ersetzt durch Übernehmen-Knopf
 - [[CI-Analyze-Gate]] – niedrig
