@@ -6,8 +6,13 @@
 -- Katalog, Filialen und Angebote bleiben vorerst in app/assets.
 -- Belege und beobachtete Preise kommen mit einer eigenen Migration (Stufe 4).
 --
--- Registrierung nur mit Einladungscode (der öffentliche Key steht im Build).
--- Ausnahme: das allererste Konto (Betreiber).
+-- Registrierung nur mit Einladungscode (der öffentliche Key steht im Build)
+-- oder mit einer E-Mail aus private.signup_allowlist (per SQL gepflegt, z. B.
+-- für den Betreiber). Haushalt gibt es erst nach bestätigter E-Mail.
+-- Anonyme Konten sind ausgeschlossen.
+--
+-- Pflicht im Supabase-Dashboard: "Confirm email" an (sonst könnte jemand mit
+-- einer Allowlist-Adresse zuvorkommen), Phone-Login und Anonymous Sign-ins aus.
 --
 -- Rechte: Jede Tabelle hat RLS. Mitgliedschaft prüft private.user_household_ids()
 -- (security definer, vermeidet Rekursion). Beitritt, Einladung, Austritt und
@@ -23,18 +28,18 @@ create schema if not exists private;
 -- Tabellen
 -- ----------------------------------------------------------------------------
 
-create table public.profiles (
-  id uuid primary key references auth.users (id) on delete cascade,
-  display_name text not null default '' check (char_length(display_name) <= 60),
-  last_household_id uuid,
-  last_seen_on date,
-  created_at timestamptz not null default now()
-);
-
 create table public.households (
   id uuid primary key default gen_random_uuid(),
   name text not null check (char_length(name) between 1 and 60),
   created_by uuid references auth.users (id) on delete set null,
+  created_at timestamptz not null default now()
+);
+
+create table public.profiles (
+  id uuid primary key references auth.users (id) on delete cascade,
+  display_name text not null default '' check (char_length(display_name) <= 60),
+  last_household_id uuid references public.households (id) on delete set null,
+  last_seen_on date,
   created_at timestamptz not null default now()
 );
 
@@ -65,7 +70,8 @@ create index invitations_household_idx on public.invitations (household_id);
 
 -- Einkaufsliste: id kommt vom Gerät (offline anlegbar, Upsert ist idempotent).
 -- Abhaken setzt checked_at (null = wieder offen), Löschen setzt deleted_at.
--- updated_at setzt der Server, Abgleich holt alles mit updated_at > letzter Abgleich.
+-- updated_at setzt der Server. Abgleich holt alles mit updated_at > (letzter Abgleich - 5 Min.)
+-- und entfernt Doppelte per id: später committende Transaktionen tragen frühere Zeiten.
 create table public.shopping_items (
   id uuid primary key,
   household_id uuid not null references public.households (id) on delete cascade,
@@ -87,6 +93,19 @@ create index shopping_items_household_updated_idx on public.shopping_items (hous
 -- Admins werden nur per SQL eingetragen, nie über die App.
 create table public.app_admins (
   user_id uuid primary key references auth.users (id) on delete cascade
+);
+
+-- E-Mails, die sich ohne Einladung registrieren dürfen und einen eigenen
+-- Haushalt bekommen. Nur per SQL im Dashboard: insert into private.signup_allowlist ...
+create table private.signup_allowlist (
+  email text primary key check (email = lower(email))
+);
+
+-- Einladung, mit der sich ein Konto registriert hat. Nicht in den Kontodaten,
+-- weil Nutzer raw_user_meta_data selbst ändern können.
+create table private.pending_invitations (
+  user_id uuid primary key references auth.users (id) on delete cascade,
+  invitation_id uuid not null references public.invitations (id) on delete cascade
 );
 
 -- Fehlversuche beim Einlösen von Einladungen (gegen Raten).
@@ -217,19 +236,29 @@ create trigger shopping_items_stamp before insert or update on public.shopping_i
   for each row execute function private.stamp_shopping_item();
 
 -- ----------------------------------------------------------------------------
--- Registrierung: nur mit gültigem Einladungscode (raw_user_meta_data.invite_code),
--- außer beim allerersten Konto.
+-- Registrierung
+-- 1. Vor dem Anlegen: Einladungscode prüfen (oder E-Mail auf der Allowlist).
+--    Der Code wird aus den Kontodaten entfernt, gemerkt wird nur die
+--    Einladungs-ID (allein nutzlos).
+-- 2. Profil sofort, Haushalt erst mit bestätigter E-Mail. So verbraucht ein
+--    Tippfehler in der Adresse keinen Code und erzeugt kein Phantom-Mitglied.
 -- ----------------------------------------------------------------------------
 
 create function private.before_new_user()
 returns trigger
 language plpgsql security definer set search_path = ''
 as $$
+declare
+  v_inv public.invitations;
 begin
-  if not exists (select 1 from auth.users) then
-    return new; -- erstes Konto: Betreiber
+  if coalesce(new.is_anonymous, false) then
+    raise exception 'Anonyme Konten sind nicht erlaubt' using errcode = '42501';
   end if;
-  if (private.find_invitation(new.raw_user_meta_data ->> 'invite_code')).id is null then
+  v_inv := private.find_invitation(new.raw_user_meta_data ->> 'invite_code');
+  new.raw_user_meta_data := coalesce(new.raw_user_meta_data, '{}'::jsonb) - 'invite_code';
+  -- an den After-Trigger derselben Transaktion weitergeben
+  perform set_config('app.pending_invitation', coalesce(v_inv.id::text, ''), true);
+  if v_inv.id is null and not exists (select 1 from private.signup_allowlist where email = lower(new.email)) then
     raise exception 'Registrierung nur mit gültigem Einladungscode' using errcode = '42501';
   end if;
   return new;
@@ -238,38 +267,95 @@ $$;
 create trigger before_auth_user_created before insert on auth.users
   for each row execute function private.before_new_user();
 
--- Profil anlegen. Mit Einladung: Mitglied im eingeladenen Haushalt.
--- Ohne (erstes Konto): eigener Haushalt als Owner.
+-- Codes, die später per Update in die Kontodaten geraten, sofort entfernen
+create function private.strip_invite_code()
+returns trigger
+language plpgsql security definer set search_path = ''
+as $$
+begin
+  if new.raw_user_meta_data ? 'invite_code' then
+    new.raw_user_meta_data := new.raw_user_meta_data - 'invite_code';
+  end if;
+  return new;
+end
+$$;
+create trigger before_auth_user_updated before update on auth.users
+  for each row execute function private.strip_invite_code();
+
+-- Haushalt zuordnen, sobald die E-Mail bestätigt ist (einmalig)
+create function private.join_after_confirmation(p_user auth.users)
+returns void
+language plpgsql security definer set search_path = ''
+as $$
+declare
+  v_inv public.invitations;
+  v_household uuid;
+  v_name text;
+begin
+  if exists (select 1 from public.household_members where user_id = p_user.id) then
+    return;
+  end if;
+  select * into v_inv from public.invitations
+    where id = (select invitation_id from private.pending_invitations where user_id = p_user.id)
+      and revoked_at is null and expires_at > now() and used_count < max_uses
+    for update;
+  if v_inv.id is not null then
+    insert into public.household_members (household_id, user_id, role) values (v_inv.household_id, p_user.id, 'member');
+    update public.invitations set used_count = used_count + 1 where id = v_inv.id;
+    v_household := v_inv.household_id;
+  elsif exists (select 1 from private.signup_allowlist where email = lower(p_user.email)) then
+    select display_name into v_name from public.profiles where id = p_user.id;
+    insert into public.households (name, created_by)
+      values (case when coalesce(v_name, '') = '' then 'Mein Haushalt' else left('Haushalt ' || v_name, 60) end, p_user.id)
+      returning id into v_household;
+    insert into public.household_members (household_id, user_id, role) values (v_household, p_user.id, 'owner');
+  else
+    return; -- Einladung inzwischen ungültig: später per accept_invitation beitreten
+  end if;
+  update public.profiles set last_household_id = v_household where id = p_user.id;
+  delete from private.pending_invitations where user_id = p_user.id;
+end
+$$;
+
 create function private.handle_new_user()
 returns trigger
 language plpgsql security definer set search_path = ''
 as $$
 declare
-  v_name text := left(coalesce(nullif(trim(new.raw_user_meta_data ->> 'display_name'), ''),
-                               split_part(coalesce(new.email, ''), '@', 1)), 60);
-  v_inv public.invitations;
-  v_household uuid;
+  v_pending text := nullif(current_setting('app.pending_invitation', true), '');
 begin
-  v_inv := private.find_invitation(new.raw_user_meta_data ->> 'invite_code');
-  if v_inv.id is not null then
-    insert into public.household_members (household_id, user_id, role) values (v_inv.household_id, new.id, 'member');
-    update public.invitations set used_count = used_count + 1 where id = v_inv.id;
-    v_household := v_inv.household_id;
-  else
-    insert into public.households (name, created_by)
-      values (case when v_name = '' then 'Mein Haushalt' else left('Haushalt ' || v_name, 60) end, new.id)
-      returning id into v_household;
-    insert into public.household_members (household_id, user_id, role) values (v_household, new.id, 'owner');
+  if v_pending is not null then
+    insert into private.pending_invitations (user_id, invitation_id) values (new.id, v_pending::uuid);
+    perform set_config('app.pending_invitation', '', true);
   end if;
-  insert into public.profiles (id, display_name, last_household_id) values (new.id, v_name, v_household);
+  -- Name nur, wenn selbst angegeben (nicht aus der E-Mail ableiten)
+  insert into public.profiles (id, display_name)
+    values (new.id, left(coalesce(trim(new.raw_user_meta_data ->> 'display_name'), ''), 60));
+  if new.email_confirmed_at is not null then
+    perform private.join_after_confirmation(new);
+  end if;
   return new;
 end
 $$;
 create trigger on_auth_user_created after insert on auth.users
   for each row execute function private.handle_new_user();
 
+create function private.handle_user_confirmed()
+returns trigger
+language plpgsql security definer set search_path = ''
+as $$
+begin
+  perform private.join_after_confirmation(new);
+  return new;
+end
+$$;
+create trigger on_auth_user_confirmed after update of email_confirmed_at on auth.users
+  for each row when (old.email_confirmed_at is null and new.email_confirmed_at is not null)
+  execute function private.handle_user_confirmed();
+
 -- Haushalt ohne Mitglieder wird gelöscht. Haushalt ohne Owner bekommt das
 -- dienstälteste Mitglied als Owner. Greift bei Austritt und Kontolöschung.
+-- Sperrt den Haushalt, damit gleichzeitige Austritte sich nacheinander sehen.
 create function private.after_member_removed()
 returns trigger
 language plpgsql security definer set search_path = ''
@@ -277,7 +363,8 @@ as $$
 declare
   v_next uuid;
 begin
-  if not exists (select 1 from public.households where id = old.household_id) then
+  perform 1 from public.households where id = old.household_id for update;
+  if not found then
     return null; -- Haushalt wird gerade selbst gelöscht
   end if;
   if not exists (select 1 from public.household_members where household_id = old.household_id) then
@@ -326,8 +413,8 @@ begin
   if not private.is_household_owner(p_household) then
     raise exception 'only owners can invite' using errcode = '42501';
   end if;
-  -- Version-Nibble (Stelle 13) auslassen, damit alle 16 Zeichen zufällig sind
-  v_hex := substr(v_hex, 1, 12) || substr(v_hex, 14, 4);
+  -- Version- (Stelle 13) und Variant-Nibble (Stelle 17) auslassen: 16 zufällige Zeichen = 64 Bit
+  v_hex := substr(v_hex, 1, 12) || substr(v_hex, 14, 3) || substr(v_hex, 18, 1);
   v_code := substr(v_hex, 1, 4) || '-' || substr(v_hex, 5, 4) || '-' || substr(v_hex, 9, 4) || '-' || substr(v_hex, 13, 4);
   insert into public.invitations (household_id, code_hash, created_by, max_uses)
     values (p_household, private.code_hash(v_code), (select auth.uid()), greatest(1, least(coalesce(p_max_uses, 1), 10)));
@@ -359,6 +446,7 @@ begin
       where user_id = v_uid and attempted_at > now() - interval '1 hour') >= 10 then
     raise exception 'too many attempts' using errcode = 'P0001';
   end if;
+  delete from private.invite_attempts where attempted_at < now() - interval '1 day';
   v_inv := private.find_invitation(p_code);
   if v_inv.id is null then
     -- kein raise: der Fehlversuch muss gespeichert bleiben (raise rollt zurück)
@@ -470,6 +558,21 @@ grant execute on function public.create_household(text), public.create_invitatio
   to authenticated;
 grant execute on function public.min_app_version() to anon;
 
--- Tabellen: kein Schreiben ohne Policy, anon sieht nichts
+-- Tabellen: anon sieht nichts. authenticated nur, was die Policies brauchen,
+-- Updates nur auf erlaubte Spalten (Supabase gibt per Default ALL).
 revoke all on public.profiles, public.households, public.household_members, public.invitations,
-  public.shopping_items, public.app_admins from anon;
+  public.shopping_items, public.app_admins from anon, authenticated;
+grant select on public.profiles, public.households, public.household_members, public.invitations,
+  public.shopping_items, public.app_admins to authenticated;
+grant update (display_name, last_household_id) on public.profiles to authenticated;
+grant update (name) on public.households to authenticated;
+grant insert on public.shopping_items to authenticated;
+-- id und household_id nur, damit Upsert (on conflict do update) geht; der Trigger hält beide fest
+grant update (id, household_id, raw_text, product_id, quantity, note, category, checked_at, deleted_at)
+  on public.shopping_items to authenticated;
+
+-- Später angelegte Funktionen sind nicht mehr automatisch für PUBLIC aufrufbar
+-- (pro Schema lässt sich das nicht entziehen). Neue public-Funktionen brauchen
+-- daher ein ausdrückliches grant execute.
+alter default privileges revoke execute on functions from public;
+alter default privileges in schema private revoke execute on functions from anon, authenticated;

@@ -10,7 +10,8 @@ tags: [session]
 ## Erledigt
 - Recherche mit drei parallelen Agenten (Hosting/Kosten, Datenmodell/Sync, Belege/Dashboard), Plan im privaten Vault, Plan-Review durch einen weiteren Agenten
 - Neue Migration `20261126000001_konten_haushalte.sql`, alte nach `supabase/archiv/`
-- 22 RLS-Tests mit PGlite, Schritt in der CI. Gegenprobe: absichtlich aufgeweichte Regeln fallen auf
+- 22 RLS-Tests mit PGlite (Registrierung als `supabase_auth_admin`), Schritt in der CI. Gegenprobe: absichtlich aufgeweichte Regeln fallen auf
+- Sicherheitsprüfung (Agent, Opus): 4 wichtige Funde, alle behoben – Klartext-Code in Kontodaten, "erstes Konto" kaperbar, Beitritt vor E-Mail-Bestätigung, Race beim Austritt. Dazu Spaltenrechte, TRUNCATE, 64-Bit-Codes, anonyme Konten
 - Entscheidungen: [[Haushalte statt Kontowechsel]], [[Schema-Neuanfang mit Einladungspflicht]]
 
 ## Offen

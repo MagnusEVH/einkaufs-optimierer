@@ -5,6 +5,7 @@ tags: [wissen, stolperfalle]
 ---
 # Stolperfallen
 
+- **`$$` in JavaScripts `String.replace`** wird zu `$` → SQL-Funktionsrümpfe (`as $$`) gehen kaputt, wenn man Migrationen per Skript ersetzt. Ersatz als Funktion übergeben (`s.replace(a, () => b)`) oder mit dem Edit-Werkzeug ändern.
 - **`raise exception` in Postgres-Funktionen** rollt alles in der Transaktion zurück, auch eingetragene Fehlversuche → Fehlversuch speichern und `null` zurückgeben, nicht werfen (`accept_invitation`).
 - **Flutter Web in Cloud-Sessions:** Canvaskit kommt standardmäßig von `gstatic.com`, das hier blockiert ist → `flutter build web --no-web-resources-cdn`.
 - **Flutter ist in Cloud-Sessions nicht vorinstalliert:** SDK-Tarball von `storage.googleapis.com` laden (erreichbar), in den Scratchpad entpacken.

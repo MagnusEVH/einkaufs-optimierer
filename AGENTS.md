@@ -73,7 +73,7 @@ Das Projekt ist ein **Einkaufs-Optimierer für den deutschen Lebensmittel- und D
 
 | Ordner / Datei | Zweck |
 | :--- | :--- |
-| `supabase/migrations/20261126000001_konten_haushalte.sql` | Konten, Haushalte, Mitglieder, Einladungen (nur Hash), gemeinsame Einkaufsliste, Admin-Statistik. Registrierung nur mit Einladungscode. Alles mit RLS |
+| `supabase/migrations/20261126000001_konten_haushalte.sql` | Konten, Haushalte, Mitglieder, Einladungen (nur Hash), gemeinsame Einkaufsliste, Admin-Statistik. Registrierung nur mit Einladungscode oder Allowlist, Haushalt erst nach E-Mail-Bestätigung. Alles mit RLS |
 | `supabase/tests/` | RLS-Tests mit PGlite (Postgres in Node, ohne Docker): `cd supabase/tests && npm ci && npm test`. `supabase_shim.sql` baut `auth`, Rollen und Standardrechte von Supabase nach |
 | `supabase/archiv/` | Alte Migrationen (nicht installierbar, Rechte-Lücken). Nicht mehr anwenden, nur als Nachschlagewerk |
 | `supabase/functions/{optimize-route,import-catalog,places-proxy}/index.ts` | Edge Functions (Deno/TypeScript) |
