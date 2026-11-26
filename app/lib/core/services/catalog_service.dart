@@ -58,18 +58,92 @@ class CatalogService {
   }
 
   /// Autocomplete suggestions for user input (e.g. typing "sk" suggests "Skyr Natur", "Skyr Vanille")
+  ///
+  /// Reihenfolge nach Treffergüte: genauer Name oder Alias, Wortanfang,
+  /// irgendwo im Wort, zuletzt kleine Tippfehler ("joghrt" → Joghurt).
+  /// "ae/oe/ue/ss" und "ä/ö/ü/ß" gelten als gleich. Mehrere Wörter müssen alle passen.
   static List<Product> getSuggestions(String query, {int limit = 5}) {
-    if (query.trim().isEmpty) return [];
-    final clean = query.toLowerCase().trim();
+    final terms = _searchWords(query);
+    if (terms.isEmpty) return [];
 
-    final matches = _cachedProducts.where((p) {
-      if (p.name.toLowerCase().contains(clean)) return true;
-      if (p.brand != null && p.brand!.toLowerCase().contains(clean)) return true;
-      if (p.aliases.any((a) => a.toLowerCase().contains(clean))) return true;
-      return false;
-    }).take(limit).toList();
+    final scored = <(Product, int)>[];
+    for (final p in _cachedProducts) {
+      final fields = [p.name, ...p.aliases, if (p.brand != null) p.brand!];
+      var total = 0;
+      for (final t in terms) {
+        var best = 0;
+        for (final f in fields) {
+          final s = _termScore(t, _fold(f.toLowerCase()), _searchWords(f));
+          if (s > best) best = s;
+        }
+        if (best == 0) {
+          total = 0;
+          break;
+        }
+        total += best;
+      }
+      if (total > 0) scored.add((p, total));
+    }
+    scored.sort((a, b) {
+      final byScore = b.$2.compareTo(a.$2);
+      if (byScore != 0) return byScore;
+      final byLength = a.$1.name.length.compareTo(b.$1.name.length);
+      return byLength != 0 ? byLength : a.$1.name.compareTo(b.$1.name);
+    });
+    return scored.take(limit).map((e) => e.$1).toList();
+  }
 
-    return matches;
+  static String _fold(String s) => s
+      .replaceAll('ä', 'ae')
+      .replaceAll('ö', 'oe')
+      .replaceAll('ü', 'ue')
+      .replaceAll('ß', 'ss');
+
+  static List<String> _searchWords(String text) =>
+      _fold(text.toLowerCase()).split(RegExp(r'[^a-z0-9]+')).where((w) => w.isNotEmpty).toList();
+
+  static int _termScore(String term, String field, List<String> words) {
+    if (field == term || words.length == 1 && words.first == term) return 100;
+    if (words.any((w) => w == term)) return 90;
+    if (field.startsWith(term)) return 80;
+    if (words.any((w) => w.startsWith(term))) return 70;
+    if (field.contains(term)) return 40;
+    // Tippfehler: ab 4 Zeichen einer, ab 7 zwei. Auch gegen den Wortanfang,
+    // damit halb getippte Wörter passen ("joghr" → "joghurt").
+    if (term.length < 4) return 0;
+    final allowed = term.length >= 7 ? 2 : 1;
+    var best = allowed + 1;
+    for (final w in words) {
+      final whole = _editDistance(term, w);
+      final prefix = w.length > term.length ? _editDistance(term, w.substring(0, term.length)) : whole;
+      final d = whole < prefix ? whole : prefix;
+      if (d < best) best = d;
+    }
+    return best <= allowed ? 20 - best * 5 : 0;
+  }
+
+  /// Editierdistanz mit Vertauschung benachbarter Zeichen ("jgohurt").
+  static int _editDistance(String a, String b) {
+    final d = List.generate(a.length + 1, (i) => List<int>.filled(b.length + 1, 0));
+    for (var i = 0; i <= a.length; i++) {
+      d[i][0] = i;
+    }
+    for (var j = 0; j <= b.length; j++) {
+      d[0][j] = j;
+    }
+    for (var i = 1; i <= a.length; i++) {
+      for (var j = 1; j <= b.length; j++) {
+        final cost = a[i - 1] == b[j - 1] ? 0 : 1;
+        var v = d[i - 1][j] + 1;
+        if (d[i][j - 1] + 1 < v) v = d[i][j - 1] + 1;
+        if (d[i - 1][j - 1] + cost < v) v = d[i - 1][j - 1] + cost;
+        if (i > 1 && j > 1 && a[i - 1] == b[j - 2] && a[i - 2] == b[j - 1] && d[i - 2][j - 2] + 1 < v) {
+          v = d[i - 2][j - 2] + 1;
+        }
+        d[i][j] = v;
+      }
+    }
+    return d[a.length][b.length];
   }
 
   /// Zerlegt Text in kleingeschriebene ganze Wörter (Umlaute bleiben erhalten).
