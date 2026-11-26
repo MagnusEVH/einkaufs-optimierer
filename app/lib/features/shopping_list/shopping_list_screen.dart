@@ -218,7 +218,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
         actions: [
           IconButton(
             tooltip: _tiles ? 'Als Liste anzeigen' : 'Als Kacheln anzeigen',
-            icon: Icon(_tiles ? Icons.view_list_rounded : Icons.grid_view_rounded),
+            icon: Icon(_tiles ? Icons.view_list_outlined : Icons.grid_view_outlined),
             onPressed: _toggleView,
           ),
           IconButton(
@@ -304,7 +304,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
             onSubmitted: (_) => _submitItem(),
             textInputAction: TextInputAction.done,
             decoration: InputDecoration(
-              hintText: 'Was brauchst du? (z. B. Gurke, Milch, Skyr)',
+              hintText: 'Was brauchst du?',
               prefixIcon: const Icon(Icons.add_rounded, color: AppColors.primary),
               suffixIcon: _inputController.text.isEmpty
                   ? null
@@ -548,21 +548,19 @@ class _OfferStatusBar extends StatelessWidget {
                 const Icon(Icons.local_offer_outlined, size: 18, color: AppColors.inkMuted),
                 const SizedBox(width: AppSpace.s),
                 Expanded(
-                  child: Wrap(spacing: AppSpace.s, runSpacing: 2, children: [
-                    for (final c in _chains)
-                      Text(
-                        latest.containsKey(c)
-                            ? '${_short(c)} ✓ ${latest[c]!.day}.${latest[c]!.month}.'
-                            : '${_short(c)} –',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: latest.containsKey(c) ? AppColors.primaryDark : AppColors.inkSubtle,
-                        ),
-                      ),
-                  ]),
+                  child: Text(
+                    latest.isEmpty
+                        ? 'Noch keine Angebote übernommen'
+                        : [
+                            for (final c in _chains)
+                              if (latest.containsKey(c)) '${_short(c)} bis ${latest[c]!.day}.${latest[c]!.month}.',
+                            if (missing > 0) '$missing ${missing == 1 ? 'Kette' : 'Ketten'} offen',
+                          ].join(' · '),
+                    style: AppText.small,
+                  ),
                 ),
-                Text(missing == 0 ? 'aktuell' : 'Wochenrunde', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.primary)),
+                const SizedBox(width: AppSpace.s),
+                Text(missing == 0 ? 'aktuell' : 'Wochenrunde', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppColors.primary)),
                 const Icon(Icons.chevron_right, size: 18, color: AppColors.primary),
               ]),
             ),

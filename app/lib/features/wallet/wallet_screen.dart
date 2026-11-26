@@ -173,7 +173,7 @@ class _WalletScreenState extends State<WalletScreen> {
         title: const Text('Angebote & Coupons'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_card),
+            icon: const Icon(Icons.add_card_outlined),
             tooltip: 'Coupon hinzufügen',
             onPressed: _showAddCouponDialog,
           ),

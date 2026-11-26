@@ -62,7 +62,7 @@ class AppRadius {
 class AppText {
   AppText._();
   static const tab = [FontFeature.tabularFigures()];
-  static const title = TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: AppColors.ink);
+  static const title = TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: AppColors.ink);
   static const section = TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppColors.inkMuted);
   static const body = TextStyle(fontSize: 15, color: AppColors.ink);
   static const bodyStrong = TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppColors.ink);
@@ -113,7 +113,7 @@ ThemeData buildAppTheme() {
         foregroundColor: Colors.white,
         minimumSize: const Size(48, 48),
         padding: const EdgeInsets.symmetric(horizontal: AppSpace.xxl, vertical: AppSpace.m),
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         shape: RoundedRectangleBorder(borderRadius: AppRadius.medium),
       ),
     ),

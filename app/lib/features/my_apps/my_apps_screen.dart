@@ -120,7 +120,7 @@ class _ProgramCard extends StatelessWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   icon: const Icon(Icons.document_scanner_outlined, size: 20),
-                  label: const Text('Stand scannen'),
+                  label: const Text('Scannen'),
                   onPressed: () => scanBalanceFlow(context, program),
                 ),
               ),
@@ -158,7 +158,7 @@ class _ScreenshotHelp extends StatelessWidget {
             'Am einfachsten: Kassenbon scannen. Steht dort eine Bonus- oder Punktezeile, '
             'übernimmt die App den Stand ohne weiteren Schritt.\n\n'
             'Ohne Bon: In der Händler-App einen Screenshot machen (iPhone: Seitentaste und Lauter-Taste), '
-            'zurück in diese App, „Stand scannen“ tippen und den Screenshot wählen. Fertig.\n'
+            'zurück in diese App, „Scannen“ tippen und den Screenshot wählen. Fertig.\n'
             'Kommst du gerade aus der Händler-App zurück, bietet die App den Scan von selbst an.\n'
             'Die Texterkennung läuft auf dem Gerät, das Bild wird nicht hochgeladen.',
             style: AppText.small,
