@@ -11,13 +11,14 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 - App läuft im **Demo-Modus** (ohne Supabase).
 - Texte als Demo gekennzeichnet, Kartenlizenz-Hinweis da, Cockpit nur im Debug-Build (PR #11, gemergt).
 - Optimierer rechnet korrekt (Umkreis, Fahrtkosten, keine Pauschalpreise), Review-Sonden als Tests, Rückfrage bei Freitext, Liste und Einstellungen werden gespeichert (PR #12, gemergt).
-- Echte Angebote per Übernehmen-Knopf (`uebernehmen.html`): REWE mit eigener Regel (444/444 richtig), andere Ketten allgemein und ungeprüft. Neuer Import ersetzt alte Fehler.
+- Echte Angebote per Übernehmen-Knopf (`uebernehmen.html`): REWE mit eigener Regel (444/444 richtig), dm mit eigener Regel (89/89 an gespeicherter Seite), Lidl über kaufDA nicht möglich (Prospekt nur Bilder), andere Ketten allgemein und ungeprüft. Neuer Import ersetzt alte Fehler.
 - Speichern im Browser repariert (PR #14, gemergt).
 - Wochenrunde im Angebote-Tab, Bon-Scan (`bon.html`, Texterkennung im Browser), Bonpreise ersetzen Katalogpreise (PR #15, gemergt).
 - Benutzerreise neu: Liste mit Icons, Planung mit Vorschlägen, Einkaufsmodus, Meine Märkte, Meine Apps mit App öffnen und Guthaben-Scan. PR #16, gemergt.
 - Feinschliff: WebAssembly, Cache-Worker, ein Onboarding-Bildschirm, Guthaben-Scan direkt in der App. PR #17, gemergt.
-- Design-Pass nach unslop: warme Neutrale, ruhige Schrift, Abschluss als Kassenbon. Branch `claude/unslop`.
-- Letzte Session: [[2026-11-25 Unslop Design-Pass]]
+- Design-Pass nach unslop: warme Neutrale, ruhige Schrift, Abschluss als Kassenbon. PR #18, gemergt.
+- REWE-eBon (PDF) einlesen: Nachtrag zu #17 in PR #20. dm-Regel für den Übernehmen-Knopf: Branch `claude/dm-knopf`.
+- Letzte Session: [[2026-11-26 dm-Regel und eBon-Nachtrag]]
 
 ## Offene Baustellen
 - [[Supabase-Anbindung]] – hoch, starkes Modell

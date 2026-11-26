@@ -229,6 +229,49 @@
     return { items: out, validity: weekRange(week) };
   }
 
+  // dm: jede Produktkachel trägt eine Beschriftung für Screenreader
+  // ("Trockenfrüchte, Apfelcrunchies, 35 g; Marke: dmBio; Preis: 2,95 €; Grundpreis: …; …").
+  // Marke und Name stehen dort getrennt, im sichtbaren Text kleben sie zusammen.
+  function dmOffers() {
+    var tiles = document.querySelectorAll('[data-dmid="product-tile"]');
+    if (tiles.length === 0) return null;
+    var out = [];
+    for (var i = 0; i < tiles.length; i++) {
+      var tile = tiles[i];
+      var span = tile.querySelector('span');
+      var label = span ? (span.textContent || '').replace(/\s+/g, ' ').trim() : '';
+      var parts = label.split(/;\s*/);
+      if (parts.length < 2) continue;
+      var name = parts[0].trim();
+      var brand = null, price = null, original = null, unit = null;
+      for (var k = 1; k < parts.length; k++) {
+        var p = parts[k];
+        var kv = p.match(/^([^:]+):\s*(.*)$/);
+        var key = kv ? kv[1].trim().toLowerCase() : '';
+        var val = kv ? kv[2].trim() : p;
+        if (key === 'marke') brand = val;
+        else if (key === 'preis') { var c = prices(val); if (c.length) price = c[0]; }
+        else if (key === 'grundpreis') unit = val;
+        else if (ORIGINAL_RE.test(key)) { var o = prices(val); if (o.length) original = o[0]; }
+      }
+      if (!name || price === null) continue;
+      if (original !== null && original <= price) original = null;
+      var title = brand && name.toLowerCase().indexOf(brand.toLowerCase()) !== 0 ? brand + ' ' + name : name;
+      out.push({
+        el: tile,
+        offer: {
+          title: title,
+          price_cents: price,
+          original_price_cents: original,
+          discount_percent: original ? Math.round((1 - price / original) * 100) : null,
+          unit_info: unit,
+          source_id: tile.getAttribute('data-dan') || null
+        }
+      });
+    }
+    return { items: out, validity: null };
+  }
+
   // "gültig vom 24.11. bis 29.11." / "Mo., 24.11. – Sa., 29.11.2026"
   function validity(text, now) {
     var re = /(\d{1,2})\.(\d{1,2})\.(\d{2,4})?\s*(?:bis|-|–)\s*(?:[A-Za-zäöü]{2,10}\.?,?\s*)?(\d{1,2})\.(\d{1,2})\.(\d{2,4})?/;
@@ -282,10 +325,10 @@
       if (!TEST && el) el.style.outline = '2px solid #059669';
     }
 
-    var special = chain === 'rewe' ? reweOffers() : null;
+    var special = chain === 'rewe' ? reweOffers() : chain === 'dm' ? dmOffers() : null;
     if (special && special.items.length > 0) {
       special.items.forEach(function (it) { add(it.offer, it.el); });
-      v = special.validity;
+      v = special.validity || null;
     } else {
       genericOffers().forEach(function (it) { add(it.offer, it.el); });
     }

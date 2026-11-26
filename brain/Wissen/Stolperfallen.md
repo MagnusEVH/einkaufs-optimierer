@@ -24,6 +24,7 @@ tags: [wissen, stolperfalle]
  normalisieren und danach zurückwandeln.
 - **Standortabfrage im Browser** kann ewig auf die Freigabe warten → `LocationService.getCurrentLocation` hat 12 s Zeitgrenze. Widget-Tests deshalb am Ende `tester.pump(Duration(seconds: 13))`.
 - **Nur `#…` ändern lädt Flutter nicht neu** → Import-Links (`#import=`) beim Testen von einer anderen Seite aus öffnen.
+- **Gespeicherte Händlerseiten testen**: vorher alle `<script>` entfernen (fremder Code), dann `extract.js` mit `__UEBERNEHMEN_TEST__` einsetzen. kaufDA-Prospekte sind nur Bilder, dort findet der Knopf nichts. dm-Kacheln: Text in `[data-dmid="product-tile"] span` (Marke getrennt), sichtbarer Text klebt Marke und Name zusammen.
 - **Regex-Backslashes in Node-Einzeilern/Heredocs** gingen beim Einfügen verloren → Regex-Blöcke als Datei schreiben und einfügen, danach Parser-Tests laufen lassen.
 - **WebAssembly-Build** bricht bei Paketen mit `dart:html`/`package:js` ab (z. B. `flutter_secure_storage` 9) → `flutter build web --wasm` nach neuen Paketen prüfen.
 - **Service Worker** liegt in `app/web/sw.js`; Cache-Name `eo-v1` bei Änderungen an der Cache-Strategie hochzählen. `web/flutter_bootstrap.js` ist eine eigene Vorlage (ohne Flutters Service Worker).
