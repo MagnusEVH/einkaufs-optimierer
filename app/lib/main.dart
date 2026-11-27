@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/app_navigation.dart';
 import 'core/services/analytics_service.dart';
+import 'core/services/app_version.dart';
+import 'core/services/reload/reload.dart';
 import 'core/services/app_links.dart';
 import 'core/services/loyalty_service.dart';
 import 'core/services/my_stores_service.dart';
@@ -42,6 +44,9 @@ void main() async {
 
   // "Aktiv heute" fürs Cockpit (nur Datum), wenn angemeldet
   SupabaseService.touchLastSeen();
+
+  // Neuere Version auf dem Server? (Hinweis oben in der App)
+  AppVersion.watch();
 
   // Check onboarding status
   final hasCompletedOnboarding = await PreferencesStorage.isOnboardingCompleted();
@@ -162,13 +167,18 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
   Widget build(BuildContext context) {
     _visited.add(_currentIndex);
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: [
-          for (var i = 0; i < _screens.length; i++)
-            _visited.contains(i) ? _screens[i] : const SizedBox.shrink(),
-        ],
-      ),
+      body: Column(children: [
+        const UpdateBanner(),
+        Expanded(
+          child: IndexedStack(
+            index: _currentIndex,
+            children: [
+              for (var i = 0; i < _screens.length; i++)
+                _visited.contains(i) ? _screens[i] : const SizedBox.shrink(),
+            ],
+          ),
+        ),
+      ]),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (idx) {
@@ -208,4 +218,37 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
       ),
     );
   }
+}
+
+/// Oben in der App, sobald ein neuerer Build bereitliegt.
+class UpdateBanner extends StatelessWidget {
+  const UpdateBanner({super.key});
+
+  @override
+  Widget build(BuildContext context) => ValueListenableBuilder<bool>(
+        valueListenable: AppVersion.updateAvailable,
+        builder: (context, available, _) => !available
+            ? const SizedBox.shrink()
+            : const Material(
+                key: Key('update_banner'),
+                color: AppColors.primary,
+                child: SafeArea(
+                  bottom: false,
+                  child: InkWell(
+                    onTap: reloadPage,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: AppSpace.l, vertical: AppSpace.m),
+                      child: Row(children: [
+                        Expanded(
+                          child: Text('Neue Version da', style: TextStyle(color: Colors.white, fontSize: 15)),
+                        ),
+                        Text('Neu laden', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+                        SizedBox(width: AppSpace.xs),
+                        Icon(Icons.refresh, color: Colors.white, size: 20),
+                      ]),
+                    ),
+                  ),
+                ),
+              ),
+      );
 }

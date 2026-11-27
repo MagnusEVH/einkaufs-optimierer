@@ -6,6 +6,7 @@ import '../../core/models/user_preferences.dart';
 import '../../core/services/notification_service.dart';
 import '../../core/services/supabase_service.dart';
 import '../account/account_screen.dart';
+import '../../core/services/app_version.dart';
 import '../admin/admin_dashboard_screen.dart';
 import '../../core/app_navigation.dart';
 import '../../core/services/app_links.dart';
@@ -486,10 +487,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 16),
 
           // App Version Footer
-          const Center(
+          Center(
             child: Text(
-              'Einkaufs-Optimierer v0.3.0 · Phase 3',
-              style: TextStyle(fontSize: 12, color: AppColors.inkSubtle),
+              AppVersion.label,
+              key: const Key('app_version'),
+              style: const TextStyle(fontSize: 12, color: AppColors.inkSubtle),
             ),
           ),
           const SizedBox(height: 8),
