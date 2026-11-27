@@ -19,7 +19,8 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 - Design-Pass nach unslop: warme Neutrale, ruhige Schrift, Abschluss als Kassenbon. PR #18, gemergt.
 - REWE-eBon (PDF) einlesen (PR #20/#24), dm-Regel für den Übernehmen-Knopf (PR #21/#25), Kerrygold-Zuordnung (PR #22), Unslop-Polish nach Screenshot-Audit (PR #23), alle gemergt.
 - Konten und Haushalte: neues Supabase-Schema mit 24 RLS-Tests (PGlite in der CI), noch nicht eingespielt. PR #26.
-- Letzte Session: [[2026-11-26 Konten-Schema]]
+- Suche 2: Eier zuerst, Gewohnheit als Gleichstand, Cache liefert neue Version sofort (PR #29).
+- Letzte Session: [[2026-11-27 Suche 2]]
 
 ## Offene Baustellen
 - [[Supabase-Anbindung]] – hoch, in Arbeit (Schema fertig, Einspielen wartet auf Dashboard-Einstellungen)
