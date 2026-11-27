@@ -77,12 +77,18 @@ jobs:
         run: |
           cd app
           REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+          # Versionsanzeige im Profil und Hinweis "Neue Version da" (build.json)
+          BUILD_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          BUILD_TIME=$(TZ=Europe/Berlin date '+%d.%m. %H:%M')
           flutter build web --release --wasm --base-href "/${REPO_NAME}/" \
+            --dart-define=BUILD_SHA="${BUILD_SHA}" \
+            --dart-define=BUILD_TIME="${BUILD_TIME}" \
             --dart-define=CARTO_API_KEY=${{ secrets.CARTO_API_KEY }} \
             --dart-define=SUPABASE_URL=${{ vars.SUPABASE_URL }} \
             --dart-define=SUPABASE_KEY=${{ vars.SUPABASE_KEY }}
-          # SUPABASE_URL/KEY: Repo-Variablen (öffentlich, Publishable Key).
-          # Nicht gesetzt = App bleibt lokal. Erst nach Stufe 3c setzen.
+          # SUPABASE_URL/KEY: Repo-Variablen (öffentlich, Publishable Key),
+          # gesetzt seit 27.11.2026. Nicht gesetzt = App bleibt lokal.
+          echo "{\"sha\":\"${BUILD_SHA}\",\"time\":\"${BUILD_TIME}\"}" > build/web/build.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

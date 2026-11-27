@@ -23,3 +23,7 @@ tags: [session]
 
 ## Gelernt
 - Nachladen per `updated_at` braucht Überlappung: `clock_timestamp()` liegt vor dem Commit, spät committete Zeilen fielen sonst durch
+
+## Nachtrag: Live-Schaltung und Versionsanzeige
+- Migration 3 live (`shopping_items` in `supabase_realtime`), Repo-Variablen `SUPABASE_URL`/`SUPABASE_KEY` gesetzt
+- Versionsanzeige (PR #33): unten im Profil "Version vom TT.MM. HH:MM · Commit". CI schreibt `build.json`, die App fragt beim Start, beim Zurückkehren und alle 10 Min., zeigt oben "Neue Version da – Neu laden". `sw.js` lässt `build.json` durch (Cache `eo-v3`)

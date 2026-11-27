@@ -12,7 +12,7 @@
  */
 'use strict';
 
-const CACHE = 'eo-v2';
+const CACHE = 'eo-v3';
 const SHELL_TIMEOUT_MS = 3000;
 // Flutter-Engine und Schriften kommen von Google-CDNs, URLs enthalten die Version
 const CDN_HOSTS = ['www.gstatic.com', 'fonts.gstatic.com', 'fonts.googleapis.com', 'cdn.jsdelivr.net'];
@@ -71,6 +71,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   const sameOrigin = url.origin === self.location.origin;
   if (!sameOrigin && !CDN_HOSTS.includes(url.hostname)) return; // Karten-Kacheln, APIs: nicht anfassen
+  if (url.pathname.endsWith('/build.json')) return; // Versionsprüfung: immer frisch, nicht speichern
   if (request.mode === 'navigate') {
     event.respondWith(networkFirst(request, SHELL_TIMEOUT_MS));
     return;
