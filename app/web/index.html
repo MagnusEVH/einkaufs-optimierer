@@ -60,6 +60,24 @@
       color: #0F172A;
       letter-spacing: -0.2px;
     }
+    #stuck {
+      display: none;
+      margin-top: 24px;
+      max-width: 300px;
+      text-align: center;
+      font-size: 14px;
+      color: #5E554A;
+    }
+    #stuck button {
+      margin-top: 12px;
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 12px;
+      background: #047857;
+      color: #fff;
+      font-size: 15px;
+      font-family: inherit;
+    }
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
@@ -70,10 +88,38 @@
   <div id="loading-container">
     <div class="spinner"></div>
     <div class="loading-text">Einkaufs-Optimierer lädt...</div>
+    <div id="stuck">
+      Das dauert ungewöhnlich lange. Oft hängt noch eine alte Version im Zwischenspeicher.
+      <br><button type="button" id="stuck-reload">Zwischenspeicher leeren und neu laden</button>
+    </div>
   </div>
 
   <script>
+    // Notausgang: Startet die App nicht, Cache und Cache-Worker leeren und
+    // neu laden. Lokale Daten (Liste, Einstellungen, Anmeldung) bleiben.
+    var started = false;
+    setTimeout(function () {
+      if (started) return;
+      var el = document.getElementById('stuck');
+      if (el) el.style.display = 'block';
+    }, 15000);
+    document.getElementById('stuck-reload').addEventListener('click', function () {
+      var jobs = [];
+      if ('serviceWorker' in navigator) {
+        jobs.push(navigator.serviceWorker.getRegistrations().then(function (regs) {
+          return Promise.all(regs.map(function (r) { return r.unregister(); }));
+        }));
+      }
+      if (window.caches) {
+        jobs.push(caches.keys().then(function (keys) {
+          return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+        }));
+      }
+      Promise.all(jobs).catch(function () {}).then(function () { location.reload(); });
+    });
+
     window.addEventListener('flutter-first-frame', function () {
+      started = true;
       const el = document.getElementById('loading-container');
       if (el) {
         el.style.opacity = '0';
