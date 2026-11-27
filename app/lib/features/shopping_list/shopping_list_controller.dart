@@ -7,7 +7,6 @@ import '../../core/models/product.dart';
 import '../../core/services/analytics_service.dart';
 import '../../core/services/catalog_service.dart';
 import '../../core/services/preferences_storage.dart';
-import '../../core/services/supabase_service.dart';
 
 class ShoppingListState {
   final List<ShoppingListItem> items;
@@ -46,11 +45,9 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     await CatalogService.loadCatalog();
     await CatalogService.loadUsage();
 
-    final remoteItems = await SupabaseService.fetchListItems(activeListId);
-    final localItems = remoteItems.isEmpty ? await _loadLocalItems() : null;
-    if (remoteItems.isNotEmpty) {
-      state = state.copyWith(items: remoteItems, isLoading: false);
-    } else if (localItems != null) {
+    // Gemeinsame Liste im Haushalt kommt mit Stufe 3c, bis dahin lokal
+    final localItems = await _loadLocalItems();
+    if (localItems != null) {
       state = state.copyWith(items: localItems, isLoading: false);
     } else {
       // Default initial sample basket for instant testability
@@ -99,7 +96,6 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     if (text.trim().isEmpty) return;
     final item = _createItem(text.trim(), quantity: quantity, product: matchedProduct);
     _setItems([item, ...state.items]);
-    SupabaseService.saveListItem(item);
     final matched = item.matchedProduct;
     if (matched != null) CatalogService.recordUsage(matched.id);
 
@@ -117,7 +113,6 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
       state.items.map((it) {
         if (it.id != id) return it;
         final updated = it.copyWith(rawText: product.name, matchedProduct: product);
-        SupabaseService.saveListItem(updated);
         CatalogService.recordUsage(product.id);
         return updated;
       }).toList(),
@@ -130,7 +125,6 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
         if (it.id == id) {
           final newQty = (it.quantity + delta).clamp(1.0, 99.0);
           final updated = it.copyWith(quantity: newQty);
-          SupabaseService.saveListItem(updated);
           return updated;
         }
         return it;
@@ -144,7 +138,6 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
         if (it.id == id) {
           final newChecked = !it.isChecked;
           final updated = it.copyWith(isChecked: newChecked);
-          SupabaseService.saveListItem(updated);
 
           AnalyticsService.trackShoppingListItemCompleted(
             it.rawText,
@@ -167,7 +160,6 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     _setItems(
       state.items.where((it) => it.id != id).toList(),
     );
-    SupabaseService.deleteListItem(id);
 
     if (itemToRemove.rawText.isNotEmpty) {
       AnalyticsService.trackEvent(
@@ -182,9 +174,6 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   void removeItems(Set<String> ids) {
     if (ids.isEmpty) return;
     _setItems(state.items.where((it) => !ids.contains(it.id)).toList());
-    for (final id in ids) {
-      SupabaseService.deleteListItem(id);
-    }
   }
 
   void clearList() {

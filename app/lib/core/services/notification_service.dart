@@ -81,7 +81,7 @@ class NotificationService {
       },
     );
 
-    if (!SupabaseService.isDemoMode && SupabaseService.client != null) {
+    if (SupabaseService.legacyBackend && SupabaseService.client != null) {
       try {
         await SupabaseService.client!.from('push_notifications_log').insert({
           'user_id': SupabaseService.currentUserId,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../core/models/user_preferences.dart';
 import '../../core/services/notification_service.dart';
 import '../../core/services/supabase_service.dart';
+import '../account/account_screen.dart';
 import '../admin/admin_dashboard_screen.dart';
 import '../../core/app_navigation.dart';
 import '../../core/services/app_links.dart';
@@ -63,31 +64,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _confirmDeleteAccount() {
+    final signedIn = SupabaseService.isSignedIn;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Konto und Daten löschen?'),
-        content: const Text(
-          'In der Demo-Version werden keine Daten auf einem Server gespeichert. Mit einem echten Konto werden hier gemäß Art. 17 DSGVO alle deine Daten gelöscht.',
+        title: Text(signedIn ? 'Konto löschen?' : 'Kein Konto angemeldet'),
+        content: Text(
+          signedIn
+              ? 'Dein Konto und deine Mitgliedschaften werden sofort gelöscht (Art. 17 DSGVO). '
+                  'Haushalte, in denen sonst niemand ist, gehen mit. '
+                  'Das lässt sich nicht rückgängig machen. Daten auf diesem Gerät bleiben.'
+              : 'Es ist kein Konto angemeldet, auf dem Server liegt also nichts von dir. '
+                  'Daten auf diesem Gerät löschst du über die Browser- bzw. App-Einstellungen.',
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Abbrechen')),
-          FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
-            onPressed: () async {
-              Navigator.pop(ctx);
-              await SupabaseService.deleteUserAccount();
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Demo-Version: Es waren keine Daten auf einem Server gespeichert.')),
-                );
-              }
-            },
-            child: const Text('Endgültig löschen'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(signedIn ? 'Abbrechen' : 'OK')),
+          if (signedIn)
+            FilledButton(
+              style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
+              onPressed: () async {
+                Navigator.pop(ctx);
+                final messenger = ScaffoldMessenger.of(context);
+                try {
+                  await SupabaseService.deleteAccount();
+                  messenger.showSnackBar(const SnackBar(content: Text('Konto gelöscht.')));
+                } on AccountException catch (e) {
+                  messenger.showSnackBar(SnackBar(content: Text(e.message)));
+                }
+                if (mounted) setState(() {});
+              },
+              child: const Text('Endgültig löschen'),
+            ),
         ],
       ),
     );
+  }
+
+  Future<void> _openAccount() async {
+    await Navigator.push(context, MaterialPageRoute(builder: (_) => const AccountScreen()));
+    if (mounted) setState(() {});
   }
 
   @override
@@ -100,6 +115,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          // Konto (nur, wenn der Build einen Server kennt)
+          if (!SupabaseService.isDemoMode) ...[
+            Card(
+              child: ListTile(
+                key: const Key('profile_account'),
+                leading: const Icon(Icons.person_outline),
+                title: Text(SupabaseService.isSignedIn ? (SupabaseService.currentUser?.email ?? 'Konto') : 'Anmelden'),
+                subtitle: Text(SupabaseService.isSignedIn ? 'Angemeldet' : 'Für gemeinsame Listen im Haushalt'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: _openAccount,
+              ),
+            ),
+            const SizedBox(height: 24),
+          ],
           // ───────────────────────────────────────────────
           // Quick Actions Section
           // ───────────────────────────────────────────────
@@ -409,8 +438,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const Divider(),
                 ListTile(
                   leading: const Icon(Icons.delete_forever, color: AppColors.danger),
-                  title: const Text('Konto und Daten löschen', style: TextStyle(color: AppColors.danger, fontWeight: FontWeight.w600)),
-                  subtitle: const Text('Recht auf Vergessenwerden (Löschung aller Datensätze inkl. App-Verknüpfungen)'),
+                  title: const Text('Konto löschen', style: TextStyle(color: AppColors.danger, fontWeight: FontWeight.w500)),
+                  subtitle: const Text('Konto, Mitgliedschaften und eigene Haushalte auf dem Server'),
                   onTap: _confirmDeleteAccount,
                 ),
               ],

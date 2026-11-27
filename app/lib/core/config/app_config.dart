@@ -15,6 +15,16 @@ class AppConfig {
   static const String cartoApiKey =
       String.fromEnvironment('CARTO_API_KEY', defaultValue: '');
 
+  /// Supabase-Projekt (Konten, Haushalte, gemeinsame Liste). Beides ist
+  /// öffentlich (Publishable Key, Schutz über RLS), kommt aber trotzdem per
+  /// --dart-define, damit Forks und Tests ohne Server laufen. Leer = nur lokal.
+  static const String supabaseUrl = String.fromEnvironment('SUPABASE_URL', defaultValue: '');
+  static const String supabaseKey = String.fromEnvironment('SUPABASE_KEY', defaultValue: '');
+
+  /// Schema-Stand, den diese App kann. Liegt der Server darüber
+  /// (min_app_version), zeigt die App "Bitte neu laden".
+  static const int appSchemaVersion = 1;
+
   // ── Tile URL templates ──────────────────────────────────────────────────
 
   /// CartoDB Voyager Raster Tiles (token authentication).

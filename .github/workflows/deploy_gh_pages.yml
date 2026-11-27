@@ -78,7 +78,11 @@ jobs:
           cd app
           REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
           flutter build web --release --wasm --base-href "/${REPO_NAME}/" \
-            --dart-define=CARTO_API_KEY=${{ secrets.CARTO_API_KEY }}
+            --dart-define=CARTO_API_KEY=${{ secrets.CARTO_API_KEY }} \
+            --dart-define=SUPABASE_URL=${{ vars.SUPABASE_URL }} \
+            --dart-define=SUPABASE_KEY=${{ vars.SUPABASE_KEY }}
+          # SUPABASE_URL/KEY: Repo-Variablen (öffentlich, Publishable Key).
+          # Nicht gesetzt = App bleibt lokal. Erst nach Stufe 3c setzen.
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
