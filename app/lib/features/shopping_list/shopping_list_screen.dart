@@ -22,6 +22,9 @@ import '../trip/trip_controller.dart';
 import '../trip/trip_screen.dart';
 import 'shopping_list_controller.dart';
 import '../household/household_screen.dart';
+import '../account/account_screen.dart';
+import '../../core/services/list_sync.dart';
+import '../../core/services/household_service.dart';
 
 /// Unsicher zugeordneter Freitext, den der Nutzer prüfen sollte.
 bool itemNeedsCheck(ShoppingListItem item) {
@@ -235,6 +238,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
           slivers: [
             if (trip != null) SliverToBoxAdapter(child: _TripBanner(trip: trip)),
             SliverToBoxAdapter(child: _buildInput()),
+            const SliverToBoxAdapter(child: _SyncBar()),
             const SliverToBoxAdapter(child: _OfferStatusBar()),
             if (items.isEmpty)
               SliverFillRemaining(hasScrollBody: false, child: _buildEmpty())
@@ -569,5 +573,69 @@ class _OfferStatusBar extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+/// Zustand der gemeinsamen Liste: übernehmen, offline, abgemeldet, neu laden.
+/// Unsichtbar, solange alles stimmt.
+class _SyncBar extends ConsumerWidget {
+  const _SyncBar();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final st = ref.watch(shoppingListProvider);
+    if (!st.shared) return const SizedBox.shrink();
+    final ctrl = ref.read(shoppingListProvider.notifier);
+    final household = ref.watch(householdProvider).current?.name ?? 'den Haushalt';
+
+    Widget bar(String text, {Color color = AppColors.surfaceAlt, Color ink = AppColors.inkMuted, List<Widget> actions = const []}) =>
+        Padding(
+          padding: const EdgeInsets.fromLTRB(AppSpace.l, AppSpace.m, AppSpace.l, 0),
+          child: Container(
+            key: const Key('sync_bar'),
+            padding: const EdgeInsets.fromLTRB(AppSpace.m, AppSpace.s, AppSpace.xs, AppSpace.s),
+            decoration: BoxDecoration(color: color, borderRadius: AppRadius.medium),
+            child: Row(children: [
+              Expanded(child: Text(text, style: AppText.small.copyWith(color: ink))),
+              ...actions,
+            ]),
+          ),
+        );
+
+    if (st.needsReload) {
+      return bar('Es gibt eine neue Version. Bitte die App neu laden.',
+          color: AppColors.warningSoft, ink: AppColors.warning);
+    }
+    if (st.problem == SyncProblem.signedOut) {
+      return bar('Anmeldung abgelaufen. Deine Änderungen bleiben auf dem Gerät.',
+          color: AppColors.warningSoft,
+          ink: AppColors.warning,
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AccountScreen())),
+              child: const Text('Anmelden'),
+            ),
+          ]);
+    }
+    if (st.problem == SyncProblem.offline) {
+      final n = st.pendingCount;
+      return bar(
+          n == 0
+              ? 'Offline. Du siehst den letzten Stand.'
+              : 'Offline. ${n == 1 ? '1 Änderung wartet' : '$n Änderungen warten'} und geht raus, sobald wieder Netz da ist.',
+          actions: [TextButton(onPressed: ctrl.syncNow, child: const Text('Erneut'))]);
+    }
+    if (st.importable > 0) {
+      return bar(
+          '${st.importable == 1 ? '1 Artikel' : '${st.importable} Artikel'} von diesem Gerät in "$household" übernehmen?',
+          color: AppColors.primaryFaint,
+          ink: AppColors.primaryDark,
+          actions: [
+            TextButton(key: const Key('import_no'), onPressed: ctrl.declineImport, child: const Text('Nein')),
+            TextButton(key: const Key('import_yes'), onPressed: ctrl.importLocal, child: const Text('Übernehmen')),
+          ]);
+    }
+    if (st.errorMessage != null) return bar(st.errorMessage!, color: AppColors.dangerSoft, ink: AppColors.danger);
+    return const SizedBox.shrink();
   }
 }

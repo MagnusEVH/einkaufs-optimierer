@@ -1,22 +1,51 @@
 // app/lib/features/shopping_list/shopping_list_controller.dart
+//
+// Einkaufsliste. Zwei Betriebsarten:
+// - lokal (ohne Konto oder ohne Haushalt): Liste nur auf diesem Gerät
+// - gemeinsam (angemeldet, Haushalt gewählt): Liste des Haushalts über
+//   ListSync (Server, Warteschlange, Zwischenspeicher, Realtime)
 
+import 'dart:async';
+
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/models/list_item.dart';
 import '../../core/models/product.dart';
 import '../../core/services/analytics_service.dart';
 import '../../core/services/catalog_service.dart';
+import '../../core/services/household_service.dart';
+import '../../core/services/list_sync.dart';
 import '../../core/services/preferences_storage.dart';
+import '../../core/services/supabase_service.dart';
 
 class ShoppingListState {
   final List<ShoppingListItem> items;
   final bool isLoading;
   final String? errorMessage;
 
+  /// Gemeinsame Liste eines Haushalts (sonst nur auf diesem Gerät).
+  final bool shared;
+
+  /// Änderungen, die noch nicht beim Server sind.
+  final int pendingCount;
+  final SyncProblem? problem;
+
+  /// Artikel der Geräte-Liste, die man in den Haushalt übernehmen kann.
+  final int importable;
+
+  /// Server verlangt eine neuere App.
+  final bool needsReload;
+
   const ShoppingListState({
     this.items = const [],
     this.isLoading = false,
     this.errorMessage,
+    this.shared = false,
+    this.pendingCount = 0,
+    this.problem,
+    this.importable = 0,
+    this.needsReload = false,
   });
 
   ShoppingListState copyWith({
@@ -28,30 +57,49 @@ class ShoppingListState {
       items: items ?? this.items,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage,
+      shared: shared,
+      pendingCount: pendingCount,
+      problem: problem,
+      importable: importable,
+      needsReload: needsReload,
     );
   }
 }
 
 class ShoppingListController extends StateNotifier<ShoppingListState> {
-  ShoppingListController() : super(const ShoppingListState()) {
-    loadInitialItems();
+  /// [remote] nur für Tests, sonst Supabase.
+  ShoppingListController({this.remote}) : super(const ShoppingListState()) {
+    _localReady = loadInitialItems();
   }
 
+  final ListRemote? remote;
   static const _uuid = Uuid();
   final String activeListId = '00000000-0000-0000-0000-000000000001';
+
+  late Future<void> _localReady;
+  List<ShoppingListItem> _local = const [];
+  ListSync? _sync;
+  Timer? _retry;
+  AppLifecycleListener? _lifecycle;
+  int _ticks = 0;
+  int _importable = 0;
+  bool _needsReload = false;
+
+  static const _keyImportAsked = 'list_import_asked_v1';
+
+  ListSync? get sync => _sync;
 
   Future<void> loadInitialItems() async {
     state = state.copyWith(isLoading: true);
     await CatalogService.loadCatalog();
     await CatalogService.loadUsage();
 
-    // Gemeinsame Liste im Haushalt kommt mit Stufe 3c, bis dahin lokal
     final localItems = await _loadLocalItems();
     if (localItems != null) {
-      state = state.copyWith(items: localItems, isLoading: false);
+      _local = localItems;
     } else {
-      // Default initial sample basket for instant testability
-      final initialBasket = [
+      // Beispielkorb für den ersten Start
+      _local = [
         _createItem('Somat Gold', quantity: 2),
         _createItem('Kerrygold', quantity: 2),
         _createItem('Skyr', quantity: 2),
@@ -59,11 +107,11 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
         _createItem('Ritter Sport', quantity: 3),
         _createItem('Ristorante', quantity: 2),
       ];
-      state = state.copyWith(items: initialBasket, isLoading: false);
     }
+    if (_sync == null) state = state.copyWith(items: _local, isLoading: false);
   }
 
-  /// Lokal gespeicherte Liste (Demo-Modus), oder null beim ersten Start.
+  /// Lokal gespeicherte Liste, oder null beim ersten Start.
   Future<List<ShoppingListItem>?> _loadLocalItems() async {
     final raw = await PreferencesStorage.loadShoppingList();
     if (raw == null) return null;
@@ -74,8 +122,120 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     }).toList();
   }
 
-  /// Setzt die Liste und speichert sie lokal, damit sie das Neuladen übersteht.
+  // ── Haushalt wechseln ────────────────────────────────────────────────────
+
+  /// null = lokale Liste. Sonst die gemeinsame Liste dieses Haushalts.
+  Future<void> attachHousehold(String? householdId) async {
+    if (householdId == _sync?.householdId) return;
+    _detach();
+    await _localReady;
+    if (householdId == null) {
+      state = ShoppingListState(items: _local);
+      return;
+    }
+    final s = ListSync(remote ?? const SupabaseListRemote(), householdId);
+    _sync = s;
+    s.onChanged = () {
+      if (identical(_sync, s)) _showSync();
+    };
+    state = const ShoppingListState(shared: true, isLoading: true);
+    _retry = Timer.periodic(const Duration(seconds: 30), (_) => _tick());
+    _lifecycle = AppLifecycleListener(onResume: () => unawaited(s.sync()));
+    await s.open();
+    if (!identical(_sync, s)) return;
+    final asked = await PreferencesStorage.loadJson(_keyImportAsked) == true;
+    _importable = asked ? 0 : _local.where((i) => !i.isChecked).length;
+    _needsReload = await SupabaseService.needsReload();
+    _showSync();
+  }
+
+  void _detach() {
+    _sync?.close();
+    _sync = null;
+    _retry?.cancel();
+    _retry = null;
+    _lifecycle?.dispose();
+    _lifecycle = null;
+  }
+
+  /// Alle 30 s: bei Problemen oder Wartendem erneut, sonst alle 2 Min. nachladen
+  /// (falls ein Realtime-Signal verloren ging).
+  void _tick() {
+    final s = _sync;
+    if (s == null) return;
+    _ticks++;
+    if (s.problem != null || s.pendingCount > 0 || _ticks % 4 == 0) unawaited(s.sync());
+  }
+
+  void _showSync() {
+    final s = _sync;
+    if (s == null) return;
+    state = ShoppingListState(
+      items: [for (final r in s.rows.reversed) _fromRow(r)],
+      shared: true,
+      pendingCount: s.pendingCount,
+      problem: s.problem,
+      importable: _importable,
+      needsReload: _needsReload,
+      errorMessage: s.droppedMessage,
+    );
+  }
+
+  ShoppingListItem _fromRow(ListRow r) {
+    final byId = r.productId == null ? null : CatalogService.products.where((p) => p.id == r.productId).firstOrNull;
+    return ShoppingListItem(
+      id: r.id,
+      listId: r.householdId,
+      rawText: r.rawText,
+      matchedProduct: byId ?? CatalogService.matchRawText(r.rawText),
+      quantity: r.quantity,
+      isChecked: r.checked,
+      notes: r.note,
+    );
+  }
+
+  /// Erste Anmeldung: Liste von diesem Gerät in den Haushalt übernehmen.
+  /// Was dort schon steht (gleicher Name), kommt nicht doppelt.
+  Future<void> importLocal() async {
+    final s = _sync;
+    if (s == null) return;
+    await PreferencesStorage.saveJson(_keyImportAsked, true);
+    _importable = 0;
+    final existing = {for (final r in s.rows) r.rawText.toLowerCase()};
+    for (final it in _local.reversed) {
+      if (it.isChecked || existing.contains(it.rawText.toLowerCase())) continue;
+      await s.add(ListRow(
+        id: _uuid.v4(),
+        householdId: s.householdId,
+        rawText: it.rawText,
+        productId: it.matchedProduct?.id,
+        quantity: it.quantity,
+        note: it.notes,
+      ));
+    }
+    _showSync();
+  }
+
+  Future<void> declineImport() async {
+    await PreferencesStorage.saveJson(_keyImportAsked, true);
+    _importable = 0;
+    _showSync();
+  }
+
+  /// Sofort abgleichen (Knopf "Erneut versuchen").
+  Future<void> syncNow() async => _sync?.sync();
+
+  @override
+  void dispose() {
+    _detach();
+    super.dispose();
+  }
+
+  // ── Lokale Liste ─────────────────────────────────────────────────────────
+
+  /// Setzt die lokale Liste und speichert sie, damit sie das Neuladen übersteht.
   void _setItems(List<ShoppingListItem> items) {
+    _local = items;
     state = state.copyWith(items: items);
     PreferencesStorage.saveShoppingList(items.map((it) => it.toJson()).toList());
   }
@@ -92,10 +252,23 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     );
   }
 
+  // ── Änderungen (lokal oder gemeinsam) ────────────────────────────────────
+
   void addItem(String text, {Product? matchedProduct, double quantity = 1.0}) {
     if (text.trim().isEmpty) return;
     final item = _createItem(text.trim(), quantity: quantity, product: matchedProduct);
-    _setItems([item, ...state.items]);
+    final s = _sync;
+    if (s != null) {
+      s.add(ListRow(
+        id: item.id,
+        householdId: s.householdId,
+        rawText: item.rawText,
+        productId: item.matchedProduct?.id,
+        quantity: item.quantity,
+      ));
+    } else {
+      _setItems([item, ...state.items]);
+    }
     final matched = item.matchedProduct;
     if (matched != null) CatalogService.recordUsage(matched.id);
 
@@ -109,59 +282,51 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   /// unsicherer Freitext-Zuordnung). Der Name wird übernommen, damit der
   /// Optimierer die Wahl nicht wieder überschreibt.
   void assignProduct(String id, Product product) {
+    CatalogService.recordUsage(product.id);
+    final s = _sync;
+    if (s != null) {
+      s.patch(id, {'raw_text': product.name, 'product_id': product.id});
+      return;
+    }
     _setItems(
-      state.items.map((it) {
-        if (it.id != id) return it;
-        final updated = it.copyWith(rawText: product.name, matchedProduct: product);
-        CatalogService.recordUsage(product.id);
-        return updated;
-      }).toList(),
+      state.items.map((it) => it.id != id ? it : it.copyWith(rawText: product.name, matchedProduct: product)).toList(),
     );
   }
 
   void updateQuantity(String id, double delta) {
-    _setItems(
-      state.items.map((it) {
-        if (it.id == id) {
-          final newQty = (it.quantity + delta).clamp(1.0, 99.0);
-          final updated = it.copyWith(quantity: newQty);
-          return updated;
-        }
-        return it;
-      }).toList(),
-    );
+    final current = state.items.where((it) => it.id == id).firstOrNull;
+    if (current == null) return;
+    final newQty = (current.quantity + delta).clamp(1.0, 99.0);
+    final s = _sync;
+    if (s != null) {
+      s.patch(id, {'quantity': newQty});
+      return;
+    }
+    _setItems(state.items.map((it) => it.id == id ? it.copyWith(quantity: newQty) : it).toList());
   }
 
   void toggleChecked(String id) {
-    _setItems(
-      state.items.map((it) {
-        if (it.id == id) {
-          final newChecked = !it.isChecked;
-          final updated = it.copyWith(isChecked: newChecked);
-
-          AnalyticsService.trackShoppingListItemCompleted(
-            it.rawText,
-            isChecked: newChecked,
-          );
-
-          return updated;
-        }
-        return it;
-      }).toList(),
-    );
+    final current = state.items.where((it) => it.id == id).firstOrNull;
+    if (current == null) return;
+    final newChecked = !current.isChecked;
+    AnalyticsService.trackShoppingListItemCompleted(current.rawText, isChecked: newChecked);
+    final s = _sync;
+    if (s != null) {
+      s.setChecked(id, newChecked);
+      return;
+    }
+    _setItems(state.items.map((it) => it.id == id ? it.copyWith(isChecked: newChecked) : it).toList());
   }
 
   void removeItem(String id) {
-    final itemToRemove = state.items.firstWhere(
-      (it) => it.id == id,
-      orElse: () => _createItem(''),
-    );
-
-    _setItems(
-      state.items.where((it) => it.id != id).toList(),
-    );
-
-    if (itemToRemove.rawText.isNotEmpty) {
+    final itemToRemove = state.items.where((it) => it.id == id).firstOrNull;
+    final s = _sync;
+    if (s != null) {
+      s.delete(id);
+    } else {
+      _setItems(state.items.where((it) => it.id != id).toList());
+    }
+    if (itemToRemove != null) {
       AnalyticsService.trackEvent(
         'shopping_list_item_removed',
         category: 'shopping_list',
@@ -173,15 +338,41 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   /// Entfernt mehrere Artikel auf einmal (Abschluss eines Einkaufs).
   void removeItems(Set<String> ids) {
     if (ids.isEmpty) return;
+    final s = _sync;
+    if (s != null) {
+      for (final id in ids) {
+        s.delete(id);
+      }
+      return;
+    }
     _setItems(state.items.where((it) => !ids.contains(it.id)).toList());
   }
 
   void clearList() {
+    final s = _sync;
+    if (s != null) {
+      for (final it in state.items) {
+        s.delete(it.id);
+      }
+      return;
+    }
     _setItems([]);
   }
 }
 
-final shoppingListProvider =
-    StateNotifierProvider<ShoppingListController, ShoppingListState>((ref) {
-  return ShoppingListController();
+/// Fake-Server für Tests der gemeinsamen Liste, sonst Supabase.
+final listRemoteProvider = Provider<ListRemote?>((ref) => null);
+
+final shoppingListProvider = StateNotifierProvider<ShoppingListController, ShoppingListState>((ref) {
+  final controller = ShoppingListController(remote: ref.watch(listRemoteProvider));
+  // Gemeinsame Liste nur angemeldet mit Haushalt, sonst lokal
+  ref.listen<HouseholdState>(
+    householdProvider,
+    (_, next) {
+      final available = ref.read(householdApiProvider).available;
+      controller.attachHousehold(available ? next.current?.id : null);
+    },
+    fireImmediately: true,
+  );
+  return controller;
 });

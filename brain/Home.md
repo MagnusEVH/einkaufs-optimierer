@@ -22,10 +22,11 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 - Suche 2: Eier zuerst, Gewohnheit als Gleichstand, Cache liefert neue Version sofort (PR #29).
 - Stufe 3a Konto: Anmelden, Registrieren mit Code, Passwort vergessen, Konto löschen. Migrationen live, App bleibt bis 3c lokal (PR #30).
 - Stufe 3b Haushalte: Auswahl im Listentitel, Gruppen, Einladungscodes, Rollen (PR #31).
-- Letzte Session: [[2026-11-27 Stufe 3b Haushalte]]
+- Stufe 3c Abgleich: gemeinsame Liste je Haushalt, offline-Warteschlange, Realtime (PR #32).
+- Letzte Session: [[2026-11-27 Stufe 3c Abgleich]]
 
 ## Offene Baustellen
-- [[Supabase-Anbindung]] – hoch, in Arbeit (Schema live, 3a Konto und 3b Haushalte fertig, 3c Abgleich offen)
+- [[Supabase-Anbindung]] – hoch, in Arbeit (Schema live, 3a–3c fertig, Live-Schaltung offen)
 - [[Carto-Key-Rotation]] – hoch, Aufgabe für den Nutzer
 - [[Live-Scraper]] – ersetzt durch Übernehmen-Knopf
 - [[CI-Analyze-Gate]] – niedrig
