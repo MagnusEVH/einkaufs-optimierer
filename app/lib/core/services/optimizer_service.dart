@@ -57,7 +57,7 @@ class OptimizerService {
     }
 
     // Try Remote Edge Function if Supabase is active (nur ohne eigene Marktwahl)
-    if (fixedRoute == null && !SupabaseService.isDemoMode && SupabaseService.client != null) {
+    if (fixedRoute == null && SupabaseService.legacyBackend && SupabaseService.client != null) {
       try {
         final payload = {
           'user_location': {

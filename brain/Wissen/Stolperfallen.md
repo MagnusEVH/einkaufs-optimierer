@@ -35,3 +35,11 @@ tags: [wissen, stolperfalle]
 
 ## Service Worker und Flutter-Programm (2026-11-27)
 `main.dart.wasm`/`main.dart.js` haben keine Version in der URL. Mit stale-while-revalidate läuft nach einem Deploy noch die alte App (so blieb die alte Suche nach PR #28). Eigene Dateien daher network-first, nur versionierte CDN-URLs cache-first.
+
+## Supabase-Mails und iPhone-PWA (2026-11-27)
+- Mail-Vorlagen lassen sich erst mit eigenem SMTP ändern. Ohne SMTP enthalten Bestätigungs- und Reset-Mails nur einen Link, keinen 6-stelligen Code.
+- Links aus Mails öffnen auf dem iPhone Safari, nicht die Home-Bildschirm-App. Mit PKCE fehlt dort der Schlüssel, der Link scheitert. Deshalb `AuthFlowType.implicit`: Neues Passwort in Safari setzen, dann in der App anmelden. Bestätigungslinks wirken ohnehin auf dem Server.
+- Registrierung ohne gültige Einladung liefert von GoTrue nur `unexpected_failure` / "Database error saving new user" (unser Trigger). Die App übersetzt das.
+
+## Git Bash und `--base-href "/"` (2026-11-27)
+Git Bash macht aus `/` einen Windows-Pfad (`E:/GIT/Git/`). Mit `MSYS_NO_PATHCONV=1 flutter build web ...` bauen.

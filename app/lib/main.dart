@@ -13,6 +13,7 @@ import 'core/services/observed_price_service.dart';
 import 'core/services/offer_import_service.dart';
 import 'core/services/preferences_storage.dart';
 import 'core/services/supabase_service.dart';
+import 'features/account/account_screen.dart';
 import 'features/my_apps/balance_scan_flow.dart';
 import 'features/my_apps/my_apps_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
@@ -28,7 +29,7 @@ void main() async {
 
   // Alles Unabhängige parallel laden, damit der Start schneller geht
   await Future.wait([
-    SupabaseService.initialize(), // mit Rückfall auf den Demo-Modus
+    SupabaseService.initialize(), // ohne Server im Build: alles lokal
     CatalogService.loadCatalog(),
     ObservedPriceService.load(), // echte Bonpreise
     OfferImportService.loadMappings(), // gemerkte Zuordnungen
@@ -38,6 +39,9 @@ void main() async {
 
   // Angebote vom Übernehmen-Knopf (#import=…), nach dem Katalog für die Zuordnung
   OfferImportService.pending = OfferImportService.fromUri(Uri.base);
+
+  // "Aktiv heute" fürs Cockpit (nur Datum), wenn angemeldet
+  SupabaseService.touchLastSeen();
 
   // Check onboarding status
   final hasCompletedOnboarding = await PreferencesStorage.isOnboardingCompleted();
@@ -101,9 +105,22 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
     ));
   }
 
+  /// Link "Passwort zurücksetzen" aus der Mail: neues Passwort abfragen.
+  void _onRecovery() {
+    if (!SupabaseService.recoveryPending.value || !mounted) return;
+    SupabaseService.recoveryPending.value = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      // Token aus der Adresse entfernen, damit Neuladen nicht erneut fragt
+      SystemNavigator.routeInformationUpdated(uri: Uri(path: '/'), replace: true);
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => const NewPasswordScreen()));
+    });
+  }
+
   @override
   void dispose() {
     _lifecycle.dispose();
+    SupabaseService.recoveryPending.removeListener(_onRecovery);
     AppTab.current.removeListener(_onTabChanged);
     super.dispose();
   }
@@ -113,6 +130,8 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
     super.initState();
     AppTab.current.addListener(_onTabChanged);
     _lifecycle = AppLifecycleListener(onResume: _onResume);
+    SupabaseService.recoveryPending.addListener(_onRecovery);
+    _onRecovery();
     final batch = OfferImportService.pending;
     if (batch != null) {
       OfferImportService.pending = null;

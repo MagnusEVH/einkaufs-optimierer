@@ -44,7 +44,7 @@ class AnalyticsService {
       },
     );
 
-    if (!SupabaseService.isDemoMode && SupabaseService.client != null) {
+    if (SupabaseService.legacyBackend && SupabaseService.client != null) {
       try {
         await SupabaseService.client!.from('user_sessions').insert({
           'id': _currentSessionId,
@@ -86,7 +86,7 @@ class AnalyticsService {
 
     debugPrint('[Analytics Track] [$category] $eventName: $properties');
 
-    if (!SupabaseService.isDemoMode && SupabaseService.client != null) {
+    if (SupabaseService.legacyBackend && SupabaseService.client != null) {
       try {
         await SupabaseService.client!.from('analytics_events').insert(event.toJson());
       } catch (e) {
@@ -225,7 +225,7 @@ class AnalyticsService {
       properties: {'report_category': category, 'title': title},
     );
 
-    if (!SupabaseService.isDemoMode && SupabaseService.client != null) {
+    if (SupabaseService.legacyBackend && SupabaseService.client != null) {
       try {
         await SupabaseService.client!.from('app_error_reports').insert(report);
       } catch (e) {
@@ -239,7 +239,7 @@ class AnalyticsService {
   // ==========================================================================
 
   static Future<DeveloperKpiSummary> fetchDashboardKpis({int days = 7}) async {
-    if (!SupabaseService.isDemoMode && SupabaseService.client != null) {
+    if (SupabaseService.legacyBackend && SupabaseService.client != null) {
       try {
         final res = await SupabaseService.client!.rpc(
           'get_developer_dashboard_kpis',
