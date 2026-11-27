@@ -1,14 +1,54 @@
 // app/lib/core/services/catalog_service.dart
 
 import 'dart:convert';
+import 'dart:math' as math;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import '../models/product.dart';
+import 'preferences_storage.dart';
 
 class CatalogService {
   static List<Product> _cachedProducts = [];
   static bool _isLoaded = false;
 
   static List<Product> get products => _cachedProducts;
+
+  // Wie oft und wann ein Produkt zuletzt auf die Liste kam (nur lokal).
+  // Entscheidet bei gleich guten Treffern, wie bei Instacart oder Google:
+  // zuerst die Treffergüte, die eigene Gewohnheit nur als Gleichstandsregel.
+  static const _keyUsage = 'product_usage_v1';
+  static final Map<String, ({int count, DateTime last})> _usage = {};
+
+  static Future<void> loadUsage() async {
+    final raw = await PreferencesStorage.loadJson(_keyUsage);
+    _usage.clear();
+    if (raw is! Map) return;
+    raw.forEach((id, v) {
+      if (v is Map && v['n'] is int && v['t'] is int) {
+        _usage[id as String] = (count: v['n'] as int, last: DateTime.fromMillisecondsSinceEpoch(v['t'] as int));
+      }
+    });
+  }
+
+  /// Merkt sich, dass [productId] auf die Liste kam.
+  static Future<void> recordUsage(String productId, {DateTime? now}) async {
+    final old = _usage[productId];
+    _usage[productId] = (count: (old?.count ?? 0) + 1, last: now ?? DateTime.now());
+    await PreferencesStorage.saveJson(_keyUsage, {
+      for (final e in _usage.entries) e.key: {'n': e.value.count, 't': e.value.last.millisecondsSinceEpoch},
+    });
+  }
+
+  @visibleForTesting
+  static void clearUsage() => _usage.clear();
+
+  /// Häufigkeit mit Halbwertszeit 30 Tage: oft und kürzlich zählt am meisten.
+  static double _usageScore(String productId, DateTime now) {
+    final u = _usage[productId];
+    if (u == null) return 0;
+    final days = now.difference(u.last).inHours / 24;
+    return u.count * math.pow(0.5, days / 30).toDouble();
+  }
 
   /// Liefert den Zeitpunkt der letzten Verifizierung für ein Produkt
   static String getFreshnessLabel(Product product) {
@@ -59,67 +99,122 @@ class CatalogService {
 
   /// Autocomplete suggestions for user input (e.g. typing "sk" suggests "Skyr Natur", "Skyr Vanille")
   ///
-  /// Reihenfolge nach Treffergüte: genauer Name oder Alias, Wortanfang,
-  /// irgendwo im Wort, zuletzt kleine Tippfehler ("joghrt" → Joghurt).
+  /// Reihenfolge nach Treffergüte: genauer Name oder Alias, ganzes Wort,
+  /// Ende eines zusammengesetzten Worts ("Freilandeier" sind Eier), Wortanfang,
+  /// kleine Tippfehler ("joghrt" → Joghurt), zuletzt mitten im Wort
+  /// ("Dreierpack" ist keine Eier). Bei gleicher Güte gewinnt, was man oft
+  /// und kürzlich auf die Liste gesetzt hat, dann der kürzere Name.
   /// "ae/oe/ue/ss" und "ä/ö/ü/ß" gelten als gleich. Mehrere Wörter müssen alle passen.
-  static List<Product> getSuggestions(String query, {int limit = 5}) {
+  static List<Product> getSuggestions(String query, {int limit = 5, DateTime? now}) {
+    final today = now ?? DateTime.now();
     final terms = _searchWords(query);
     if (terms.isEmpty) return [];
 
     final scored = <(Product, int)>[];
+    final strong = <Product>{};
     for (final p in _cachedProducts) {
-      final fields = [p.name, ...p.aliases, if (p.brand != null) p.brand!];
+      final fields = [
+        p.name,
+        ...p.aliases,
+        if (p.brand != null && !_genericBrands.contains(p.brand!.toLowerCase())) p.brand!,
+      ];
       var total = 0;
+      var allStrong = true;
       for (final t in terms) {
         var best = 0;
         for (final f in fields) {
-          final s = _termScore(t, _fold(f.toLowerCase()), _searchWords(f));
+          final words = _searchWords(f);
+          final s = _termScore(t, words.join(' '), words);
           if (s > best) best = s;
         }
         if (best == 0) {
           total = 0;
           break;
         }
+        if (best < _strongScore) allStrong = false;
         total += best;
       }
-      if (total > 0) scored.add((p, total));
+      if (total > 0) {
+        scored.add((p, total));
+        if (allStrong) strong.add(p);
+      }
     }
+    // Tippfehler und Treffer mitten im Wort nur, wenn nichts Besseres passt
+    // (wie Typesense: Tippfehler erst bei zu wenigen Treffern). Sonst füllt
+    // "eier" die freien Plätze mit "Energy Drink" oder "Dreierpack".
+    if (strong.isNotEmpty) scored.removeWhere((e) => !strong.contains(e.$1));
     scored.sort((a, b) {
       final byScore = b.$2.compareTo(a.$2);
       if (byScore != 0) return byScore;
+      final byUsage = _usageScore(b.$1.id, today).compareTo(_usageScore(a.$1.id, today));
+      if (byUsage != 0) return byUsage;
       final byLength = a.$1.name.length.compareTo(b.$1.name.length);
       return byLength != 0 ? byLength : a.$1.name.compareTo(b.$1.name);
     });
     return scored.take(limit).map((e) => e.$1).toList();
   }
 
+  /// Ab dieser Güte gilt ein Treffer als gut (Wortanfang oder besser).
+  static const _strongScore = 70;
+
+  /// Marken, die nichts unterscheiden ("Eigenmarke" steht bei 177 Produkten).
+  static const _genericBrands = {'eigenmarke'};
+
+  /// Umlaute auf den Grundbuchstaben: "käse", "kaese" und "kase" sind gleich,
+  /// "apfel" findet auch "Äpfel". Beide Seiten werden gleich behandelt.
   static String _fold(String s) => s
-      .replaceAll('ä', 'ae')
-      .replaceAll('ö', 'oe')
-      .replaceAll('ü', 'ue')
+      .replaceAll('ä', 'a')
+      .replaceAll('ö', 'o')
+      .replaceAll('ü', 'u')
+      .replaceAll('ae', 'a')
+      .replaceAll('oe', 'o')
+      .replaceAll('ue', 'u')
       .replaceAll('ß', 'ss');
 
-  static List<String> _searchWords(String text) =>
-      _fold(text.toLowerCase()).split(RegExp(r'[^a-z0-9]+')).where((w) => w.isNotEmpty).toList();
+  static List<String> _searchWords(String text) => _fold(text.toLowerCase())
+      .split(RegExp(r'[^a-z0-9]+'))
+      .where((w) => w.isNotEmpty && w != 'eigenmarke')
+      .toList();
 
   static int _termScore(String term, String field, List<String> words) {
     if (field == term || words.length == 1 && words.first == term) return 100;
     if (words.any((w) => w == term)) return 90;
-    if (field.startsWith(term)) return 80;
-    if (words.any((w) => w.startsWith(term))) return 70;
-    if (field.contains(term)) return 40;
-    // Tippfehler: ab 4 Zeichen einer, ab 7 zwei. Auch gegen den Wortanfang,
-    // damit halb getippte Wörter passen ("joghr" → "joghurt").
+    // Deutsches Kompositum: Das letzte Glied bestimmt, was es ist
+    // ("Freilandeier"). Davor mindestens 3 Buchstaben, sonst wäre "Rucola" Cola.
+    if (term.length >= 3 && words.any((w) => w.length - term.length >= 3 && w.endsWith(term))) return 85;
+    // Wortanfang (70–79): je näher das Wort an der Eingabe, desto besser
+    // ("ei" → "Eier" vor "Eisbergsalat"), erstes Wort leicht vorn.
+    var prefix = 0;
+    for (var i = 0; i < words.length; i++) {
+      final w = words[i];
+      if (!w.startsWith(term)) continue;
+      final rest = w.length - term.length;
+      final s = 70 + (rest < 8 ? 8 - rest : 0) + (i == 0 ? 1 : 0);
+      if (s > prefix) prefix = s;
+    }
+    if (prefix > 0) return prefix;
+    final typo = _typoScore(term, words);
+    if (typo > 0) return typo;
+    // Mitten im Wort zählt kaum ("eier" in "Dreierpack").
+    if (term.length >= 4 && field.contains(term)) return 5;
+    return 0;
+  }
+
+  /// Tippfehler wie bei Typesense: ab 4 Zeichen einer, ab 8 zwei. Auch gegen
+  /// den Wortanfang, damit halb getippte Wörter passen ("joghr" → "joghurt").
+  /// Ein falscher erster Buchstabe zählt doppelt (wie bei Algolia).
+  static int _typoScore(String term, List<String> words) {
     if (term.length < 4) return 0;
-    final allowed = term.length >= 7 ? 2 : 1;
+    final allowed = term.length >= 8 ? 2 : 1;
     var best = allowed + 1;
     for (final w in words) {
       final whole = _editDistance(term, w);
       final prefix = w.length > term.length ? _editDistance(term, w.substring(0, term.length)) : whole;
-      final d = whole < prefix ? whole : prefix;
+      var d = whole < prefix ? whole : prefix;
+      if (w.isNotEmpty && w[0] != term[0]) d += 1;
       if (d < best) best = d;
     }
-    return best <= allowed ? 20 - best * 5 : 0;
+    return best <= allowed ? 30 - best * 10 : 0;
   }
 
   /// Editierdistanz mit Vertauschung benachbarter Zeichen ("jgohurt").

@@ -2,13 +2,17 @@
 
 import 'package:einkaufs_optimierer/core/services/catalog_service.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUpAll(() async {
+    SharedPreferences.setMockInitialValues({});
     await CatalogService.loadCatalog();
   });
+
+  setUp(CatalogService.clearUsage);
 
   List<String> names(String q, {int limit = 5}) =>
       CatalogService.getSuggestions(q, limit: limit).map((p) => p.name).toList();
@@ -72,5 +76,82 @@ void main() {
     expect(names('xq'), isEmpty);
     expect(names('abc'), isEmpty);
     expect(names(''), isEmpty);
+  });
+
+  test('Eier: alle Eier vor dem Paprika-Dreierpack, auch beim Tippen', () {
+    final r = names('eier', limit: 10);
+    expect(r.take(3), containsAll(['Frische Eier Bodenhaltung Gr. M/L 10er', 'Bio Eier 10er', 'Freilandeier Gr. M/L 10er']));
+    final paprika = r.indexOf('Paprika Dreierpack 500g');
+    expect(paprika, anyOf(-1, greaterThan(2)));
+    for (final q in ['eie', 'Eier', 'EIER ']) {
+      expect(names(q).first, contains('Eier'), reason: q);
+    }
+  });
+
+  test('Kompositum: letztes Glied zählt ("Freilandeier" sind Eier)', () {
+    final r = names('eier', limit: 10);
+    expect(r, contains('Freilandeier Gr. M/L 10er'));
+    final paprika = r.indexOf('Paprika Dreierpack 500g');
+    if (paprika >= 0) expect(r.indexOf('Freilandeier Gr. M/L 10er'), lessThan(paprika));
+  });
+
+  test('Oft gekauft gewinnt bei gleicher Güte, nie gegen besseren Treffer', () async {
+    final now = DateTime(2026, 11, 27);
+    final bio = CatalogService.products.firstWhere((p) => p.name == 'Bio Eier 10er');
+    final paprika = CatalogService.products.firstWhere((p) => p.name == 'Paprika Dreierpack 500g');
+    // Ohne Gewohnheit: die genaue Alias-Übereinstimmung zuerst
+    expect(CatalogService.getSuggestions('eier', now: now).first.name, 'Frische Eier Bodenhaltung Gr. M/L 10er');
+    for (var i = 0; i < 5; i++) {
+      await CatalogService.recordUsage(paprika.id, now: now);
+    }
+    await CatalogService.recordUsage(bio.id, now: now);
+    final r = CatalogService.getSuggestions('eier', limit: 10, now: now).map((p) => p.name).toList();
+    expect(r.first, 'Frische Eier Bodenhaltung Gr. M/L 10er', reason: 'genauer Alias bleibt vorn');
+    expect(r.indexOf('Paprika Dreierpack 500g'), anyOf(-1, greaterThan(2)), reason: 'oft gekauft hebt keinen schlechten Treffer');
+    // Gleiche Güte (ganzes Wort "milch"): das oft Gekaufte zuerst
+    final bioMilch = CatalogService.products.firstWhere((p) => p.name == 'Bio Frische Milch 3,8% 1L');
+    final before = CatalogService.getSuggestions('milch', limit: 10, now: now).map((p) => p.name).toList();
+    await CatalogService.recordUsage(bioMilch.id, now: now);
+    final after = CatalogService.getSuggestions('milch', limit: 10, now: now).map((p) => p.name).toList();
+    expect(before, contains(bioMilch.name));
+    expect(after.indexOf(bioMilch.name), lessThan(before.indexOf(bioMilch.name)));
+  });
+
+  test('Gewohnheit verblasst: vor einem Jahr zählt weniger als letzte Woche', () async {
+    final now = DateTime(2026, 11, 27);
+    final a = CatalogService.products.firstWhere((p) => p.name == 'Bio Frische Milch 3,8% 1L');
+    final b = CatalogService.products.firstWhere((p) => p.name == 'H-Milch fettarm 1,5% 1L');
+    for (var i = 0; i < 3; i++) {
+      await CatalogService.recordUsage(a.id, now: now.subtract(const Duration(days: 365)));
+    }
+    await CatalogService.recordUsage(b.id, now: now.subtract(const Duration(days: 7)));
+    final r = CatalogService.getSuggestions('milch', limit: 10, now: now).map((p) => p.name).toList();
+    expect(r.indexOf(b.name), lessThan(r.indexOf(a.name)));
+  });
+
+  test('Gewohnheit übersteht das Neuladen', () async {
+    final p = CatalogService.products.firstWhere((p) => p.name == 'Bio Eier 10er');
+    await CatalogService.recordUsage(p.id);
+    CatalogService.clearUsage();
+    await CatalogService.loadUsage();
+    final r = CatalogService.getSuggestions('bio').map((p) => p.name).toList();
+    expect(r.first, 'Bio Eier 10er');
+  });
+
+  test('Kurze Eingabe: nächstes Wort zuerst, "Eigenmarke" zählt nicht', () {
+    final r = names('ei');
+    expect(r.first, anyOf('Frische Eier Bodenhaltung Gr. M/L 10er', 'Bio Eier 10er'));
+    expect(r, isNot(contains('Cola 1,5L')), reason: 'nur "Eigenmarke" passt');
+  });
+
+  test('Tippfehler nur, wenn nichts Besseres passt', () {
+    expect(names('eier'), isNot(contains('Energy Drink Original 250ml')));
+    expect(names('saft'), isNot(contains('Nivea Pflegedusche Creme Soft 250ml')));
+    expect(names('joghrt'), contains('Naturjoghurt 3,5% 500g'));
+  });
+
+  test('Umlaut weggelassen: kase = käse = kaese', () {
+    expect(names('kase'), names('käse'));
+    expect(names('kase'), contains('Butterkäse Scheiben 400g'));
   });
 }
