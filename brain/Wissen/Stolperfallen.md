@@ -32,3 +32,6 @@ tags: [wissen, stolperfalle]
 - **WebAssembly-Build** bricht bei Paketen mit `dart:html`/`package:js` ab (z. B. `flutter_secure_storage` 9) → `flutter build web --wasm` nach neuen Paketen prüfen.
 - **Service Worker** liegt in `app/web/sw.js`; Cache-Name `eo-v1` bei Änderungen an der Cache-Strategie hochzählen. `web/flutter_bootstrap.js` ist eine eigene Vorlage (ohne Flutters Service Worker).
 - **Backslashes in Shell-Heredocs** gehen über das Agenten-Werkzeug verloren (Regex, `\n` in JS) → Skripte mit Regex als Datei schreiben (Write) und dann mit `node datei.js` ausführen.
+
+## Service Worker und Flutter-Programm (2026-11-27)
+`main.dart.wasm`/`main.dart.js` haben keine Version in der URL. Mit stale-while-revalidate läuft nach einem Deploy noch die alte App (so blieb die alte Suche nach PR #28). Eigene Dateien daher network-first, nur versionierte CDN-URLs cache-first.

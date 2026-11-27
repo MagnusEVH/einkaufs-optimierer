@@ -44,6 +44,7 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   Future<void> loadInitialItems() async {
     state = state.copyWith(isLoading: true);
     await CatalogService.loadCatalog();
+    await CatalogService.loadUsage();
 
     final remoteItems = await SupabaseService.fetchListItems(activeListId);
     final localItems = remoteItems.isEmpty ? await _loadLocalItems() : null;
@@ -99,6 +100,8 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     final item = _createItem(text.trim(), quantity: quantity, product: matchedProduct);
     _setItems([item, ...state.items]);
     SupabaseService.saveListItem(item);
+    final matched = item.matchedProduct;
+    if (matched != null) CatalogService.recordUsage(matched.id);
 
     AnalyticsService.trackShoppingListItemAdded(
       item.rawText,
@@ -115,6 +118,7 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
         if (it.id != id) return it;
         final updated = it.copyWith(rawText: product.name, matchedProduct: product);
         SupabaseService.saveListItem(updated);
+        CatalogService.recordUsage(product.id);
         return updated;
       }).toList(),
     );
