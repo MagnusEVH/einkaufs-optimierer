@@ -21,6 +21,7 @@ import '../optimizer/optimizer_screen.dart';
 import '../trip/trip_controller.dart';
 import '../trip/trip_screen.dart';
 import 'shopping_list_controller.dart';
+import '../household/household_screen.dart';
 
 /// Unsicher zugeordneter Freitext, den der Nutzer prüfen sollte.
 bool itemNeedsCheck(ShoppingListItem item) {
@@ -214,7 +215,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Einkaufsliste'),
+        title: const HouseholdTitle(title: 'Einkaufsliste'),
         actions: [
           IconButton(
             tooltip: _tiles ? 'Als Liste anzeigen' : 'Als Kacheln anzeigen',
