@@ -50,11 +50,12 @@ class SupabaseService {
       return;
     }
     try {
+      // Höchstens 8 s: Der Start der App darf nie am Server hängen
       await Supabase.initialize(
         url: supabaseUrl,
         publishableKey: supabaseKey,
         authOptions: const FlutterAuthClientOptions(authFlowType: AuthFlowType.implicit),
-      );
+      ).timeout(const Duration(seconds: 8));
       _client = Supabase.instance.client;
       _client!.auth.onAuthStateChange.listen((s) {
         if (s.event == AuthChangeEvent.passwordRecovery) recoveryPending.value = true;

@@ -47,3 +47,6 @@ Git Bash macht aus `/` einen Windows-Pfad (`E:/GIT/Git/`). Mit `MSYS_NO_PATHCONV
 ## Passwort-Reset-Link und Apple-Schlüsselbund (2026-11-27)
 - Der Reset-Link öffnet die App in Safari frisch, also mit Begrüßung davor. Die Abfrage "Neues Passwort" muss auf App-Ebene hängen (`navigatorKey`), nicht an der Hauptansicht.
 - Flutter Web und iOS-Schlüsselbund: Felder in eine `AutofillGroup`, E-Mail mit `AutofillHints.username`, nach Erfolg `TextInput.finishAutofillContext()`. Sonst speichert iOS ein vorgeschlagenes Passwort ohne oder mit falschem Namen.
+
+## App hängt beim Laden (2026-11-27)
+Ein alter Cache-Worker (vor PR #29, stale-while-revalidate) kann Programmteile verschiedener Versionen mischen, dann bleibt der Ladekreis stehen. Seit PR #35: Nach 15 s erscheint "Zwischenspeicher leeren und neu laden" (meldet Cache-Worker ab, löscht Caches, lokale Daten bleiben). Supabase-Start hat ein Zeitlimit von 8 s.
