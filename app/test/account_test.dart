@@ -5,7 +5,10 @@ import 'dart:async';
 
 import 'package:einkaufs_optimierer/core/services/supabase_service.dart';
 import 'package:einkaufs_optimierer/features/account/account_screen.dart';
+import 'package:einkaufs_optimierer/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class FakeApi extends AccountApi {
@@ -174,10 +177,41 @@ void main() {
     expect(api.saved, 'lang-genug');
     expect(find.textContaining('Gespeichert'), findsOneWidget);
   });
+
+  testWidgets('Link "Passwort vergessen" in frischem Safari: Neues Passwort erscheint über der Begrüßung', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    tester.view.physicalSize = const Size(390 * 3, 844 * 3); // iPhone
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    SupabaseService.recoveryPending.value = true;
+    await tester.pumpWidget(const ProviderScope(child: EinkaufsOptimiererApp(showOnboarding: true)));
+    await tester.pumpAndSettle();
+    expect(find.text('Neues Passwort'), findsWidgets);
+    expect(SupabaseService.recoveryPending.value, isFalse);
+  });
+
+  testWidgets('Angemeldet: Passwort ändern mit E-Mail fürs Speichern im Schlüsselbund', (tester) async {
+    final api = _PwApi()..signedIn = true;
+    await tester.pumpWidget(MaterialApp(home: AccountScreen(api: api)));
+    await tester.tap(find.byKey(const Key('account_change_password')));
+    await tester.pumpAndSettle();
+    expect(find.text('test@example.com'), findsOneWidget);
+    await tester.enterText(find.byKey(const Key('new_password')), 'neu-und-lang');
+    await tester.tap(find.byKey(const Key('new_password_save')));
+    await tester.pumpAndSettle();
+    expect(api.saved, 'neu-und-lang');
+  });
 }
 
 class _PwApi extends AccountApi {
   String? saved;
+  bool signedIn = false;
+  @override
+  bool get isSignedIn => signedIn;
+  @override
+  String? get email => signedIn ? 'test@example.com' : null;
+  @override
+  Stream<Object?> get changes => const Stream.empty();
   @override
   Future<void> updatePassword(String password) async => saved = password;
 }
