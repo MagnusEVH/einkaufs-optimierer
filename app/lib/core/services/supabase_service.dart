@@ -208,6 +208,9 @@ String describeAuthError(String? code, String message, String? status) {
       return 'Zu viele Versuche. Bitte in ein paar Minuten noch einmal.';
     case 'email_address_invalid':
       return 'Diese E-Mail-Adresse ist ungültig.';
+    case 'reauthentication_needed':
+    case 'reauthentication_not_valid':
+      return 'Zum Ändern bitte über "Passwort vergessen" gehen (Link aus der Mail).';
     case 'same_password':
       return 'Das neue Passwort muss sich vom alten unterscheiden.';
     case 'unexpected_failure':

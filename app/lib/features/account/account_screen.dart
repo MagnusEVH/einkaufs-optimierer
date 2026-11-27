@@ -8,6 +8,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../core/services/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
 
@@ -77,13 +78,16 @@ class _AccountScreenState extends State<AccountScreen> {
         _password.clear();
       });
 
-  Future<void> _run(Future<void> Function() action, {_Mode? next, String? info}) async {
+  Future<void> _run(Future<void> Function() action, {_Mode? next, String? info, bool savePassword = false}) async {
     setState(() {
       _busy = true;
       _error = null;
     });
     try {
       await action();
+      // Schlüsselbund: E-Mail und Passwort jetzt speichern (sonst speichert
+      // iOS ein vorgeschlagenes Passwort ohne oder mit falschem Namen)
+      if (savePassword) TextInput.finishAutofillContext();
       if (!mounted) return;
       if (next != null) _go(next, info: info);
     } on AccountException catch (e) {
@@ -97,7 +101,9 @@ class _AccountScreenState extends State<AccountScreen> {
     final email = _email.text.trim();
     if (!email.contains('@') || !email.contains('.')) return 'Bitte eine gültige E-Mail-Adresse eingeben.';
     if (password && _password.text.length < 8) return 'Das Passwort braucht mindestens 8 Zeichen.';
-    if (code && !RegExp(r'^\d{6}$').hasMatch(_code.text.trim())) return 'Bitte den 6-stelligen Code aus der Mail eingeben.';
+    if (code && !RegExp(r'^\d{6}$').hasMatch(_code.text.trim())) {
+      return 'Bitte den 6-stelligen Code aus der Mail eingeben.';
+    }
     return null;
   }
 
@@ -113,11 +119,12 @@ class _AccountScreenState extends State<AccountScreen> {
         _run(() async {
           await api.signIn(email, _password.text);
           unawaited(SupabaseService.touchLastSeen());
-        });
+        }, savePassword: true);
       case _Mode.signUp:
         final problem = _check(password: true);
         if (problem != null) return setState(() => _error = problem);
         _run(() => api.signUp(email, _password.text, _invite.text),
+            savePassword: true,
             next: _Mode.confirm,
             info: 'Wir haben dir eine Mail an ${email.trim()} geschickt. Tippe auf den Link darin '
                 'und melde dich danach hier an. Steht ein Code in der Mail, gib ihn hier ein.');
@@ -142,7 +149,7 @@ class _AccountScreenState extends State<AccountScreen> {
         }
         final problem = _check(password: true, code: true);
         if (problem != null) return setState(() => _error = problem);
-        _run(() => api.resetPassword(email, _code.text, _password.text));
+        _run(() => api.resetPassword(email, _code.text, _password.text), savePassword: true);
     }
   }
 
@@ -153,7 +160,9 @@ class _AccountScreenState extends State<AccountScreen> {
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(AppSpace.l),
-          children: api.isSignedIn ? _signedIn() : _form(),
+          children: api.isSignedIn
+              ? _signedIn()
+              : [AutofillGroup(child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: _form()))],
         ),
       ),
     );
@@ -177,6 +186,14 @@ class _AccountScreenState extends State<AccountScreen> {
           style: AppText.small,
         ),
         const SizedBox(height: AppSpace.xl),
+        OutlinedButton(
+          key: const Key('account_change_password'),
+          onPressed: _busy
+              ? null
+              : () => Navigator.push(context, MaterialPageRoute(builder: (_) => NewPasswordScreen(api: api))),
+          child: const Text('Passwort ändern'),
+        ),
+        const SizedBox(height: AppSpace.s),
         OutlinedButton(
           onPressed: _busy ? null : () => _run(api.signOut, next: _Mode.signIn),
           child: const Text('Abmelden'),
@@ -241,7 +258,8 @@ class _AccountScreenState extends State<AccountScreen> {
           controller: _invite,
           textCapitalization: TextCapitalization.characters,
           autocorrect: false,
-          decoration: const InputDecoration(labelText: 'Einladungscode (falls vorhanden)', hintText: 'XXXX-XXXX-XXXX-XXXX'),
+          decoration:
+              const InputDecoration(labelText: 'Einladungscode (falls vorhanden)', hintText: 'XXXX-XXXX-XXXX-XXXX'),
         ),
       ],
       if (_error != null) ...[
@@ -253,7 +271,8 @@ class _AccountScreenState extends State<AccountScreen> {
         key: const Key('account_submit'),
         onPressed: _busy ? null : _submit,
         child: _busy
-            ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+            ? const SizedBox(
+                width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
             : Text(switch (m) {
                 _Mode.signIn => 'Anmelden',
                 _Mode.signUp => 'Konto anlegen',
@@ -268,8 +287,7 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   List<Widget> _links(_Mode m) {
-    Widget link(String label, VoidCallback onTap) =>
-        TextButton(onPressed: _busy ? null : onTap, child: Text(label));
+    Widget link(String label, VoidCallback onTap) => TextButton(onPressed: _busy ? null : onTap, child: Text(label));
     return switch (m) {
       _Mode.signIn => [
           link('Neu hier? Registrieren', () => _go(_Mode.signUp)),
@@ -277,8 +295,10 @@ class _AccountScreenState extends State<AccountScreen> {
         ],
       _Mode.signUp => [link('Schon ein Konto? Anmelden', () => _go(_Mode.signIn))],
       _Mode.confirm => [
-          link('Code erneut schicken', () => _run(() => api.resendSignUpCode(_email.text),
-              next: _Mode.confirm, info: 'Neuer Code ist unterwegs.')),
+          link(
+              'Code erneut schicken',
+              () => _run(() => api.resendSignUpCode(_email.text),
+                  next: _Mode.confirm, info: 'Neuer Code ist unterwegs.')),
           link('Zurück zur Anmeldung', () => _go(_Mode.signIn)),
         ],
       _Mode.forgot || _Mode.reset => [link('Zurück zur Anmeldung', () => _go(_Mode.signIn))],
@@ -319,6 +339,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
     });
     try {
       await widget.api.updatePassword(_password.text);
+      TextInput.finishAutofillContext(); // Schlüsselbund: unter der E-Mail speichern
       if (mounted) setState(() => _done = true);
     } on AccountException catch (e) {
       if (mounted) setState(() => _error = e.message);
@@ -346,13 +367,27 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   FilledButton(onPressed: () => Navigator.pop(context), child: const Text('Fertig')),
                 ]
               : [
-                  TextField(
-                    key: const Key('new_password'),
-                    controller: _password,
-                    obscureText: true,
-                    autofillHints: const [AutofillHints.newPassword],
-                    decoration: const InputDecoration(labelText: 'Neues Passwort', helperText: 'Mindestens 8 Zeichen'),
-                    onSubmitted: (_) => _save(),
+                  AutofillGroup(
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                      if (widget.api.email != null) ...[
+                        TextField(
+                          controller: TextEditingController(text: widget.api.email),
+                          readOnly: true,
+                          autofillHints: const [AutofillHints.username, AutofillHints.email],
+                          decoration: const InputDecoration(labelText: 'E-Mail'),
+                        ),
+                        const SizedBox(height: AppSpace.m),
+                      ],
+                      TextField(
+                        key: const Key('new_password'),
+                        controller: _password,
+                        obscureText: true,
+                        autofillHints: const [AutofillHints.newPassword],
+                        decoration:
+                            const InputDecoration(labelText: 'Neues Passwort', helperText: 'Mindestens 8 Zeichen'),
+                        onSubmitted: (_) => _save(),
+                      ),
+                    ]),
                   ),
                   if (_error != null) ...[
                     const SizedBox(height: AppSpace.l),

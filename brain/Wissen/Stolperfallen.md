@@ -43,3 +43,7 @@ tags: [wissen, stolperfalle]
 
 ## Git Bash und `--base-href "/"` (2026-11-27)
 Git Bash macht aus `/` einen Windows-Pfad (`E:/GIT/Git/`). Mit `MSYS_NO_PATHCONV=1 flutter build web ...` bauen.
+
+## Passwort-Reset-Link und Apple-Schlüsselbund (2026-11-27)
+- Der Reset-Link öffnet die App in Safari frisch, also mit Begrüßung davor. Die Abfrage "Neues Passwort" muss auf App-Ebene hängen (`navigatorKey`), nicht an der Hauptansicht.
+- Flutter Web und iOS-Schlüsselbund: Felder in eine `AutofillGroup`, E-Mail mit `AutofillHints.username`, nach Erfolg `TextInput.finishAutofillContext()`. Sonst speichert iOS ein vorgeschlagenes Passwort ohne oder mit falschem Namen.

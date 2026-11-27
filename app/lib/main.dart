@@ -61,7 +61,7 @@ void main() async {
   ));
 }
 
-class EinkaufsOptimiererApp extends StatelessWidget {
+class EinkaufsOptimiererApp extends StatefulWidget {
   final bool showOnboarding;
 
   const EinkaufsOptimiererApp({
@@ -70,12 +70,48 @@ class EinkaufsOptimiererApp extends StatelessWidget {
   });
 
   @override
+  State<EinkaufsOptimiererApp> createState() => _EinkaufsOptimiererAppState();
+}
+
+class _EinkaufsOptimiererAppState extends State<EinkaufsOptimiererApp> {
+  final _navigator = GlobalKey<NavigatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+    SupabaseService.recoveryPending.addListener(_onRecovery);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _onRecovery());
+  }
+
+  @override
+  void dispose() {
+    SupabaseService.recoveryPending.removeListener(_onRecovery);
+    super.dispose();
+  }
+
+  /// Link "Passwort zurücksetzen" aus der Mail: neues Passwort abfragen.
+  /// Auf App-Ebene, weil Safari die App frisch öffnet (mit Begrüßung davor).
+  void _onRecovery() {
+    if (!SupabaseService.recoveryPending.value) return;
+    final nav = _navigator.currentState;
+    if (nav == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _onRecovery());
+      return;
+    }
+    SupabaseService.recoveryPending.value = false;
+    // Token aus der Adresse entfernen, damit Neuladen nicht erneut fragt
+    SystemNavigator.routeInformationUpdated(uri: Uri(path: '/'), replace: true);
+    nav.push(MaterialPageRoute(builder: (_) => const NewPasswordScreen()));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _navigator,
       title: 'Einkaufs-Optimierer',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
-      home: showOnboarding ? const OnboardingScreen() : const MainNavigationShell(),
+      home: widget.showOnboarding ? const OnboardingScreen() : const MainNavigationShell(),
     );
   }
 }
@@ -110,22 +146,9 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
     ));
   }
 
-  /// Link "Passwort zurücksetzen" aus der Mail: neues Passwort abfragen.
-  void _onRecovery() {
-    if (!SupabaseService.recoveryPending.value || !mounted) return;
-    SupabaseService.recoveryPending.value = false;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      // Token aus der Adresse entfernen, damit Neuladen nicht erneut fragt
-      SystemNavigator.routeInformationUpdated(uri: Uri(path: '/'), replace: true);
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => const NewPasswordScreen()));
-    });
-  }
-
   @override
   void dispose() {
     _lifecycle.dispose();
-    SupabaseService.recoveryPending.removeListener(_onRecovery);
     AppTab.current.removeListener(_onTabChanged);
     super.dispose();
   }
@@ -135,8 +158,6 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
     super.initState();
     AppTab.current.addListener(_onTabChanged);
     _lifecycle = AppLifecycleListener(onResume: _onResume);
-    SupabaseService.recoveryPending.addListener(_onRecovery);
-    _onRecovery();
     final batch = OfferImportService.pending;
     if (batch != null) {
       OfferImportService.pending = null;
@@ -146,7 +167,9 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
         final imported = await Navigator.of(context).push<int>(
           MaterialPageRoute(builder: (_) => ImportOffersScreen(batch: batch)),
         );
-        if (imported != null && imported > 0 && mounted) AppTab.current.value = batch.isReceipt ? AppTab.apps : AppTab.offers;
+        if (imported != null && imported > 0 && mounted) {
+          AppTab.current.value = batch.isReceipt ? AppTab.apps : AppTab.offers;
+        }
       });
     }
   }
@@ -173,8 +196,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
           child: IndexedStack(
             index: _currentIndex,
             children: [
-              for (var i = 0; i < _screens.length; i++)
-                _visited.contains(i) ? _screens[i] : const SizedBox.shrink(),
+              for (var i = 0; i < _screens.length; i++) _visited.contains(i) ? _screens[i] : const SizedBox.shrink(),
             ],
           ),
         ),
