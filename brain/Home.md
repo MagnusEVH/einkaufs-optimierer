@@ -24,7 +24,8 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 - Stufe 3b Haushalte: Auswahl im Listentitel, Gruppen, Einladungscodes, Rollen (PR #31).
 - Stufe 3c Abgleich: gemeinsame Liste je Haushalt, offline-Warteschlange, Realtime (PR #32).
 - Anmelde-System neu: alles per Code in der App, Mail-Link nur Notnagel, keine Sackgassen (PR #36), live mit Brevo-SMTP: [[Mail-Versand einrichten]]. Admin eingetragen.
-- Letzte Session: [[2026-11-28 Mail-Link 404]]
+- Zwei Geräte teilen die Liste. Liste zeigt nur das Ding, Menge freiwillig mit Einheit (Branch `claude/menge-einheit`).
+- Letzte Session: [[2026-11-28 Menge und Einheit]]
 
 ## Offene Baustellen
 - [[Supabase-Anbindung]] – hoch, in Arbeit (Schema live, 3a–3c fertig, Live-Schaltung offen)

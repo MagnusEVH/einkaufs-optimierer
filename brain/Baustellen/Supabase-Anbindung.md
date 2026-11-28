@@ -23,5 +23,5 @@ App läuft ohne Supabase im Demo-Modus. Secrets `SUPABASE_URL` und `SUPABASE_ANO
 
 - [x] SMTP (Brevo) und Mail-Vorlagen mit Code, siehe [[Mail-Versand einrichten]] – 2026-11-28
 - [x] Admin eingetragen – 2026-11-28
-- [ ] Zwei-Geräte-Test (iPhone + PC)
+- [x] Zwei-Geräte-Test (iPhone + PC) – 2026-11-28
 - [x] Anmelde-System per Code, ohne Sackgassen (PR #36) – 2026-11-28
