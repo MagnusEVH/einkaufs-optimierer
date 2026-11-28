@@ -189,6 +189,7 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
       listId: r.householdId,
       rawText: r.rawText,
       matchedProduct: byId ?? CatalogService.matchRawText(r.rawText),
+      pinned: byId != null,
       quantity: r.quantity,
       unit: r.unit,
       isChecked: r.checked,
@@ -210,7 +211,7 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
         id: _uuid.v4(),
         householdId: s.householdId,
         rawText: it.rawText,
-        productId: it.matchedProduct?.id,
+        productId: it.pinned ? it.matchedProduct?.id : null,
         quantity: it.quantity,
         unit: it.unit,
         note: it.notes,
@@ -261,21 +262,27 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   /// Neuer Artikel. Aus dem Text wird die Menge gelesen ("500 g Erdbeeren"
   /// → Erdbeeren, 500 g). Bei einem gewählten Produkt steht nur das Ding an
   /// sich auf der Liste ("Erdbeeren"), Marke und Größe nicht.
-  void addItem(String text, {Product? matchedProduct, ItemAmount? amount}) {
-    if (text.trim().isEmpty && matchedProduct == null) return;
+  ///
+  /// [matchedProduct] ist eine ausdrücklich gewählte Sorte (pinned).
+  /// [name] überschreibt den Namen, z. B. den Grundartikel "Eier".
+  /// Liefert die ID des neuen Artikels (null, wenn nichts angelegt wurde).
+  String? addItem(String text, {Product? matchedProduct, ItemAmount? amount, String? name}) {
+    if (text.trim().isEmpty && matchedProduct == null && name == null) return null;
     final parsed = parseItemInput(text);
-    final name = matchedProduct != null ? genericName(matchedProduct) : parsed.name;
-    if (name.isEmpty) return;
+    final label = name ?? (matchedProduct != null ? genericName(matchedProduct) : parsed.name);
+    if (label.isEmpty) return null;
     final a = amount ?? parsed.amount;
-    final item = _createItem(name,
-        quantity: a.quantity, unit: a.isDefault ? null : a.unit?.code, product: matchedProduct);
+    final item = _createItem(label,
+            quantity: a.quantity, unit: a.isDefault ? null : a.unit?.code, product: matchedProduct)
+        .copyWith(pinned: matchedProduct != null);
     final s = _sync;
     if (s != null) {
       s.add(ListRow(
         id: item.id,
         householdId: s.householdId,
         rawText: item.rawText,
-        productId: item.matchedProduct?.id,
+        // Nur eine gewählte Sorte geht an den Server; sonst sucht jedes Gerät selbst
+        productId: matchedProduct?.id,
         quantity: item.quantity,
         unit: item.unit,
       ));
@@ -289,6 +296,21 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
       item.rawText,
       category: item.matchedProduct?.categoryId,
     );
+    return item.id;
+  }
+
+  /// Sorte wählen ("Freiland") oder offen lassen (null: die App nimmt die
+  /// günstigste passende). Der Name auf der Liste bleibt ("Eier").
+  void chooseVariant(String id, Product? product) {
+    if (product != null) CatalogService.recordUsage(product.id);
+    final s = _sync;
+    if (s != null) {
+      s.patch(id, {'product_id': product?.id});
+      return;
+    }
+    _setItems(state.items
+        .map((it) => it.id != id ? it : it.withVariant(product, fallback: CatalogService.matchRawText(it.rawText)))
+        .toList());
   }
 
   /// Ordnet einem Artikel ausdrücklich ein Katalogprodukt zu (Rückfrage bei
@@ -303,7 +325,9 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
       return;
     }
     _setItems(
-      state.items.map((it) => it.id != id ? it : it.copyWith(rawText: name, matchedProduct: product)).toList(),
+      state.items
+          .map((it) => it.id != id ? it : it.copyWith(rawText: name, matchedProduct: product, pinned: true))
+          .toList(),
     );
   }
 

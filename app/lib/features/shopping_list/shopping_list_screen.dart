@@ -21,7 +21,9 @@ import '../../core/widgets/product_picker_sheet.dart';
 import '../optimizer/optimizer_screen.dart';
 import '../trip/trip_controller.dart';
 import '../trip/trip_screen.dart';
+import '../../core/services/item_groups.dart';
 import 'amount_editor.dart';
+import 'variant_picker.dart';
 import 'shopping_list_controller.dart';
 import '../household/household_screen.dart';
 import '../account/account_screen.dart';
@@ -31,7 +33,11 @@ import '../../core/services/household_service.dart';
 /// Unsicher zugeordneter Freitext, den der Nutzer prüfen sollte.
 bool itemNeedsCheck(ShoppingListItem item) {
   final matched = item.matchedProduct;
-  final explicit = matched != null && (matched.name == item.rawText || genericName(matched) == item.rawText);
+  final explicit = matched != null &&
+      (item.pinned ||
+          matched.name == item.rawText ||
+          genericName(matched) == item.rawText ||
+          ItemGroups.groupOf(matched)?.name == item.rawText);
   if (item.isChecked || explicit) return false;
   // Text gehört klar zu einer anderen Warengruppe als das Produkt (z. B. "saft" → Thunfisch)
   if (matched != null && ItemIcons.contradicts(item.rawText, matched)) return true;
@@ -52,7 +58,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
 
   final TextEditingController _inputController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  List<Product> _suggestions = [];
+  List<ItemGroup> _suggestions = [];
   bool _tiles = true;
 
   @override
@@ -78,16 +84,36 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
   void _onSearchChanged(String query) {
     // Menge gehört nicht zur Suche: "500 g erdb" sucht "erdb"
     final name = parseItemInput(query).name;
-    setState(() => _suggestions = name.trim().isEmpty ? [] : CatalogService.getSuggestions(name, limit: 5));
+    // Vorschläge sind Grundartikel: "eier" → "Eier", nicht drei Eier-Produkte
+    setState(() => _suggestions = name.trim().isEmpty ? [] : ItemGroups.search(name, limit: 5));
   }
 
-  void _submitItem([Product? selectedProduct]) {
+  void _submitItem() {
     final text = _inputController.text.trim();
-    if (text.isEmpty && selectedProduct == null) return;
-    ref.read(shoppingListProvider.notifier).addItem(text, matchedProduct: selectedProduct);
+    if (text.isEmpty) return;
+    ref.read(shoppingListProvider.notifier).addItem(text);
     _inputController.clear();
     setState(() => _suggestions = []);
     _focusNode.requestFocus(); // Schnell mehrere Artikel nacheinander eingeben
+  }
+
+  /// Grundartikel angetippt: auf die Liste, dann gleich Sorte und Menge
+  /// wählen (wenn es mehrere Sorten gibt).
+  void _addGroup(ItemGroup group) {
+    final text = _inputController.text.trim();
+    final id = ref.read(shoppingListProvider.notifier).addItem(
+          text,
+          name: group.name,
+          matchedProduct: group.hasVariants ? null : group.products.single,
+        );
+    _inputController.clear();
+    setState(() => _suggestions = []);
+    if (id != null && group.hasVariants) {
+      _focusNode.unfocus();
+      _openItemById(id);
+    } else {
+      _focusNode.requestFocus();
+    }
   }
 
   Future<void> _showMatchPicker(ShoppingListItem item) async {
@@ -95,18 +121,30 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
     if (chosen != null) ref.read(shoppingListProvider.notifier).assignProduct(item.id, chosen);
   }
 
-  void _openItem(ShoppingListItem item) {
+  void _openItem(ShoppingListItem item) => _openItemById(item.id);
+
+  /// Grundartikel eines Listeneintrags ("Eier"), für die Sorten-Auswahl.
+  ItemGroup? _groupOf(ShoppingListItem it) {
+    final byName = ItemGroups.byName(it.rawText);
+    if (byName != null) return byName;
+    final m = it.matchedProduct;
+    return m == null ? null : ItemGroups.groupOf(m);
+  }
+
+  void _openItemById(String id) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (ctx) => Consumer(builder: (ctx, ref, _) {
-        final current = ref.watch(shoppingListProvider).items.where((i) => i.id == item.id).firstOrNull;
+        final current = ref.watch(shoppingListProvider).items.where((i) => i.id == id).firstOrNull;
         if (current == null) return const SizedBox(height: 120);
         final ctrl = ref.read(shoppingListProvider.notifier);
         final needsCheck = itemNeedsCheck(current);
         final cat = ItemIcons.categoryFor(current.rawText, product: current.matchedProduct);
+        final group = _groupOf(current);
         return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(AppSpace.l, 0, AppSpace.l, AppSpace.l),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(AppSpace.l, AppSpace.m, AppSpace.l, AppSpace.l),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -140,18 +178,34 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                     ),
                   ),
                 ],
+                if (group != null && group.hasVariants) ...[
+                  const SizedBox(height: AppSpace.l),
+                  VariantPicker(
+                    group: group,
+                    selected: current.pinned ? current.matchedProduct : null,
+                    onChanged: (p) => ctrl.chooseVariant(current.id, p),
+                  ),
+                ],
                 const SizedBox(height: AppSpace.l),
                 AmountEditor(
                   amount: current.amount,
                   suggested: suggestedUnit(current.matchedProduct),
                   onChanged: (a) => ctrl.setAmount(current.id, a),
                 ),
-                const SizedBox(height: AppSpace.m),
-                OutlinedButton.icon(
-                  icon: const Icon(Icons.manage_search_rounded),
-                  label: Text(current.matchedProduct == null ? 'Produkt zuordnen' : 'Anderes Produkt wählen'),
-                  onPressed: () => _showMatchPicker(current),
+                const SizedBox(height: AppSpace.l),
+                FilledButton(
+                  key: const Key('item_done'),
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('Fertig'),
                 ),
+                if (group == null || !group.hasVariants) ...[
+                  const SizedBox(height: AppSpace.s),
+                  OutlinedButton.icon(
+                    icon: const Icon(Icons.manage_search_rounded),
+                    label: Text(current.matchedProduct == null ? 'Produkt zuordnen' : 'Anderes Produkt wählen'),
+                    onPressed: () => _showMatchPicker(current),
+                  ),
+                ],
                 if (current.isChecked) ...[
                   const SizedBox(height: AppSpace.s),
                   OutlinedButton.icon(
@@ -325,14 +379,23 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
               ),
               child: Column(
                 children: [
-                  for (final prod in _suggestions)
+                  for (final g in _suggestions)
                     ListTile(
+                      key: Key('suggestion_${g.name}'),
                       dense: true,
-                      leading: ItemIconBox(ItemIcons.iconFor(prod.name, product: prod), size: 36),
-                      title: Text(prod.name, style: const TextStyle(fontWeight: FontWeight.w500)),
-                      subtitle: Text(prod.isBio ? 'Bio' : (prod.brand ?? 'Eigenmarke'), style: AppText.tiny),
+                      leading: ItemIconBox(ItemIcons.iconFor(g.name, product: g.products.first), size: 36),
+                      title: Text(g.name, style: const TextStyle(fontWeight: FontWeight.w500)),
+                      subtitle: Text(
+                        [
+                          if (g.hasVariants) '${g.products.length} Sorten',
+                          if (!g.hasVariants && (g.products.first.brand ?? 'Eigenmarke') != 'Eigenmarke')
+                            g.products.first.brand!,
+                          if (g.fromPrice != null) 'ab ${formatCents(g.fromPrice!)}',
+                        ].join(' · '),
+                        style: AppText.tiny,
+                      ),
                       trailing: const Icon(Icons.add_rounded, color: AppColors.primary),
-                      onTap: () => _submitItem(prod),
+                      onTap: () => _addGroup(g),
                     ),
                 ],
               ),
