@@ -16,6 +16,7 @@ import 'core/services/offer_import_service.dart';
 import 'core/services/preferences_storage.dart';
 import 'core/services/supabase_service.dart';
 import 'features/account/account_screen.dart';
+import 'features/account/auth_flow.dart';
 import 'features/my_apps/balance_scan_flow.dart';
 import 'features/my_apps/my_apps_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
@@ -89,19 +90,48 @@ class _EinkaufsOptimiererAppState extends State<EinkaufsOptimiererApp> {
     super.dispose();
   }
 
-  /// Link "Passwort zurücksetzen" aus der Mail: neues Passwort abfragen.
+  /// Mail-Link beim Start (nur Notnagel, normal läuft alles per Code):
+  /// Reset → neues Passwort abfragen, Bestätigung → Konto zeigen,
+  /// abgelaufen → Erklärung und neuen Code anbieten. Nie still auf der Liste.
   /// Auf App-Ebene, weil Safari die App frisch öffnet (mit Begrüßung davor).
-  void _onRecovery() {
-    if (!SupabaseService.recoveryPending.value) return;
+  bool _linkHandled = false;
+
+  Future<void> _onRecovery() async {
     final nav = _navigator.currentState;
     if (nav == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _onRecovery());
       return;
     }
-    SupabaseService.recoveryPending.value = false;
+    var link = _linkHandled ? null : AuthLink.parse(SupabaseService.launchUri ?? Uri());
+    if (link != null) _linkHandled = true;
+    if (SupabaseService.recoveryPending.value) {
+      SupabaseService.recoveryPending.value = false;
+      link = const AuthLink(AuthLinkKind.recovery);
+      _linkHandled = true;
+    }
+    if (link == null) return;
     // Token aus der Adresse entfernen, damit Neuladen nicht erneut fragt
     SystemNavigator.routeInformationUpdated(uri: Uri(path: '/'), replace: true);
-    nav.push(MaterialPageRoute(builder: (_) => const NewPasswordScreen()));
+    // Die Sitzung aus dem Link kann ein paar Augenblicke nach dem Start kommen
+    if (link.kind != AuthLinkKind.failed && !SupabaseService.isSignedIn) {
+      try {
+        await SupabaseService.authChanges
+            .firstWhere((_) => SupabaseService.isSignedIn)
+            .timeout(const Duration(seconds: 4));
+      } catch (_) {}
+    }
+    if (!mounted) return;
+    final recoveryWithoutSession = link.kind == AuthLinkKind.recovery && !SupabaseService.isSignedIn;
+    nav.push(MaterialPageRoute(
+      builder: (_) => switch (link!.kind) {
+        AuthLinkKind.recovery when !recoveryWithoutSession => const NewPasswordScreen(),
+        AuthLinkKind.signup when SupabaseService.isSignedIn => const AccountScreen(),
+        _ => AccountScreen(
+            start: AuthStep.linkFailed,
+            startMessage: link.message ?? 'Der Link aus der Mail hat nicht funktioniert.',
+          ),
+      },
+    ));
   }
 
   @override

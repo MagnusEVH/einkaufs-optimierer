@@ -1,9 +1,8 @@
-// app/lib/features/account/account_screen.dart
+﻿// app/lib/features/account/account_screen.dart
 //
 // Konto: Anmelden, Registrieren (mit Einladungscode), E-Mail bestätigen und
-// Passwort vergessen per Link oder 6-stelligem Code aus der Mail, Abmelden.
-// Den Code enthalten die Mails erst mit eigenem SMTP, bis dahin der Link.
-// Konto löschen liegt im Profil unter Datenschutz.
+// Passwort zurücksetzen per Code aus der Mail, Abmelden. Die Logik steckt in
+// [AuthFlow]; hier nur die Oberfläche. Konto löschen liegt im Profil.
 
 import 'dart:async';
 
@@ -11,51 +10,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/services/supabase_service.dart';
 import '../../core/theme/app_theme.dart';
+import 'auth_flow.dart';
 
-/// Was der Bildschirm vom Server braucht. Austauschbar für Tests.
-class AccountApi {
-  const AccountApi();
-  bool get isSignedIn => SupabaseService.isSignedIn;
-  String? get email => SupabaseService.currentUser?.email;
-  Stream<Object?> get changes => SupabaseService.authChanges;
-  Future<void> signIn(String email, String password) => SupabaseService.signIn(email, password);
-  Future<void> signUp(String email, String password, String? inviteCode) =>
-      SupabaseService.signUp(email, password, inviteCode: inviteCode);
-  Future<void> confirmSignUp(String email, String code) => SupabaseService.confirmSignUp(email, code);
-  Future<void> resendSignUpCode(String email) => SupabaseService.resendSignUpCode(email);
-  Future<void> requestPasswordReset(String email) => SupabaseService.requestPasswordReset(email);
-  Future<void> resetPassword(String email, String code, String password) =>
-      SupabaseService.resetPassword(email, code, password);
-  Future<void> updatePassword(String password) => SupabaseService.updatePassword(password);
-  Future<void> signOut() => SupabaseService.signOut();
-}
-
-enum _Mode { signIn, signUp, confirm, forgot, reset }
+export 'auth_flow.dart' show AccountApi, AuthStep;
 
 class AccountScreen extends StatefulWidget {
   final AccountApi api;
-  const AccountScreen({super.key, this.api = const AccountApi()});
+  final AuthStep start;
+
+  /// Hinweis beim Öffnen, z. B. "Link abgelaufen".
+  final String? startMessage;
+  const AccountScreen({super.key, this.api = const AccountApi(), this.start = AuthStep.signIn, this.startMessage});
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  late final AuthFlow flow = AuthFlow(api: widget.api, start: widget.start);
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _invite = TextEditingController();
   final _code = TextEditingController();
-  _Mode _mode = _Mode.signIn;
-  bool _busy = false;
-  String? _error;
-  String? _info;
+  bool _showPassword = false;
+  String? _doneMessage;
   StreamSubscription<Object?>? _sub;
+  Timer? _tick;
 
   AccountApi get api => widget.api;
 
   @override
   void initState() {
     super.initState();
+    if (widget.startMessage != null) flow.error = widget.startMessage;
+    flow.addListener(_onFlow);
     _sub = api.changes.listen((_) {
       if (mounted) setState(() {});
     });
@@ -64,103 +52,92 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   void dispose() {
     _sub?.cancel();
+    _tick?.cancel();
+    flow.removeListener(_onFlow);
+    flow.dispose();
     for (final c in [_email, _password, _invite, _code]) {
       c.dispose();
     }
     super.dispose();
   }
 
-  void _go(_Mode mode, {String? info}) => setState(() {
-        _mode = mode;
-        _error = null;
-        _info = info;
-        _code.clear();
-        _password.clear();
+  void _onFlow() {
+    if (!mounted) return;
+    // Zähler "Neuer Code in 0:42" jede Sekunde neu zeichnen
+    if (flow.resendIn > 0 && _tick == null) {
+      _tick = Timer.periodic(const Duration(seconds: 1), (_) {
+        if (!mounted) return;
+        setState(() {});
+        if (flow.resendIn == 0) {
+          _tick?.cancel();
+          _tick = null;
+        }
       });
-
-  Future<void> _run(Future<void> Function() action, {_Mode? next, String? info, bool savePassword = false}) async {
-    setState(() {
-      _busy = true;
-      _error = null;
-    });
-    try {
-      await action();
-      // Schlüsselbund: E-Mail und Passwort jetzt speichern (sonst speichert
-      // iOS ein vorgeschlagenes Passwort ohne oder mit falschem Namen)
-      if (savePassword) TextInput.finishAutofillContext();
-      if (!mounted) return;
-      if (next != null) _go(next, info: info);
-    } on AccountException catch (e) {
-      if (mounted) setState(() => _error = e.message);
-    } finally {
-      if (mounted) setState(() => _busy = false);
     }
+    setState(() {});
   }
 
-  String? _check({bool password = false, bool code = false}) {
-    final email = _email.text.trim();
-    if (!email.contains('@') || !email.contains('.')) return 'Bitte eine gültige E-Mail-Adresse eingeben.';
-    if (password && _password.text.length < 8) return 'Das Passwort braucht mindestens 8 Zeichen.';
-    if (code && !RegExp(r'^\d{6}$').hasMatch(_code.text.trim())) {
-      return 'Bitte den 6-stelligen Code aus der Mail eingeben.';
-    }
-    return null;
+  void _go(AuthStep step) {
+    _code.clear();
+    _password.clear();
+    flow.goTo(step, email: _email.text.trim().isEmpty ? null : _email.text);
   }
 
-  void _submit() {
-    final email = _email.text;
-    switch (_mode) {
-      case _Mode.signIn:
-        final problem = _check();
-        if (problem != null || _password.text.isEmpty) {
-          setState(() => _error = problem ?? 'Bitte das Passwort eingeben.');
-          return;
-        }
-        _run(() async {
-          await api.signIn(email, _password.text);
-          unawaited(SupabaseService.touchLastSeen());
-        }, savePassword: true);
-      case _Mode.signUp:
-        final problem = _check(password: true);
-        if (problem != null) return setState(() => _error = problem);
-        _run(() => api.signUp(email, _password.text, _invite.text),
-            savePassword: true,
-            next: _Mode.confirm,
-            info: 'Wir haben dir eine Mail an ${email.trim()} geschickt. Tippe auf den Link darin '
-                'und melde dich danach hier an. Steht ein Code in der Mail, gib ihn hier ein.');
-      case _Mode.confirm:
-        if (_code.text.trim().isEmpty) {
-          return _go(_Mode.signIn, info: 'Nach dem Bestätigen hier mit E-Mail und Passwort anmelden.');
-        }
-        final problem = _check(code: true);
-        if (problem != null) return setState(() => _error = problem);
-        _run(() => api.confirmSignUp(email, _code.text));
-      case _Mode.forgot:
-        final problem = _check();
-        if (problem != null) return setState(() => _error = problem);
-        _run(() => api.requestPasswordReset(email),
-            next: _Mode.reset,
-            info: 'Falls es ein Konto gibt, kommt gleich eine Mail an ${email.trim()}. Tippe auf den Link, '
-                'setze dort ein neues Passwort und melde dich danach hier an. '
-                'Steht ein Code in der Mail, gib ihn hier ein.');
-      case _Mode.reset:
-        if (_code.text.trim().isEmpty) {
-          return setState(() => _error = 'Ohne Code: bitte den Link in der Mail antippen.');
-        }
-        final problem = _check(password: true, code: true);
-        if (problem != null) return setState(() => _error = problem);
-        _run(() => api.resetPassword(email, _code.text, _password.text), savePassword: true);
+  Future<void> _perform(AuthAction a) async {
+    if (a == AuthAction.forgotPassword || a == AuthAction.goSignIn) {
+      _password.clear();
+      _code.clear();
     }
+    await flow.perform(a);
+  }
+
+  Future<void> _submit() async {
+    var ok = false;
+    switch (flow.step) {
+      case AuthStep.signIn:
+        ok = await flow.signIn(_email.text, _password.text);
+        if (ok && api.isSignedIn) unawaited(SupabaseService.touchLastSeen());
+      case AuthStep.signUp:
+        ok = await flow.signUp(_email.text, _password.text, _invite.text);
+      case AuthStep.verifySignup:
+        ok = await flow.verifySignup(_code.text);
+        if (ok) _doneMessage = 'E-Mail bestätigt. Du bist angemeldet.';
+      case AuthStep.forgot:
+        ok = await flow.requestReset(_email.text);
+        if (ok) _code.clear();
+      case AuthStep.resetCode:
+        ok = await flow.resetWithCode(_code.text, _password.text);
+        if (ok) _doneMessage = 'Neues Passwort gespeichert. Du bist angemeldet.';
+      case AuthStep.linkFailed:
+        _go(AuthStep.forgot);
+        return;
+    }
+    // Schlüsselbund: E-Mail und Passwort erst nach Erfolg speichern
+    if (ok && (flow.step == AuthStep.signUp || flow.step == AuthStep.verifySignup || api.isSignedIn)) {
+      TextInput.finishAutofillContext();
+    }
+    if (ok && flow.step == AuthStep.verifySignup) _code.clear();
   }
 
   @override
   Widget build(BuildContext context) {
+    final signedIn = api.isSignedIn;
     return Scaffold(
-      appBar: AppBar(title: Text(api.isSignedIn ? 'Konto' : _title)),
+      appBar: AppBar(
+        title: Text(signedIn ? 'Konto' : _title),
+        leading: !signedIn && flow.canGoBack
+            ? IconButton(
+                key: const Key('account_back'),
+                icon: const Icon(Icons.arrow_back),
+                tooltip: 'Zurück',
+                onPressed: flow.busy ? null : flow.back,
+              )
+            : null,
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(AppSpace.l),
-          children: api.isSignedIn
+          children: signedIn
               ? _signedIn()
               : [AutofillGroup(child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: _form()))],
         ),
@@ -168,73 +145,93 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
-  String get _title => switch (_mode) {
-        _Mode.signIn => 'Anmelden',
-        _Mode.signUp => 'Registrieren',
-        _Mode.confirm => 'E-Mail bestätigen',
-        _Mode.forgot || _Mode.reset => 'Neues Passwort',
+  String get _title => switch (flow.step) {
+        AuthStep.signIn => 'Anmelden',
+        AuthStep.signUp => 'Registrieren',
+        AuthStep.verifySignup => 'E-Mail bestätigen',
+        AuthStep.forgot || AuthStep.resetCode => 'Passwort zurücksetzen',
+        AuthStep.linkFailed => 'Link ungültig',
       };
 
   List<Widget> _signedIn() => [
+        if (_doneMessage != null) ...[
+          _Note.ok(_doneMessage!),
+          const SizedBox(height: AppSpace.l),
+        ],
         const Text('Angemeldet als', style: AppText.small),
         const SizedBox(height: AppSpace.xs),
         Text(api.email ?? '', style: AppText.bodyStrong),
-        const SizedBox(height: AppSpace.l),
-        const Text(
-          'Liste, Märkte und Bonpreise liegen vorerst weiter auf diesem Gerät. '
-          'Gemeinsame Listen im Haushalt folgen.',
-          style: AppText.small,
-        ),
         const SizedBox(height: AppSpace.xl),
+        if (Navigator.canPop(context)) ...[
+          FilledButton(
+            key: const Key('account_done'),
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fertig'),
+          ),
+          const SizedBox(height: AppSpace.s),
+        ],
         OutlinedButton(
           key: const Key('account_change_password'),
-          onPressed: _busy
-              ? null
-              : () => Navigator.push(context, MaterialPageRoute(builder: (_) => NewPasswordScreen(api: api))),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => NewPasswordScreen(api: api))),
           child: const Text('Passwort ändern'),
         ),
         const SizedBox(height: AppSpace.s),
         OutlinedButton(
-          onPressed: _busy ? null : () => _run(api.signOut, next: _Mode.signIn),
+          onPressed: () async {
+            await api.signOut();
+            _doneMessage = null;
+            _go(AuthStep.signIn);
+          },
           child: const Text('Abmelden'),
         ),
       ];
 
   List<Widget> _form() {
-    final m = _mode;
-    final needsPassword = m == _Mode.signIn || m == _Mode.signUp || m == _Mode.reset;
-    final needsCode = m == _Mode.confirm || m == _Mode.reset;
+    final s = flow.step;
+    final emailEditable = s == AuthStep.signIn || s == AuthStep.signUp || s == AuthStep.forgot;
+    final needsCode = s == AuthStep.verifySignup || s == AuthStep.resetCode;
+    final needsPassword = s == AuthStep.signIn || s == AuthStep.signUp || s == AuthStep.resetCode;
     return [
-      if (_info != null) ...[
-        _Note(text: _info!, color: AppColors.infoSoft, ink: AppColors.info),
+      if (_intro(s) case final intro?) ...[
+        Text(intro, style: AppText.small),
         const SizedBox(height: AppSpace.l),
       ],
-      if (m == _Mode.signUp) ...[
-        const Text(
-          'Registrieren geht mit einem Einladungscode aus einem bestehenden Haushalt '
-          'oder mit einer freigeschalteten Adresse.',
-          style: AppText.small,
-        ),
+      if (flow.info != null) ...[
+        _Note.info(flow.info!),
         const SizedBox(height: AppSpace.l),
       ],
-      TextField(
-        key: const Key('account_email'),
-        controller: _email,
-        enabled: m == _Mode.signIn || m == _Mode.signUp || m == _Mode.forgot,
-        keyboardType: TextInputType.emailAddress,
-        autofillHints: const [AutofillHints.email],
-        autocorrect: false,
-        decoration: const InputDecoration(labelText: 'E-Mail'),
-      ),
+      if (emailEditable)
+        TextField(
+          key: const Key('account_email'),
+          controller: _email,
+          keyboardType: TextInputType.emailAddress,
+          autofillHints: const [AutofillHints.username, AutofillHints.email],
+          autocorrect: false,
+          textInputAction: TextInputAction.next,
+          decoration: const InputDecoration(labelText: 'E-Mail'),
+          onSubmitted: s == AuthStep.forgot ? (_) => _submit() : null,
+        )
+      else if (s != AuthStep.linkFailed)
+        Row(children: [
+          Expanded(child: Text(flow.email, style: AppText.bodyStrong)),
+          TextButton(
+            key: const Key('account_change_email'),
+            onPressed: flow.busy ? null : () => _go(s == AuthStep.verifySignup ? AuthStep.signUp : AuthStep.forgot),
+            child: const Text('E-Mail ändern'),
+          ),
+        ]),
       if (needsCode) ...[
         const SizedBox(height: AppSpace.m),
         TextField(
           key: const Key('account_code'),
           controller: _code,
           keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           autofillHints: const [AutofillHints.oneTimeCode],
-          maxLength: 6,
-          decoration: const InputDecoration(labelText: 'Code aus der Mail (falls vorhanden)', counterText: ''),
+          maxLength: 10,
+          textInputAction: s == AuthStep.resetCode ? TextInputAction.next : TextInputAction.done,
+          decoration: const InputDecoration(labelText: 'Code aus der Mail', counterText: ''),
+          onSubmitted: s == AuthStep.verifySignup ? (_) => _submit() : null,
         ),
       ],
       if (needsPassword) ...[
@@ -242,16 +239,24 @@ class _AccountScreenState extends State<AccountScreen> {
         TextField(
           key: const Key('account_password'),
           controller: _password,
-          obscureText: true,
-          autofillHints: [m == _Mode.signIn ? AutofillHints.password : AutofillHints.newPassword],
+          obscureText: !_showPassword,
+          autocorrect: false,
+          enableSuggestions: false,
+          autofillHints: [s == AuthStep.signIn ? AutofillHints.password : AutofillHints.newPassword],
           decoration: InputDecoration(
-            labelText: m == _Mode.signIn ? 'Passwort' : 'Neues Passwort',
-            helperText: m == _Mode.signIn ? null : 'Mindestens 8 Zeichen',
+            labelText: s == AuthStep.signIn ? 'Passwort' : 'Neues Passwort',
+            helperText: s == AuthStep.signIn ? null : 'Mindestens 8 Zeichen',
+            suffixIcon: IconButton(
+              key: const Key('account_show_password'),
+              tooltip: _showPassword ? 'Passwort verbergen' : 'Passwort zeigen',
+              icon: Icon(_showPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+              onPressed: () => setState(() => _showPassword = !_showPassword),
+            ),
           ),
           onSubmitted: (_) => _submit(),
         ),
       ],
-      if (m == _Mode.signUp) ...[
+      if (s == AuthStep.signUp) ...[
         const SizedBox(height: AppSpace.m),
         TextField(
           key: const Key('account_invite'),
@@ -262,52 +267,95 @@ class _AccountScreenState extends State<AccountScreen> {
               const InputDecoration(labelText: 'Einladungscode (falls vorhanden)', hintText: 'XXXX-XXXX-XXXX-XXXX'),
         ),
       ],
-      if (_error != null) ...[
+      if (flow.error != null) ...[
         const SizedBox(height: AppSpace.l),
-        _Note(text: _error!, color: AppColors.dangerSoft, ink: AppColors.danger),
+        _Note.error(flow.error!),
+        for (final a in flow.actions)
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpace.s),
+            child: OutlinedButton(
+              key: Key('account_action_${a.name}'),
+              onPressed: flow.busy || (a == AuthAction.resendCode && !flow.canResend) ? null : () => _perform(a),
+              child: Text(_actionLabel(a)),
+            ),
+          ),
       ],
       const SizedBox(height: AppSpace.xl),
       FilledButton(
         key: const Key('account_submit'),
-        onPressed: _busy ? null : _submit,
-        child: _busy
+        onPressed: flow.busy ? null : _submit,
+        child: flow.busy
             ? const SizedBox(
                 width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-            : Text(switch (m) {
-                _Mode.signIn => 'Anmelden',
-                _Mode.signUp => 'Konto anlegen',
-                _Mode.confirm => 'Weiter',
-                _Mode.forgot => 'Code schicken',
-                _Mode.reset => 'Passwort speichern',
+            : Text(switch (s) {
+                AuthStep.signIn => 'Anmelden',
+                AuthStep.signUp => 'Konto anlegen',
+                AuthStep.verifySignup => 'Bestätigen',
+                AuthStep.forgot => 'Code schicken',
+                AuthStep.resetCode => 'Passwort speichern',
+                AuthStep.linkFailed => 'Neuen Code anfordern',
               }),
       ),
       const SizedBox(height: AppSpace.m),
-      ..._links(m),
+      ..._links(s),
     ];
   }
 
-  List<Widget> _links(_Mode m) {
-    Widget link(String label, VoidCallback onTap) => TextButton(onPressed: _busy ? null : onTap, child: Text(label));
-    return switch (m) {
-      _Mode.signIn => [
-          link('Neu hier? Registrieren', () => _go(_Mode.signUp)),
-          link('Passwort vergessen', () => _go(_Mode.forgot)),
+  String? _intro(AuthStep s) => switch (s) {
+        AuthStep.signUp => 'Registrieren geht mit einem Einladungscode aus einem bestehenden Haushalt '
+            'oder mit einer freigeschalteten Adresse. Danach bekommst du einen Code per Mail.',
+        AuthStep.forgot => 'Wir schicken dir einen Code per Mail. Damit setzt du hier in der App ein neues Passwort.',
+        AuthStep.linkFailed => 'Kein Problem: Fordere einfach einen Code an und gib ihn hier in der App ein.',
+        _ => null,
+      };
+
+  String _actionLabel(AuthAction a) => switch (a) {
+        AuthAction.forgotPassword => 'Passwort vergessen?',
+        AuthAction.goSignIn => 'Zur Anmeldung',
+        AuthAction.resendCode => _resendLabel,
+        AuthAction.retry => 'Erneut versuchen',
+        AuthAction.haveCode => 'Ich habe schon einen Code',
+      };
+
+  String get _resendLabel {
+    final s = flow.resendIn;
+    if (s == 0) return 'Neuen Code schicken';
+    return 'Neuen Code schicken (in ${s ~/ 60}:${(s % 60).toString().padLeft(2, '0')})';
+  }
+
+  List<Widget> _links(AuthStep s) {
+    Widget link(String label, VoidCallback? onTap, {Key? key}) =>
+        TextButton(key: key, onPressed: flow.busy ? null : onTap, child: Text(label));
+    final resendShown = flow.actions.contains(AuthAction.resendCode);
+    return switch (s) {
+      AuthStep.signIn => [
+          link('Neu hier? Registrieren', () => _go(AuthStep.signUp)),
+          link('Passwort vergessen', () => _go(AuthStep.forgot), key: const Key('account_forgot')),
         ],
-      _Mode.signUp => [link('Schon ein Konto? Anmelden', () => _go(_Mode.signIn))],
-      _Mode.confirm => [
-          link(
-              'Code erneut schicken',
-              () => _run(() => api.resendSignUpCode(_email.text),
-                  next: _Mode.confirm, info: 'Neuer Code ist unterwegs.')),
-          link('Zurück zur Anmeldung', () => _go(_Mode.signIn)),
+      AuthStep.signUp => [link('Schon ein Konto? Anmelden', () => _go(AuthStep.signIn))],
+      AuthStep.verifySignup || AuthStep.resetCode => [
+          if (!resendShown)
+            link(_resendLabel, flow.canResend ? flow.resend : null, key: const Key('account_resend')),
+          const Text(
+            'Keine Mail? Schau im Spam-Ordner nach. Der Code gilt eine Stunde, immer nur der neueste.',
+            style: AppText.small,
+            textAlign: TextAlign.center,
+          ),
+          if (s == AuthStep.verifySignup) link('Zur Anmeldung', () => _go(AuthStep.signIn)),
         ],
-      _Mode.forgot || _Mode.reset => [link('Zurück zur Anmeldung', () => _go(_Mode.signIn))],
+      AuthStep.forgot => [
+          link('Ich habe schon einen Code', () => flow.perform(AuthAction.haveCode),
+              key: const Key('account_have_code')),
+          link('Zurück zur Anmeldung', () => _go(AuthStep.signIn)),
+        ],
+      AuthStep.linkFailed => [link('Zur Anmeldung', () => _go(AuthStep.signIn))],
     };
   }
 }
 
-/// Nach dem Link "Passwort zurücksetzen": Die App ist mit einer
-/// Wiederherstellungs-Sitzung offen und fragt nur das neue Passwort ab.
+/// Neues Passwort, wenn man schon angemeldet ist: über "Passwort ändern" oder
+/// nach dem Link aus der Mail. Verlangt der Server zur Sicherheit einen Code,
+/// schickt der Bildschirm ihn selbst und fragt ihn hier ab.
 class NewPasswordScreen extends StatefulWidget {
   final AccountApi api;
   const NewPasswordScreen({super.key, this.api = const AccountApi()});
@@ -318,31 +366,59 @@ class NewPasswordScreen extends StatefulWidget {
 
 class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final _password = TextEditingController();
+  final _code = TextEditingController();
+  late final _email = TextEditingController(text: widget.api.email ?? '');
   bool _busy = false;
   bool _done = false;
+  bool _needsCode = false;
+  bool _show = false;
   String? _error;
+  String? _info;
 
   @override
   void dispose() {
-    _password.dispose();
+    for (final c in [_password, _code, _email]) {
+      c.dispose();
+    }
     super.dispose();
   }
 
   Future<void> _save() async {
-    if (_password.text.length < 8) {
-      setState(() => _error = 'Das Passwort braucht mindestens 8 Zeichen.');
-      return;
-    }
+    final problem = AuthFlow.checkPassword(_password.text) ?? (_needsCode ? AuthFlow.checkCode(_code.text) : null);
+    if (problem != null) return setState(() => _error = problem);
+    await _guard(() async {
+      if (_needsCode) {
+        await widget.api.resetPassword(_email.text, _code.text.trim(), _password.text);
+      } else {
+        await widget.api.updatePassword(_password.text);
+      }
+      TextInput.finishAutofillContext(); // Schlüsselbund: unter der E-Mail speichern
+      _done = true;
+    }, onError: (e) async {
+      // Server will einen Nachweis: Code per Mail schicken und hier abfragen
+      if (!_needsCode && e.kind == AuthErrorKind.reauthNeeded && _email.text.isNotEmpty) {
+        await widget.api.requestPasswordReset(_email.text);
+        _needsCode = true;
+        _error = null;
+        _info = 'Zur Sicherheit brauchen wir einen Code. Er ist an ${_email.text} unterwegs.';
+      }
+    });
+  }
+
+  Future<void> _guard(Future<void> Function() action, {Future<void> Function(AccountException e)? onError}) async {
     setState(() {
       _busy = true;
       _error = null;
     });
     try {
-      await widget.api.updatePassword(_password.text);
-      TextInput.finishAutofillContext(); // Schlüsselbund: unter der E-Mail speichern
-      if (mounted) setState(() => _done = true);
+      await action();
     } on AccountException catch (e) {
-      if (mounted) setState(() => _error = e.message);
+      _error = e.message;
+      try {
+        await onError?.call(e);
+      } on AccountException catch (e2) {
+        _error = e2.message;
+      }
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -357,47 +433,71 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
           padding: const EdgeInsets.all(AppSpace.l),
           children: _done
               ? [
-                  const _Note(
-                    text: 'Gespeichert. Du kannst dich jetzt überall mit dem neuen Passwort anmelden, '
-                        'auch in der App auf dem Home-Bildschirm.',
-                    color: AppColors.primaryFaint,
-                    ink: AppColors.primaryDark,
-                  ),
+                  const _Note.ok('Gespeichert. Du kannst dich jetzt überall mit dem neuen Passwort anmelden, '
+                      'auch in der App auf dem Home-Bildschirm.'),
                   const SizedBox(height: AppSpace.xl),
                   FilledButton(onPressed: () => Navigator.pop(context), child: const Text('Fertig')),
                 ]
               : [
+                  if (_info != null) ...[
+                    _Note.info(_info!),
+                    const SizedBox(height: AppSpace.l),
+                  ],
                   AutofillGroup(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                      if (widget.api.email != null) ...[
+                      if (_email.text.isNotEmpty) ...[
                         TextField(
-                          controller: TextEditingController(text: widget.api.email),
+                          controller: _email,
                           readOnly: true,
                           autofillHints: const [AutofillHints.username, AutofillHints.email],
                           decoration: const InputDecoration(labelText: 'E-Mail'),
                         ),
                         const SizedBox(height: AppSpace.m),
                       ],
+                      if (_needsCode) ...[
+                        TextField(
+                          key: const Key('new_password_code'),
+                          controller: _code,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          autofillHints: const [AutofillHints.oneTimeCode],
+                          maxLength: 10,
+                          decoration: const InputDecoration(labelText: 'Code aus der Mail', counterText: ''),
+                        ),
+                        const SizedBox(height: AppSpace.m),
+                      ],
                       TextField(
                         key: const Key('new_password'),
                         controller: _password,
-                        obscureText: true,
+                        obscureText: !_show,
                         autofillHints: const [AutofillHints.newPassword],
-                        decoration:
-                            const InputDecoration(labelText: 'Neues Passwort', helperText: 'Mindestens 8 Zeichen'),
+                        decoration: InputDecoration(
+                          labelText: 'Neues Passwort',
+                          helperText: 'Mindestens 8 Zeichen',
+                          suffixIcon: IconButton(
+                            tooltip: _show ? 'Passwort verbergen' : 'Passwort zeigen',
+                            icon: Icon(_show ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+                            onPressed: () => setState(() => _show = !_show),
+                          ),
+                        ),
                         onSubmitted: (_) => _save(),
                       ),
                     ]),
                   ),
                   if (_error != null) ...[
                     const SizedBox(height: AppSpace.l),
-                    _Note(text: _error!, color: AppColors.dangerSoft, ink: AppColors.danger),
+                    _Note.error(_error!),
                   ],
                   const SizedBox(height: AppSpace.xl),
                   FilledButton(
                     key: const Key('new_password_save'),
                     onPressed: _busy ? null : _save,
                     child: const Text('Passwort speichern'),
+                  ),
+                  const SizedBox(height: AppSpace.m),
+                  TextButton(
+                    onPressed: _busy ? null : () => Navigator.pop(context),
+                    child: const Text('Abbrechen'),
                   ),
                 ],
         ),
@@ -411,6 +511,15 @@ class _Note extends StatelessWidget {
   final Color color;
   final Color ink;
   const _Note({required this.text, required this.color, required this.ink});
+  const _Note.info(this.text)
+      : color = AppColors.infoSoft,
+        ink = AppColors.info;
+  const _Note.error(this.text)
+      : color = AppColors.dangerSoft,
+        ink = AppColors.danger;
+  const _Note.ok(this.text)
+      : color = AppColors.primaryFaint,
+        ink = AppColors.primaryDark;
 
   @override
   Widget build(BuildContext context) => Container(

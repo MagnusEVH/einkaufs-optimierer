@@ -52,3 +52,4 @@ Git Bash macht aus `/` einen Windows-Pfad (`E:/GIT/Git/`). Mit `MSYS_NO_PATHCONV
 Ein alter Cache-Worker (vor PR #29, stale-while-revalidate) kann Programmteile verschiedener Versionen mischen, dann bleibt der Ladekreis stehen. Seit PR #35: Nach 15 s erscheint "Zwischenspeicher leeren und neu laden" (meldet Cache-Worker ab, löscht Caches, lokale Daten bleiben). Supabase-Start hat ein Zeitlimit von 8 s.
 
 - **Supabase-Mail-Links → 404:** Ohne `redirectTo` (bzw. wenn es nicht unter Redirect URLs steht) leitet Supabase auf die Site URL. Auf GitHub Pages muss der Repo-Pfad dabei sein (`/einkaufs-optimierer/`). [[2026-11-28 Mail-Link 404]]
+- **Supabase signUp mit schon bestätigter Adresse:** kein Fehler, aber keine Mail (Schutz vor Ausspähen). Erkennbar an `user.identities` leer → App meldet "Konto gibt es schon". [[2026-11-28 Mail-Link 404]]
