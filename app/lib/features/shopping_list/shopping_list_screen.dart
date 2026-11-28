@@ -1,4 +1,4 @@
-// app/lib/features/shopping_list/shopping_list_screen.dart
+﻿// app/lib/features/shopping_list/shopping_list_screen.dart
 //
 // Liste bauen: Artikel als Kacheln mit Icon (Vorbild: Bring!) oder als Liste,
 // gruppiert nach Warengruppe. Unsichere Artikel oben unter "Bitte prüfen".
@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/app_navigation.dart';
 import '../../core/models/item_amount.dart';
 import '../../core/models/list_item.dart';
-import '../../core/models/product.dart';
 import '../../core/models/store.dart';
 import '../../core/services/catalog_service.dart';
 import '../../core/services/item_icons.dart';
@@ -144,22 +143,31 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
         final group = _groupOf(current);
         return SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(AppSpace.l, AppSpace.m, AppSpace.l, AppSpace.l),
+            padding: const EdgeInsets.fromLTRB(AppSpace.l, 0, AppSpace.l, AppSpace.l),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(children: [
-                  ItemIconBox(itemIcon(current), size: 56),
+                  ItemIconBox(itemIcon(current), size: 52),
                   const SizedBox(width: AppSpace.m),
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(current.rawText, style: AppText.title.copyWith(fontSize: 18)),
+                      Text(
+                        current.rawText,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppText.title.copyWith(fontSize: 19),
+                      ),
                       const SizedBox(height: 2),
                       Text(
-                        current.matchedProduct == null
-                            ? 'Kein Katalog-Treffer · ${cat.name}'
-                            : '${current.matchedProduct!.brand ?? 'Eigenmarke'} · ${cat.name}',
+                        group != null && group.hasVariants
+                            ? '${cat.name} · ${group.products.length} Sorten'
+                            : current.matchedProduct == null
+                                ? 'Kein Katalog-Treffer · ${cat.name}'
+                                : '${current.matchedProduct!.brand ?? 'Eigenmarke'} · ${cat.name}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: AppText.small,
                       ),
                     ]),
@@ -179,7 +187,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                   ),
                 ],
                 if (group != null && group.hasVariants) ...[
-                  const SizedBox(height: AppSpace.l),
+                  const SizedBox(height: AppSpace.xl),
                   VariantPicker(
                     group: group,
                     selected: current.pinned ? current.matchedProduct : null,
@@ -192,7 +200,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                   suggested: suggestedUnit(current.matchedProduct),
                   onChanged: (a) => ctrl.setAmount(current.id, a),
                 ),
-                const SizedBox(height: AppSpace.l),
+                const SizedBox(height: AppSpace.xl),
                 FilledButton(
                   key: const Key('item_done'),
                   onPressed: () => Navigator.pop(ctx),
@@ -377,27 +385,17 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                 borderRadius: AppRadius.medium,
                 border: Border.all(color: AppColors.line),
               ),
-              child: Column(
-                children: [
-                  for (final g in _suggestions)
-                    ListTile(
-                      key: Key('suggestion_${g.name}'),
-                      dense: true,
-                      leading: ItemIconBox(ItemIcons.iconFor(g.name, product: g.products.first), size: 36),
-                      title: Text(g.name, style: const TextStyle(fontWeight: FontWeight.w500)),
-                      subtitle: Text(
-                        [
-                          if (g.hasVariants) '${g.products.length} Sorten',
-                          if (!g.hasVariants && (g.products.first.brand ?? 'Eigenmarke') != 'Eigenmarke')
-                            g.products.first.brand!,
-                          if (g.fromPrice != null) 'ab ${formatCents(g.fromPrice!)}',
-                        ].join(' · '),
-                        style: AppText.tiny,
-                      ),
-                      trailing: const Icon(Icons.add_rounded, color: AppColors.primary),
-                      onTap: () => _addGroup(g),
-                    ),
-                ],
+              clipBehavior: Clip.antiAlias,
+              child: Material(
+                type: MaterialType.transparency,
+                child: Column(
+                  children: [
+                    for (var i = 0; i < _suggestions.length; i++) ...[
+                      if (i > 0) const Divider(indent: AppSpace.m + 36 + AppSpace.m),
+                      _SuggestionRow(group: _suggestions[i], onTap: () => _addGroup(_suggestions[i])),
+                    ],
+                  ],
+                ),
               ),
             ),
         ],
@@ -690,5 +688,60 @@ class _SyncBar extends ConsumerWidget {
     }
     if (st.errorMessage != null) return bar(st.errorMessage!, color: AppColors.dangerSoft, ink: AppColors.danger);
     return const SizedBox.shrink();
+  }
+}
+
+/// Vorschlag unter dem Eingabefeld: Icon, Grundartikel, darunter
+/// "3 Sorten · ab 1,99 €", rechts der Hinzufügen-Knopf.
+class _SuggestionRow extends StatelessWidget {
+  final ItemGroup group;
+  final VoidCallback onTap;
+  const _SuggestionRow({required this.group, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final g = group;
+    final brand = g.products.first.brand ?? 'Eigenmarke';
+    final detail = [
+      if (g.hasVariants) '${g.products.length} Sorten',
+      if (!g.hasVariants && brand != 'Eigenmarke') brand,
+      if (g.fromPrice != null) 'ab ${formatCents(g.fromPrice!)}',
+    ].join(' · ');
+    return InkWell(
+      key: Key('suggestion_${g.name}'),
+      onTap: onTap,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 56),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpace.m, vertical: AppSpace.s),
+          child: Row(children: [
+            ItemIconBox(ItemIcons.iconFor(g.name, product: g.products.first), size: 36),
+            const SizedBox(width: AppSpace.m),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+                Text(g.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.bodyStrong),
+                if (detail.isNotEmpty) ...[
+                  const SizedBox(height: 1),
+                  Text(
+                    detail,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppText.tiny.copyWith(fontFeatures: AppText.tab),
+                  ),
+                ],
+              ]),
+            ),
+            const SizedBox(width: AppSpace.s),
+            Container(
+              width: 32,
+              height: 32,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(color: AppColors.primaryFaint, shape: BoxShape.circle),
+              child: const Icon(Icons.add_rounded, size: 20, color: AppColors.primary),
+            ),
+          ]),
+        ),
+      ),
+    );
   }
 }
