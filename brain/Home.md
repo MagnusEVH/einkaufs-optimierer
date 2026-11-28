@@ -1,4 +1,4 @@
----
+﻿---
 type: home
 aktualisiert: 2026-11-25
 ---
@@ -23,7 +23,8 @@ Einstieg für Nutzer und Agenten. Regeln: [AGENTS.md](../AGENTS.md) · Ablauf: [
 - Stufe 3a Konto: Anmelden, Registrieren mit Code, Passwort vergessen, Konto löschen. Migrationen live, App bleibt bis 3c lokal (PR #30).
 - Stufe 3b Haushalte: Auswahl im Listentitel, Gruppen, Einladungscodes, Rollen (PR #31).
 - Stufe 3c Abgleich: gemeinsame Liste je Haushalt, offline-Warteschlange, Realtime (PR #32).
-- Letzte Session: [[2026-11-27 Stufe 3c Abgleich]]
+- Mail-Links zeigen auf die App statt auf die 404 (Branch `claude/mail-link-ziel`).
+- Letzte Session: [[2026-11-28 Mail-Link 404]]
 
 ## Offene Baustellen
 - [[Supabase-Anbindung]] – hoch, in Arbeit (Schema live, 3a–3c fertig, Live-Schaltung offen)
