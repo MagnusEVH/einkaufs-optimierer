@@ -22,3 +22,13 @@ status: erledigt
 
 ## Gelernt
 - Marke wegschneiden zerstört Markenprodukte ("Pringles Original" → "Original"), deshalb bleibt sie
+
+## Grundartikel und Sorte (Branch `claude/grundartikel`)
+- Fehler: Knopf "Stück" tat nichts (1 Stück galt als keine Angabe). Jetzt: keine Angabe = ohne Einheit, "1×" ist eine Angabe
+- Fehler aus #38: gewähltes Produkt wurde vom Optimierer überschrieben (er erkannte die Wahl am vollen Namen). Neu: Merkmal `pinned`, auf dem Server = `product_id` gesetzt
+- Suche zeigt Grundartikel (`core/services/item_groups.dart`, Regeln mit Reihenfolge): "eier" → "Eier · 3 Sorten · ab …"
+- Antippen → Artikel-Blatt mit Sorte (`variant_picker.dart`: Egal = günstigste, oder Bodenhaltung/Freiland/Bio mit Preis) und Menge
+- Design-Pass durch Agent (Sorte, Menge, Vorschläge)
+- 156 Tests grün vor dem Design-Pass
+- Design-Pass (Agent): Sorte als Auswahlzeilen mit Häkchen, vollem Produktnamen und Preis; Menge als Feld mit Plus/Minus, Einheiten und Schnellwahl; Vorschläge mit 'n Sorten · ab …'. 156 Tests grün
+- Offen: 7 Einheiten passen bei 390 px nicht ganz (seitlich scrollen); bei vielen Sorten (Käse, Kaffee) muss man zu 'Fertig' scrollen

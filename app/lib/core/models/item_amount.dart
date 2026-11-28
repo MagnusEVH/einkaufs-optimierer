@@ -78,8 +78,9 @@ class ItemAmount {
 
   static const none = ItemAmount(1);
 
-  /// Keine Angabe: ein Stück, ohne Einheit. Steht dann nicht in der Liste.
-  bool get isDefault => quantity == 1 && (unit == null || unit == AmountUnit.stk);
+  /// Keine Angabe: ohne Einheit. Steht dann nicht in der Liste. "1 Stück"
+  /// ausdrücklich gewählt zählt als Angabe ("1×").
+  bool get isDefault => quantity == 1 && unit == null;
 
   AmountUnit get effectiveUnit => unit ?? AmountUnit.stk;
 

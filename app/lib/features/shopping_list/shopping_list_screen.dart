@@ -1,4 +1,4 @@
-// app/lib/features/shopping_list/shopping_list_screen.dart
+﻿// app/lib/features/shopping_list/shopping_list_screen.dart
 //
 // Liste bauen: Artikel als Kacheln mit Icon (Vorbild: Bring!) oder als Liste,
 // gruppiert nach Warengruppe. Unsichere Artikel oben unter "Bitte prüfen".
@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/app_navigation.dart';
 import '../../core/models/item_amount.dart';
 import '../../core/models/list_item.dart';
-import '../../core/models/product.dart';
 import '../../core/models/store.dart';
 import '../../core/services/catalog_service.dart';
 import '../../core/services/item_icons.dart';
@@ -21,7 +20,9 @@ import '../../core/widgets/product_picker_sheet.dart';
 import '../optimizer/optimizer_screen.dart';
 import '../trip/trip_controller.dart';
 import '../trip/trip_screen.dart';
+import '../../core/services/item_groups.dart';
 import 'amount_editor.dart';
+import 'variant_picker.dart';
 import 'shopping_list_controller.dart';
 import '../household/household_screen.dart';
 import '../account/account_screen.dart';
@@ -31,7 +32,11 @@ import '../../core/services/household_service.dart';
 /// Unsicher zugeordneter Freitext, den der Nutzer prüfen sollte.
 bool itemNeedsCheck(ShoppingListItem item) {
   final matched = item.matchedProduct;
-  final explicit = matched != null && (matched.name == item.rawText || genericName(matched) == item.rawText);
+  final explicit = matched != null &&
+      (item.pinned ||
+          matched.name == item.rawText ||
+          genericName(matched) == item.rawText ||
+          ItemGroups.groupOf(matched)?.name == item.rawText);
   if (item.isChecked || explicit) return false;
   // Text gehört klar zu einer anderen Warengruppe als das Produkt (z. B. "saft" → Thunfisch)
   if (matched != null && ItemIcons.contradicts(item.rawText, matched)) return true;
@@ -52,7 +57,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
 
   final TextEditingController _inputController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  List<Product> _suggestions = [];
+  List<ItemGroup> _suggestions = [];
   bool _tiles = true;
 
   @override
@@ -78,16 +83,36 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
   void _onSearchChanged(String query) {
     // Menge gehört nicht zur Suche: "500 g erdb" sucht "erdb"
     final name = parseItemInput(query).name;
-    setState(() => _suggestions = name.trim().isEmpty ? [] : CatalogService.getSuggestions(name, limit: 5));
+    // Vorschläge sind Grundartikel: "eier" → "Eier", nicht drei Eier-Produkte
+    setState(() => _suggestions = name.trim().isEmpty ? [] : ItemGroups.search(name, limit: 5));
   }
 
-  void _submitItem([Product? selectedProduct]) {
+  void _submitItem() {
     final text = _inputController.text.trim();
-    if (text.isEmpty && selectedProduct == null) return;
-    ref.read(shoppingListProvider.notifier).addItem(text, matchedProduct: selectedProduct);
+    if (text.isEmpty) return;
+    ref.read(shoppingListProvider.notifier).addItem(text);
     _inputController.clear();
     setState(() => _suggestions = []);
     _focusNode.requestFocus(); // Schnell mehrere Artikel nacheinander eingeben
+  }
+
+  /// Grundartikel angetippt: auf die Liste, dann gleich Sorte und Menge
+  /// wählen (wenn es mehrere Sorten gibt).
+  void _addGroup(ItemGroup group) {
+    final text = _inputController.text.trim();
+    final id = ref.read(shoppingListProvider.notifier).addItem(
+          text,
+          name: group.name,
+          matchedProduct: group.hasVariants ? null : group.products.single,
+        );
+    _inputController.clear();
+    setState(() => _suggestions = []);
+    if (id != null && group.hasVariants) {
+      _focusNode.unfocus();
+      _openItemById(id);
+    } else {
+      _focusNode.requestFocus();
+    }
   }
 
   Future<void> _showMatchPicker(ShoppingListItem item) async {
@@ -95,33 +120,54 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
     if (chosen != null) ref.read(shoppingListProvider.notifier).assignProduct(item.id, chosen);
   }
 
-  void _openItem(ShoppingListItem item) {
+  void _openItem(ShoppingListItem item) => _openItemById(item.id);
+
+  /// Grundartikel eines Listeneintrags ("Eier"), für die Sorten-Auswahl.
+  ItemGroup? _groupOf(ShoppingListItem it) {
+    final byName = ItemGroups.byName(it.rawText);
+    if (byName != null) return byName;
+    final m = it.matchedProduct;
+    return m == null ? null : ItemGroups.groupOf(m);
+  }
+
+  void _openItemById(String id) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (ctx) => Consumer(builder: (ctx, ref, _) {
-        final current = ref.watch(shoppingListProvider).items.where((i) => i.id == item.id).firstOrNull;
+        final current = ref.watch(shoppingListProvider).items.where((i) => i.id == id).firstOrNull;
         if (current == null) return const SizedBox(height: 120);
         final ctrl = ref.read(shoppingListProvider.notifier);
         final needsCheck = itemNeedsCheck(current);
         final cat = ItemIcons.categoryFor(current.rawText, product: current.matchedProduct);
+        final group = _groupOf(current);
         return SafeArea(
-          child: Padding(
+          child: SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(AppSpace.l, 0, AppSpace.l, AppSpace.l),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(children: [
-                  ItemIconBox(itemIcon(current), size: 56),
+                  ItemIconBox(itemIcon(current), size: 52),
                   const SizedBox(width: AppSpace.m),
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(current.rawText, style: AppText.title.copyWith(fontSize: 18)),
+                      Text(
+                        current.rawText,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppText.title.copyWith(fontSize: 19),
+                      ),
                       const SizedBox(height: 2),
                       Text(
-                        current.matchedProduct == null
-                            ? 'Kein Katalog-Treffer · ${cat.name}'
-                            : '${current.matchedProduct!.brand ?? 'Eigenmarke'} · ${cat.name}',
+                        group != null && group.hasVariants
+                            ? '${cat.name} · ${group.products.length} Sorten'
+                            : current.matchedProduct == null
+                                ? 'Kein Katalog-Treffer · ${cat.name}'
+                                : '${current.matchedProduct!.brand ?? 'Eigenmarke'} · ${cat.name}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: AppText.small,
                       ),
                     ]),
@@ -140,18 +186,34 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                     ),
                   ),
                 ],
+                if (group != null && group.hasVariants) ...[
+                  const SizedBox(height: AppSpace.xl),
+                  VariantPicker(
+                    group: group,
+                    selected: current.pinned ? current.matchedProduct : null,
+                    onChanged: (p) => ctrl.chooseVariant(current.id, p),
+                  ),
+                ],
                 const SizedBox(height: AppSpace.l),
                 AmountEditor(
                   amount: current.amount,
                   suggested: suggestedUnit(current.matchedProduct),
                   onChanged: (a) => ctrl.setAmount(current.id, a),
                 ),
-                const SizedBox(height: AppSpace.m),
-                OutlinedButton.icon(
-                  icon: const Icon(Icons.manage_search_rounded),
-                  label: Text(current.matchedProduct == null ? 'Produkt zuordnen' : 'Anderes Produkt wählen'),
-                  onPressed: () => _showMatchPicker(current),
+                const SizedBox(height: AppSpace.xl),
+                FilledButton(
+                  key: const Key('item_done'),
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('Fertig'),
                 ),
+                if (group == null || !group.hasVariants) ...[
+                  const SizedBox(height: AppSpace.s),
+                  OutlinedButton.icon(
+                    icon: const Icon(Icons.manage_search_rounded),
+                    label: Text(current.matchedProduct == null ? 'Produkt zuordnen' : 'Anderes Produkt wählen'),
+                    onPressed: () => _showMatchPicker(current),
+                  ),
+                ],
                 if (current.isChecked) ...[
                   const SizedBox(height: AppSpace.s),
                   OutlinedButton.icon(
@@ -323,18 +385,17 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                 borderRadius: AppRadius.medium,
                 border: Border.all(color: AppColors.line),
               ),
-              child: Column(
-                children: [
-                  for (final prod in _suggestions)
-                    ListTile(
-                      dense: true,
-                      leading: ItemIconBox(ItemIcons.iconFor(prod.name, product: prod), size: 36),
-                      title: Text(prod.name, style: const TextStyle(fontWeight: FontWeight.w500)),
-                      subtitle: Text(prod.isBio ? 'Bio' : (prod.brand ?? 'Eigenmarke'), style: AppText.tiny),
-                      trailing: const Icon(Icons.add_rounded, color: AppColors.primary),
-                      onTap: () => _submitItem(prod),
-                    ),
-                ],
+              clipBehavior: Clip.antiAlias,
+              child: Material(
+                type: MaterialType.transparency,
+                child: Column(
+                  children: [
+                    for (var i = 0; i < _suggestions.length; i++) ...[
+                      if (i > 0) const Divider(indent: AppSpace.m + 36 + AppSpace.m),
+                      _SuggestionRow(group: _suggestions[i], onTap: () => _addGroup(_suggestions[i])),
+                    ],
+                  ],
+                ),
               ),
             ),
         ],
@@ -627,5 +688,60 @@ class _SyncBar extends ConsumerWidget {
     }
     if (st.errorMessage != null) return bar(st.errorMessage!, color: AppColors.dangerSoft, ink: AppColors.danger);
     return const SizedBox.shrink();
+  }
+}
+
+/// Vorschlag unter dem Eingabefeld: Icon, Grundartikel, darunter
+/// "3 Sorten · ab 1,99 €", rechts der Hinzufügen-Knopf.
+class _SuggestionRow extends StatelessWidget {
+  final ItemGroup group;
+  final VoidCallback onTap;
+  const _SuggestionRow({required this.group, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final g = group;
+    final brand = g.products.first.brand ?? 'Eigenmarke';
+    final detail = [
+      if (g.hasVariants) '${g.products.length} Sorten',
+      if (!g.hasVariants && brand != 'Eigenmarke') brand,
+      if (g.fromPrice != null) 'ab ${formatCents(g.fromPrice!)}',
+    ].join(' · ');
+    return InkWell(
+      key: Key('suggestion_${g.name}'),
+      onTap: onTap,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 56),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpace.m, vertical: AppSpace.s),
+          child: Row(children: [
+            ItemIconBox(ItemIcons.iconFor(g.name, product: g.products.first), size: 36),
+            const SizedBox(width: AppSpace.m),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+                Text(g.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppText.bodyStrong),
+                if (detail.isNotEmpty) ...[
+                  const SizedBox(height: 1),
+                  Text(
+                    detail,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppText.tiny.copyWith(fontFeatures: AppText.tab),
+                  ),
+                ],
+              ]),
+            ),
+            const SizedBox(width: AppSpace.s),
+            Container(
+              width: 32,
+              height: 32,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(color: AppColors.primaryFaint, shape: BoxShape.circle),
+              child: const Icon(Icons.add_rounded, size: 20, color: AppColors.primary),
+            ),
+          ]),
+        ),
+      ),
+    );
   }
 }

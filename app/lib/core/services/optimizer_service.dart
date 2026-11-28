@@ -198,10 +198,10 @@ class OptimizerService {
 
     // 1. Artikel auflösen. Freitext wird mit den Präferenzen neu zugeordnet,
     //    damit Bio- und Marken-Einstellungen wirken. Ausdrücklich gewählte
-    //    Produkte (Name = Artikeltext) bleiben unverändert.
+    //    Produkte (gewählte Sorte) bleiben unverändert.
     final resolved = open.map((it) {
       final chosen = it.matchedProduct;
-      final isExplicit = chosen != null && chosen.name == it.rawText;
+      final isExplicit = chosen != null && (it.pinned || chosen.name == it.rawText);
       final prod = isExplicit
           ? chosen
           : CatalogService.matchRawText(

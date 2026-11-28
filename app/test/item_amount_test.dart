@@ -101,7 +101,9 @@ void main() {
     expect(const ItemAmount(950, AmountUnit.g).stepBy(1).label, '1 kg');
     expect(const ItemAmount(1, AmountUnit.kg).stepBy(-1).label, '500 g');
     expect(const ItemAmount(50, AmountUnit.g).stepBy(-1).label, '50 g');
-    expect(const ItemAmount(2, AmountUnit.stk).stepBy(-1).isDefault, isTrue);
+    // "1 Stück" ausdrücklich gewählt bleibt sichtbar (Knopf "Stück" tut etwas)
+    expect(const ItemAmount(2, AmountUnit.stk).stepBy(-1).label, '1×');
+    expect(const ItemAmount(1, AmountUnit.stk).isDefault, isFalse);
     expect(ItemAmount.none.stepBy(1).label, '2×');
   });
 }
