@@ -86,6 +86,7 @@ class SupabaseService {
       _guard(() => _c.auth.signUp(
             email: _normEmail(email),
             password: password,
+            emailRedirectTo: appUrl,
             data: {
               if (inviteCode != null && inviteCode.trim().isNotEmpty) 'invite_code': inviteCode.trim(),
               if (displayName != null && displayName.trim().isNotEmpty) 'display_name': displayName.trim(),
@@ -100,7 +101,18 @@ class SupabaseService {
 
   /// Schickt einen Code für ein neues Passwort, siehe [resetPassword].
   static Future<void> requestPasswordReset(String email) =>
-      _guard(() => _c.auth.resetPasswordForEmail(_normEmail(email)));
+      _guard(() => _c.auth.resetPasswordForEmail(_normEmail(email), redirectTo: appUrl));
+
+  /// Adresse der App selbst (z. B. https://magnusevh.github.io/einkaufs-optimierer/).
+  /// Ohne sie schickt Supabase die Links an die "Site URL" im Dashboard; steht
+  /// dort nur die Domain, landet man auf der 404 von GitHub Pages. Die Adresse
+  /// muss im Dashboard unter Authentication → URL Configuration → Redirect URLs
+  /// stehen, sonst nimmt Supabase trotzdem die Site URL.
+  static String? get appUrl {
+    if (!kIsWeb) return null;
+    final b = Uri.base;
+    return Uri(scheme: b.scheme, host: b.host, port: b.hasPort ? b.port : null, path: b.path).toString();
+  }
 
   static Future<void> resetPassword(String email, String code, String newPassword) => _guard(() async {
         await _c.auth.verifyOTP(email: _normEmail(email), token: code.trim(), type: OtpType.recovery);
