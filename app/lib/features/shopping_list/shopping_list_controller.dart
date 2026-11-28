@@ -10,6 +10,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import '../../core/models/item_amount.dart';
 import '../../core/models/list_item.dart';
 import '../../core/models/product.dart';
 import '../../core/services/analytics_service.dart';
@@ -189,6 +190,7 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
       rawText: r.rawText,
       matchedProduct: byId ?? CatalogService.matchRawText(r.rawText),
       quantity: r.quantity,
+      unit: r.unit,
       isChecked: r.checked,
       notes: r.note,
     );
@@ -210,6 +212,7 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
         rawText: it.rawText,
         productId: it.matchedProduct?.id,
         quantity: it.quantity,
+        unit: it.unit,
         note: it.notes,
       ));
     }
@@ -240,7 +243,7 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
     PreferencesStorage.saveShoppingList(items.map((it) => it.toJson()).toList());
   }
 
-  ShoppingListItem _createItem(String text, {double quantity = 1.0, Product? product}) {
+  ShoppingListItem _createItem(String text, {double quantity = 1.0, String? unit, Product? product}) {
     final matched = product ?? CatalogService.matchRawText(text);
     return ShoppingListItem(
       id: _uuid.v4(),
@@ -248,15 +251,24 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
       rawText: text,
       matchedProduct: matched,
       quantity: quantity,
+      unit: unit,
       isChecked: false,
     );
   }
 
   // ── Änderungen (lokal oder gemeinsam) ────────────────────────────────────
 
-  void addItem(String text, {Product? matchedProduct, double quantity = 1.0}) {
-    if (text.trim().isEmpty) return;
-    final item = _createItem(text.trim(), quantity: quantity, product: matchedProduct);
+  /// Neuer Artikel. Aus dem Text wird die Menge gelesen ("500 g Erdbeeren"
+  /// → Erdbeeren, 500 g). Bei einem gewählten Produkt steht nur das Ding an
+  /// sich auf der Liste ("Erdbeeren"), Marke und Größe nicht.
+  void addItem(String text, {Product? matchedProduct, ItemAmount? amount}) {
+    if (text.trim().isEmpty && matchedProduct == null) return;
+    final parsed = parseItemInput(text);
+    final name = matchedProduct != null ? genericName(matchedProduct) : parsed.name;
+    if (name.isEmpty) return;
+    final a = amount ?? parsed.amount;
+    final item = _createItem(name,
+        quantity: a.quantity, unit: a.isDefault ? null : a.unit?.code, product: matchedProduct);
     final s = _sync;
     if (s != null) {
       s.add(ListRow(
@@ -265,6 +277,7 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
         rawText: item.rawText,
         productId: item.matchedProduct?.id,
         quantity: item.quantity,
+        unit: item.unit,
       ));
     } else {
       _setItems([item, ...state.items]);
@@ -279,30 +292,38 @@ class ShoppingListController extends StateNotifier<ShoppingListState> {
   }
 
   /// Ordnet einem Artikel ausdrücklich ein Katalogprodukt zu (Rückfrage bei
-  /// unsicherer Freitext-Zuordnung). Der Name wird übernommen, damit der
-  /// Optimierer die Wahl nicht wieder überschreibt.
+  /// unsicherer Freitext-Zuordnung). Auf der Liste steht danach das Ding an
+  /// sich ("Erdbeeren"), das Produkt bleibt über die ID gemerkt.
   void assignProduct(String id, Product product) {
     CatalogService.recordUsage(product.id);
+    final name = genericName(product);
     final s = _sync;
     if (s != null) {
-      s.patch(id, {'raw_text': product.name, 'product_id': product.id});
+      s.patch(id, {'raw_text': name, 'product_id': product.id});
       return;
     }
     _setItems(
-      state.items.map((it) => it.id != id ? it : it.copyWith(rawText: product.name, matchedProduct: product)).toList(),
+      state.items.map((it) => it.id != id ? it : it.copyWith(rawText: name, matchedProduct: product)).toList(),
     );
   }
 
+  /// Menge setzen, auch zurück auf "keine Angabe" ([ItemAmount.none]).
+  void setAmount(String id, ItemAmount amount) {
+    final a = amount.normalized();
+    final unit = a.isDefault ? null : a.unit?.code;
+    final s = _sync;
+    if (s != null) {
+      s.patch(id, {'quantity': a.quantity, 'unit': unit});
+      return;
+    }
+    _setItems(state.items.map((it) => it.id == id ? it.withAmount(a) : it).toList());
+  }
+
+  /// Plus/Minus: ein Schritt in der Einheit des Artikels (Stück 1, g 50 …).
   void updateQuantity(String id, double delta) {
     final current = state.items.where((it) => it.id == id).firstOrNull;
     if (current == null) return;
-    final newQty = (current.quantity + delta).clamp(1.0, 99.0);
-    final s = _sync;
-    if (s != null) {
-      s.patch(id, {'quantity': newQty});
-      return;
-    }
-    _setItems(state.items.map((it) => it.id == id ? it.copyWith(quantity: newQty) : it).toList());
+    setAmount(id, current.amount.stepBy(delta.sign.toInt()));
   }
 
   void toggleChecked(String id) {

@@ -1,5 +1,6 @@
-// app/lib/core/models/list_item.dart
+﻿// app/lib/core/models/list_item.dart
 
+import 'item_amount.dart';
 import 'product.dart';
 
 class ShoppingListItem {
@@ -22,6 +23,21 @@ class ShoppingListItem {
     this.isChecked = false,
     this.notes,
   });
+
+  /// Menge mit Einheit (Standard: keine Angabe).
+  ItemAmount get amount => ItemAmount(quantity, AmountUnit.fromCode(unit));
+
+  /// Setzt Menge und Einheit, auch zurück auf "keine Angabe".
+  ShoppingListItem withAmount(ItemAmount a) => ShoppingListItem(
+        id: id,
+        listId: listId,
+        rawText: rawText,
+        matchedProduct: matchedProduct,
+        quantity: a.quantity,
+        unit: a.isDefault ? null : a.unit?.code,
+        isChecked: isChecked,
+        notes: notes,
+      );
 
   ShoppingListItem copyWith({
     String? id,

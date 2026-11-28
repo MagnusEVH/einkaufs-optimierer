@@ -1,8 +1,9 @@
-// Abgleich der gemeinsamen Liste (Stufe 3c): offline hinzufügen, gleichzeitig
+﻿// Abgleich der gemeinsamen Liste (Stufe 3c): offline hinzufügen, gleichzeitig
 // ändern, Löschen gegen Ändern, Warteschlange und Zwischenspeicher.
 // Der Fake-Server bildet den Trigger stamp_shopping_item nach.
 
 import 'package:einkaufs_optimierer/core/services/household_service.dart';
+import 'package:einkaufs_optimierer/core/models/item_amount.dart';
 import 'package:einkaufs_optimierer/core/services/list_sync.dart';
 import 'package:einkaufs_optimierer/core/services/preferences_storage.dart';
 import 'package:einkaufs_optimierer/features/shopping_list/shopping_list_controller.dart';
@@ -308,6 +309,27 @@ void main() {
       await _settle(container);
       expect(server.rows[milch]!['deleted_at'], isNotNull);
       expect(container.read(shoppingListProvider).items.map((i) => i.rawText), ['brot']);
+    });
+
+    test('Menge mit Einheit: aus der Eingabe gelesen, über den Server geteilt, zurücksetzbar', () async {
+      final ctrl = container.read(shoppingListProvider.notifier);
+      await ctrl.declineImport();
+      ctrl.addItem('500 g Erdbeeren');
+      await _settle(container);
+      final it = container.read(shoppingListProvider).items.single;
+      expect(it.rawText, 'Erdbeeren');
+      expect(it.amount.label, '500 g');
+      expect(server.rows[it.id]!['unit'], 'g');
+      expect(server.rows[it.id]!['quantity'], 500);
+
+      ctrl.updateQuantity(it.id, 1);
+      await _settle(container);
+      expect(container.read(shoppingListProvider).items.single.amount.label, '550 g');
+
+      ctrl.setAmount(it.id, ItemAmount.none);
+      await _settle(container);
+      expect(server.rows[it.id]!['unit'], isNull);
+      expect(container.read(shoppingListProvider).items.single.amount.isDefault, isTrue);
     });
 
     test('Offline: Hinweis mit Zahl wartender Änderungen', () async {

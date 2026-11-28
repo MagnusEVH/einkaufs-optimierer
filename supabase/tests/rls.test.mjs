@@ -1,4 +1,4 @@
-// RLS-Tests für Konten und Haushalte. Echter Postgres (PGlite), Supabase-Teile
+﻿// RLS-Tests für Konten und Haushalte. Echter Postgres (PGlite), Supabase-Teile
 // nachgebaut in supabase_shim.sql. Start: cd supabase/tests && npm ci && npm test
 //
 // Szenario: Magnus (Allowlist, Admin), Mama (per Einladung in "Eltern"),
@@ -198,6 +198,19 @@ await test('Upsert vom Gerät geht, Haushalt und Ersteller bleiben fest', async 
   await fails(`update public.shopping_items set created_by = $2 where id = $1`, [ITEM, magnus], /permission denied/, 'created_by');
 });
 
+await test('Menge mit Einheit: Mitglieder setzen sie, unbekannte Einheit wird abgelehnt', async () => {
+  await as(mama);
+  await db.query(`update public.shopping_items set quantity = 500, unit = 'g' where id = $1`, [ITEM]);
+  const it = await one(`select quantity, unit from public.shopping_items where id = $1`, [ITEM]);
+  assert.equal(Number(it.quantity), 500);
+  assert.equal(it.unit, 'g');
+  await fails(`update public.shopping_items set unit = 'tonnen' where id = $1`, [ITEM], /check constraint/, 'Einheit');
+  await as(fremder);
+  await db.query(`update public.shopping_items set unit = 'kg' where id = $1`, [ITEM]);
+  await as(mama);
+  assert.equal((await one(`select unit from public.shopping_items where id = $1`, [ITEM])).unit, 'g', 'Fremder ändert nichts');
+});
+
 await test('Fremde: nichts lesen, nichts schreiben, auch nicht per Upsert', async () => {
   await as(fremder);
   assert.equal((await q(`select * from public.shopping_items`)).length, 0);
@@ -324,7 +337,7 @@ await test('Anonym: keine Daten, keine Funktion außer min_app_version', async (
     assert.equal(ok, sig === 'min_app_version()', `anon darf ${sig}`);
   }
   await asAnon();
-  assert.equal((await one(`select public.min_app_version() as v`)).v, 1);
+  assert.equal((await one(`select public.min_app_version() as v`)).v, 2);
 });
 
 await test('Interne Funktionen und Tabellen sind für Konten gesperrt', async () => {

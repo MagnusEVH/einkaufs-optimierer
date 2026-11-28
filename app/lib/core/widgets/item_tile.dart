@@ -1,4 +1,4 @@
-// app/lib/core/widgets/item_tile.dart
+﻿// app/lib/core/widgets/item_tile.dart
 //
 // Artikel-Kachel mit Icon (Vorbild: Bring!) und Artikel-Zeile für die Listenansicht.
 
@@ -29,7 +29,8 @@ class ItemIconBox extends StatelessWidget {
 class ItemTile extends StatelessWidget {
   final String icon;
   final String name;
-  final double quantity;
+  /// Menge wie "500 g" oder "2×", leer = keine Angabe.
+  final String amount;
   final bool needsCheck;
   final bool done;
   final VoidCallback onTap;
@@ -39,7 +40,7 @@ class ItemTile extends StatelessWidget {
     super.key,
     required this.icon,
     required this.name,
-    this.quantity = 1,
+    this.amount = '',
     this.needsCheck = false,
     this.done = false,
     required this.onTap,
@@ -52,7 +53,7 @@ class ItemTile extends StatelessWidget {
     final border = needsCheck ? AppColors.warningLine : AppColors.line;
     return Semantics(
       button: true,
-      label: '$name${quantity > 1 ? ', ${quantity.toInt()} Stück' : ''}${needsCheck ? ', bitte prüfen' : ''}${done ? ', erledigt' : ''}',
+      label: '$name${amount.isNotEmpty ? ', $amount' : ''}${needsCheck ? ', bitte prüfen' : ''}${done ? ', erledigt' : ''}',
       child: Material(
         color: bg,
         borderRadius: AppRadius.medium,
@@ -93,7 +94,7 @@ class ItemTile extends StatelessWidget {
                       iconText,
                       const SizedBox(width: 12),
                       Expanded(child: label),
-                      if (quantity > 1) const SizedBox(width: 28),
+                      if (amount.isNotEmpty) SizedBox(width: amount.length * 7.0 + 8),
                     ]);
                   }
                   return Column(
@@ -101,13 +102,13 @@ class ItemTile extends StatelessWidget {
                     children: [iconText, const SizedBox(height: 8), label],
                   );
                 }),
-                if (quantity > 1)
+                if (amount.isNotEmpty)
                   Positioned(
                     top: -4,
                     right: -2,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                      child: Text('${quantity.toInt()}×', style: const TextStyle(color: AppColors.inkMuted, fontSize: 13, fontWeight: FontWeight.w500, fontFeatures: AppText.tab)),
+                      child: Text(amount, style: const TextStyle(color: AppColors.inkMuted, fontSize: 13, fontWeight: FontWeight.w500, fontFeatures: AppText.tab)),
                     ),
                   ),
                 if (needsCheck)

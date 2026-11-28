@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import '../../features/stores_map/data/rlp_stores.dart';
+import '../models/item_amount.dart';
 import '../models/list_item.dart';
 import '../models/optimization_result.dart';
 import '../models/product.dart';
@@ -218,7 +219,8 @@ class OptimizerService {
         listItemId: it.id,
         rawText: it.rawText,
         product: prod,
-        quantity: it.quantity,
+        // Packungen: "750 g" bei 500-g-Schalen = 2, "3 Stück" = 3
+        quantity: packsNeeded(it.amount, prod).toDouble(),
         category: _categoryKey(prod, it.rawText),
         pricesByStore: prices,
       );

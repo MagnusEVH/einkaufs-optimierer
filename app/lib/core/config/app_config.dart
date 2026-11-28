@@ -1,4 +1,4 @@
-/// App-wide compile-time configuration.
+﻿/// App-wide compile-time configuration.
 ///
 /// Secrets are injected at build-time via --dart-define and are
 /// therefore never stored in source code or the git history.
@@ -23,7 +23,7 @@ class AppConfig {
 
   /// Schema-Stand, den diese App kann. Liegt der Server darüber
   /// (min_app_version), zeigt die App "Bitte neu laden".
-  static const int appSchemaVersion = 1;
+  static const int appSchemaVersion = 2;
 
   // ── Tile URL templates ──────────────────────────────────────────────────
 

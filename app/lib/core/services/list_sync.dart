@@ -1,4 +1,4 @@
-// app/lib/core/services/list_sync.dart
+﻿// app/lib/core/services/list_sync.dart
 //
 // Abgleich der gemeinsamen Einkaufsliste eines Haushalts (Stufe 3c).
 //
@@ -30,6 +30,7 @@ class ListRow {
   final String rawText;
   final String? productId;
   final double quantity;
+  final String? unit;
   final String? note;
   final bool checked;
   final bool deleted;
@@ -41,6 +42,7 @@ class ListRow {
     required this.rawText,
     this.productId,
     this.quantity = 1,
+    this.unit,
     this.note,
     this.checked = false,
     this.deleted = false,
@@ -53,6 +55,7 @@ class ListRow {
         rawText: m['raw_text'] as String,
         productId: m['product_id'] as String?,
         quantity: (m['quantity'] as num?)?.toDouble() ?? 1,
+        unit: m['unit'] as String?,
         note: m['note'] as String?,
         checked: m['checked_at'] != null,
         deleted: m['deleted_at'] != null,
@@ -66,6 +69,7 @@ class ListRow {
         'raw_text': rawText,
         'product_id': productId,
         'quantity': quantity,
+        'unit': unit,
         'note': note,
         'checked_at': checked ? now.toUtc().toIso8601String() : null,
       };
@@ -77,6 +81,7 @@ class ListRow {
         rawText: p.containsKey('raw_text') ? p['raw_text'] as String : rawText,
         productId: p.containsKey('product_id') ? p['product_id'] as String? : productId,
         quantity: p.containsKey('quantity') ? (p['quantity'] as num).toDouble() : quantity,
+        unit: p.containsKey('unit') ? p['unit'] as String? : unit,
         note: p.containsKey('note') ? p['note'] as String? : note,
         checked: p.containsKey('checked_at') ? p['checked_at'] != null : checked,
         deleted: p.containsKey('deleted_at') ? p['deleted_at'] != null : deleted,
@@ -89,6 +94,7 @@ class ListRow {
         'raw_text': rawText,
         'product_id': productId,
         'quantity': quantity,
+        'unit': unit,
         'note': note,
         'checked_at': checked ? 'x' : null,
         'deleted_at': deleted ? 'x' : null,
@@ -140,7 +146,7 @@ class SupabaseListRemote implements ListRemote {
   const SupabaseListRemote();
   SupabaseClient get _c => SupabaseService.client!;
 
-  static const _columns = 'id, household_id, raw_text, product_id, quantity, note, checked_at, deleted_at, updated_at';
+  static const _columns = 'id, household_id, raw_text, product_id, quantity, unit, note, checked_at, deleted_at, updated_at';
 
   @override
   Future<List<Map<String, dynamic>>> fetchSince(String householdId, DateTime? since) => _guard(() async {

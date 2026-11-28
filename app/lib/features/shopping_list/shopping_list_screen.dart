@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/app_navigation.dart';
+import '../../core/models/item_amount.dart';
 import '../../core/models/list_item.dart';
 import '../../core/models/product.dart';
 import '../../core/models/store.dart';
@@ -20,6 +21,7 @@ import '../../core/widgets/product_picker_sheet.dart';
 import '../optimizer/optimizer_screen.dart';
 import '../trip/trip_controller.dart';
 import '../trip/trip_screen.dart';
+import 'amount_editor.dart';
 import 'shopping_list_controller.dart';
 import '../household/household_screen.dart';
 import '../account/account_screen.dart';
@@ -29,7 +31,7 @@ import '../../core/services/household_service.dart';
 /// Unsicher zugeordneter Freitext, den der Nutzer prüfen sollte.
 bool itemNeedsCheck(ShoppingListItem item) {
   final matched = item.matchedProduct;
-  final explicit = matched != null && matched.name == item.rawText;
+  final explicit = matched != null && (matched.name == item.rawText || genericName(matched) == item.rawText);
   if (item.isChecked || explicit) return false;
   // Text gehört klar zu einer anderen Warengruppe als das Produkt (z. B. "saft" → Thunfisch)
   if (matched != null && ItemIcons.contradicts(item.rawText, matched)) return true;
@@ -74,13 +76,15 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
   }
 
   void _onSearchChanged(String query) {
-    setState(() => _suggestions = query.trim().isEmpty ? [] : CatalogService.getSuggestions(query, limit: 5));
+    // Menge gehört nicht zur Suche: "500 g erdb" sucht "erdb"
+    final name = parseItemInput(query).name;
+    setState(() => _suggestions = name.trim().isEmpty ? [] : CatalogService.getSuggestions(name, limit: 5));
   }
 
   void _submitItem([Product? selectedProduct]) {
     final text = _inputController.text.trim();
     if (text.isEmpty && selectedProduct == null) return;
-    ref.read(shoppingListProvider.notifier).addItem(selectedProduct?.name ?? text, matchedProduct: selectedProduct);
+    ref.read(shoppingListProvider.notifier).addItem(text, matchedProduct: selectedProduct);
     _inputController.clear();
     setState(() => _suggestions = []);
     _focusNode.requestFocus(); // Schnell mehrere Artikel nacheinander eingeben
@@ -137,16 +141,11 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                   ),
                 ],
                 const SizedBox(height: AppSpace.l),
-                Row(children: [
-                  const Expanded(child: Text('Menge', style: AppText.bodyStrong)),
-                  IconButton.outlined(
-                    tooltip: 'Weniger',
-                    icon: const Icon(Icons.remove),
-                    onPressed: current.quantity > 1 ? () => ctrl.updateQuantity(current.id, -1) : null,
-                  ),
-                  SizedBox(width: 48, child: Text('${current.quantity.toInt()}', textAlign: TextAlign.center, style: AppText.title)),
-                  IconButton.filled(tooltip: 'Mehr', icon: const Icon(Icons.add), onPressed: () => ctrl.updateQuantity(current.id, 1)),
-                ]),
+                AmountEditor(
+                  amount: current.amount,
+                  suggested: suggestedUnit(current.matchedProduct),
+                  onChanged: (a) => ctrl.setAmount(current.id, a),
+                ),
                 const SizedBox(height: AppSpace.m),
                 OutlinedButton.icon(
                   icon: const Icon(Icons.manage_search_rounded),
@@ -388,7 +387,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                         key: ValueKey(row[k].id),
                         icon: itemIcon(row[k]),
                         name: row[k].rawText,
-                        quantity: row[k].quantity,
+                        amount: row[k].amount.label,
                         needsCheck: itemNeedsCheck(row[k]),
                         done: row[k].isChecked,
                         onTap: () => _openItem(row[k]),
@@ -439,21 +438,12 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
                     ? Text(it.matchedProduct == null ? 'Kein Katalog-Treffer, tippen' : 'Unsicher, tippen zum Prüfen',
                         style: const TextStyle(color: AppColors.warning, fontSize: 12, fontWeight: FontWeight.w500))
                     : null,
-                trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                  IconButton(
-                    tooltip: 'Weniger',
-                    icon: const Icon(Icons.remove_circle_outline, size: 22),
-                    color: AppColors.inkSubtle,
-                    onPressed: it.quantity > 1 ? () => ctrl.updateQuantity(it.id, -1) : null,
-                  ),
-                  Text('${it.quantity.toInt()}', style: AppText.bodyStrong),
-                  IconButton(
-                    tooltip: 'Mehr',
-                    icon: const Icon(Icons.add_circle_outline, size: 22),
-                    color: AppColors.primary,
-                    onPressed: () => ctrl.updateQuantity(it.id, 1),
-                  ),
-                ]),
+                // Nur das Ding an sich; Menge klein daneben, wenn angegeben
+                trailing: it.amount.isDefault
+                    ? null
+                    : Text(it.amount.label,
+                        key: ValueKey('amount_${it.id}'),
+                        style: AppText.small.copyWith(color: AppColors.inkMuted, fontWeight: FontWeight.w500)),
                 onTap: () => _openItem(it),
               ),
             ),
