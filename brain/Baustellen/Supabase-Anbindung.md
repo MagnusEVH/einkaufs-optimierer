@@ -21,5 +21,7 @@ App läuft ohne Supabase im Demo-Modus. Secrets `SUPABASE_URL` und `SUPABASE_ANO
 
 > [!warning] Nur den Publishable/Anon-Key in die App – nie `service_role`/`sb_secret_…`.
 
-- [ ] Gmail-SMTP und Mail-Vorlagen mit Code nach [[Mail-Versand einrichten]] (Magnus) – 2026-11-28
+- [x] SMTP (Brevo) und Mail-Vorlagen mit Code, siehe [[Mail-Versand einrichten]] – 2026-11-28
+- [x] Admin eingetragen – 2026-11-28
+- [ ] Zwei-Geräte-Test (iPhone + PC)
 - [x] Anmelde-System per Code, ohne Sackgassen (PR #36) – 2026-11-28

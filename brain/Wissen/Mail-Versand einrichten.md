@@ -3,59 +3,28 @@ type: wissen
 aktualisiert: 2026-11-28
 tags: [supabase, mail, anleitung]
 ---
-# Mail-Versand einrichten (Gmail-SMTP)
+# Mail-Versand (Brevo-SMTP)
 
-Grundlage für das Anmelde-System: Ohne eigenes SMTP gehen nur 2 Mails pro Stunde raus, und die Mail-Texte lassen sich nicht ändern (also kein Code in der Mail). Entscheidung: Gmail mit App-Passwort, siehe [[2026-11-28 Mail-Link 404]].
+Grundlage für das Anmelde-System: Ohne eigenes SMTP gehen nur 2 Mails pro Stunde raus, und die Mail-Texte lassen sich nicht ändern (also kein Code in der Mail). **Eingerichtet am 2026-11-28**, siehe [[2026-11-28 Mail-Link 404]].
 
-> [!warning] Das App-Passwort nur bei Supabase eintragen. Nie in Notizen, Chat oder Repo.
+> [!info] Warum Brevo statt Gmail
+> Gmail-SMTP braucht ein App-Passwort, und das setzt die Zwei-Schritt-Bestätigung voraus. Google sperrt beides bei neuen Konten oft für Tage. Brevo (kostenlos, 300 Mails/Tag) geht ohne.
 
-## 1. Gmail-Konto (einmalig)
-1. Eigenes Konto anlegen, z. B. `einkaufsapp.<name>@gmail.com` (nicht das private)
-2. https://myaccount.google.com/security → **Bestätigung in zwei Schritten** einschalten
-3. https://myaccount.google.com/apppasswords → Name „Supabase“ → **Erstellen** → 16-stelliges Passwort kopieren (Leerzeichen weglassen)
+> [!warning] Der SMTP-Schlüssel steht nur bei Brevo und Supabase. Nie in Notizen, Chat oder Repo.
 
-## 2. Supabase: SMTP
-Dashboard → Projekt → **Authentication → Emails → SMTP Settings** → „Enable Custom SMTP“
-
-| Feld | Wert |
+## Stand
+| Wo | Einstellung |
 |---|---|
-| Sender email | die Gmail-Adresse |
-| Sender name | Einkaufs-Optimierer |
-| Host | `smtp.gmail.com` |
-| Port | `465` |
-| Username | die Gmail-Adresse |
-| Password | das App-Passwort |
-| Minimum interval | 60 Sekunden |
+| Brevo → Absender | Gmail-Adresse des Projekts, bestätigt |
+| Supabase → Emails → SMTP | Host `smtp-relay.brevo.com`, Port `587`, Benutzer = SMTP-Anmeldung aus Brevo (SMTP & API), Passwort = SMTP-Schlüssel, Absendername „Einkaufs-Optimierer“ |
+| Supabase → Rate Limits | 30 Mails pro Stunde (automatisch mit SMTP) |
+| Supabase → Providers → Email | Confirm email an, OTP 6 Ziffern, gültig 3600 s, Mindestpasswort 8 |
+| Supabase → URL Configuration | Site URL und Redirect URL = `https://magnusevh.github.io/einkaufs-optimierer/` (Redirect mit `**`) |
+| Supabase → Templates | „Confirm sign up“ und „Reset password“ mit `{{ .Token }}` im Betreff und groß im Text, Link nur klein darunter |
 
-## 3. Supabase: Grenzen und Code
-- **Authentication → Rate Limits** → „Rate limit for sending emails“: `30` pro Stunde
-- **Authentication → Sign In / Providers → Email**: „Confirm email“ an, „Email OTP Expiration“ `3600`, „Email OTP Length“ `6`. „Secure password change“ darf an bleiben (die App fragt dann selbst einen Code ab)
+## Schlüssel erneuern
+Brevo → SMTP & API → „SMTP-Schlüssel generieren“ → bei Supabase unter SMTP ins Feld Password einfügen → Save. Alten Schlüssel in Brevo löschen.
 
-## 4. Supabase: Adressen
-**Authentication → URL Configuration**
-- Site URL: `https://magnusevh.github.io/einkaufs-optimierer/`
-- Redirect URLs → Add URL: `https://magnusevh.github.io/einkaufs-optimierer/**`
-
-## 5. Supabase: Mail-Texte
-**Authentication → Emails → Templates**. Bei beiden Vorlagen Betreff und Text ersetzen.
-
-**Confirm signup** – Betreff: `Dein Code: {{ .Token }}`
-```html
-<h2>Willkommen beim Einkaufs-Optimierer</h2>
-<p>Gib diesen Code in der App ein:</p>
-<p style="font-size:32px;font-weight:bold;letter-spacing:6px">{{ .Token }}</p>
-<p>Der Code gilt eine Stunde. Hast du dich nicht registriert, ignoriere diese Mail.</p>
-<p style="color:#888;font-size:12px">Notfalls geht auch dieser Link: <a href="{{ .ConfirmationURL }}">E-Mail bestätigen</a></p>
-```
-
-**Reset Password** – Betreff: `Code für dein neues Passwort: {{ .Token }}`
-```html
-<h2>Neues Passwort</h2>
-<p>Gib diesen Code in der App unter „Passwort zurücksetzen“ ein:</p>
-<p style="font-size:32px;font-weight:bold;letter-spacing:6px">{{ .Token }}</p>
-<p>Der Code gilt eine Stunde. Hast du nichts angefordert, ignoriere diese Mail. Dein Passwort bleibt dann gleich.</p>
-<p style="color:#888;font-size:12px">Notfalls geht auch dieser Link: <a href="{{ .ConfirmationURL }}">Passwort zurücksetzen</a></p>
-```
-
-## 6. Probe
-App → Anmelden → „Passwort vergessen“ → Code kommt in wenigen Sekunden (sonst im Spam schauen) → Code und neues Passwort eingeben → angemeldet.
+## Hinweise
+- Absender ist eine Gmail-Adresse ohne eigene Domain: erste Mails landen evtl. im Spam. Saubere Lösung später: eigene Domain mit DKIM/DMARC
+- Probe: App → Anmelden → „Passwort vergessen“ → Code kommt in Sekunden → Code und neues Passwort → angemeldet. Am 2026-11-28 erfolgreich auf dem iPhone
