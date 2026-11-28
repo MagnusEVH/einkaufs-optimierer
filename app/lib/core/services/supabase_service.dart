@@ -1,4 +1,4 @@
-// app/lib/core/services/supabase_service.dart
+﻿// app/lib/core/services/supabase_service.dart
 //
 // Verbindung zum Supabase-Projekt: Konto (Stufe 3a). Ohne SUPABASE_URL und
 // SUPABASE_KEY im Build läuft alles nur lokal auf dem Gerät.
@@ -41,6 +41,10 @@ class SupabaseService {
   /// merkt es sich, bis die Oberfläche es abholt.
   static final ValueNotifier<bool> recoveryPending = ValueNotifier(false);
 
+  /// Adresse, mit der die App gestartet wurde (vor dem Aufräumen durch
+  /// Supabase). Daraus liest die App, ob ein Mail-Link geöffnet wurde.
+  static Uri? launchUri;
+
   static Future<void> initialize({
     String supabaseUrl = AppConfig.supabaseUrl,
     String supabaseKey = AppConfig.supabaseKey,
@@ -49,9 +53,9 @@ class SupabaseService {
       debugPrint('Kein Supabase im Build: alles bleibt lokal.');
       return;
     }
-    // Reset-Link: Das Ereignis passwordRecovery feuert schon während
-    // initialize, bevor unten jemand zuhört. Deshalb die Adresse selbst prüfen.
-    if (kIsWeb && isRecoveryLink(Uri.base)) recoveryPending.value = true;
+    // Mail-Link: Das Ereignis passwordRecovery feuert schon während
+    // initialize, bevor unten jemand zuhört. Deshalb die Adresse merken.
+    if (kIsWeb) launchUri = Uri.base;
     try {
       // Höchstens 8 s: Der Start der App darf nie am Server hängen
       await Supabase.initialize(
@@ -86,15 +90,23 @@ class SupabaseService {
   /// Legt das Konto an. Danach kommt eine Mail mit Code, siehe [confirmSignUp].
   /// Ohne Code geht es nur mit einer freigeschalteten Adresse (Allowlist).
   static Future<void> signUp(String email, String password, {String? inviteCode, String? displayName}) =>
-      _guard(() => _c.auth.signUp(
-            email: _normEmail(email),
-            password: password,
-            emailRedirectTo: appUrl,
-            data: {
-              if (inviteCode != null && inviteCode.trim().isNotEmpty) 'invite_code': inviteCode.trim(),
-              if (displayName != null && displayName.trim().isNotEmpty) 'display_name': displayName.trim(),
-            },
-          ));
+      _guard(() async {
+        final r = await _c.auth.signUp(
+          email: _normEmail(email),
+          password: password,
+          emailRedirectTo: appUrl,
+          data: {
+            if (inviteCode != null && inviteCode.trim().isNotEmpty) 'invite_code': inviteCode.trim(),
+            if (displayName != null && displayName.trim().isNotEmpty) 'display_name': displayName.trim(),
+          },
+        );
+        // Adresse schon bestätigt: Supabase meldet keinen Fehler, schickt aber
+        // keine Mail (Schutz vor Ausspähen). Erkennbar an leeren identities.
+        if (r.user != null && (r.user!.identities?.isEmpty ?? false)) {
+          throw const AccountException('Mit dieser E-Mail gibt es schon ein Konto. Bitte anmelden.',
+              kind: AuthErrorKind.userExists);
+        }
+      });
 
   static Future<void> confirmSignUp(String email, String code) =>
       _guard(() => _c.auth.verifyOTP(email: _normEmail(email), token: code.trim(), type: OtpType.signup));
@@ -111,17 +123,6 @@ class SupabaseService {
   /// dort nur die Domain, landet man auf der 404 von GitHub Pages. Die Adresse
   /// muss im Dashboard unter Authentication → URL Configuration → Redirect URLs
   /// stehen, sonst nimmt Supabase trotzdem die Site URL.
-  /// true, wenn die Adresse aus einem "Passwort zurücksetzen"-Link stammt
-  /// (`#access_token=…&type=recovery` oder `?type=recovery`).
-  static bool isRecoveryLink(Uri u) {
-    if (u.queryParameters['type'] == 'recovery') return true;
-    try {
-      return Uri.splitQueryString(u.fragment)['type'] == 'recovery';
-    } catch (_) {
-      return false;
-    }
-  }
-
   static String? get appUrl {
     if (!kIsWeb) return null;
     final b = Uri.base;
@@ -202,17 +203,74 @@ class SupabaseService {
 /// Fehler beim Konto, mit verständlichem deutschem Text.
 class AccountException implements Exception {
   final String message;
-  const AccountException(this.message);
+  final AuthErrorKind kind;
 
-  factory AccountException.fromAuth(AuthException e) => AccountException(describeAuthError(e.code, e.message, e.statusCode));
+  /// Bei [AuthErrorKind.rateLimit]: so lange warten, falls der Server es sagt.
+  final Duration? retryAfter;
+  const AccountException(this.message, {this.kind = AuthErrorKind.other, this.retryAfter});
+
+  factory AccountException.fromAuth(AuthException e) => AccountException(
+        describeAuthError(e.code, e.message, e.statusCode),
+        kind: authErrorKind(e.code, e.message, e.statusCode),
+        retryAfter: retryAfterFrom(e.message),
+      );
 
   factory AccountException.network(Object e) {
     debugPrint('Konto: $e');
-    return const AccountException('Server nicht erreichbar. Bitte Verbindung prüfen und gleich noch einmal versuchen.');
+    return const AccountException('Server nicht erreichbar. Bitte Verbindung prüfen und gleich noch einmal versuchen.',
+        kind: AuthErrorKind.network);
   }
 
   @override
   String toString() => message;
+}
+
+enum AuthErrorKind {
+  invalidCredentials,
+  emailNotConfirmed,
+  userExists,
+  weakPassword,
+  codeInvalid,
+  rateLimit,
+  network,
+  notInvited,
+  reauthNeeded,
+  other,
+}
+
+@visibleForTesting
+AuthErrorKind authErrorKind(String? code, String message, String? status) {
+  switch (code) {
+    case 'invalid_credentials':
+      return AuthErrorKind.invalidCredentials;
+    case 'email_not_confirmed':
+      return AuthErrorKind.emailNotConfirmed;
+    case 'user_already_exists':
+    case 'email_exists':
+      return AuthErrorKind.userExists;
+    case 'weak_password':
+      return AuthErrorKind.weakPassword;
+    case 'otp_expired':
+      return AuthErrorKind.codeInvalid;
+    case 'over_email_send_rate_limit':
+    case 'over_request_rate_limit':
+      return AuthErrorKind.rateLimit;
+    case 'unexpected_failure':
+      return AuthErrorKind.notInvited;
+    case 'reauthentication_needed':
+    case 'reauthentication_not_valid':
+      return AuthErrorKind.reauthNeeded;
+  }
+  if (message.contains('Database error saving new user')) return AuthErrorKind.notInvited;
+  if (status == '429') return AuthErrorKind.rateLimit;
+  return AuthErrorKind.other;
+}
+
+/// "For security purposes, you can only request this after 42 seconds."
+@visibleForTesting
+Duration? retryAfterFrom(String message) {
+  final m = RegExp(r'after (\d+) seconds?').firstMatch(message);
+  return m == null ? null : Duration(seconds: int.parse(m.group(1)!));
 }
 
 /// Übersetzt GoTrue-Fehler. Codes laut Supabase-Doku (Auth error codes).
@@ -229,15 +287,18 @@ String describeAuthError(String? code, String message, String? status) {
     case 'weak_password':
       return 'Das Passwort ist zu schwach. Bitte mindestens 8 Zeichen.';
     case 'otp_expired':
-      return 'Der Code ist abgelaufen oder falsch. Bitte einen neuen anfordern.';
+      return 'Der Code stimmt nicht oder ist abgelaufen. Prüfe die Ziffern oder lass dir einen neuen schicken.';
     case 'over_email_send_rate_limit':
     case 'over_request_rate_limit':
-      return 'Zu viele Versuche. Bitte in ein paar Minuten noch einmal.';
+      final wait = retryAfterFrom(message);
+      return wait != null
+          ? 'Bitte ${wait.inSeconds} Sekunden warten, dann geht die nächste Mail raus.'
+          : 'Zu viele Versuche. Bitte in ein paar Minuten noch einmal.';
     case 'email_address_invalid':
       return 'Diese E-Mail-Adresse ist ungültig.';
     case 'reauthentication_needed':
     case 'reauthentication_not_valid':
-      return 'Zum Ändern bitte über "Passwort vergessen" gehen (Link aus der Mail).';
+      return 'Zur Sicherheit brauchst du dafür einen Code aus der Mail.';
     case 'same_password':
       return 'Das neue Passwort muss sich vom alten unterscheiden.';
     case 'unexpected_failure':

@@ -1,4 +1,4 @@
-// Konto (Stufe 3a): Abläufe der Oberfläche gegen einen Fake-Server,
+﻿// Konto (Stufe 3a): Abläufe der Oberfläche gegen einen Fake-Server,
 // Fehlertexte und Verhalten ohne Server im Build.
 
 import 'dart:async';
@@ -80,11 +80,11 @@ void main() {
     await submit(tester);
     expect(api.calls.last, startsWith('signUp'));
     expect(api.calls.last, contains('ABCD-EFGH-IJKL-MNOP'));
-    expect(find.textContaining('Mail an Eltern@Example.com'), findsOneWidget);
+    expect(find.textContaining('Code an eltern@example.com'), findsOneWidget);
 
     await type(tester, 'account_code', '12345');
     await submit(tester);
-    expect(find.text('Bitte den 6-stelligen Code aus der Mail eingeben.'), findsOneWidget);
+    expect(find.text('Bitte den Code aus der Mail eingeben (nur Ziffern).'), findsOneWidget);
 
     await type(tester, 'account_code', '123456');
     await submit(tester);
@@ -151,19 +151,50 @@ void main() {
     expect(await SupabaseService.needsReload(), isFalse);
   });
 
-  testWidgets('Ohne Code (nur Link in der Mail): Weiter führt zur Anmeldung', (tester) async {
+  testWidgets('Bestätigen ohne Code geht nicht weiter, Zurück und E-Mail ändern führen zur Registrierung', (tester) async {
     final api = await open(tester);
     await tester.tap(find.text('Neu hier? Registrieren'));
     await tester.pumpAndSettle();
     await type(tester, 'account_email', 'a@b.de');
     await type(tester, 'account_password', 'geheim123');
     await submit(tester);
-    await submit(tester); // "Weiter" ohne Code
+    await submit(tester); // "Bestätigen" ohne Code
     expect(api.calls.where((c) => c.startsWith('confirm')), isEmpty);
-    expect(find.textContaining('Nach dem Bestätigen hier'), findsOneWidget);
-    expect(find.byKey(const Key('account_password')), findsOneWidget);
+    expect(find.textContaining('Code aus der Mail eingeben'), findsOneWidget);
+    expect(find.textContaining('Neuen Code schicken (in'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('account_change_email')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('account_invite')), findsOneWidget);
   });
 
+  testWidgets('Falsches Passwort: Knopf "Passwort vergessen?" führt mit E-Mail weiter', (tester) async {
+    final api = await open(tester);
+    await type(tester, 'account_email', 'a@b.de');
+    await type(tester, 'account_password', 'falsch');
+    api.failNext = const AccountException('E-Mail oder Passwort stimmt nicht.', kind: AuthErrorKind.invalidCredentials);
+    await submit(tester);
+    await tester.tap(find.byKey(const Key('account_action_forgotPassword')));
+    await tester.pumpAndSettle();
+    expect(find.text('Code schicken'), findsOneWidget);
+    await submit(tester);
+    expect(api.calls.last, 'forgot a@b.de');
+    expect(find.byKey(const Key('account_code')), findsOneWidget);
+  });
+
+  testWidgets('Abgelaufener Mail-Link: Erklärung und neuer Code statt stiller Liste', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    tester.view.physicalSize = const Size(390 * 3, 844 * 3);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    SupabaseService.launchUri = Uri.parse('https://x.io/app/#error=access_denied&error_code=otp_expired');
+    addTearDown(() => SupabaseService.launchUri = null);
+    await tester.pumpWidget(const ProviderScope(child: EinkaufsOptimiererApp(showOnboarding: true)));
+    await tester.pumpAndSettle();
+    expect(find.text('Link ungültig'), findsOneWidget);
+    expect(find.textContaining('abgelaufen'), findsOneWidget);
+    await submit(tester);
+    expect(find.text('Code schicken'), findsOneWidget);
+  });
   testWidgets('Neues Passwort nach dem Mail-Link', (tester) async {
     final api = _PwApi();
     await tester.pumpWidget(MaterialApp(home: NewPasswordScreen(api: api)));
@@ -176,18 +207,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(api.saved, 'lang-genug');
     expect(find.textContaining('Gespeichert'), findsOneWidget);
-  });
-
-  testWidgets('Link "Passwort vergessen" in frischem Safari: Neues Passwort erscheint über der Begrüßung', (tester) async {
-    SharedPreferences.setMockInitialValues({});
-    tester.view.physicalSize = const Size(390 * 3, 844 * 3); // iPhone
-    tester.view.devicePixelRatio = 3;
-    addTearDown(tester.view.reset);
-    SupabaseService.recoveryPending.value = true;
-    await tester.pumpWidget(const ProviderScope(child: EinkaufsOptimiererApp(showOnboarding: true)));
-    await tester.pumpAndSettle();
-    expect(find.text('Neues Passwort'), findsWidgets);
-    expect(SupabaseService.recoveryPending.value, isFalse);
   });
 
   testWidgets('Angemeldet: Passwort ändern mit E-Mail fürs Speichern im Schlüsselbund', (tester) async {
